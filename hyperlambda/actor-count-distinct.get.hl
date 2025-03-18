@@ -1,5 +1,5 @@
 
-// Count unique and distinct items from your actor table in your sakila database with authorization and verbose filtering
+// Hyperlambda endpoint returning count unique and distinct items from your actor table in your sakila database with authorization and verbose filtering
 .arguments
 
    // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME

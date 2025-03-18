@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to join specified 'values' into a single string with an optional 'separator'. Return the joined result.
+// Create a Hyperlambda action to join specified 'values' into a single string with an optional 'separator'. Return the joined result.
 .arguments
    values
       type:array

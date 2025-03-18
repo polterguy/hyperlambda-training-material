@@ -1,5 +1,5 @@
 
-// Returns minimum, maximum, average or sum from your Album table in your chinook database
+// Hyperlambda endpoint returning min, max, av,g or sum from your Album table in your chinook database
 .arguments
 
    // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg

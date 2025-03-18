@@ -1,5 +1,5 @@
 
-// Returns [max_tokens] context from the specified [url].
+// Hyperlambda action returning [max_tokens] context from the specified [url].
 .arguments
    url
       type:string

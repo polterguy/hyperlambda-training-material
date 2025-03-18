@@ -1,6 +1,8 @@
 
-// Create a Hyperlambda script to hash a specified input using an optional algorithm (default is SHA 256). Validate the algorithm and return the hash result.
+// Create a Hyperlambda action to hash a specified input using an optional algorithm (default is SHA 256). Validate the algorithm and return the hash result.
 .arguments
+
+   // Notice, this is action syntax
    input
       type:string
       mandatory:bool:true

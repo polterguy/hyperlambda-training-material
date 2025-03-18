@@ -1,5 +1,6 @@
 
-// Create a Hyperlambda script that saves the specified configuration object to appsettings.json, ensuring the user is authorized.
+// Create a Hyperlambda endpoint that saves the specified configuration object to appsettings.json, ensuring the user is authorized.
+.arguments:*
 .description:Saves the specified configuration, overwriting existing configuration
 .type:internal
 

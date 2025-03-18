@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script that counts items in the ml_requests table in the magic database, ensuring the user is authorized and handling optional filters.
+// Create a Hyperlambda endpoint that counts items in the ml_requests table in the magic database, ensuring the user is authorized and handling optional filters.
 .arguments
    filter:string
    ml_requests.id.eq:long

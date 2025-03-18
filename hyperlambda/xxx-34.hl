@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to return specified HTTP headers from a request. Use 'headers' as an input array to determine which headers to return.
+// Create a Hyperlambda action to return specified HTTP headers from a request. Use 'headers' as an input array to determine which headers to return.
 .arguments
    headers
       type:array

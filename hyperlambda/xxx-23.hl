@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to validate a Magic CAPTCHA token with optional 'workload' and 'age'. Only validate if the user is not in the 'root' role. Default 'workload' to 3 and 'age' to 10000 milliseconds.
+// Create a Hyperlambda action to validate a Magic CAPTCHA token with optional 'workload' and 'age'. Only validate if the user is not in the 'root' role. Default 'workload' to 3 and 'age' to 10000 milliseconds.
 .arguments
    token
       type:string

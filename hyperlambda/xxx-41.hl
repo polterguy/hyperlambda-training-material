@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to ensure a specified 'arg' is given. Validate the mandatory field.
+// Create a Hyperlambda action to ensure a specified 'arg' is given. Validate the mandatory field.
 .arguments
    arg
       type:string

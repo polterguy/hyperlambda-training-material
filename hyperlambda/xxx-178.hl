@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to count the number of tasks in the system given an optional filter.
+// Create a Hyperlambda endpoint to count the number of tasks in the system given an optional filter.
 .arguments
    filter:string
 .description:Counts number of tasks in system given specified optional query.

@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to execute a SQL CRUD Delete operation with specified 'database-type', 'connection-string', 'database', 'table', and optional 'and' or 'or' filters. Validate mandatory fields and enums.
+// Create a Hyperlambda action to execute a SQL CRUD Delete operation with specified 'database-type', 'connection-string', 'database', 'table', and optional 'and' or 'or' filters. Validate mandatory fields and enums.
 .arguments
    database-type
       type:enum

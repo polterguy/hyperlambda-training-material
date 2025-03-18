@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to export columns from a specified database table. Include 'database-type', 'connection-string', 'database', 'table', and optional 'limit', 'offset', 'columns'. Validate mandatory fields and enums.
+// Create a Hyperlambda action to export columns from a specified database table. Include 'database-type', 'connection-string', 'database', 'table', and optional 'limit', 'offset', 'columns'. Validate mandatory fields and enums.
 .arguments
    database-type
       type:enum

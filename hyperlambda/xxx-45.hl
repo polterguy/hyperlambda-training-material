@@ -1,6 +1,8 @@
 
-// Create a Hyperlambda script to execute a SQL CRUD Create operation with specified 'database-type', 'connection-string', 'database', 'table', and 'values'. Validate mandatory fields and enums.
+// Create a Hyperlambda action to execute a SQL CRUD Create operation with specified 'database-type', 'connection-string', 'database', 'table', and 'values'. Validate mandatory fields and enums.
 .arguments
+
+   // This is action syntax, NOT endpoint or Hyperlambda file syntax
    database-type
       type:enum
       mandatory:bool:true

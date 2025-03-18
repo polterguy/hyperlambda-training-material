@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a distinct keyword search from a specified table in a database, returning records containing keywords from a query, with rows containing the most distinct matched keywords appearing first.
+// Create a Hyperlambda endpoint for a distinct keyword search from a specified table in a database, returning records containing keywords from a query, with rows containing the most distinct matched keywords appearing first.
 .arguments
 
    // Mandatory query for records to search for

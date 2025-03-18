@@ -1,6 +1,8 @@
 
-// Create a Hyperlambda script to execute a workflow file if a condition is true. The condition uses 'lhs', 'rhs', and 'comparison' (e.g., eq, neq, mt, mte, lt, lte). Include 'workflow' and optional 'arguments'. Validate and set comparison operator.
+// Create a Hyperlambda action to execute a workflow file if a condition is true. The condition uses 'lhs', 'rhs', and 'comparison' (e.g., eq, neq, mt, mte, lt, lte). Include 'workflow' and optional 'arguments'. Validate and set comparison operator.
 .arguments
+
+   // Notice, this is action syntax
    lhs
       type:string
       mandatory:bool:true

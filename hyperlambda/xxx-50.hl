@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to create or update a default OpenAI machine learning model in the database. Include model details like 'model', 'max_tokens', 'temperature', etc. Handle exceptions with logging.
+// Create Hyperlambda that creates or updates a default OpenAI machine learning model in the database. Include model details like 'model', 'max_tokens', 'temperature', etc. Handle exceptions with logging.
 try
 
    // Connecting to Magic database.

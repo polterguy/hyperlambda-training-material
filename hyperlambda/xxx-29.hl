@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to load a specified file and return its content.
+// Create a Hyperlambda action to load a specified file and return its content.
 .arguments
    file
       type:string

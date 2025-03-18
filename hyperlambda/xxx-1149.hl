@@ -1,7 +1,0 @@
-
-// How to use Hyperlambda tasks as business process workflows
-"Hyperlambda tasks allows you to persist a _\"function invocation\"_ for later to execute it, once some specific condition"
-occurs - Effectively giving you the most important features from Microsoft Workflow Foundation, without the
-ridiculous XML and WYSIWYG features - In addition to that this also is a .Net Core library, contrary
-to MWF that only works for the full .Net Framework. The Hyperlambda task scheduler is also probably at
-least somewhere between 200 and 400 times faster than MWF, due to not using reflection during execution.

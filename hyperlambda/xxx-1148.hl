@@ -1,9 +1,0 @@
-
-// How Hyperlambda tasks are stored
-All tasks are persisted into your `magic` database, either in MySQL, SQLite, PostgreSQL, or Microsoft SQL Server.
-This implies that even if your server is stopped, all scheduled tasks and persisted tasks will automatically
-load up again, and be available and re-scheduled as the server is restarted. This _might_ imply that
-all tasks in the past are immediately executed, which is important for you to understand, since any tasks
-with a due date in the past, are executed immediately as the server restarts again.
-Tasks are by default persisted into your `tasks` table, and schedules are persisted into your
-`task_due` table.

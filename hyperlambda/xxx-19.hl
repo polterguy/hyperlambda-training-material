@@ -1,6 +1,8 @@
 
-// Create a Hyperlambda script to HTML encode a specified string and return the encoded content.
+// Create a Hyperlambda action to HTML encode a specified string and return the encoded content.
 .arguments
+
+   // Action syntax
    html
       type:string
       mandatory:bool:true

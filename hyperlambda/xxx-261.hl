@@ -1,6 +1,5 @@
 
-// Create a Hyperlambda script that loads the appsettings.json file and returns its content to the caller, ensuring the user is authorized.
-.description:"Returns the system's configuration"
+// Create a Hyperlambda endpoint that loads the appsettings.json file and returns its content to the caller, ensuring the user is authorized.
 .type:internal
 
 // Ensuring user is authorized to access endpoint.

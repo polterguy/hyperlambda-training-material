@@ -1,9 +1,0 @@
-
-// How to use Hyperlambda's [strings.capitalize]
-Turns the first character of your string into a CAPS character.
-```
-strings.capitalize:thomas
-
-// Resulting in "Thomas" after invocation.
-```
-#

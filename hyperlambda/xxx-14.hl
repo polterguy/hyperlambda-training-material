@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to execute an action if a condition is true. The condition uses 'lhs', 'rhs', and 'comparison' (e.g., eq, neq, mt, mte, lt, lte). Include 'action' and optional 'arguments'. Validate and set comparison operator.
+// Create a Hyperlambda action to execute an action if a condition is true. The condition uses 'lhs', 'rhs', and 'comparison' (e.g., eq, neq, mt, mte, lt, lte). Include 'action' and optional 'arguments'. Validate and set comparison operator.
 .arguments
    lhs
       type:string

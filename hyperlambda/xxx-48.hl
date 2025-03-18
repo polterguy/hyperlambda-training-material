@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to execute a SQL CRUD Read operation with specified 'database-type', 'connection-string', 'database', 'table', and optional filters like 'and', 'or', 'limit', 'offset', 'order', 'direction'. Validate mandatory fields and enums.
+// Create a Hyperlambda action to execute a SQL CRUD Read operation with specified 'database-type', 'connection-string', 'database', 'table', and optional filters like 'and', 'or', 'limit', 'offset', 'order', 'direction'. Validate mandatory fields and enums.
 .arguments
    database-type
       type:enum

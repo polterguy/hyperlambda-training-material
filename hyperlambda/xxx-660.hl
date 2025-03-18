@@ -1,5 +1,5 @@
 
-// Compiles the specified C# code and loads into the AppDomain
+// Action that compiles the specified C# code and loads into the AppDomain
 .arguments
    assembly-name
       type:string

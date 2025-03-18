@@ -1,5 +1,5 @@
 
-// Count unique and distinct items from your Album table in your chinook database
+// Counts unique and distinct items from your Album table in your chinook database. This is a Hyperlambda endpoint, allowing you to pass in arguments!
 .arguments
 
    // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME

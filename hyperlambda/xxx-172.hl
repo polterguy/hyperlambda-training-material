@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to send an email to the cloudlet owner with a specified body, transforming the body into HTML.
+// Create a Hyperlambda endpoint to send an email to the cloudlet owner with a specified body, transforming the body into HTML.
 .arguments
 
    // Mandatory argument being the body of the email. This can be Markdown at which point it will be automatically transformed to HTML before the email is sent.

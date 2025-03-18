@@ -1,0 +1,6 @@
+// Append multiple new statically declared nodes to a destination node
+.parent
+add:x:@.parent
+   child1:"child 1's value"
+   child2:"child 2's value"
+   child3:"child 3's value"

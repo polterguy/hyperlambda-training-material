@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to set specified HTTP headers in a response. Use 'headers' as a key-value input to determine which headers to set.
+// Create a Hyperlambda action to set specified HTTP headers in a response. Use 'headers' as a key-value input to determine which headers to set.
 .arguments
    headers
       type:key-value

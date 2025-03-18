@@ -1,5 +1,5 @@
 
-// Create one record in your actor table in your sakila database with authorization
+// CRUD endpoint - Create one record in your actor table in your sakila database with authorization
 .arguments
 
    // first_name column value

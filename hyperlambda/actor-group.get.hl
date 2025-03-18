@@ -1,5 +1,5 @@
 
-// Returns minimum, maximum, average, sum or count from your actor table in your sakila database grouped by a column with authorization and verbose filtering
+// Hyperlambda that returns minimum, maximum, average, sum or count from your actor table in your sakila database grouped by a column with authorization and verbose filtering
 .arguments
 
    // Mandatory argument being column to group by and must be in the format of TABLE_NAME.COLUMN_NAME

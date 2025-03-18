@@ -1,9 +1,0 @@
-
-// How to use Hyperlambda's [try-signal]
-Invokes a previously created dynamic slot. This slots works exactly the same as **[signal]** except it does
-not throw an exception if the slot does not exist. Assuming you have created the foo slot from the create slot example,
-you can invoke the slot using the following Hyperlambda.
-```
-try-signal:foo
-```
-#

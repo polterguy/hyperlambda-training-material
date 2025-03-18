@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to transform specified items into CSV format and return the CSV content.
+// Create a Hyperlambda action to transform specified items into CSV format and return the CSV content.
 .arguments
    items
       type:*

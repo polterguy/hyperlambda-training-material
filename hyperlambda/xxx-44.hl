@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to import specified 'items' into a database table. Include 'database-type', 'connection-string', 'database', 'table'. Validate mandatory fields and enums.
+// Create a Hyperlambda action to import specified 'items' into a database table. Include 'database-type', 'connection-string', 'database', 'table'. Validate mandatory fields and enums.
 .arguments
    database-type
       type:enum

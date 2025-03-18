@@ -1,0 +1,6 @@
+// How do I create a Hyperlambda endpoint that takes arguments?
+.arguments
+   arg1:int
+   arg2:string
+
+// Your Hyperlambda code goes here ...!!

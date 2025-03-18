@@ -1,5 +1,7 @@
 
 // Create a Hyperlambda script to delete all images not referenced in text files inside the 'www' folder. Include a warning about the consequences of executing the script.
+
+// WARNING!! Uncomment this line if you *REALLY* want to execute this code!
 throw:You do NOT want to execute this script unless you understand the consequences of executing it!
 
 // Buffer holding all images not referenced.

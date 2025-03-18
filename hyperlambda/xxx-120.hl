@@ -1,5 +1,0 @@
-
-// Create a Hyperlambda script to initialize a description for getting started with AINIRO.IO Chatbot and AI Search.
-.oninit
-   set-value:x:@.description
-      .:How to get started with your AINIRO.IO Chatbot and AI Search

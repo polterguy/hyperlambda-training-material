@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to set the HTTP status code to a specified 'status'. Validate the mandatory field.
+// Create a Hyperlambda action to set the HTTP status code to a specified 'status'. Validate the mandatory field.
 .arguments
    status
       type:int

@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to redirect the client to a specified 'url'. Set the response status to 302 and include the 'Location' header.
+// Create a Hyperlambda action to redirect the client to a specified 'url'. Set the response status to 302 and include the 'Location' header.
 .arguments
    url
       type:string

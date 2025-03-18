@@ -1,5 +1,5 @@
 
-// Returns minimum, maximum, average or sum from your actor table in your sakila database with authorization and verbose filtering
+// Hyperlambda endpoint returning minimum, maximum, average or sum from your actor table in your sakila database with authorization and verbose filtering
 .arguments
 
    // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg

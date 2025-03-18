@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to save specified 'content' to a specified 'file'. Validate mandatory fields.
+// Create a Hyperlambda action to save specified 'content' to a specified 'file'. Validate mandatory fields.
 .arguments
    file
       type:string

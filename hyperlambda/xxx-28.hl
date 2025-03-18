@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to replace occurrences of 'what' in a 'source' string with 'with'. Return the result.
+// Create a Hyperlambda action to replace occurrences of 'what' in a 'source' string with 'with'. Return the result.
 .arguments
    source
       type:string

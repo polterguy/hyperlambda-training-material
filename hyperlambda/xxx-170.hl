@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to send an email with specified details, ensuring the email is displayed to the user for confirmation before sending.
+// Create a Hyperlambda endpoint to send an email with specified details, ensuring the email is displayed to the user for confirmation before sending.
 .arguments
 
    // Mandatory argument being the name of person to send the email to.

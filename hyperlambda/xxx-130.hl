@@ -1,5 +1,0 @@
-
-// Create a Hyperlambda script to initialize a description for AINIRO.IO's Privacy Policy.
-.oninit
-   set-value:x:@.description
-      .:"Read AINIRO.IO AS' Privacy Policy. Make sure you agree before signing up for our services."

@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to evaluate given Hyperlambda code and return the results, handling exceptions with public error messages.
+// Create a Hyperlambda endpoint to evaluate given Hyperlambda code and return the results, handling exceptions with public error messages.
 .arguments
    hyperlambda:string
    args:*

@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to execute a SQL statement with specified 'database-type', 'connection-string', 'database', and 'sql'. Include optional 'params'. Validate mandatory fields and enums.
+// Create a Hyperlambda action to execute a SQL statement with specified 'database-type', 'connection-string', 'database', and 'sql'. Include optional 'params'. Validate mandatory fields and enums.
 .arguments
    database-type
       type:enum

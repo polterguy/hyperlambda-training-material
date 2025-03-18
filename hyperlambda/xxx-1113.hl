@@ -1,9 +1,0 @@
-
-// How to use Hyperlambda's [slots.get]
-Returns the entire lambda code for a previously created dynamic slot. Example can be found below.
-```
-slots.create:foo
-   return-value:int:57
-slots.get:foo
-```
-#

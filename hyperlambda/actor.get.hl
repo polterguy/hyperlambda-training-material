@@ -1,5 +1,5 @@
 
-// Read or list records from your actor table in your sakila database with authorization
+// Hyperlambda file listing records from your actor table in your sakila database with authorization
 .arguments
 
    // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.

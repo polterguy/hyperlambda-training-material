@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script that returns all public endpoints as an OpenAPI specification, matching an optional filter condition in the URL, and ensuring system endpoints are included if specified.
+// Create a Hyperlambda endpoint that returns all public endpoints as an OpenAPI specification, matching an optional filter condition in the URL, and ensuring system endpoints are included if specified.
 .arguments
    system:bool
    filter:string

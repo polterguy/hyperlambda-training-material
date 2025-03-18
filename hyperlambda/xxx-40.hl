@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to ensure a specified 'value' is given and matches one of the specified 'values'. Validate mandatory fields.
+// Create a Hyperlambda action to ensure a specified 'value' is given and matches one of the specified 'values'. Validate mandatory fields.
 .arguments
    value
       type:string

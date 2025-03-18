@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to execute a specified workflow file with optional arguments. Validate the workflow parameter and return the execution result.
+// Create a Hyperlambda action to execute a specified workflow file with optional arguments. Validate the workflow parameter and return the execution result.
 .arguments
    workflow
       type:workflow

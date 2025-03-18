@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to invoke an HTTP GET request with a specified 'url'. Optionally include 'token', 'token_type', and 'params'. Validate URL and handle authorization headers.
+// Create a Hyperlambda action to invoke an HTTP GET request with a specified 'url'. Optionally include 'token', 'token_type', and 'params'. Validate URL and handle authorization headers.
 .arguments
    url
       type:string

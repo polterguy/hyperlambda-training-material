@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to return the originating IP address of an HTTP request.
+// Create a Hyperlambda action to return the originating IP address of an HTTP request.
 .arguments
 .icon:http
 

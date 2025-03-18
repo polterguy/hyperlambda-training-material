@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to list all functions for a specified type, including RAG and system functions.
+// Create a Hyperlambda endpoint to list all functions for a specified type, including RAG and system functions.
 .arguments
 
    // Mandatory argument and the type name for which to return functions for.

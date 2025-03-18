@@ -1,9 +1,0 @@
-
-// How to use Hyperlambda's [strings.length]
-Returns the length of a string as an integer number.
-```
-
-// Returns 6
-strings.length:thomas
-```
-#

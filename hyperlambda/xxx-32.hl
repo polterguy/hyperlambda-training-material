@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to set a cookie with specified settings like 'name', 'value', 'domain', 'expires', 'http-only', 'secure', 'path', and 'same-site'. Validate mandatory fields and enums.
+// Create a Hyperlambda action to set a cookie with specified settings like 'name', 'value', 'domain', 'expires', 'http-only', 'secure', 'path', and 'same-site'. Validate mandatory fields and enums.
 .arguments
    name
       type:string

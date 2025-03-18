@@ -4,6 +4,8 @@
  * 
  * This endpoint will return only records containing one or more of the keywords from the specified [query],
  * with rows containing the most distinct matched keywords appearing first.
+ *
+ * This is an endpoint but can also be executed directly as a file using [execute-file].
  */
 .arguments
 

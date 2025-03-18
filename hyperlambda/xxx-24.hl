@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to validate a reCAPTCHA token with an optional 'threshold'. Only validate if the user is not in the 'root' role. Default 'threshold' to 0.3.
+// Create a Hyperlambda action to validate a reCAPTCHA token with an optional 'threshold'. Only validate if the user is not in the 'root' role. Default 'threshold' to 0.3.
 .arguments
    recaptcha_token
       type:string

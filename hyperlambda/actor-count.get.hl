@@ -1,0 +1,81 @@
+
+// Counts items from your actor table in your sakila database with authorization and verbose filtering
+.arguments
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   actor.actor_id.mt:long
+   actor.actor_id.lt:long
+   actor.actor_id.mteq:long
+   actor.actor_id.lteq:long
+   actor.actor_id.neq:long
+   actor.actor_id.eq:long
+   actor.first_name.like:string
+   actor.first_name.mt:string
+   actor.first_name.lt:string
+   actor.first_name.mteq:string
+   actor.first_name.lteq:string
+   actor.first_name.neq:string
+   actor.first_name.eq:string
+   actor.last_name.like:string
+   actor.last_name.mt:string
+   actor.last_name.lt:string
+   actor.last_name.mteq:string
+   actor.last_name.lteq:string
+   actor.last_name.neq:string
+   actor.last_name.eq:string
+   actor.last_update.mt:date
+   actor.last_update.lt:date
+   actor.last_update.mteq:date
+   actor.last_update.lteq:date
+   actor.last_update.neq:date
+   actor.last_update.eq:date
+
+// Meta data description for endpoint
+.description:Counts items from your actor table in your sakila database
+
+// Type of endpoint
+.type:crud-count
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|sakila]
+   database-type:sqlite
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:actor
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

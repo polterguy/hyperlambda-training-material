@@ -1,4 +1,4 @@
 // Converting a string to integer
-.data:int:42
+.data:42
 convert:x:@.data
    type:int

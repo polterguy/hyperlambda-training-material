@@ -1,0 +1,4 @@
+// [exists] returns true if the expression finds any node
+.present
+   node
+exists:x:@.present/*

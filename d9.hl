@@ -1,0 +1,11 @@
+// Retrieve orders that are either pending OR processing
+data.connect:shopDB
+   data.read
+      table:orders
+      limit:-1
+      where
+
+         // Either status equals "pending" OR "processing"
+         or
+            status.eq:"pending"
+            status.eq:"processing"

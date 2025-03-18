@@ -1,0 +1,3 @@
+// Example: Create a slot
+slots.create:foo
+   return-value:int:57

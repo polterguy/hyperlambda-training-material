@@ -1,0 +1,6 @@
+// Remove all nodes matching the expression (delete item2)
+.data
+   foo1
+   foo2
+   foo3
+remove-nodes:x:@.data/*/foo2

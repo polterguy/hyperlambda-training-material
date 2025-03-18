@@ -1,0 +1,3 @@
+// Move file
+io.file.move:/misc/README.md
+   .:/misc/backup/README-backup.md

@@ -1,0 +1,3 @@
+// Move folder
+io.folder.move:/misc/source-folder/
+   .:/misc/destination-folder/

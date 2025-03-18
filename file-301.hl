@@ -1,0 +1,6 @@
+// First add [.one]'value with [.two]'value, then multiply by 3
+math.multiply
+   .:int:3
+   math.add
+      get-value:x:@.one
+      get-value:x:@.two

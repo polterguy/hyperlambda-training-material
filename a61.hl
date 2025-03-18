@@ -1,0 +1,3 @@
+// [exists] returns false if the expression finds no nodes
+.empty
+exists:x:@.empty/*

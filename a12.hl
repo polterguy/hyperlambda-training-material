@@ -1,0 +1,6 @@
+// Evaluate a lambda stored in a data node
+.res
+.lambda
+   set-value:x:@.res
+      .:Hello
+eval:x:@.lambda

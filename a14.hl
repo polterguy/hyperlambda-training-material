@@ -1,0 +1,5 @@
+// Inline lambda execution by providing the lambda body as children
+.res
+eval
+   set-value:x:@.res
+      .:Inline

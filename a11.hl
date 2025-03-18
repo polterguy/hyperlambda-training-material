@@ -1,0 +1,6 @@
+// Composing a dynamic node expression from parts
+compose
+   .:..
+   .:*
+   .:.data
+   .:*

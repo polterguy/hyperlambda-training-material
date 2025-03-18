@@ -1,0 +1,6 @@
+// Connect to magic database and returns all roles
+data.connect:magic
+   data.read
+      table:roles
+      columns
+         name

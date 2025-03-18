@@ -1,0 +1,6 @@
+/*
+ * Example: Check for a special character in a string.
+ */
+// Returns true
+strings.contains:"Hello, world!"
+   .:!

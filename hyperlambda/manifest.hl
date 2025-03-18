@@ -1,0 +1,3 @@
+// Manifest with version and module name
+version:v2.0.0
+module_name:hub-api

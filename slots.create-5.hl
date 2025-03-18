@@ -1,5 +1,5 @@
 // Define a dynamic slot 'greet' (using alias for slots.create)
-function:greet  
+slots.create:greet  
    return-value:Hi there
 
 // Invoke 'greet'

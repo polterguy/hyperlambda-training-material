@@ -1,0 +1,4 @@
+// Execute a custom SQL SELECT statement
+pgsql.select:"SELECT id, username FROM users WHERE role = 'admin'"
+
+// Notice, since we're having ' characters in our string, we need to explicitly wrap the string into double quotes (")

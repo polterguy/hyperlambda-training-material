@@ -1,0 +1,2 @@
+// Execute a custom SQL statement to update user roles
+pgsql.execute:"UPDATE users SET role = 'member' WHERE role = 'guest'"

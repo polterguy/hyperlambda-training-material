@@ -1,0 +1,4 @@
+// Commit the current transaction
+pgsql.transaction.commit
+
+// Notice, must be inside a [pgsql.transaction.create] invocation

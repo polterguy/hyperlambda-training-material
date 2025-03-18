@@ -1,0 +1,4 @@
+// Connect to the PostgreSQL 'customers' database using the 'my_connection' connection string
+pgsql.connect:[my_connection|customers]
+
+// Notice, all database conections such as above are not actually opened before they're referenced by another slot

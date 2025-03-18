@@ -1,0 +1,2 @@
+// Retrieve the count of users in the 'customers' table
+pgsql.scalar:SELECT COUNT(*) FROM customers

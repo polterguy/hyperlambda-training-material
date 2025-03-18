@@ -1,5 +1,5 @@
 
-// Hyperlambda endpoint returning min, max, avg or sum from your Album table in your chinook database
+// Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from comments / cms database
 .arguments
 
    // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg
@@ -10,30 +10,44 @@
 
    // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
    operator:string
-   Album.AlbumId.mt:long
-   Album.AlbumId.lt:long
-   Album.AlbumId.mteq:long
-   Album.AlbumId.lteq:long
-   Album.AlbumId.neq:long
-   Album.AlbumId.eq:long
-   Album.Title.like:string
-   Album.Title.mt:string
-   Album.Title.lt:string
-   Album.Title.mteq:string
-   Album.Title.lteq:string
-   Album.Title.neq:string
-   Album.Title.eq:string
-   Album.ArtistId.mt:long
-   Album.ArtistId.lt:long
-   Album.ArtistId.mteq:long
-   Album.ArtistId.lteq:long
-   Album.ArtistId.neq:long
-   Album.ArtistId.eq:long
-   ArtistId.Name.eq:string
-   ArtistId.Name.like:string
+   comments.id.mt:long
+   comments.id.lt:long
+   comments.id.mteq:long
+   comments.id.lteq:long
+   comments.id.neq:long
+   comments.id.eq:long
+   comments.post_id.mt:long
+   comments.post_id.lt:long
+   comments.post_id.mteq:long
+   comments.post_id.lteq:long
+   comments.post_id.neq:long
+   comments.post_id.eq:long
+   comments.user_id.mt:long
+   comments.user_id.lt:long
+   comments.user_id.mteq:long
+   comments.user_id.lteq:long
+   comments.user_id.neq:long
+   comments.user_id.eq:long
+   comments.content.like:string
+   comments.content.mt:string
+   comments.content.lt:string
+   comments.content.mteq:string
+   comments.content.lteq:string
+   comments.content.neq:string
+   comments.content.eq:string
+   comments.created_at.mt:date
+   comments.created_at.lt:date
+   comments.created_at.mteq:date
+   comments.created_at.lteq:date
+   comments.created_at.neq:date
+   comments.created_at.eq:date
+   post_id.title.eq:string
+   post_id.title.like:string
+   user_id.username.eq:string
+   user_id.username.like:string
 
 // Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your Album table in your chinook database
+.description:Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from comments / cms database
 
 // Type of endpoint
 .type:crud-aggregate
@@ -51,13 +65,13 @@ validators.enum:x:@.arguments/*/aggregate_function
 
 // Sanity checking agggregate column name.
 validators.enum:x:@.arguments/*/aggregate_column
-   .:Album.AlbumId
-   .:Album.Title
-   .:Album.ArtistId
-   .:ArtistId.Name
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
+   .:comments.id
+   .:comments.post_id
+   .:comments.user_id
+   .:comments.content
+   .:comments.created_at
+   .:post_id.title
+   .:user_id.username
 
 // Sanity checking invocation.
 validators.enum:x:@.arguments/*/operator
@@ -78,7 +92,7 @@ if
       remove-nodes:x:@.arguments/*/operator
 
 // Opening up our database connection.
-data.connect:[generic|chinook]
+data.connect:[generic|cms]
    database-type:sqlite
 
    // Making sure we're using correct aggregate function.
@@ -99,13 +113,19 @@ data.connect:[generic|chinook]
    // Reading data from database.
    data.read
       database-type:sqlite
-      table:Album
-         join:Artist
-            as:ArtistId
+      table:comments
+         join:posts
+            as:post_id
             type:left
             on
                and
-                  Album.ArtistId:ArtistId.ArtistId
+                  comments.post_id:post_id.id
+         join:users
+            as:user_id
+            type:left
+            on
+               and
+                  comments.user_id:user_id.id
       columns
          aggregate_functor
             as:result

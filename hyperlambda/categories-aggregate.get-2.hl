@@ -1,5 +1,5 @@
 
-// Hyperlambda endpoint returning min, max, avg or sum from your Album table in your chinook database
+// Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from categories / cms database
 .arguments
 
    // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg
@@ -10,30 +10,29 @@
 
    // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
    operator:string
-   Album.AlbumId.mt:long
-   Album.AlbumId.lt:long
-   Album.AlbumId.mteq:long
-   Album.AlbumId.lteq:long
-   Album.AlbumId.neq:long
-   Album.AlbumId.eq:long
-   Album.Title.like:string
-   Album.Title.mt:string
-   Album.Title.lt:string
-   Album.Title.mteq:string
-   Album.Title.lteq:string
-   Album.Title.neq:string
-   Album.Title.eq:string
-   Album.ArtistId.mt:long
-   Album.ArtistId.lt:long
-   Album.ArtistId.mteq:long
-   Album.ArtistId.lteq:long
-   Album.ArtistId.neq:long
-   Album.ArtistId.eq:long
-   ArtistId.Name.eq:string
-   ArtistId.Name.like:string
+   categories.id.mt:long
+   categories.id.lt:long
+   categories.id.mteq:long
+   categories.id.lteq:long
+   categories.id.neq:long
+   categories.id.eq:long
+   categories.name.like:string
+   categories.name.mt:string
+   categories.name.lt:string
+   categories.name.mteq:string
+   categories.name.lteq:string
+   categories.name.neq:string
+   categories.name.eq:string
+   categories.description.like:string
+   categories.description.mt:string
+   categories.description.lt:string
+   categories.description.mteq:string
+   categories.description.lteq:string
+   categories.description.neq:string
+   categories.description.eq:string
 
 // Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your Album table in your chinook database
+.description:Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from categories / cms database
 
 // Type of endpoint
 .type:crud-aggregate
@@ -51,13 +50,9 @@ validators.enum:x:@.arguments/*/aggregate_function
 
 // Sanity checking agggregate column name.
 validators.enum:x:@.arguments/*/aggregate_column
-   .:Album.AlbumId
-   .:Album.Title
-   .:Album.ArtistId
-   .:ArtistId.Name
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
+   .:categories.id
+   .:categories.name
+   .:categories.description
 
 // Sanity checking invocation.
 validators.enum:x:@.arguments/*/operator
@@ -78,7 +73,7 @@ if
       remove-nodes:x:@.arguments/*/operator
 
 // Opening up our database connection.
-data.connect:[generic|chinook]
+data.connect:[generic|cms]
    database-type:sqlite
 
    // Making sure we're using correct aggregate function.
@@ -99,13 +94,7 @@ data.connect:[generic|chinook]
    // Reading data from database.
    data.read
       database-type:sqlite
-      table:Album
-         join:Artist
-            as:ArtistId
-            type:left
-            on
-               and
-                  Album.ArtistId:ArtistId.ArtistId
+      table:categories
       columns
          aggregate_functor
             as:result

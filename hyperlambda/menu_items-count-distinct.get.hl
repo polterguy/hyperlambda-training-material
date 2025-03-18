@@ -1,0 +1,116 @@
+
+// Count unique and distinct items from your menu_items table in your cms database
+.arguments
+
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   menu_items.id.mt:long
+   menu_items.id.lt:long
+   menu_items.id.mteq:long
+   menu_items.id.lteq:long
+   menu_items.id.neq:long
+   menu_items.id.eq:long
+   menu_items.menu_id.mt:long
+   menu_items.menu_id.lt:long
+   menu_items.menu_id.mteq:long
+   menu_items.menu_id.lteq:long
+   menu_items.menu_id.neq:long
+   menu_items.menu_id.eq:long
+   menu_items.title.like:string
+   menu_items.title.mt:string
+   menu_items.title.lt:string
+   menu_items.title.mteq:string
+   menu_items.title.lteq:string
+   menu_items.title.neq:string
+   menu_items.title.eq:string
+   menu_items.url.like:string
+   menu_items.url.mt:string
+   menu_items.url.lt:string
+   menu_items.url.mteq:string
+   menu_items.url.lteq:string
+   menu_items.url.neq:string
+   menu_items.url.eq:string
+   menu_items.position.mt:long
+   menu_items.position.lt:long
+   menu_items.position.mteq:long
+   menu_items.position.lteq:long
+   menu_items.position.neq:long
+   menu_items.position.eq:long
+   menu_id.name.eq:string
+   menu_id.name.like:string
+
+// Meta data description for endpoint
+.description:Count unique and distinct items from your menu_items table in your cms database
+
+// Type of endpoint
+.type:crud-count-distinct
+
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
+
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:menu_items.id
+   .:menu_items.menu_id
+   .:menu_items.title
+   .:menu_items.url
+   .:menu_items.position
+   .:menu_id.name
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:"count(distinct "
+         get-value:x:@.arguments/*/distinct_column
+         .:)
+
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:menu_items
+         join:menus
+            as:menu_id
+            type:left
+            on
+               and
+                  menu_items.menu_id:menu_id.id
+      columns
+         distinct_functor
+            as:count
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

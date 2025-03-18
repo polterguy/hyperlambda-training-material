@@ -1,0 +1,72 @@
+
+// Hyperlambda endpoint returning count of items from categories table in cms database
+.arguments
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   categories.id.mt:long
+   categories.id.lt:long
+   categories.id.mteq:long
+   categories.id.lteq:long
+   categories.id.neq:long
+   categories.id.eq:long
+   categories.name.like:string
+   categories.name.mt:string
+   categories.name.lt:string
+   categories.name.mteq:string
+   categories.name.lteq:string
+   categories.name.neq:string
+   categories.name.eq:string
+   categories.description.like:string
+   categories.description.mt:string
+   categories.description.lt:string
+   categories.description.mteq:string
+   categories.description.lteq:string
+   categories.description.neq:string
+   categories.description.eq:string
+
+// Meta data description for endpoint
+.description:Hyperlambda endpoint returning count of items from categories table in cms database
+
+// Type of endpoint
+.type:crud-count
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:categories
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

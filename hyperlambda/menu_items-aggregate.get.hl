@@ -1,5 +1,5 @@
 
-// Hyperlambda endpoint returning min, max, avg or sum from your Album table in your chinook database
+// Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from menu_items / cms database
 .arguments
 
    // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg
@@ -10,30 +10,43 @@
 
    // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
    operator:string
-   Album.AlbumId.mt:long
-   Album.AlbumId.lt:long
-   Album.AlbumId.mteq:long
-   Album.AlbumId.lteq:long
-   Album.AlbumId.neq:long
-   Album.AlbumId.eq:long
-   Album.Title.like:string
-   Album.Title.mt:string
-   Album.Title.lt:string
-   Album.Title.mteq:string
-   Album.Title.lteq:string
-   Album.Title.neq:string
-   Album.Title.eq:string
-   Album.ArtistId.mt:long
-   Album.ArtistId.lt:long
-   Album.ArtistId.mteq:long
-   Album.ArtistId.lteq:long
-   Album.ArtistId.neq:long
-   Album.ArtistId.eq:long
-   ArtistId.Name.eq:string
-   ArtistId.Name.like:string
+   menu_items.id.mt:long
+   menu_items.id.lt:long
+   menu_items.id.mteq:long
+   menu_items.id.lteq:long
+   menu_items.id.neq:long
+   menu_items.id.eq:long
+   menu_items.menu_id.mt:long
+   menu_items.menu_id.lt:long
+   menu_items.menu_id.mteq:long
+   menu_items.menu_id.lteq:long
+   menu_items.menu_id.neq:long
+   menu_items.menu_id.eq:long
+   menu_items.title.like:string
+   menu_items.title.mt:string
+   menu_items.title.lt:string
+   menu_items.title.mteq:string
+   menu_items.title.lteq:string
+   menu_items.title.neq:string
+   menu_items.title.eq:string
+   menu_items.url.like:string
+   menu_items.url.mt:string
+   menu_items.url.lt:string
+   menu_items.url.mteq:string
+   menu_items.url.lteq:string
+   menu_items.url.neq:string
+   menu_items.url.eq:string
+   menu_items.position.mt:long
+   menu_items.position.lt:long
+   menu_items.position.mteq:long
+   menu_items.position.lteq:long
+   menu_items.position.neq:long
+   menu_items.position.eq:long
+   menu_id.name.eq:string
+   menu_id.name.like:string
 
 // Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your Album table in your chinook database
+.description:Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from menu_items / cms database
 
 // Type of endpoint
 .type:crud-aggregate
@@ -51,13 +64,12 @@ validators.enum:x:@.arguments/*/aggregate_function
 
 // Sanity checking agggregate column name.
 validators.enum:x:@.arguments/*/aggregate_column
-   .:Album.AlbumId
-   .:Album.Title
-   .:Album.ArtistId
-   .:ArtistId.Name
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
+   .:menu_items.id
+   .:menu_items.menu_id
+   .:menu_items.title
+   .:menu_items.url
+   .:menu_items.position
+   .:menu_id.name
 
 // Sanity checking invocation.
 validators.enum:x:@.arguments/*/operator
@@ -78,7 +90,7 @@ if
       remove-nodes:x:@.arguments/*/operator
 
 // Opening up our database connection.
-data.connect:[generic|chinook]
+data.connect:[generic|cms]
    database-type:sqlite
 
    // Making sure we're using correct aggregate function.
@@ -99,13 +111,13 @@ data.connect:[generic|chinook]
    // Reading data from database.
    data.read
       database-type:sqlite
-      table:Album
-         join:Artist
-            as:ArtistId
+      table:menu_items
+         join:menus
+            as:menu_id
             type:left
             on
                and
-                  Album.ArtistId:ArtistId.ArtistId
+                  menu_items.menu_id:menu_id.id
       columns
          aggregate_functor
             as:result

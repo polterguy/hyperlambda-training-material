@@ -1,22 +1,22 @@
 
-// Hyperlambda file that deletes one record from your actor table in your sakila database with authorization. Responds with endpoint or Hyperlambda file syntax.
+// CRUD Hyperlambda file that deletes one record from your comments table in your cms database
 .arguments
 
    // Primary key of record to delete, mandatory argument
-   actor_id:long
+   id:long
 
 // Meta data description for endpoint
-.description:Delete one record from your actor table in your sakila database
+.description:CRUD Hyperlambda file that deletes one record from your comments table in your cms database
 
 // Type of endpoint
 .type:crud-delete
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/actor_id
+validators.mandatory:x:@.arguments/*/id
 
 // Opening up our database connection.
-data.connect:[generic|sakila]
+data.connect:[generic|cms]
    database-type:sqlite
 
    // Parametrising our delete invocation.
@@ -26,7 +26,7 @@ data.connect:[generic|sakila]
    // Deleting item from database.
    data.delete
       database-type:sqlite
-      table:actor
+      table:comments
       where
          and
 

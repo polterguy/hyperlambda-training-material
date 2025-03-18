@@ -1,0 +1,116 @@
+
+// Hyperlambda CRUD endpoint file returning unique and distinct categories / cms
+.arguments
+
+   // Name of column to return unique and distinct values for. Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
+
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   limit:long
+
+   // Offset into the dataset of where to start retrieving records
+   offset:long
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+   order:string
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   categories.id.mt:long
+   categories.id.lt:long
+   categories.id.mteq:long
+   categories.id.lteq:long
+   categories.id.neq:long
+   categories.id.eq:long
+   categories.name.like:string
+   categories.name.mt:string
+   categories.name.lt:string
+   categories.name.mteq:string
+   categories.name.lteq:string
+   categories.name.neq:string
+   categories.name.eq:string
+   categories.description.like:string
+   categories.description.mt:string
+   categories.description.lt:string
+   categories.description.mteq:string
+   categories.description.lteq:string
+   categories.description.neq:string
+   categories.description.eq:string
+
+// Meta data description for endpoint
+.description:Hyperlambda CRUD endpoint file returning unique and distinct categories / cms
+
+// Type of endpoint
+.type:crud-distinct
+
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
+
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:categories.id
+   .:categories.name
+   .:categories.description
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:distinct(
+         get-value:x:@.arguments/*/distinct_column
+         .:)
+
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+
+   // Adding [limit] and [offset] arguments
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:categories
+      columns
+         distinct_functor
+            as:.
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

@@ -1,5 +1,5 @@
 
-// Hyperlambda endpoint returning min, max, avg or sum from your Album table in your chinook database
+// Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from media / cms database
 .arguments
 
    // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg
@@ -10,30 +10,43 @@
 
    // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
    operator:string
-   Album.AlbumId.mt:long
-   Album.AlbumId.lt:long
-   Album.AlbumId.mteq:long
-   Album.AlbumId.lteq:long
-   Album.AlbumId.neq:long
-   Album.AlbumId.eq:long
-   Album.Title.like:string
-   Album.Title.mt:string
-   Album.Title.lt:string
-   Album.Title.mteq:string
-   Album.Title.lteq:string
-   Album.Title.neq:string
-   Album.Title.eq:string
-   Album.ArtistId.mt:long
-   Album.ArtistId.lt:long
-   Album.ArtistId.mteq:long
-   Album.ArtistId.lteq:long
-   Album.ArtistId.neq:long
-   Album.ArtistId.eq:long
-   ArtistId.Name.eq:string
-   ArtistId.Name.like:string
+   media.id.mt:long
+   media.id.lt:long
+   media.id.mteq:long
+   media.id.lteq:long
+   media.id.neq:long
+   media.id.eq:long
+   media.post_id.mt:long
+   media.post_id.lt:long
+   media.post_id.mteq:long
+   media.post_id.lteq:long
+   media.post_id.neq:long
+   media.post_id.eq:long
+   media.file_path.like:string
+   media.file_path.mt:string
+   media.file_path.lt:string
+   media.file_path.mteq:string
+   media.file_path.lteq:string
+   media.file_path.neq:string
+   media.file_path.eq:string
+   media.file_type.like:string
+   media.file_type.mt:string
+   media.file_type.lt:string
+   media.file_type.mteq:string
+   media.file_type.lteq:string
+   media.file_type.neq:string
+   media.file_type.eq:string
+   media.created_at.mt:date
+   media.created_at.lt:date
+   media.created_at.mteq:date
+   media.created_at.lteq:date
+   media.created_at.neq:date
+   media.created_at.eq:date
+   post_id.title.eq:string
+   post_id.title.like:string
 
 // Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your Album table in your chinook database
+.description:Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from media / cms database
 
 // Type of endpoint
 .type:crud-aggregate
@@ -51,13 +64,12 @@ validators.enum:x:@.arguments/*/aggregate_function
 
 // Sanity checking agggregate column name.
 validators.enum:x:@.arguments/*/aggregate_column
-   .:Album.AlbumId
-   .:Album.Title
-   .:Album.ArtistId
-   .:ArtistId.Name
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
+   .:media.id
+   .:media.post_id
+   .:media.file_path
+   .:media.file_type
+   .:media.created_at
+   .:post_id.title
 
 // Sanity checking invocation.
 validators.enum:x:@.arguments/*/operator
@@ -78,7 +90,7 @@ if
       remove-nodes:x:@.arguments/*/operator
 
 // Opening up our database connection.
-data.connect:[generic|chinook]
+data.connect:[generic|cms]
    database-type:sqlite
 
    // Making sure we're using correct aggregate function.
@@ -99,13 +111,13 @@ data.connect:[generic|chinook]
    // Reading data from database.
    data.read
       database-type:sqlite
-      table:Album
-         join:Artist
-            as:ArtistId
+      table:media
+         join:posts
+            as:post_id
             type:left
             on
                and
-                  Album.ArtistId:ArtistId.ArtistId
+                  media.post_id:post_id.id
       columns
          aggregate_functor
             as:result

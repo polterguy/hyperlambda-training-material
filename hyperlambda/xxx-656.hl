@@ -1,0 +1,25 @@
+
+// Creates a contact in HubSpot
+.arguments
+   email:string
+   first_name:string
+   last_name:string
+   phone:string
+   company:string
+   website:string
+   lifecyclestage:string
+.description:Creates a contact in HubSpot
+.type:public
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/email
+
+// Forwarding request to our HTTP POST Hyperlambda file.
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/modules/hubspot/contacts.post.hl
+
+// Returning whatever above invocation returned.
+add:x:./*/return
+   get-nodes:x:@execute-file/*
+return

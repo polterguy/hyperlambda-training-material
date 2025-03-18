@@ -1,0 +1,59 @@
+
+// Counts items from your contacts table
+.arguments
+
+   // contacts table account_id column equality exact match filtering
+   contacts.account_id.eq:long
+
+   // contacts table name column wildcard filtering with SQL like '%' comparison
+   contacts.name.like:string
+
+   // contacts table name column equality exact match filtering
+   contacts.name.eq:string
+
+   // contacts table phone column equality exact match filtering
+   contacts.phone.eq:string
+
+   // contacts table email column equality exact match filtering
+   contacts.email.eq:string
+
+   // contacts table description column wildcard filtering with SQL like '%' comparison
+   contacts.description.like:string
+
+   // accounts table status column equality exact match filtering
+   account_id.name.eq:string
+
+// Meta data description for endpoint
+.description:Counts items from your contacts table
+
+// Type of endpoint
+.type:crud-count
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up our database connection.
+data.connect:[generic|robo-crm]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:contacts
+         join:accounts
+            as:account_id
+            type:left
+            on
+               and
+                  contacts.account_id:account_id.account_id
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

@@ -1,0 +1,12 @@
+
+// Create a Hyperlambda script to return the backend version to the caller, ensuring user authorization.
+.description:Returns the backend version
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Retrieves backend version, and returns to client.
+eval:x:+
+return-nodes
+   version

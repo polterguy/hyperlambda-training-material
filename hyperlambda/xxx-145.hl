@@ -1,0 +1,10 @@
+
+// Create a Hyperlambda script to display funnel information as a pie chart using data from a database.
+.name:Funnel
+.description:Funnel status
+.enabled:bool:true
+.type:pie
+.lambda
+   data.connect:[generic|robo-crm]
+      data.select:select status as name, count(*) as value from accounts group by status
+      return-nodes:x:-/*

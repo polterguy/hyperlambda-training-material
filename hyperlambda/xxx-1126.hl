@@ -1,0 +1,14 @@
+
+// How to use Hyperlambda's [strings.starts-with]
+Returns true if the specified string starts with some sequence of characters.
+```
+
+// Returns true
+strings.ends-with:Thomas Hansen Is Cool
+   .:Thomas
+
+// Returns false
+strings.ends-with:Thomas Hansen Is Cool
+   .:Hansen
+```
+#

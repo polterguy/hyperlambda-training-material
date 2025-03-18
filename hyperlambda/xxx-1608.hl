@@ -1,0 +1,9 @@
+
+// Create a Hyperlambda DELETE endpoint that accepts an 'id' argument and returns a 200 status with a confirmation message.
+.arguments
+   id:int
+response.status.set
+   .:200
+yield
+   message:Record deleted
+   id:x:@.arguments/*/id

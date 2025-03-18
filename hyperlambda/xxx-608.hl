@@ -1,0 +1,101 @@
+
+// Counts items from your InvoiceLine table in your chinook database.
+.arguments
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   InvoiceLine.InvoiceLineId.mt:long
+   InvoiceLine.InvoiceLineId.lt:long
+   InvoiceLine.InvoiceLineId.mteq:long
+   InvoiceLine.InvoiceLineId.lteq:long
+   InvoiceLine.InvoiceLineId.neq:long
+   InvoiceLine.InvoiceLineId.eq:long
+   InvoiceLine.InvoiceId.mt:long
+   InvoiceLine.InvoiceId.lt:long
+   InvoiceLine.InvoiceId.mteq:long
+   InvoiceLine.InvoiceId.lteq:long
+   InvoiceLine.InvoiceId.neq:long
+   InvoiceLine.InvoiceId.eq:long
+   InvoiceLine.TrackId.mt:long
+   InvoiceLine.TrackId.lt:long
+   InvoiceLine.TrackId.mteq:long
+   InvoiceLine.TrackId.lteq:long
+   InvoiceLine.TrackId.neq:long
+   InvoiceLine.TrackId.eq:long
+   InvoiceLine.UnitPrice.mt:decimal
+   InvoiceLine.UnitPrice.lt:decimal
+   InvoiceLine.UnitPrice.mteq:decimal
+   InvoiceLine.UnitPrice.lteq:decimal
+   InvoiceLine.UnitPrice.neq:decimal
+   InvoiceLine.UnitPrice.eq:decimal
+   InvoiceLine.Quantity.mt:long
+   InvoiceLine.Quantity.lt:long
+   InvoiceLine.Quantity.mteq:long
+   InvoiceLine.Quantity.lteq:long
+   InvoiceLine.Quantity.neq:long
+   InvoiceLine.Quantity.eq:long
+   InvoiceId.BillingAddress.eq:string
+   InvoiceId.BillingAddress.like:string
+   TrackId.Name.eq:string
+   TrackId.Name.like:string
+
+// Meta data description for endpoint
+.description:Counts items from your InvoiceLine table in your chinook database
+
+// Type of endpoint
+.type:crud-count
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:InvoiceLine
+         join:Invoice
+            as:InvoiceId
+            type:left
+            on
+               and
+                  InvoiceLine.InvoiceId:InvoiceId.InvoiceId
+         join:Track
+            as:TrackId
+            type:left
+            on
+               and
+                  InvoiceLine.TrackId:TrackId.TrackId
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

@@ -1,0 +1,78 @@
+
+// Counts items from your Warehouses table in your logistics database
+.arguments
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   Warehouses.WarehouseID.mt:long
+   Warehouses.WarehouseID.lt:long
+   Warehouses.WarehouseID.mteq:long
+   Warehouses.WarehouseID.lteq:long
+   Warehouses.WarehouseID.neq:long
+   Warehouses.WarehouseID.eq:long
+   Warehouses.Location.like:string
+   Warehouses.Location.mt:string
+   Warehouses.Location.lt:string
+   Warehouses.Location.mteq:string
+   Warehouses.Location.lteq:string
+   Warehouses.Location.neq:string
+   Warehouses.Location.eq:string
+   Warehouses.Capacity.mt:double
+   Warehouses.Capacity.lt:double
+   Warehouses.Capacity.mteq:double
+   Warehouses.Capacity.lteq:double
+   Warehouses.Capacity.neq:double
+   Warehouses.Capacity.eq:double
+
+// Meta data description for endpoint
+.description:Counts items from your Warehouses table in your logistics database
+
+// Type of endpoint
+.type:crud-count
+
+// Adding Cache-Control HTTP header.
+response.headers.set
+   Cache-Control:public, max-age=50
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|logistics]
+   database-type:sqlite
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Warehouses
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

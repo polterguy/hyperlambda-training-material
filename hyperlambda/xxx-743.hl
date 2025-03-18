@@ -1,0 +1,65 @@
+
+// Update one record in your accounts table
+.arguments
+
+   // account_id column value being primary key of record to update, mandatory argument
+   account_id:long
+
+   // status column's new value. Can be "Lead", "Client" or "Partner".
+   status:string
+
+   // name column's new value
+   name:string
+
+   // website column's new value
+   website:string
+
+   // description column's new value
+   description:string
+
+// Meta data description for endpoint
+.description:Update one record in your accounts table
+
+// Type of endpoint
+.type:crud-update
+
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/account_id
+
+// Opening up our database connection.
+data.connect:[generic|robo-crm]
+   database-type:sqlite
+
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
+
+   // Invoking our update slot.
+   data.update
+      database-type:sqlite
+      table:accounts
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+
+         // Oops ...!!
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning the correct status code.
+   response.status.set:202
+
+   // Returning success to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.update

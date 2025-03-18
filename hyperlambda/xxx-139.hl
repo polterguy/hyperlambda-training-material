@@ -1,0 +1,29 @@
+
+// Create a Hyperlambda script to get image, CTA, CTA text, and sub-CTA with default values.
+.image
+   get-first-value
+      get-value:x:@image
+      .:/assets/images/header/empower-your-business-with-ai.webp
+   return:x:-
+.get-cta
+   get-first-value
+      get-value:x:@cta
+      .:#footer
+   return:x:-
+.get-cta-text
+   get-first-value
+      get-value:x:@cta-text
+      .:Claim your Free Trial
+   return:x:-
+.get-sub-cta
+   if
+      not-null:x:@sub-cta
+      .lambda
+         strings.concat
+            .:"<p class=\"text-white mt-8\"><a href=\""
+            get-value:x:@sub-cta-link
+            .:"\">"
+            get-value:x:@sub-cta
+            .:</a></p>
+         return:x:@strings.concat
+   return:

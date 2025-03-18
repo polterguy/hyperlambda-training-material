@@ -1,0 +1,59 @@
+
+// Read or list records from your users table in your cms database
+.arguments
+
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+
+   // Offset into the dataset of where to start retrieving records
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   users.id.eq:long
+   users.password.like:string
+   users.password.eq:string
+   users.email.like:string
+   users.email.eq:string
+   users.created_at.eq:date
+
+// Meta data description for endpoint
+.description:Read or list records from your users table in your cms database
+
+// Type of endpoint
+.type:crud-read
+
+// Columns with custom handling as frontend is generated.
+.handling
+   users.email:email
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Making sure we retrieve lock value for column.
+auth.ticket.get
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:users
+      columns
+         users.id
+         users.password
+         users.email
+         users.created_at
+      where
+         and
+
+            // Table is locked on the following field.
+            username.eq:x:@auth.ticket.get
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

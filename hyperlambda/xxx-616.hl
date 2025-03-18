@@ -1,0 +1,88 @@
+
+// Count unique and distinct items from your MediaType table in your chinook database.
+.arguments
+
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   MediaType.MediaTypeId.mt:long
+   MediaType.MediaTypeId.lt:long
+   MediaType.MediaTypeId.mteq:long
+   MediaType.MediaTypeId.lteq:long
+   MediaType.MediaTypeId.neq:long
+   MediaType.MediaTypeId.eq:long
+   MediaType.Name.like:string
+   MediaType.Name.mt:string
+   MediaType.Name.lt:string
+   MediaType.Name.mteq:string
+   MediaType.Name.lteq:string
+   MediaType.Name.neq:string
+   MediaType.Name.eq:string
+
+// Meta data description for endpoint
+.description:Count unique and distinct items from your MediaType table in your chinook database
+
+// Type of endpoint
+.type:crud-count-distinct
+
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
+
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:MediaType.MediaTypeId
+   .:MediaType.Name
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:"count(distinct "
+         get-value:x:@.arguments/*/distinct_column
+         .:)
+
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:MediaType
+      columns
+         distinct_functor
+            as:count
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

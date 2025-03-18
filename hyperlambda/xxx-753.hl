@@ -1,0 +1,44 @@
+
+// Create inserting one record into your activities table
+.arguments
+
+   // type column value, mandatory, references activity_types.type.
+   type:string
+
+   // contact_id column value. Mandatory column, contact ID to associate activity with.
+   contact_id:long
+
+   // description column value, optional.
+   description:string
+
+// Meta data description for endpoint
+.description:Create inserting one record into your activities table
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|robo-crm]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:activities
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

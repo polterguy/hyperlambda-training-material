@@ -1,0 +1,4 @@
+
+// Create a simple Hyperlambda endpoint that returns a greeting.
+return
+   result:Hello from Magic Backend

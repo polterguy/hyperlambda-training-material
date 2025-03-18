@@ -1,0 +1,27 @@
+
+// Read or list records from your activity_types table
+.arguments
+
+// Meta data description for endpoint
+.description:Read or list records from your activity_types table
+
+// Type of endpoint
+.type:crud-read
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up our database connection.
+data.connect:[generic|robo-crm]
+   database-type:sqlite
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:activity_types
+      columns
+         activity_types.type
+         activity_types.description
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

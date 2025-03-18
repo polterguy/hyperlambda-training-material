@@ -1,0 +1,14 @@
+
+// Create a Hyperlambda script to transform specified markdown into HTML and return the HTML content.
+.arguments
+   markdown
+      type:string
+      mandatory:bool:true
+.icon:pageview
+
+// Transforming Markdown to HTML.
+markdown2html:x:@.arguments/*/markdown
+
+// Returning resulting HTML to caller.
+yield
+   html:x:@markdown2html

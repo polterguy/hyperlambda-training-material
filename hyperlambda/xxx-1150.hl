@@ -1,0 +1,21 @@
+
+// How to use Hyperlambda's [tasks.schedule]
+If you want to create a _scheduled_ task, you can choose to have the task executed once in the future, at a specified
+date and time, by invoking **[tasks.schedule]**, and reference your task after it's been created, passing in
+a **[due]** argument being a date and time in the future for when you want to execute your task.
+```
+tasks.create:foo-bar-task-3
+   .lambda
+      log.info:Executing foo-bar-task-3
+tasks.schedule:foo-bar-task-3
+   due:date:"2025-12-24T17:00:00.000"
+```
+The above **[due]** argument is a UTC date and time in the future for when you want your task to be scheduled
+for execution. After the task has been executed, it will never execute again, unless you manually execute it,
+or invoke **[tasks.schedule]** again.
+**Notice** - You _cannot_ create a task with a due date being in the past, and all dates are assumed to be in
+the UTC timezone. The unique ID of the schedule created is returned when you explicitly schedule a task using
+the **[tasks.schedule]** slot. If you add schedules during invocations to **[tasks.create]** though, no schedule
+IDs are returned, but you can still retrieve all schedules by invoking **[tasks.get]** and passing in **[schedules]**
+to have the slot return all schedules for a specific task.
+#

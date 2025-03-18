@@ -1,0 +1,20 @@
+
+// Create a Hyperlambda script to set up a call-to-action component for starting an AI SaaS company with white label solutions, including description, image, and other attributes.
+.oninit
+   set-value:x:@.description
+      .:Start your own AI SaaS Company using our white label solutions. Integrated subscription payments and SSO / OIDC.
+   set-value:x:@.image
+      .:/assets/images/header/ai-saas-white-label-solutions.png
+   set-value:x:@.image-height
+      .:630
+.call-to-action
+   io.file.mixin:/etc/www/.components/call-to-action.html
+      title:Start your own AI SaaS
+      sub-title:White Label
+      description:Start your own AI Chatbot SaaS Company with our white label solutions and generate monthly recurring revenue
+      image:/assets/images/header/landing-page-header-3.svg
+      img-desc:Start your own AI Chatbot SaaS Company with our White Label Solutions
+      width:100%
+      height:auto
+      class:landing-page-image
+   return:x:-

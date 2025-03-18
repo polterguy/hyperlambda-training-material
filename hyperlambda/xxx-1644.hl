@@ -1,0 +1,5 @@
+
+// How do I create an interceptor file in Hyperlambda?
+log.info
+   message:Incoming request intercepted
+.interceptor

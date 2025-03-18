@@ -1,0 +1,24 @@
+
+// Create a Hyperlambda script to set up a call-to-action component for a 7-day free trial of Legal AI Chatbots, including description, image, and other attributes.
+.oninit
+   set-value:x:@.image
+      .:/assets/images/ai-chatbot-facts-ainiro.jpg
+   set-value:x:@.description
+      .:Using an AI Chatbot in your Law Firm can significantly increase conversions by funnelling leads into your paid services
+   set-value:x:@.image
+      .:/assets/images/open-graph/ai-chatbots-og-image.png
+   set-value:x:@.image-height
+      .:630
+.call-to-action
+   io.file.mixin:/etc/www/.components/call-to-action.html
+      title:7-Day Free Trial
+      sub-title:Legal AI Chatbots
+      description:Your Law Firm could significantly increase conversions by using an AI chatbot to funnel leads into your paid services
+      image:/assets/images/header/ai-chatbots.svg
+      img-desc:Create an AI Chatbot based upon your data and ChatGPT, and reduce your costs while increasing conversions
+      width:100%
+      height:auto
+      class:landing-page-image
+      sub-cta-link:/blog/buy-chatgpt-4-website-chatbot-for-29-dollars
+      sub-cta:Get an AI chatbot for $29 per month 🥳
+   return:x:-

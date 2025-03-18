@@ -1,0 +1,12 @@
+
+// Create a Hyperlambda snippet that iterates through numerical values and logs them.
+
+// Iterates through numerical values and logs them.
+.numbers
+   num1:int:10
+   num2:int:20
+   num3:int:30
+for-each:x:@.numbers/*
+
+   // Logging each number.
+   log.info:x:@.dp/#

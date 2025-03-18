@@ -1,0 +1,20 @@
+
+// Create a Hyperlambda script to set up an AI Expert System with a call-to-action component, including description, image, and other attributes.
+.oninit
+   set-value:x:@.description
+      .:Use our AI Expert System to provide cognitive assistance to your employees, or start your own AI SaaS with it.
+   set-value:x:@.image
+      .:/assets/images/header/ai-saas-white-label-solutions.png
+   set-value:x:@.image-height
+      .:630
+.call-to-action
+   io.file.mixin:/etc/www/.components/call-to-action.html
+      title:Your own ChatGPT
+      sub-title:AI Expert System
+      description:Create your own password protected ChatGPT based upon your data and integrate with your existing systems. Use voice commands and have the AI respond with speech.
+      image:/assets/images/header/landing-page-header-3.svg
+      img-desc:"Wrap AI Functions, your database, and OpenAI's APIs inside a private ChatGPT"
+      width:100%
+      height:auto
+      class:landing-page-image
+   return:x:-

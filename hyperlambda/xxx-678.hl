@@ -1,0 +1,55 @@
+
+// Counts items from your menu_items table in your cms database
+.arguments
+
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+
+   // Offset into the dataset of where to start retrieving records
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   menu_items.id.eq:long
+   menu_items.menu_id.eq:long
+   menu_items.title.like:string
+   menu_items.title.eq:string
+   menu_items.url.like:string
+   menu_items.url.eq:string
+   menu_items.position.eq:long
+   menu_id.name.eq:string
+   menu_id.name.like:string
+
+// Meta data description for endpoint
+.description:Counts items from your menu_items table in your cms database
+
+// Type of endpoint
+.type:crud-count
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:menu_items
+         join:menus
+            as:menu_id
+            type:left
+            on
+               and
+                  menu_items.menu_id:menu_id.id
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

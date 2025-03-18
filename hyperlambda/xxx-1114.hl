@@ -1,0 +1,12 @@
+
+// How to use Hyperlambda's [slots.delete]
+Deletes a previously created dynamic slot. The following example _will throw an exception_.
+```
+slots.create:foo
+   return-value:int:57
+slots.delete:foo
+
+// Throws exception, since [foo] no longer exists.
+slots.get:foo
+```
+#

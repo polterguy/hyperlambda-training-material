@@ -1,0 +1,100 @@
+
+// Counts items from your Drivers table in your logistics database.
+.arguments
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   Drivers.DriverID.mt:long
+   Drivers.DriverID.lt:long
+   Drivers.DriverID.mteq:long
+   Drivers.DriverID.lteq:long
+   Drivers.DriverID.neq:long
+   Drivers.DriverID.eq:long
+   Drivers.CarrierID.mt:long
+   Drivers.CarrierID.lt:long
+   Drivers.CarrierID.mteq:long
+   Drivers.CarrierID.lteq:long
+   Drivers.CarrierID.neq:long
+   Drivers.CarrierID.eq:long
+   Drivers.Name.like:string
+   Drivers.Name.mt:string
+   Drivers.Name.lt:string
+   Drivers.Name.mteq:string
+   Drivers.Name.lteq:string
+   Drivers.Name.neq:string
+   Drivers.Name.eq:string
+   Drivers.LicenseNumber.like:string
+   Drivers.LicenseNumber.mt:string
+   Drivers.LicenseNumber.lt:string
+   Drivers.LicenseNumber.mteq:string
+   Drivers.LicenseNumber.lteq:string
+   Drivers.LicenseNumber.neq:string
+   Drivers.LicenseNumber.eq:string
+   Drivers.Phone.like:string
+   Drivers.Phone.mt:string
+   Drivers.Phone.lt:string
+   Drivers.Phone.mteq:string
+   Drivers.Phone.lteq:string
+   Drivers.Phone.neq:string
+   Drivers.Phone.eq:string
+   CarrierID.Name.eq:string
+   CarrierID.Name.like:string
+
+// Meta data description for endpoint
+.description:Counts items from your Drivers table in your logistics database
+
+// Type of endpoint
+.type:crud-count
+
+// Adding Cache-Control HTTP header.
+response.headers.set
+   Cache-Control:public, max-age=50
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|logistics]
+   database-type:sqlite
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Drivers
+         join:Carriers
+            as:CarrierID
+            type:left
+            on
+               and
+                  Drivers.CarrierID:CarrierID.CarrierID
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

@@ -1,0 +1,60 @@
+
+// Create one record in your users table in your cms database
+.arguments
+
+   // password column value
+   password:string
+
+   // email column value
+   email:string
+
+   // created_at column value
+   created_at:date
+
+// Meta data description for endpoint
+.description:Create one record in your users table in your cms database
+
+// Type of endpoint
+.type:crud-create
+
+// Columns with custom handling as we generate a frontend
+.handling
+   email:email
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Making sure we retrieve lock value for column.
+auth.ticket.get
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:users
+      return-id:bool:true
+      values
+
+         // Table is locked on the following field.
+         username:x:@auth.ticket.get
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.users.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

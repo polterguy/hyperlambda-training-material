@@ -1,0 +1,13 @@
+
+// How to use Hyperlambda's [strings.regex-replace]
+Replaces matches of the given regular expression with some static sequence of characters.
+```
+
+// Results in "FOO bar hansen"
+strings.regex-replace:foo bar hansen
+   .:fo+
+   .:FOO
+```
+The first argument is what regular expression to match, the second argument is what to replace
+all matches with.
+#

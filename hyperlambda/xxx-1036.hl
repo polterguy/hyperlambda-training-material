@@ -1,0 +1,123 @@
+
+// Count unique and distinct items from your Vehicles table in your logistics database
+.arguments
+
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   Vehicles.VehicleID.mt:long
+   Vehicles.VehicleID.lt:long
+   Vehicles.VehicleID.mteq:long
+   Vehicles.VehicleID.lteq:long
+   Vehicles.VehicleID.neq:long
+   Vehicles.VehicleID.eq:long
+   Vehicles.CarrierID.mt:long
+   Vehicles.CarrierID.lt:long
+   Vehicles.CarrierID.mteq:long
+   Vehicles.CarrierID.lteq:long
+   Vehicles.CarrierID.neq:long
+   Vehicles.CarrierID.eq:long
+   Vehicles.LicensePlate.like:string
+   Vehicles.LicensePlate.mt:string
+   Vehicles.LicensePlate.lt:string
+   Vehicles.LicensePlate.mteq:string
+   Vehicles.LicensePlate.lteq:string
+   Vehicles.LicensePlate.neq:string
+   Vehicles.LicensePlate.eq:string
+   Vehicles.Type.like:string
+   Vehicles.Type.mt:string
+   Vehicles.Type.lt:string
+   Vehicles.Type.mteq:string
+   Vehicles.Type.lteq:string
+   Vehicles.Type.neq:string
+   Vehicles.Type.eq:string
+   Vehicles.Capacity.mt:double
+   Vehicles.Capacity.lt:double
+   Vehicles.Capacity.mteq:double
+   Vehicles.Capacity.lteq:double
+   Vehicles.Capacity.neq:double
+   Vehicles.Capacity.eq:double
+   CarrierID.Name.eq:string
+   CarrierID.Name.like:string
+
+// Meta data description for endpoint
+.description:Count unique and distinct items from your Vehicles table in your logistics database
+
+// Type of endpoint
+.type:crud-count-distinct
+
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
+
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:Vehicles.VehicleID
+   .:Vehicles.CarrierID
+   .:Vehicles.LicensePlate
+   .:Vehicles.Type
+   .:Vehicles.Capacity
+   .:CarrierID.Name
+
+// Adding Cache-Control HTTP header.
+response.headers.set
+   Cache-Control:public, max-age=50
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|logistics]
+   database-type:sqlite
+
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:"count(distinct "
+         get-value:x:@.arguments/*/distinct_column
+         .:)
+
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Vehicles
+         join:Carriers
+            as:CarrierID
+            type:left
+            on
+               and
+                  Vehicles.CarrierID:CarrierID.CarrierID
+      columns
+         distinct_functor
+            as:count
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

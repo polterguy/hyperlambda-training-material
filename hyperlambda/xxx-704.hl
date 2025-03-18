@@ -1,0 +1,73 @@
+
+// Read or list records from your posts table in your cms database
+.arguments
+
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+
+   // Offset into the dataset of where to start retrieving records
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   posts.id.eq:long
+   posts.title.like:string
+   posts.title.eq:string
+   posts.content.like:string
+   posts.content.eq:string
+   posts.user_id.eq:long
+   posts.category_id.eq:long
+   posts.created_at.eq:date
+   user_id.username.eq:string
+   user_id.username.like:string
+   category_id.name.eq:string
+   category_id.name.like:string
+
+// Meta data description for endpoint
+.description:Read or list records from your posts table in your cms database
+
+// Type of endpoint
+.type:crud-read
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:posts
+         join:users
+            as:user_id
+            type:left
+            on
+               and
+                  posts.user_id:user_id.id
+         join:categories
+            as:category_id
+            type:left
+            on
+               and
+                  posts.category_id:category_id.id
+      columns
+         posts.id
+         posts.title
+         posts.content
+         posts.user_id
+         posts.category_id
+         posts.created_at
+         user_id.username
+            as:user_id.username
+         category_id.name
+            as:category_id.name
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

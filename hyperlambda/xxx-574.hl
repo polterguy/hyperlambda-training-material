@@ -1,0 +1,93 @@
+
+// Create one record in your Customer table in your chinook database.
+.arguments
+
+   // CustomerId column value
+   CustomerId:long
+
+   // FirstName column value
+   FirstName:string
+
+   // LastName column value
+   LastName:string
+
+   // Company column value
+   Company:string
+
+   // Address column value
+   Address:string
+
+   // City column value
+   City:string
+
+   // State column value
+   State:string
+
+   // Country column value
+   Country:string
+
+   // PostalCode column value
+   PostalCode:string
+
+   // Phone column value
+   Phone:string
+
+   // Fax column value
+   Fax:string
+
+   // Email column value
+   Email:string
+
+   // SupportRepId column value
+   SupportRepId:long
+
+// Meta data description for endpoint
+.description:Create one record in your Customer table in your chinook database
+
+// Type of endpoint
+.type:crud-create
+
+// Columns with custom handling as we generate a frontend
+.handling
+   Phone:phone
+   Email:email
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,service
+.foreign-keys
+   .
+      column:SupportRepId
+      table:Employee
+      foreign_column:EmployeeId
+      foreign_name:LastName
+      long:bool:true
+
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:Customer
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:chinook.customer.post
+      args
+      roles:enterprise,guest
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

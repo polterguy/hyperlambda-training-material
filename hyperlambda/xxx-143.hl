@@ -1,0 +1,11 @@
+
+// Create a Hyperlambda script to resize an image to a width of 550px and return the resized image URL.
+.resized
+   return:x:@.image
+   .resized
+   set-value:x:@.resized
+      strings.concat
+         .:/magic/modules/hub/resize-image?img=
+         get-value:x:@.image
+         .:&type=webp&width=550
+   return:x:@.resized

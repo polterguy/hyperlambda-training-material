@@ -1,0 +1,60 @@
+
+// Create one record in your post_tags table in your cms database
+.arguments
+
+   // post_id column value
+   post_id:long
+
+   // tag_id column value
+   tag_id:long
+
+// Meta data description for endpoint
+.description:Create one record in your post_tags table in your cms database
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+.foreign-keys
+   .
+      column:post_id
+      table:posts
+      foreign_column:id
+      foreign_name:title
+      long:bool:true
+   .
+      column:tag_id
+      table:tags
+      foreign_column:id
+      foreign_name:name
+      long:bool:true
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:post_tags
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.post_tags.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

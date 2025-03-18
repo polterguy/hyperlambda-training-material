@@ -1,0 +1,4 @@
+
+// How can I retrieve the request URL dynamically in Hyperlambda?
+request.url
+return:x:-

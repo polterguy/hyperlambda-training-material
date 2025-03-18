@@ -1,0 +1,7 @@
+
+// How to use Hyperlambda's [slots.vocabulary]
+Returns the names of all dynamically created slots to caller. Example can be
+found below.
+```
+slots.vocabulary
+```

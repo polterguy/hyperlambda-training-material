@@ -1,0 +1,10 @@
+
+// Create a Hyperlambda script to ensure a specified 'arg' is given. Validate the mandatory field.
+.arguments
+   arg
+      type:string
+      mandatory:bool:true
+.icon:shield
+
+// Invoking validator.
+validators.mandatory:x:@.arguments/*/arg

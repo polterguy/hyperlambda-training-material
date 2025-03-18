@@ -1,0 +1,70 @@
+
+// Create one record in your Customer table in your saas database
+.arguments
+
+   // CompanyName column value
+   CompanyName:string
+
+   // ContactName column value
+   ContactName:string
+
+   // Email column value
+   Email:string
+
+   // Phone column value
+   Phone:string
+
+   // Address column value
+   Address:string
+
+   // City column value
+   City:string
+
+   // State column value
+   State:string
+
+   // Country column value
+   Country:string
+
+   // CreatedAt column value
+   CreatedAt:date
+
+// Meta data description for endpoint
+.description:Create one record in your Customer table in your saas database
+
+// Type of endpoint
+.type:crud-create
+
+// Columns with custom handling as we generate a frontend
+.handling
+   Email:email
+   Phone:phone
+
+// Opening up database connection.
+data.connect:[generic|saas]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:Customer
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:saas.Customer.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

@@ -1,0 +1,63 @@
+
+// Create one record in your InvoiceLine table in your chinook database.
+.arguments
+
+   // InvoiceLineId column value
+   InvoiceLineId:long
+
+   // InvoiceId column value
+   InvoiceId:long
+
+   // TrackId column value
+   TrackId:long
+
+   // UnitPrice column value
+   UnitPrice:decimal
+
+   // Quantity column value
+   Quantity:long
+
+// Meta data description for endpoint
+.description:Create one record in your InvoiceLine table in your chinook database
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+.foreign-keys
+   .
+      column:InvoiceId
+      table:Invoice
+      foreign_column:InvoiceId
+      foreign_name:BillingAddress
+      long:bool:true
+   .
+      column:TrackId
+      table:Track
+      foreign_column:TrackId
+      foreign_name:Name
+      long:bool:true
+
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:InvoiceLine
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

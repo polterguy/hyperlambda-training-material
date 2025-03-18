@@ -1,0 +1,14 @@
+
+// Create a Hyperlambda script that connects to a database, executes a SQL query, and returns the result of the invocation to the caller.
+.arguments
+
+// Connecting to database.
+data.connect:{database}
+   database-type:{database-type}
+
+   // Executing [data.select] slot with our SQL.
+   data.select:{sql}
+      database-type:{database-type}
+
+   // Returning a result of above invocation to caller.
+   return-nodes:x:@data.select/*

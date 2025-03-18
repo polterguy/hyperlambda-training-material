@@ -1,0 +1,44 @@
+
+// Create inserting one record into your accounts table
+.arguments
+
+   // status column value. Optional, defaults to "Lead". Can be "Lead", "Client" or "Partner".
+   status:string
+
+   // name column value
+   name:string
+
+   // website column value
+   website:string
+
+   // description column value
+   description:string
+
+// Meta data description for endpoint
+.description:Create inserting one record into your accounts table
+
+// Type of endpoint
+.type:crud-create
+
+// Opening up database connection.
+data.connect:[generic|robo-crm]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:accounts
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

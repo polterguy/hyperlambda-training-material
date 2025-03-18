@@ -1,0 +1,16 @@
+
+// Write a Hyperlambda script to return the OpenAI API key to the caller.
+.arguments
+.description:Returns your OpenAI API key
+.type:internal
+
+// Making sure user has access to invoked endpoint.
+auth.ticket.verify:root
+
+// Reading OpenAI API key from configuration.
+config.get:"magic:openai:key"
+
+// Returning key to caller.
+unwrap:x:+/*
+return
+   result:x:@config.get

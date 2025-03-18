@@ -1,0 +1,22 @@
+
+// Create a Hyperlambda script to set up AI Workflows with a call-to-action component, including description, image, and other attributes.
+.oninit
+   set-value:x:@.description
+      .:Create AI Workflows and connect these to your database or API in seconds. No-Code and Low-Code AI.
+   set-value:x:@.image
+      .:/assets/images/open-graph/ai-workflows-2.png
+   set-value:x:@.image-height
+      .:630
+.call-to-action
+   io.file.mixin:/etc/www/.components/call-to-action.html
+      title:No-Code AI Workflows
+      sub-title:AI Workflows
+      description:Automate 55% of your workload with AI Workflows, and outsource the repetetive parts of your job to the AI. No coding required.
+      image:/assets/images/header/ai-workflows.svg
+      img-desc:No-Code Automation based upon AI Workflows
+      width:100%
+      height:auto
+      class:landing-page-image
+      sub-cta-link:/blog/buy-chatgpt-4-website-chatbot-for-29-dollars
+      sub-cta:Get an AI chatbot for $29 per month 🥳
+   return:x:-

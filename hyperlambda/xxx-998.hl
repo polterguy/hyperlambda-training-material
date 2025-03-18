@@ -1,0 +1,99 @@
+
+// Counts items from your ShipmentDetails table in your logistics database
+.arguments
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   ShipmentDetails.ShipmentDetailID.mt:long
+   ShipmentDetails.ShipmentDetailID.lt:long
+   ShipmentDetails.ShipmentDetailID.mteq:long
+   ShipmentDetails.ShipmentDetailID.lteq:long
+   ShipmentDetails.ShipmentDetailID.neq:long
+   ShipmentDetails.ShipmentDetailID.eq:long
+   ShipmentDetails.ShipmentID.mt:long
+   ShipmentDetails.ShipmentID.lt:long
+   ShipmentDetails.ShipmentID.mteq:long
+   ShipmentDetails.ShipmentID.lteq:long
+   ShipmentDetails.ShipmentID.neq:long
+   ShipmentDetails.ShipmentID.eq:long
+   ShipmentDetails.ProductID.mt:long
+   ShipmentDetails.ProductID.lt:long
+   ShipmentDetails.ProductID.mteq:long
+   ShipmentDetails.ProductID.lteq:long
+   ShipmentDetails.ProductID.neq:long
+   ShipmentDetails.ProductID.eq:long
+   ShipmentDetails.Quantity.mt:long
+   ShipmentDetails.Quantity.lt:long
+   ShipmentDetails.Quantity.mteq:long
+   ShipmentDetails.Quantity.lteq:long
+   ShipmentDetails.Quantity.neq:long
+   ShipmentDetails.Quantity.eq:long
+   ShipmentID.ShipmentDate.eq:string
+   ShipmentID.ShipmentDate.like:string
+   ProductID.Name.eq:string
+   ProductID.Name.like:string
+
+// Meta data description for endpoint
+.description:Counts items from your ShipmentDetails table in your logistics database
+
+// Type of endpoint
+.type:crud-count
+
+// Adding Cache-Control HTTP header.
+response.headers.set
+   Cache-Control:public, max-age=50
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|logistics]
+   database-type:sqlite
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:ShipmentDetails
+         join:Shipments
+            as:ShipmentID
+            type:left
+            on
+               and
+                  ShipmentDetails.ShipmentID:ShipmentID.ShipmentID
+         join:Products
+            as:ProductID
+            type:left
+            on
+               and
+                  ShipmentDetails.ProductID:ProductID.ProductID
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

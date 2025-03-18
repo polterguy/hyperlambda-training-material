@@ -1,0 +1,13 @@
+
+// Create a Hyperlambda script that verifies a JWT token and returns success if the token is valid, ensuring the user is authorized.
+.description:Will verify JWT token and return success if token is valid
+.type:public
+
+// Ensures user is authorized to access endpoint.
+try
+   auth.ticket.verify
+   return
+      result:success
+.catch
+   return
+      result:failure

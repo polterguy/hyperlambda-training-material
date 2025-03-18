@@ -1,0 +1,21 @@
+
+// Create a Hyperlambda script to display the next 10 open activities as a table using data from a database.
+.name:Open activities
+.description:The next 10 open activities
+.enabled:bool:true
+.type:table
+.lambda
+   data.connect:robo-crm
+      data.read
+         table:activities
+         columns
+            type
+            username
+            due
+         where
+            and
+               closed.eq
+               due.neq
+         order:due
+         limit:10
+      return-nodes:x:@data.read/*

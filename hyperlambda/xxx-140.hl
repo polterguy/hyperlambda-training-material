@@ -1,0 +1,50 @@
+
+// Create a Hyperlambda script to set cookies for affiliate and chatbot lead generation based on query parameters.
+.oninit
+
+   /*
+    * Checking if affiliate query parameter exists, at which point
+    * we create a persistent cookie for 30 days associating the client
+    * with the affiliate.
+    * 
+    * First checking for Hub purchase cookie.
+    */
+   request.url
+   if
+      exists:x:@request.url/*/r
+      .lambda
+
+         // Affiliate query parameter exists.
+         math.add
+            date.now
+            time
+               days:30
+         response.cookies.set:ref
+            value:x:@request.url/*/r
+            expires:x:@math.add
+            http-only:false
+            secure:true
+            domain:.ainiro.io
+            path:/
+
+   /*
+    * Then checking for chatbot lead generation cookie.
+    * 
+    * This is what routes chatbot creation to partner's cloudlet.
+    */
+   if
+      exists:x:@request.url/*/p
+      .lambda
+
+         // Partner query parameter exists.
+         math.add
+            date.now
+            time
+               days:30
+         response.cookies.set:cloudlet
+            value:x:@request.url/*/p
+            expires:x:@math.add
+            http-only:false
+            secure:true
+            domain:.ainiro.io
+            path:/

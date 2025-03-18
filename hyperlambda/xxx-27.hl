@@ -1,0 +1,18 @@
+
+// Create a Hyperlambda script to join specified 'values' into a single string with an optional 'separator'. Return the joined result.
+.arguments
+   values
+      type:array
+      mandatory:bool:true
+   separator
+      type:string
+      mandatory:bool:false
+.icon:settings
+
+// Joining strings.
+strings.join:x:@.arguments/*/values/*
+   get-value:x:@.arguments/*/separator
+
+// Returning result to caller.
+yield
+   result:x:@strings.join

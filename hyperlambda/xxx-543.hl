@@ -1,0 +1,4 @@
+
+// Hyperlambda file containing version and module name information for sqlite-chinook.
+version:v1.0.0
+module_name:sqlite-chinook

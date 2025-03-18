@@ -1,0 +1,24 @@
+
+// Create a Hyperlambda script to set up a call-to-action component for a 7-day free trial of Customer Service AI, including description, image, and other attributes.
+.oninit
+   set-value:x:@.image
+      .:/assets/images/ai-chatbot-facts-ainiro.jpg
+   set-value:x:@.description
+      .:Using AI chatbots for Customer Service can save you 30% of your costs, while increasing quality by 18%.
+   set-value:x:@.image
+      .:/assets/images/open-graph/ai-chatbots-og-image.png
+   set-value:x:@.image-height
+      .:630
+.call-to-action
+   io.file.mixin:/etc/www/.components/call-to-action.html
+      title:7-Day Free Trial
+      sub-title:Customer Service AI
+      description:Using AI chatbots for customer service can reduce costs by 30% while increasing quality by 18%
+      image:/assets/images/header/ai-chatbots.svg
+      img-desc:Using AI chatbots for customer service is an obvious win
+      width:100%
+      height:auto
+      class:landing-page-image
+      sub-cta-link:/blog/buy-chatgpt-4-website-chatbot-for-29-dollars
+      sub-cta:Get an AI chatbot for $29 per month 🥳
+   return:x:-

@@ -1,0 +1,10 @@
+
+// Create a Hyperlambda script to demonstrate implicit conversion of a non-null object to boolean.
+.result
+.foo:whatever
+if:x:-
+   set-value:x:@.result
+      .:Yup!
+else
+   set-value:x:@.result
+      .:Nope!

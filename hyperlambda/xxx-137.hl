@@ -1,0 +1,20 @@
+
+// Create a Hyperlambda script to set up a call-to-action component for a 404 error page, including description, image, and other attributes.
+.oninit
+   set-value:x:@.image
+      .:/assets/images/ai-chatbot-facts-ainiro.jpg
+   set-value:x:@.description
+      .:A Custom ChatGPT Chatbot from AINIRO.IO can increase sales by at least 67% and decrease support costs by at least 30%, while making 69% of your customers more happy.
+.call-to-action
+   io.file.mixin:/etc/www/.components/call-to-action.html
+      title:Oops
+      sub-title:URL not found
+      description:"We'll redirect you ASAP!"
+      cta:/
+      cta-text:Main page
+      image:/assets/images/header/404.webp
+      img-desc:Page not found image
+      width:500
+      height:500
+      class:
+   return:x:-

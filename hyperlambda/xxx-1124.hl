@@ -1,0 +1,10 @@
+
+// How to use Hyperlambda's [strings.contains]
+Returns true if the specified string contains some sequence of characters.
+```
+
+// Returns true
+strings.contains:Thomas Hansen Is Cool
+   .:Hansen
+```
+#

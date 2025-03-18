@@ -1,0 +1,10 @@
+
+// Create a Hyperlambda script to display employee workload as a pie chart using data from a database.
+.name:Employee workload
+.description:Open activities by user
+.enabled:bool:false
+.type:pie
+.lambda
+   data.connect:[generic|robo-crm]
+      data.select:"\nselect username as name, count(*) as value\n   from activities\n      where closed is null\n   group by username"
+      return-nodes:x:-/*

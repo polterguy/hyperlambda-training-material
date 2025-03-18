@@ -1,0 +1,125 @@
+
+// Read or list records from your Users table in your logistics database
+.arguments
+
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   limit:long
+
+   // Offset into the dataset of where to start retrieving records
+   offset:long
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+   order:string
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   Users.UserID.mt:long
+   Users.UserID.lt:long
+   Users.UserID.mteq:long
+   Users.UserID.lteq:long
+   Users.UserID.neq:long
+   Users.UserID.eq:long
+   Users.Username.like:string
+   Users.Username.mt:string
+   Users.Username.lt:string
+   Users.Username.mteq:string
+   Users.Username.lteq:string
+   Users.Username.neq:string
+   Users.Username.eq:string
+   Users.Password.like:string
+   Users.Password.mt:string
+   Users.Password.lt:string
+   Users.Password.mteq:string
+   Users.Password.lteq:string
+   Users.Password.neq:string
+   Users.Password.eq:string
+   Users.Email.like:string
+   Users.Email.mt:string
+   Users.Email.lt:string
+   Users.Email.mteq:string
+   Users.Email.lteq:string
+   Users.Email.neq:string
+   Users.Email.eq:string
+   Users.Role.like:string
+   Users.Role.mt:string
+   Users.Role.lt:string
+   Users.Role.mteq:string
+   Users.Role.lteq:string
+   Users.Role.neq:string
+   Users.Role.eq:string
+
+// Meta data description for endpoint
+.description:Read or list records from your Users table in your logistics database
+
+// Type of endpoint
+.type:crud-read
+
+// Columns with custom handling as frontend is generated.
+.handling
+   Users.Email:email
+
+// Adding Cache-Control HTTP header.
+response.headers.set
+   Cache-Control:public, max-age=50
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|logistics]
+   database-type:sqlite
+
+   // Parametrising our read invocation with ordering arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+
+   // Parametrising our read invocation with paging arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Users
+      columns
+         Users.UserID
+         Users.Username
+         Users.Password
+         Users.Email
+         Users.Role
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

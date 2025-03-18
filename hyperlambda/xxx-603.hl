@@ -1,0 +1,156 @@
+
+// Read or list records from your Invoice table in your chinook database.
+.arguments
+
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   limit:long
+
+   // Offset into the dataset of where to start retrieving records
+   offset:long
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+   order:string
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   Invoice.InvoiceId.mt:long
+   Invoice.InvoiceId.lt:long
+   Invoice.InvoiceId.mteq:long
+   Invoice.InvoiceId.lteq:long
+   Invoice.InvoiceId.neq:long
+   Invoice.InvoiceId.eq:long
+   Invoice.CustomerId.mt:long
+   Invoice.CustomerId.lt:long
+   Invoice.CustomerId.mteq:long
+   Invoice.CustomerId.lteq:long
+   Invoice.CustomerId.neq:long
+   Invoice.CustomerId.eq:long
+   Invoice.InvoiceDate.mt:date
+   Invoice.InvoiceDate.lt:date
+   Invoice.InvoiceDate.mteq:date
+   Invoice.InvoiceDate.lteq:date
+   Invoice.InvoiceDate.neq:date
+   Invoice.InvoiceDate.eq:date
+   Invoice.BillingAddress.like:string
+   Invoice.BillingAddress.mt:string
+   Invoice.BillingAddress.lt:string
+   Invoice.BillingAddress.mteq:string
+   Invoice.BillingAddress.lteq:string
+   Invoice.BillingAddress.neq:string
+   Invoice.BillingAddress.eq:string
+   Invoice.BillingCity.like:string
+   Invoice.BillingCity.mt:string
+   Invoice.BillingCity.lt:string
+   Invoice.BillingCity.mteq:string
+   Invoice.BillingCity.lteq:string
+   Invoice.BillingCity.neq:string
+   Invoice.BillingCity.eq:string
+   Invoice.BillingState.like:string
+   Invoice.BillingState.mt:string
+   Invoice.BillingState.lt:string
+   Invoice.BillingState.mteq:string
+   Invoice.BillingState.lteq:string
+   Invoice.BillingState.neq:string
+   Invoice.BillingState.eq:string
+   Invoice.BillingCountry.like:string
+   Invoice.BillingCountry.mt:string
+   Invoice.BillingCountry.lt:string
+   Invoice.BillingCountry.mteq:string
+   Invoice.BillingCountry.lteq:string
+   Invoice.BillingCountry.neq:string
+   Invoice.BillingCountry.eq:string
+   Invoice.BillingPostalCode.like:string
+   Invoice.BillingPostalCode.mt:string
+   Invoice.BillingPostalCode.lt:string
+   Invoice.BillingPostalCode.mteq:string
+   Invoice.BillingPostalCode.lteq:string
+   Invoice.BillingPostalCode.neq:string
+   Invoice.BillingPostalCode.eq:string
+   Invoice.Total.mt:decimal
+   Invoice.Total.lt:decimal
+   Invoice.Total.mteq:decimal
+   Invoice.Total.lteq:decimal
+   Invoice.Total.neq:decimal
+   Invoice.Total.eq:decimal
+   CustomerId.FirstName.eq:string
+   CustomerId.FirstName.like:string
+
+// Meta data description for endpoint
+.description:Read or list records from your Invoice table in your chinook database
+
+// Type of endpoint
+.type:crud-read
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our read invocation with ordering arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+
+   // Parametrising our read invocation with paging arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Invoice
+         join:Customer
+            as:CustomerId
+            type:left
+            on
+               and
+                  Invoice.CustomerId:CustomerId.CustomerId
+      columns
+         Invoice.InvoiceId
+         Invoice.CustomerId
+         Invoice.InvoiceDate
+         Invoice.BillingAddress
+         Invoice.BillingCity
+         Invoice.BillingState
+         Invoice.BillingCountry
+         Invoice.BillingPostalCode
+         Invoice.Total
+         CustomerId.FirstName
+            as:CustomerId.FirstName
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

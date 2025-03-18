@@ -1,0 +1,123 @@
+
+// Count unique and distinct items from your OrderDetails table in your logistics database.
+.arguments
+
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   OrderDetails.OrderDetailID.mt:long
+   OrderDetails.OrderDetailID.lt:long
+   OrderDetails.OrderDetailID.mteq:long
+   OrderDetails.OrderDetailID.lteq:long
+   OrderDetails.OrderDetailID.neq:long
+   OrderDetails.OrderDetailID.eq:long
+   OrderDetails.OrderID.mt:long
+   OrderDetails.OrderID.lt:long
+   OrderDetails.OrderID.mteq:long
+   OrderDetails.OrderID.lteq:long
+   OrderDetails.OrderID.neq:long
+   OrderDetails.OrderID.eq:long
+   OrderDetails.ProductID.mt:long
+   OrderDetails.ProductID.lt:long
+   OrderDetails.ProductID.mteq:long
+   OrderDetails.ProductID.lteq:long
+   OrderDetails.ProductID.neq:long
+   OrderDetails.ProductID.eq:long
+   OrderDetails.Quantity.mt:long
+   OrderDetails.Quantity.lt:long
+   OrderDetails.Quantity.mteq:long
+   OrderDetails.Quantity.lteq:long
+   OrderDetails.Quantity.neq:long
+   OrderDetails.Quantity.eq:long
+   OrderID.OrderDate.eq:string
+   OrderID.OrderDate.like:string
+   ProductID.Name.eq:string
+   ProductID.Name.like:string
+
+// Meta data description for endpoint
+.description:Count unique and distinct items from your OrderDetails table in your logistics database
+
+// Type of endpoint
+.type:crud-count-distinct
+
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
+
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:OrderDetails.OrderDetailID
+   .:OrderDetails.OrderID
+   .:OrderDetails.ProductID
+   .:OrderDetails.Quantity
+   .:OrderID.OrderDate
+   .:ProductID.Name
+
+// Adding Cache-Control HTTP header.
+response.headers.set
+   Cache-Control:public, max-age=50
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|logistics]
+   database-type:sqlite
+
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:"count(distinct "
+         get-value:x:@.arguments/*/distinct_column
+         .:)
+
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:OrderDetails
+         join:Orders
+            as:OrderID
+            type:left
+            on
+               and
+                  OrderDetails.OrderID:OrderID.OrderID
+         join:Products
+            as:ProductID
+            type:left
+            on
+               and
+                  OrderDetails.ProductID:ProductID.ProductID
+      columns
+         distinct_functor
+            as:count
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

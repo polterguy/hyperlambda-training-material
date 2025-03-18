@@ -1,0 +1,130 @@
+
+// Create a function that counts unique and distinct items from the Payment table in the saas database based on specified conditions.
+.arguments
+
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   Payment.PaymentId.mt:long
+   Payment.PaymentId.lt:long
+   Payment.PaymentId.mteq:long
+   Payment.PaymentId.lteq:long
+   Payment.PaymentId.neq:long
+   Payment.PaymentId.eq:long
+   Payment.CustomerId.mt:long
+   Payment.CustomerId.lt:long
+   Payment.CustomerId.mteq:long
+   Payment.CustomerId.lteq:long
+   Payment.CustomerId.neq:long
+   Payment.CustomerId.eq:long
+   Payment.StripeSubscriptionId.like:string
+   Payment.StripeSubscriptionId.mt:string
+   Payment.StripeSubscriptionId.lt:string
+   Payment.StripeSubscriptionId.mteq:string
+   Payment.StripeSubscriptionId.lteq:string
+   Payment.StripeSubscriptionId.neq:string
+   Payment.StripeSubscriptionId.eq:string
+   Payment.Amount.mt:decimal
+   Payment.Amount.lt:decimal
+   Payment.Amount.mteq:decimal
+   Payment.Amount.lteq:decimal
+   Payment.Amount.neq:decimal
+   Payment.Amount.eq:decimal
+   Payment.PaymentDate.mt:date
+   Payment.PaymentDate.lt:date
+   Payment.PaymentDate.mteq:date
+   Payment.PaymentDate.lteq:date
+   Payment.PaymentDate.neq:date
+   Payment.PaymentDate.eq:date
+   Payment.PaymentMethod.like:string
+   Payment.PaymentMethod.mt:string
+   Payment.PaymentMethod.lt:string
+   Payment.PaymentMethod.mteq:string
+   Payment.PaymentMethod.lteq:string
+   Payment.PaymentMethod.neq:string
+   Payment.PaymentMethod.eq:string
+   CustomerId.CompanyName.eq:string
+   CustomerId.CompanyName.like:string
+
+// Meta data description for endpoint
+.description:Count unique and distinct items from your Payment table in your saas database
+
+// Type of endpoint
+.type:crud-count-distinct
+
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
+
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:Payment.PaymentId
+   .:Payment.CustomerId
+   .:Payment.StripeSubscriptionId
+   .:Payment.Amount
+   .:Payment.PaymentDate
+   .:Payment.PaymentMethod
+   .:CustomerId.CompanyName
+
+// Adding Cache-Control HTTP header.
+response.headers.set
+   Cache-Control:private, max-age=50
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:admin
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|saas]
+   database-type:sqlite
+
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:"count(distinct "
+         get-value:x:@.arguments/*/distinct_column
+         .:)
+
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Payment
+         join:Customer
+            as:CustomerId
+            type:left
+            on
+               and
+                  Payment.CustomerId:CustomerId.CustomerId
+      columns
+         distinct_functor
+            as:count
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

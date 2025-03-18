@@ -1,0 +1,7 @@
+
+// Create a Hyperlambda script to get the title with a default value of 'About AINIRO'.
+.get-title
+   get-first-value
+      get-value:x:@title
+      .:About AINIRO
+   return:x:-

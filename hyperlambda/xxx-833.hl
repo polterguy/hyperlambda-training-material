@@ -1,0 +1,60 @@
+
+// Create a function that creates one record in the Payment table in the saas database with specified column values.
+.arguments
+
+   // CustomerId column value
+   CustomerId:long
+
+   // StripeSubscriptionId column value
+   StripeSubscriptionId:string
+
+   // Amount column value
+   Amount:decimal
+
+   // PaymentDate column value
+   PaymentDate:date
+
+   // PaymentMethod column value
+   PaymentMethod:string
+
+// Meta data description for endpoint
+.description:Create one record in your Payment table in your saas database
+
+// Type of endpoint
+.type:crud-create
+.foreign-keys
+   .
+      column:CustomerId
+      table:Customer
+      foreign_column:CustomerId
+      foreign_name:CompanyName
+      long:bool:true
+
+// Opening up database connection.
+data.connect:[generic|saas]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:Payment
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:saas.Payment.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

@@ -1,0 +1,50 @@
+
+// Create a function that creates one record in the SubscriptionPlan table in the saas database with specified column values.
+.arguments
+
+   // PlanName column value
+   PlanName:string
+
+   // MonthlyPrice column value
+   MonthlyPrice:decimal
+
+   // MonthlyQuota column value
+   MonthlyQuota:long
+
+   // Features column value
+   Features:string
+
+// Meta data description for endpoint
+.description:Create one record in your SubscriptionPlan table in your saas database
+
+// Type of endpoint
+.type:crud-create
+
+// Opening up database connection.
+data.connect:[generic|saas]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:SubscriptionPlan
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:saas.SubscriptionPlan.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

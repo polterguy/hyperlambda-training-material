@@ -1,0 +1,147 @@
+
+// Returns unique and distinct values from your Tracking table in your logistics database
+.arguments
+
+   // Name of column to return unique and distinct values for. Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
+
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   limit:long
+
+   // Offset into the dataset of where to start retrieving records
+   offset:long
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+   order:string
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   Tracking.TrackingID.mt:long
+   Tracking.TrackingID.lt:long
+   Tracking.TrackingID.mteq:long
+   Tracking.TrackingID.lteq:long
+   Tracking.TrackingID.neq:long
+   Tracking.TrackingID.eq:long
+   Tracking.ShipmentID.mt:long
+   Tracking.ShipmentID.lt:long
+   Tracking.ShipmentID.mteq:long
+   Tracking.ShipmentID.lteq:long
+   Tracking.ShipmentID.neq:long
+   Tracking.ShipmentID.eq:long
+   Tracking.Location.like:string
+   Tracking.Location.mt:string
+   Tracking.Location.lt:string
+   Tracking.Location.mteq:string
+   Tracking.Location.lteq:string
+   Tracking.Location.neq:string
+   Tracking.Location.eq:string
+   Tracking.Timestamp.like:string
+   Tracking.Timestamp.mt:string
+   Tracking.Timestamp.lt:string
+   Tracking.Timestamp.mteq:string
+   Tracking.Timestamp.lteq:string
+   Tracking.Timestamp.neq:string
+   Tracking.Timestamp.eq:string
+   Tracking.Status.like:string
+   Tracking.Status.mt:string
+   Tracking.Status.lt:string
+   Tracking.Status.mteq:string
+   Tracking.Status.lteq:string
+   Tracking.Status.neq:string
+   Tracking.Status.eq:string
+   ShipmentID.ShipmentDate.eq:string
+   ShipmentID.ShipmentDate.like:string
+
+// Meta data description for endpoint
+.description:Returns unique and distinct values from your Tracking table in your logistics database
+
+// Type of endpoint
+.type:crud-distinct
+
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
+
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:Tracking.TrackingID
+   .:Tracking.ShipmentID
+   .:Tracking.Location
+   .:Tracking.Timestamp
+   .:Tracking.Status
+   .:ShipmentID.ShipmentDate
+
+// Adding Cache-Control HTTP header.
+response.headers.set
+   Cache-Control:public, max-age=50
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|logistics]
+   database-type:sqlite
+
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:distinct(
+         get-value:x:@.arguments/*/distinct_column
+         .:)
+
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+
+   // Adding [limit] and [offset] arguments
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Tracking
+         join:Shipments
+            as:ShipmentID
+            type:left
+            on
+               and
+                  Tracking.ShipmentID:ShipmentID.ShipmentID
+      columns
+         distinct_functor
+            as:.
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

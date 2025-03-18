@@ -1,24 +1,28 @@
 
-// Create one record in your categories table in your cms database
+// CRUD endpoint that creates one record in your Categories table in your northwind database
 .arguments
 
-   // name column value
-   name:string
+   // CategoryName column value
+   CategoryName:string
 
-   // description column value
-   description:string
+   // Description column value
+   Description:string
+
+   // Picture column value
+   Picture:string
 
 // Meta data description for endpoint
-.description:Create one record in your categories table in your cms database
+.description:Create one record in your Categories table in your northwind database
 
 // Type of endpoint
 .type:crud-create
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:enterprise,root
+// Columns with custom handling as we generate a frontend
+.handling
+   Picture:image
 
 // Opening up database connection.
-data.connect:[generic|cms]
+data.connect:[generic|northwind]
    database-type:sqlite
 
    // Parametrising our create invocation.
@@ -28,22 +32,12 @@ data.connect:[generic|cms]
    // Creating our record.
    data.create
       database-type:sqlite
-      table:categories
+      table:Categories
       return-id:bool:true
       values
 
    // Returning the correct status code.
    response.status.set:201
-
-   // Publishing socket message.
-   add:x:./*/sockets.signal/*/args
-      get-nodes:x:@.arguments/*
-   add:x:./*/sockets.signal
-      get-nodes:x:@auth.ticket.verify
-   set-name:x:./*/sockets.signal/*/auth.ticket.verify
-      .:roles
-   sockets.signal:cms.categories.post
-      args
 
    // Returning result of above invocation to caller.
    unwrap:x:+/*

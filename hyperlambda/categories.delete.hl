@@ -1,22 +1,19 @@
 
-// Delete one record from your categories table in your cms database
+// CRUD endpoint that deletes one record from your Categories table in your northwind database
 .arguments
 
    // Primary key of record to delete, mandatory argument
-   id:long
+   CategoryID:long
 
 // Meta data description for endpoint
-.description:Delete one record from your categories table in your cms database
+.description:Delete one record from your Categories table in your northwind database
 
 // Type of endpoint
 .type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/id
+validators.mandatory:x:@.arguments/*/CategoryID
 
 // Opening up our database connection.
-data.connect:[generic|cms]
+data.connect:[generic|northwind]
    database-type:sqlite
 
    // Parametrising our delete invocation.
@@ -26,19 +23,9 @@ data.connect:[generic|cms]
    // Deleting item from database.
    data.delete
       database-type:sqlite
-      table:categories
+      table:Categories
       where
          and
-
-   // Publishing socket message.
-   add:x:./*/sockets.signal/*/args
-      get-nodes:x:@.arguments/*
-   add:x:./*/sockets.signal
-      get-nodes:x:@auth.ticket.verify
-   set-name:x:./*/sockets.signal/*/auth.ticket.verify
-      .:roles
-   sockets.signal:cms.categories.delete
-      args
 
    // Returning result of above invocation to caller.
    unwrap:x:+/*

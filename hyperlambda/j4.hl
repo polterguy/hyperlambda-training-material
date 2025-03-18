@@ -1,0 +1,12 @@
+// Create a CRUD endpoint returning employees from DBCustomers database. My database is SQLite
+.arguments
+.type:crud-read
+
+data.connect:DBCustomers
+   database-type:sqlite
+
+   data.read
+      database-type:sqlite
+      table:employees
+   yield
+      records:x:@data.read/*

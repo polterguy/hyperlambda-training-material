@@ -1,0 +1,25 @@
+// Executing the Hyperlambda changes the node hierarchy
+
+// This Hyperlambda
+.no:int:0
+while
+   lt
+      get-value:x:@.no
+      .:int:20
+   .lambda
+
+      // Your lambda goes here.
+      log.info:Howdy from while
+
+      // Incrementing counter.
+      math.increment:x:@.no
+
+// Creates this result
+.no:int:20
+while:bool:false
+   lt:bool:false
+      get-value:int:20
+      .:int:20
+   .lambda
+      log.info:Howdy from while
+      math.increment:x:@.no

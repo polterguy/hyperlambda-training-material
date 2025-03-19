@@ -1,0 +1,19 @@
+// Hyperlambda [if] with not operator
+.is-weekend:bool:false
+.schedule
+if
+   not
+      eq:x:@.is-weekend
+         .:bool:true
+   .lambda
+      set-value:x:@.schedule
+         .:Work day
+
+/* JavaScript equivalent of Hyperlambda [if] with not operator
+const isWeekend = false;
+let schedule;
+
+if (!isWeekend) {
+  schedule = "Work day";
+}
+*/

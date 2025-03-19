@@ -1,0 +1,18 @@
+// Hyperlambda [if] with boolean value
+.is-logged-in:bool:true
+.welcome-message
+if
+   eq:x:@.is-logged-in
+      .:bool:true
+   .lambda
+      set-value:x:@.welcome-message
+         .:Welcome back!
+
+/* JavaScript equivalent of Hyperlambda [if] with boolean value
+const isLoggedIn = true;
+let welcomeMessage;
+
+if (isLoggedIn === true) {
+  welcomeMessage = "Welcome back!";
+}
+*/

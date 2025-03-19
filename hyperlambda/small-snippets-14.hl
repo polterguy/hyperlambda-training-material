@@ -1,0 +1,18 @@
+// Hyperlambda [if] checking for empty value
+.user-input:
+.validation-message
+if
+   eq:x:@.user-input
+      .:
+   .lambda
+      set-value:x:@.validation-message
+         .:Input required
+
+/* JavaScript equivalent of Hyperlambda [if] checking for empty value
+const userInput = "";
+let validationMessage;
+
+if (userInput === "") {
+  validationMessage = "Input required";
+}
+*/

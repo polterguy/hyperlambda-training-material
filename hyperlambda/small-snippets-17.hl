@@ -1,0 +1,23 @@
+// Hyperlambda [if] with or condition
+.payment:pending
+.shipment:ready
+.notification
+if
+   or
+      eq:x:@.payment
+         .:pending
+      eq:x:@.shipment
+         .:delayed
+   .lambda
+      set-value:x:@.notification
+         .:Action needed
+
+/* JavaScript equivalent of Hyperlambda [if] with or condition
+const payment = "pending";
+const shipment = "ready";
+let notification;
+
+if (payment === "pending" || shipment === "delayed") {
+  notification = "Action needed";
+}
+*/

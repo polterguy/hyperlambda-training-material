@@ -1,0 +1,38 @@
+// Hyperlambda Example 4: If-else if-else chain
+
+.score:75
+.grade
+if
+   mt:x:@.score
+      .:90
+   .lambda
+      set-value:x:@.grade
+         .:A
+else-if
+   mt:x:@.score
+      .:80
+   .lambda
+      set-value:x:@.grade
+         .:B
+else-if
+   mt:x:@.score
+      .:70
+   .lambda
+      set-value:x:@.grade
+         .:C
+else
+   set-value:x:@.grade
+      .:D
+
+/* Python Equivalent
+score = 75
+grade = None
+if score > 90:
+    grade = "A"
+elif score > 80:
+    grade = "B"
+elif score > 70:
+    grade = "C"
+else:
+    grade = "D"
+*/

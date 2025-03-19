@@ -2,8 +2,12 @@
 
 // This Hyperlambda
 .no:int:0
-math.increment:x:@.no
+set-value:x:@.no
+   math.modulo
+      .:int:20
+      .:int:7
 
 // Creates this result
-.no:int:1
-math.increment:x:@.no
+.no:int:6
+set-value:x:@.no
+   math.modulo:int:6

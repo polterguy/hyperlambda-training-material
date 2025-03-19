@@ -1,9 +1,9 @@
 // Executing the Hyperlambda changes the node hierarchy
 
 // This Hyperlambda
-.no:int:0
-math.increment:x:@.no
+math.add
+   .:int:20
+   .:int:7
 
 // Creates this result
-.no:int:1
-math.increment:x:@.no
+math.add:int:27

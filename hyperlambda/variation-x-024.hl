@@ -1,0 +1,15 @@
+// Use a whitelist to limit allowed functions
+
+.result
+whitelist
+   vocabulary
+      if
+      set-value
+      and
+   .lambda
+      if
+         and
+            get-value:x:@.result
+         .lambda
+            set-value:x:../*/.result
+               .:OK

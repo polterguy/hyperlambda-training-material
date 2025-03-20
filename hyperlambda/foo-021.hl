@@ -1,0 +1,9 @@
+/*
+ * Checks if `.foo` exists and sets a value if true.
+ */
+
+.foo:exists
+.result
+if:x:@.foo
+   set-value:x:@.result
+      .:Node exists!

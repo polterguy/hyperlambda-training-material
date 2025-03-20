@@ -1,0 +1,6 @@
+/*
+ * This Hyperlambda snippet retrieves all records from `table1`.
+ */
+
+data.read
+   table:table1

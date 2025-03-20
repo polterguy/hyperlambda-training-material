@@ -1,6 +1,9 @@
 
-// Read or list records from your Customers table in your northwind database
+// Returns unique and distinct values from your Customers table in your northwind database
 .arguments
+
+   // Name of column to return unique and distinct values for. Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
 
    // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
    limit:long
@@ -37,35 +40,53 @@
    Customers.Fax.eq:string
 
 // Meta data description for endpoint
-.description:Read or list records from your Customers table in your northwind database
+.description:Returns unique and distinct values from your Customers table in your northwind database
 
 // Type of endpoint
-.type:crud-read
+.type:crud-distinct
 
-// Columns with custom handling as frontend is generated.
-.handling
-   Customers.Phone:phone
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
+
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:Customers.CustomerID
+   .:Customers.CompanyName
+   .:Customers.ContactName
+   .:Customers.ContactTitle
+   .:Customers.Address
+   .:Customers.City
+   .:Customers.Region
+   .:Customers.PostalCode
+   .:Customers.Country
+   .:Customers.Phone
+   .:Customers.Fax
 
 // Opening up our database connection.
 data.connect:[generic|northwind]
    database-type:sqlite
 
-   // Parametrising our read invocation with ordering arguments if specified.
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:distinct(
+         get-value:x:@.arguments/*/distinct_column
+         .:)
+
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+
+   // Adding [limit] and [offset] arguments
    add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
       get-nodes:x:@.arguments/*/order
       get-nodes:x:@.arguments/*/direction
    remove-nodes:x:@.arguments/*/order
    remove-nodes:x:@.arguments/*/direction
-
-   // Parametrising our read invocation with paging arguments if specified.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/limit
-      get-nodes:x:@.arguments/*/offset
    remove-nodes:x:@.arguments/*/limit
    remove-nodes:x:@.arguments/*/offset
-
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*
+   add:x:+/*/where/*
       get-nodes:x:@.arguments/*
 
    // Reading data from database.
@@ -73,19 +94,10 @@ data.connect:[generic|northwind]
       database-type:sqlite
       table:Customers
       columns
-         Customers.CustomerID
-         Customers.CompanyName
-         Customers.ContactName
-         Customers.ContactTitle
-         Customers.Address
-         Customers.City
-         Customers.Region
-         Customers.PostalCode
-         Customers.Country
-         Customers.Phone
-         Customers.Fax
+         distinct_functor
+            as:.
       where
          and
 
    // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+   return-nodes:x:@data.read/*/*

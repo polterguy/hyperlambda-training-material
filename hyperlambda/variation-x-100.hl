@@ -1,0 +1,13 @@
+// Define a whitelist to limit allowed vocabulary
+
+.result
+add:x:-
+   whitelist
+      vocabulary
+
+         // These are the ONLY legal slots within our [.lambda] object
+         return
+         vocabulary
+      .lambda
+         vocabulary
+         return:x:-/*

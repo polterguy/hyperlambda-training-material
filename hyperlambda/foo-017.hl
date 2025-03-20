@@ -1,0 +1,10 @@
+/*
+ * This Hyperlambda snippet incorrectly groups by `role` without using an aggregate function.
+ */
+
+data.read
+   table:users
+   columns
+      role
+   group
+      role

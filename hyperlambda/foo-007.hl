@@ -1,0 +1,7 @@
+/*
+ * This Hyperlambda snippet retrieves only the first 10 records.
+ */
+
+data.read
+   table:table1
+   limit:10

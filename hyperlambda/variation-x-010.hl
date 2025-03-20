@@ -1,0 +1,8 @@
+// Execute an action if a condition is true
+
+.result
+if
+   .:bool:true
+   .lambda
+      set-value:x:../*/.result
+         .:OK

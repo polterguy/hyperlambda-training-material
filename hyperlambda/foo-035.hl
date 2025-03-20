@@ -1,0 +1,5 @@
+// Fetching the previously stored session message.
+
+cache.get:session.message
+
+// If the cache entry exists, this will return "Welcome back, user!".

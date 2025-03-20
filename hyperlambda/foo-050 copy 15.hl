@@ -1,0 +1,4 @@
+/**
+ * This example loads the content of "/data/report.txt" into a node.
+ */
+io.file.load:/data/report.txt

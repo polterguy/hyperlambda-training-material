@@ -1,5 +1,5 @@
 
-// Read or list records from your Customers table in your northwind database
+// Read or list records from your CustomerDemographics table in your northwind database
 .arguments
 
    // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
@@ -13,38 +13,16 @@
 
    // What direction to order, can be 'asc' or 'desc' implying ascending and descending
    direction:string
-   Customers.CustomerID.like:string
-   Customers.CustomerID.eq:string
-   Customers.CompanyName.like:string
-   Customers.CompanyName.eq:string
-   Customers.ContactName.like:string
-   Customers.ContactName.eq:string
-   Customers.ContactTitle.like:string
-   Customers.ContactTitle.eq:string
-   Customers.Address.like:string
-   Customers.Address.eq:string
-   Customers.City.like:string
-   Customers.City.eq:string
-   Customers.Region.like:string
-   Customers.Region.eq:string
-   Customers.PostalCode.like:string
-   Customers.PostalCode.eq:string
-   Customers.Country.like:string
-   Customers.Country.eq:string
-   Customers.Phone.like:string
-   Customers.Phone.eq:string
-   Customers.Fax.like:string
-   Customers.Fax.eq:string
+   CustomerDemographics.CustomerTypeID.like:string
+   CustomerDemographics.CustomerTypeID.eq:string
+   CustomerDemographics.CustomerDesc.like:string
+   CustomerDemographics.CustomerDesc.eq:string
 
 // Meta data description for endpoint
-.description:Read or list records from your Customers table in your northwind database
+.description:Read or list records from your CustomerDemographics table in your northwind database
 
 // Type of endpoint
 .type:crud-read
-
-// Columns with custom handling as frontend is generated.
-.handling
-   Customers.Phone:phone
 
 // Opening up our database connection.
 data.connect:[generic|northwind]
@@ -71,19 +49,10 @@ data.connect:[generic|northwind]
    // Reading data from database.
    data.read
       database-type:sqlite
-      table:Customers
+      table:CustomerDemographics
       columns
-         Customers.CustomerID
-         Customers.CompanyName
-         Customers.ContactName
-         Customers.ContactTitle
-         Customers.Address
-         Customers.City
-         Customers.Region
-         Customers.PostalCode
-         Customers.Country
-         Customers.Phone
-         Customers.Fax
+         CustomerDemographics.CustomerTypeID
+         CustomerDemographics.CustomerDesc
       where
          and
 

@@ -1,0 +1,6 @@
+/**
+ * This example tries to resize an image without specifying width or height.
+ * This should trigger an error.
+ */
+image.resize
+   file:/input.jpg

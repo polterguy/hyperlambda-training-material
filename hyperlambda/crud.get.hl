@@ -1,4 +1,4 @@
-// Returns items from your DATABASE_NAME and TABLE_NAME.
+// CRUD endpoint that selects items from your DATABASE_NAME and TABLE_NAME.
 data.connect:DATABASE_NAME
    database-type:sqlite
 

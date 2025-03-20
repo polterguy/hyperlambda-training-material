@@ -1,4 +1,4 @@
-// Deletes one item from your DATABASE_NAME database and TABLE_NAME table with the id of WHATEVER_ID_HERE.
+// CRUD Hyperlambda deleting one item from your DATABASE_NAME database and TABLE_NAME table with the id of WHATEVER_ID_HERE.
 data.connect:DATABASE_NAME
    database-type:sqlite
 

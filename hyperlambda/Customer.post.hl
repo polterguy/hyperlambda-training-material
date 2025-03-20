@@ -1,5 +1,5 @@
 
-// Create one record in your Customer table in your chinook database
+// CRUD Hyperlambda endpoint that creates one record in your Customer table in your chinook database
 .arguments
 
    // CustomerId column value

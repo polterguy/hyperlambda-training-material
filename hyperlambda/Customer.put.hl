@@ -1,5 +1,5 @@
 
-// Update one record in your Customer table in your chinook database
+// CRUD Hyperlambda endpoint that updates one record in your Customer table in your chinook database
 .arguments
 
    // CustomerId column value being primary key of record to update, mandatory argument

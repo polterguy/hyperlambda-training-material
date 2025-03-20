@@ -1,6 +1,8 @@
 /*
  * This script generates training data from Hyperlambda files.
  */
+
+// Loads all files recursively from the specified folder
 execute:magic.io.file.load-recursively
    .:/etc/hyperlambda-training-material/hyperlambda/
 for-each:x:@execute/*

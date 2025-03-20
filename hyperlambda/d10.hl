@@ -1,5 +1,7 @@
 // Retrieve orders that are either pending OR processing
 data.connect:shopDB
+
+   // CRUD read ...
    data.read
       table:orders
       limit:-1

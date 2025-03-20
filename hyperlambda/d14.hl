@@ -1,5 +1,7 @@
 // Delete a single customer record by customer_id
 data.connect:shopDB
+
+   // CRUD delete slot
    data.delete
       table:customers
       where

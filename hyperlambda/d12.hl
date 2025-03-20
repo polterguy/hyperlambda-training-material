@@ -1,5 +1,7 @@
 // Mark a specific order as shipped
 data.connect:shopDB
+
+   // Using CRUD update slot
    data.update
       table:orders
       values

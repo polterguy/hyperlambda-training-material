@@ -1,4 +1,4 @@
-// Counts items from your DATABASE_NAME and TABLE_NAME.
+// CRUD slot returning count of items from your DATABASE_NAME and TABLE_NAME.
 data.connect:DATABASE_NAME
    database-type:sqlite
 

@@ -30,6 +30,12 @@ data.read
    // Optional
    direction:desc
 
+   // Conditions we're filtering on
+   where
+
+      // Use either [or] or [and] here
+      and
+
 // Update
 data.update
    table:table1

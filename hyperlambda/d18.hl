@@ -1,5 +1,7 @@
 // Create a new order and update product stock in one atomic transaction
 data.connect:shopDB
+
+   // MUST be in a [data.connect] invocation
    data.transaction.create
       data.create
          table:orders

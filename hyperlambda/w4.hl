@@ -1,0 +1,12 @@
+.data
+   foo
+   world
+      foo
+         bar
+   section
+      category
+         foo
+
+// Modify "foo" nodes everywhere
+set-value:x:@.data/**/foo
+   .:Changed value

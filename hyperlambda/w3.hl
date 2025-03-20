@@ -1,0 +1,13 @@
+.data
+   hello
+      some-node
+         some-other-node
+            foo
+      howdy
+         foo
+   foo
+      bar
+
+// Change value of all "foo" nodes
+set-value:x:@.data/**/foo
+   .:New Value!

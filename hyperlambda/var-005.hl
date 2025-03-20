@@ -1,0 +1,23 @@
+// HTTP endpoint that does an age check from employees database by user ID and returns true if the person 18 or more
+.arguments
+   employee_id:int
+
+data.connect:CompanyDB
+   data.read
+      table:staff
+      columns
+         dob
+      where
+         and
+            id.eq:x:@.arguments/*/employee_id
+   if
+      mt
+         math.subtract
+            date.year:date.now
+            date.year:get-value:x:@data.read/*/*/dob
+         .:int:18
+      .lambda
+         return
+            result:bool:true
+return
+   result:bool:false

@@ -4,3 +4,7 @@
    arg2:string
 
 // Your Hyperlambda code goes here ...!!
+
+// Return result to caller using for instance ...
+return
+   SOME_RESULT:SOME_VALUE

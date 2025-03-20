@@ -3,3 +3,10 @@
 neq
    get-value:x:@.src
    .:int:10
+
+// Result after execution
+.src:int:5
+neq:bool:true
+   get-value:int:5
+   .:int:10
+

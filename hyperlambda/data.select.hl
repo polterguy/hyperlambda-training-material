@@ -3,5 +3,8 @@ data.connect:DATABASE_NAME_HERE
 
    // Explicitly using SQLite database type
    database-type:sqlite
+
    data.select:select * from TABLE_NAME_HERE
+
+      // We must use the same database type as we're using in [data.connect]
       database-type:sqlite

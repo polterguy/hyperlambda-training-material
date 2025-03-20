@@ -4,3 +4,10 @@
 eq
    get-value:x:@.a
    get-value:x:@.b
+
+// Result after execution
+.a:5
+.b:int:5
+eq:bool:false
+   get-value:5
+   get-value:int:5

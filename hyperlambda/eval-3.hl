@@ -3,3 +3,9 @@
 eval
    set-value:x:@.res
       .:Inline
+
+// Result
+.res:Inline
+eval
+   set-value:x:@.res
+      .:Inline

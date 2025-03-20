@@ -13,4 +13,6 @@ execute:magic.workflows.actions.execute
          query:x:@.arguments/*/query
          full_query:x:@.arguments/*/full_query
          max_tokens:int:12000
+
+// Returns the result of last action
 return-nodes:x:@execute/*

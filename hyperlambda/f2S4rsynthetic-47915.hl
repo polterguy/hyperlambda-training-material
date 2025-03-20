@@ -14,17 +14,15 @@
 auth.ticket.verify:root,admin
 validators.mandatory:x:@.arguments/*/id
 
-// Opening up our database connection.
+// Opening up our database connection with default database type (SQLite).
 data.connect:[generic|cms]
-   database-type:sqlite
 
    // Parametrising our delete invocation.
    add:x:./*/data.delete/*/where/*/and
       get-nodes:x:@.arguments/*
 
-   // Deleting item from database.
+   // Deleting item from database using default database type being SQLite.
    data.delete
-      database-type:sqlite
       table:menus
       where
          and

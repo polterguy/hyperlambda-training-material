@@ -1,7 +1,7 @@
 // This snippet uses the '*' iterator to retrieve all children of a node, in addition to the # reference iterator.
 .data
-   item1: one
-   item2: two
+   item1:one
+   item2:two
 for-each:x:@.data/*   
    set-value:x:@.dp/#
       :processed

@@ -7,3 +7,13 @@
    set-value:x:@.res
       .:Second
 eval:x:../*/.lambda
+
+// Result after executing above lambda
+.res:Second
+.lambda
+   set-value:x:@.res
+      .:First
+.lambda
+   set-value:x:@.res
+      .:Second
+eval:x:../*/.lambda

@@ -8,7 +8,6 @@
    company:string
    website:string
    lifecyclestage:string
-.description:Creates a contact in HubSpot
 .type:public
 
 // Sanity checking invocation.

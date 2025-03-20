@@ -8,12 +8,6 @@
    // Primary key of record to delete, mandatory argument
    tag_id:long
 
-// Meta data description for endpoint
-.description:Delete one record from your post_tags table in your cms database
-
-// Type of endpoint
-.type:crud-delete
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 validators.mandatory:x:@.arguments/*/post_id

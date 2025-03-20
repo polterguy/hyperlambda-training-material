@@ -29,12 +29,6 @@
    // contacts table name column wildcard filtering with SQL like '%' comparison
    contact_id.name.like:string
 
-// Meta data description for endpoint
-.description:Counts items from your activities table
-
-// Type of endpoint
-.type:crud-count
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 

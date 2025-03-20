@@ -15,12 +15,6 @@
    themes.description.like:string
    themes.description.eq:string
 
-// Meta data description for endpoint
-.description:Read or list records from your themes table in your cms database
-
-// Type of endpoint
-.type:crud-read
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

@@ -16,12 +16,6 @@
    plugins.description.eq:string
    plugins.is_active.eq:long
 
-// Meta data description for endpoint
-.description:Read or list records from your plugins table in your cms database
-
-// Type of endpoint
-.type:crud-read
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

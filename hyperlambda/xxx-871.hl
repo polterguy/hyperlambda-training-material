@@ -12,8 +12,6 @@
    enabled:bool
    price_reference:string
    bandwidth:string
-.description:Creates an item in your types table in your [generic|onboarding] database according to the specified arguments
-.type:crud-create
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

@@ -21,12 +21,6 @@
    MediaType.Name.neq:string
    MediaType.Name.eq:string
 
-// Meta data description for endpoint
-.description:Count unique and distinct items from your MediaType table in your chinook database
-
-// Type of endpoint
-.type:crud-count-distinct
-
 // Sanity checking that distinct column was passed in.
 validators.mandatory:x:@.arguments/*/distinct_column
 

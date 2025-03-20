@@ -1,8 +1,8 @@
 
 // Returns all types of cloudlets the system supports.
+
+// Accepts NO arguments!
 .arguments
-.description:Returns all types of cloudlets the system supports.
-.type:crud-read
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

@@ -1,12 +1,8 @@
 
 // Read or list records from your activity_types table
+
+// By providing an empty [.arguments] such as follows, no arguments can be passed in if the Hyperlambda file is an endpoint
 .arguments
-
-// Meta data description for endpoint
-.description:Read or list records from your activity_types table
-
-// Type of endpoint
-.type:crud-read
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin

@@ -1,7 +1,6 @@
 
 // Deletes the user's account entirely on server.
 .arguments
-.description:"Deletes the user's account entirely on server"
 
 // Ensuring user is authenticated to invoke endpoint.
 auth.ticket.verify:guest

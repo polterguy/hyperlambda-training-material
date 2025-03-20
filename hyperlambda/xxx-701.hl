@@ -8,12 +8,6 @@
    // tag_id column value
    tag_id:long
 
-// Meta data description for endpoint
-.description:Create one record in your post_tags table in your cms database
-
-// Type of endpoint
-.type:crud-create
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

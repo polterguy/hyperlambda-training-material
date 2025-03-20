@@ -1,8 +1,6 @@
 
 // Returns balance information for affiliate.
 .arguments
-.description:Returns balance information for affiliate
-.type:custom
 
 // Making sure user is authorised to invoke endpoint.
 auth.ticket.verify:root, admin, guest

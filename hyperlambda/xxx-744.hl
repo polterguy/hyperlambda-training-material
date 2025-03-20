@@ -23,12 +23,6 @@
    // accounts table status column equality exact match filtering
    account_id.name.eq:string
 
-// Meta data description for endpoint
-.description:Counts items from your contacts table
-
-// Type of endpoint
-.type:crud-count
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 

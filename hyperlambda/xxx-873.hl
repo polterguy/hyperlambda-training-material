@@ -3,7 +3,6 @@
 .arguments
    id:long
    plan:string
-.description:Upgrades existing cloudlet to a professional plan without associating a subscription with it
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root, admin, account_manager

@@ -5,12 +5,6 @@
    // Primary key of record to delete, mandatory argument
    CustomerId:long
 
-// Meta data description for endpoint
-.description:Delete one record from your Customer table in your chinook database
-
-// Type of endpoint
-.type:crud-delete
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:admin,basic,enterprise
 validators.mandatory:x:@.arguments/*/CustomerId

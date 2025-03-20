@@ -1,10 +1,8 @@
 
 // Creates a withdrawal transaction in our Stripe module.
-.description:Creates a withdrawal transaction in our Stripe module
 .arguments
    amount:long
    affiliate:string
-type:custom
 
 // Verifying user has access to endpoint.
 auth.ticket.verify:root, admin

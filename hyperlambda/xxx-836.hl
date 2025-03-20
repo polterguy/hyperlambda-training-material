@@ -40,12 +40,6 @@
    SubscriptionPlan.Features.neq:string
    SubscriptionPlan.Features.eq:string
 
-// Meta data description for endpoint
-.description:Count unique and distinct items from your SubscriptionPlan table in your saas database
-
-// Type of endpoint
-.type:crud-count-distinct
-
 // Sanity checking that distinct column was passed in.
 validators.mandatory:x:@.arguments/*/distinct_column
 

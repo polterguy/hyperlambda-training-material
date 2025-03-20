@@ -6,8 +6,6 @@
    plan:string
    cluster:string
    user:string
-.description:Updates an existing item in your cloudlets table in your [generic|hub] database according to the specified arguments
-.type:crud-update
 
 // Verifying user is authorized to access endpoint.
 validators.mandatory:x:@.arguments/*/id

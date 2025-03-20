@@ -16,12 +16,6 @@
    tag_id.name.eq:string
    tag_id.name.like:string
 
-// Meta data description for endpoint
-.description:Counts items from your post_tags table in your cms database
-
-// Type of endpoint
-.type:crud-count
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

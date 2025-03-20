@@ -51,12 +51,6 @@
    Users.Role.neq:string
    Users.Role.eq:string
 
-// Meta data description for endpoint
-.description:Read or list records from your Users table in your logistics database
-
-// Type of endpoint
-.type:crud-read
-
 // Columns with custom handling as frontend is generated.
 .handling
    Users.Email:email

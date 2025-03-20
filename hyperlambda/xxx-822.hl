@@ -85,12 +85,6 @@
    Customer.CreatedAt.neq:date
    Customer.CreatedAt.eq:date
 
-// Meta data description for endpoint
-.description:Read or list records from your Customer table in your saas database
-
-// Type of endpoint
-.type:crud-read
-
 // Columns with custom handling as frontend is generated.
 .handling
    Customer.Email:email

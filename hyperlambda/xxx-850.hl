@@ -8,8 +8,6 @@
    subscription:*
    recaptcha_response:string
    pay_yearly:bool
-.description:Creates a new cloudlet for the currently authenticated user in the specified cluster with the specified plan
-.type:crud-create
 
 // Ensuring user is authorised to invoke endpoint.
 auth.ticket.verify:root, guest

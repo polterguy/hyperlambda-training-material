@@ -45,12 +45,6 @@
    Users.Role.neq:string
    Users.Role.eq:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your Users table in your logistics database
-
-// Type of endpoint
-.type:crud-aggregate
-
 // Sanity checking mandatory arguments.
 validators.mandatory:x:@.arguments/*/aggregate_function
 validators.mandatory:x:@.arguments/*/aggregate_column

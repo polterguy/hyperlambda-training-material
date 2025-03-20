@@ -8,12 +8,6 @@
    // description column value
    description:string
 
-// Meta data description for endpoint
-.description:Create one record in your categories table in your cms database
-
-// Type of endpoint
-.type:crud-create
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

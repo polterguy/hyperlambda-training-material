@@ -52,12 +52,6 @@
    Routes.Distance.neq:double
    Routes.Distance.eq:double
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average, sum or count from your Routes table in your logistics database grouped by a column
-
-// Type of endpoint
-.type:crud-group
-
 // Sanity checking mandatory arguments.
 validators.mandatory:x:@.arguments/*/group_column
 validators.mandatory:x:@.arguments/*/aggregate_function

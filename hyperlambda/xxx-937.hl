@@ -39,12 +39,6 @@
    ProductID.Name.eq:string
    ProductID.Name.like:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your Inventory table in your logistics database
-
-// Type of endpoint
-.type:crud-aggregate
-
 // Sanity checking mandatory arguments.
 validators.mandatory:x:@.arguments/*/aggregate_function
 validators.mandatory:x:@.arguments/*/aggregate_column

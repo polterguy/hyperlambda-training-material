@@ -11,12 +11,6 @@
    // description column's new value
    description:string
 
-// Meta data description for endpoint
-.description:Update one record in your themes table in your cms database
-
-// Type of endpoint
-.type:crud-update
-
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/id
 

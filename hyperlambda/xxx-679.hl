@@ -5,12 +5,6 @@
    // Primary key of record to delete, mandatory argument
    id:long
 
-// Meta data description for endpoint
-.description:Delete one record from your menu_items table in your cms database
-
-// Type of endpoint
-.type:crud-delete
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 validators.mandatory:x:@.arguments/*/id

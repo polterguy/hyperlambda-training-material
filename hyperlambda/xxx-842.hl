@@ -49,12 +49,6 @@
    SubscriptionPlan.Features.neq:string
    SubscriptionPlan.Features.eq:string
 
-// Meta data description for endpoint
-.description:Read or list records from your SubscriptionPlan table in your saas database
-
-// Type of endpoint
-.type:crud-read
-
 // Adding Cache-Control HTTP header.
 response.headers.set
    Cache-Control:private, max-age=50

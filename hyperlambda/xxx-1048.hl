@@ -39,12 +39,6 @@
    Warehouses.Capacity.neq:double
    Warehouses.Capacity.eq:double
 
-// Meta data description for endpoint
-.description:Returns unique and distinct values from your Warehouses table in your logistics database
-
-// Type of endpoint
-.type:crud-distinct
-
 // Sanity checking that distinct column was passed in.
 validators.mandatory:x:@.arguments/*/distinct_column
 

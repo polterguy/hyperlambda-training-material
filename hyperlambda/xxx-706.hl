@@ -17,12 +17,6 @@
    // category_id column's new value
    category_id:long
 
-// Meta data description for endpoint
-.description:Update one record in your posts table in your cms database
-
-// Type of endpoint
-.type:crud-update
-
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/id
 

@@ -16,12 +16,6 @@
    pages.content.eq:string
    pages.created_at.eq:date
 
-// Meta data description for endpoint
-.description:Read or list records from your pages table in your cms database
-
-// Type of endpoint
-.type:crud-read
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

@@ -14,12 +14,6 @@
    // position column value
    position:long
 
-// Meta data description for endpoint
-.description:Create one record in your menu_items table in your cms database
-
-// Type of endpoint
-.type:crud-create
-
 // Columns with custom handling as we generate a frontend
 .handling
    url:url

@@ -15,12 +15,6 @@
    categories.description.like:string
    categories.description.eq:string
 
-// Meta data description for endpoint
-.description:Counts items from your categories table in your cms database
-
-// Type of endpoint
-.type:crud-count
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

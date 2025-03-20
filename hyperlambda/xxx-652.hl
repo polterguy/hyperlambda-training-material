@@ -29,12 +29,6 @@
    // UnitPrice column's new value
    UnitPrice:decimal
 
-// Meta data description for endpoint
-.description:Update one record in your Track table in your chinook database
-
-// Type of endpoint
-.type:crud-update
-
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/TrackId
 

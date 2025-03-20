@@ -2,8 +2,6 @@
 // Deletes a specified cloudlet and its associated subscription.
 .arguments
    id:long
-.description:Deletes a specified cloudlet and its associated subscription
-.type:crud-delete
 
 // Ensuring user is authorised to invoke endpoint.
 auth.ticket.verify:root, admin, account_manager

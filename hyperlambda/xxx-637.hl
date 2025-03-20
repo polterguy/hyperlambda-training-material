@@ -21,12 +21,6 @@
    TrackId.Name.eq:string
    TrackId.Name.like:string
 
-// Meta data description for endpoint
-.description:Counts items from your PlaylistTrack table in your chinook database
-
-// Type of endpoint
-.type:crud-count
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 

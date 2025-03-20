@@ -15,12 +15,6 @@
    // Email column's new value
    Email:string
 
-// Meta data description for endpoint
-.description:Update one record in your Carriers table in your logistics database
-
-// Type of endpoint
-.type:crud-update
-
 // Columns with custom handling as we generate a frontend
 .handling
    Phone:phone

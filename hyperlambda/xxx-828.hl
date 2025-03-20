@@ -60,12 +60,6 @@
    CustomerId.CompanyName.eq:string
    CustomerId.CompanyName.like:string
 
-// Meta data description for endpoint
-.description:Returns unique and distinct values from your Payment table in your saas database
-
-// Type of endpoint
-.type:crud-distinct
-
 // Sanity checking that distinct column was passed in.
 validators.mandatory:x:@.arguments/*/distinct_column
 

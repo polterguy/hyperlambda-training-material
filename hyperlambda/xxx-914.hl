@@ -44,12 +44,6 @@
    Carriers.Email.neq:string
    Carriers.Email.eq:string
 
-// Meta data description for endpoint
-.description:Read or list records from your Carriers table in your logistics database
-
-// Type of endpoint
-.type:crud-read
-
 // Columns with custom handling as frontend is generated.
 .handling
    Carriers.Phone:phone

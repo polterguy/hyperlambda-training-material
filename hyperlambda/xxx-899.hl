@@ -1,6 +1,5 @@
 
 // Withdraw endpoint allowing affiliates to request withdrawals of funds.
-.description:Withdraw endpoint allowing affiliates to request withdrawals of funds
 .arguments
    amount:decimal
    bank_name:string
@@ -9,7 +8,6 @@
    swift:string
    bank_address:string
    affiliate_address:string
-type:custom
 
 // Verifying user has access to endpoint.
 auth.ticket.verify:root, admin, guest

@@ -47,9 +47,6 @@
    // Email column's new value
    Email:string
 
-// Meta data description for endpoint
-.description:Update one record in your Employee table in your chinook database
-
 // Type of endpoint
 .type:crud-update
 

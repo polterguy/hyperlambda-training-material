@@ -87,11 +87,6 @@
    CustomerId.FirstName.eq:string
    CustomerId.FirstName.like:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average, sum or count from your Invoice table in your chinook database grouped by a column
-
-// Type of endpoint
-.type:crud-group
 
 // Sanity checking mandatory arguments.
 validators.mandatory:x:@.arguments/*/group_column

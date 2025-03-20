@@ -16,12 +16,6 @@
    users.email.eq:string
    users.created_at.eq:date
 
-// Meta data description for endpoint
-.description:Read or list records from your users table in your cms database
-
-// Type of endpoint
-.type:crud-read
-
 // Columns with custom handling as frontend is generated.
 .handling
    users.email:email

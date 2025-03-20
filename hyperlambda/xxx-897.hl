@@ -1,8 +1,6 @@
 
 // Counts clients that are affiliated with the currently authenticated client.
-.description:Counts clients that are affiliated with the currently authenticated client
 .arguments
-type:crud-count
 
 // Verifying user has access to endpoint.
 auth.ticket.verify:root, admin, guest

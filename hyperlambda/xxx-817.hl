@@ -73,12 +73,6 @@
    Customer.CreatedAt.neq:date
    Customer.CreatedAt.eq:date
 
-// Meta data description for endpoint
-.description:Counts items from your Customer table in your saas database
-
-// Type of endpoint
-.type:crud-count
-
 // Adding Cache-Control HTTP header.
 response.headers.set
    Cache-Control:private, max-age=50

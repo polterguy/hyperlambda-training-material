@@ -2,8 +2,6 @@
 // Deletes one item from your clusters table in your [generic|hub] database matching the specified argument(s).
 .arguments
    id:string
-.description:Deletes one item from your clusters table in your [generic|hub] database matching the specified argument(s)
-.type:crud-delete
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

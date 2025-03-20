@@ -34,12 +34,6 @@
    Routes.Distance.neq:double
    Routes.Distance.eq:double
 
-// Meta data description for endpoint
-.description:Count unique and distinct items from your Routes table in your logistics database
-
-// Type of endpoint
-.type:crud-count-distinct
-
 // Sanity checking that distinct column was passed in.
 validators.mandatory:x:@.arguments/*/distinct_column
 

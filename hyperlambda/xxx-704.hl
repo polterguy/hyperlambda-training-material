@@ -22,12 +22,6 @@
    category_id.name.eq:string
    category_id.name.like:string
 
-// Meta data description for endpoint
-.description:Read or list records from your posts table in your cms database
-
-// Type of endpoint
-.type:crud-read
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

@@ -45,12 +45,6 @@
    CustomerId.CompanyName.eq:string
    CustomerId.CompanyName.like:string
 
-// Meta data description for endpoint
-.description:Counts items from your Payment table in your saas database
-
-// Type of endpoint
-.type:crud-count
-
 // Adding Cache-Control HTTP header.
 response.headers.set
    Cache-Control:private, max-age=50

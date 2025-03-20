@@ -32,12 +32,6 @@
    Carriers.Email.neq:string
    Carriers.Email.eq:string
 
-// Meta data description for endpoint
-.description:Counts items from your Carriers table in your logistics database
-
-// Type of endpoint
-.type:crud-count
-
 // Adding Cache-Control HTTP header.
 response.headers.set
    Cache-Control:public, max-age=50

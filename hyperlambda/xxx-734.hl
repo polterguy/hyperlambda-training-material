@@ -11,12 +11,6 @@
    // created_at column value
    created_at:date
 
-// Meta data description for endpoint
-.description:Create one record in your users table in your cms database
-
-// Type of endpoint
-.type:crud-create
-
 // Columns with custom handling as we generate a frontend
 .handling
    email:email

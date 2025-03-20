@@ -1,6 +1,5 @@
 
 // Create a function that returns all cloudlets belonging to the currently authenticated user.
-.description:Returns all cloudlets belonging to the currently authenticated user
 .type:crud-read
 
 // Ensuring user is authorised to invoke endpoint.

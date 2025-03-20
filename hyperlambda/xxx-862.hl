@@ -6,8 +6,6 @@
    plan:string
    cluster:string
    user:string
-.description:Creates an item in your cloudlets table in your [generic|hub] database according to the specified arguments
-.type:crud-create
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

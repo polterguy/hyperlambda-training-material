@@ -5,12 +5,6 @@
    // Primary key of record to delete, mandatory argument
    MediaTypeId:long
 
-// Meta data description for endpoint
-.description:Delete one record from your MediaType table in your chinook database
-
-// Type of endpoint
-.type:crud-delete
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 validators.mandatory:x:@.arguments/*/MediaTypeId

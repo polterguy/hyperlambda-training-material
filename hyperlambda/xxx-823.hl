@@ -29,12 +29,6 @@
    // CreatedAt column value
    CreatedAt:date
 
-// Meta data description for endpoint
-.description:Create one record in your Customer table in your saas database
-
-// Type of endpoint
-.type:crud-create
-
 // Columns with custom handling as we generate a frontend
 .handling
    Email:email

@@ -47,9 +47,6 @@
    // Email column value
    Email:string
 
-// Meta data description for endpoint
-.description:Create one record in your Employee table in your chinook database
-
 // Type of endpoint
 .type:crud-create
 

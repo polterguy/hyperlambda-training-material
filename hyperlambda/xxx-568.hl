@@ -36,9 +36,6 @@
    SupportRepId.LastName.eq:string
    SupportRepId.LastName.like:string
 
-// Meta data description for endpoint
-.description:Counts items from your Customer table in your chinook database
-
 // Type of endpoint
 .type:crud-count
 

@@ -17,12 +17,6 @@
    // PaymentMethod column value
    PaymentMethod:string
 
-// Meta data description for endpoint
-.description:Create one record in your Payment table in your saas database
-
-// Type of endpoint
-.type:crud-create
-
 // Opening up database connection.
 data.connect:[generic|saas]
    database-type:sqlite

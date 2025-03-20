@@ -41,12 +41,6 @@
    // SupportRepId column's new value
    SupportRepId:long
 
-// Meta data description for endpoint
-.description:Update one record in your Customer table in your chinook database
-
-// Type of endpoint
-.type:crud-update
-
 // Columns with custom handling as we generate a frontend
 .handling
    Phone:phone

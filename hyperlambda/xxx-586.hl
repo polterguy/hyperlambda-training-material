@@ -24,9 +24,6 @@
    Genre.Name.neq:string
    Genre.Name.eq:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your Genre table in your chinook database
-
 // Type of endpoint
 .type:crud-aggregate
 

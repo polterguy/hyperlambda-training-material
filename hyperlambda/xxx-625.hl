@@ -24,12 +24,6 @@
    Playlist.Name.neq:string
    Playlist.Name.eq:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your Playlist table in your chinook database
-
-// Type of endpoint
-.type:crud-aggregate
-
 // Sanity checking mandatory arguments.
 validators.mandatory:x:@.arguments/*/aggregate_function
 validators.mandatory:x:@.arguments/*/aggregate_column

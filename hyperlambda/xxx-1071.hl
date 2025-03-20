@@ -7,7 +7,8 @@
 
    // Optional argument being the maximum number of tokens to return.
    max_tokens:int
-.description:Searches the web
+
+// Public endpoints can also be used as AI functions
 .type:public
 
 // Returns [max_tokens] context for the specified [query] by searching DuckDuckGo.

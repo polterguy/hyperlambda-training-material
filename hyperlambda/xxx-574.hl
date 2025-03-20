@@ -41,12 +41,6 @@
    // SupportRepId column value
    SupportRepId:long
 
-// Meta data description for endpoint
-.description:Create one record in your Customer table in your chinook database
-
-// Type of endpoint
-.type:crud-create
-
 // Columns with custom handling as we generate a frontend
 .handling
    Phone:phone

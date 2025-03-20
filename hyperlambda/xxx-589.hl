@@ -33,9 +33,6 @@
    Genre.Name.neq:string
    Genre.Name.eq:string
 
-// Meta data description for endpoint
-.description:Returns unique and distinct values from your Genre table in your chinook database
-
 // Type of endpoint
 .type:crud-distinct
 

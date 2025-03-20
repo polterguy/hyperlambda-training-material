@@ -17,12 +17,6 @@
    // created_at column value
    created_at:date
 
-// Meta data description for endpoint
-.description:Create one record in your posts table in your cms database
-
-// Type of endpoint
-.type:crud-create
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

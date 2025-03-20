@@ -29,12 +29,6 @@
    // Country column's new value
    Country:string
 
-// Meta data description for endpoint
-.description:Update one record in your Customer table in your saas database
-
-// Type of endpoint
-.type:crud-update
-
 // Columns with custom handling as we generate a frontend
 .handling
    Email:email

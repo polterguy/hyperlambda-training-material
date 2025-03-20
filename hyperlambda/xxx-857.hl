@@ -1,7 +1,5 @@
 
 // Returns all types of cloudlets the system supports.
-.description:Returns all types of cloudlets the system supports.
-.type:crud-read
 
 // Opening up our database connection.
 data.connect:[generic|hub]

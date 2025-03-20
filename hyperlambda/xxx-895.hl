@@ -1,8 +1,6 @@
 
 // Returns number of registrations for the last 14 days grouped by day.
-.description:Returns number of registrations for the last 14 days grouped by day
 .arguments
-type:custom
 
 // Making sure user is authorised to invoke endpoint.
 auth.ticket.verify:root, admin, guest

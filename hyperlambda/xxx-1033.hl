@@ -15,12 +15,6 @@
    // Role column value
    Role:string
 
-// Meta data description for endpoint
-.description:Create one record in your Users table in your logistics database
-
-// Type of endpoint
-.type:crud-create
-
 // Columns with custom handling as we generate a frontend
 .handling
    Email:email

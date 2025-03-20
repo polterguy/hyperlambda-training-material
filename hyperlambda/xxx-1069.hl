@@ -10,7 +10,8 @@
 
    // Mandatory argument and is the value of the argument such as for instance "John Doe" or "john@doe.com", etc.
    value:string
-.description:Store a single fact about the user
+
+// Allow for endpoint to be automatically consumed as an AI function
 .type:public
 
 // Sanity checking invocation.

@@ -18,12 +18,6 @@
    MediaType.Name.neq:string
    MediaType.Name.eq:string
 
-// Meta data description for endpoint
-.description:Counts items from your MediaType table in your chinook database
-
-// Type of endpoint
-.type:crud-count
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 

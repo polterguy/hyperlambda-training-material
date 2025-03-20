@@ -2,12 +2,6 @@
 // Read or list records from your status table
 .arguments
 
-// Meta data description for endpoint
-.description:Read or list records from your status table
-
-// Type of endpoint
-.type:crud-read
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 

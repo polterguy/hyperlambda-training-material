@@ -1,7 +1,6 @@
 
 // Hyperlambda endpoint taking arguments. This SQL query retrieves and returns the names of artists and the titles of their albums from the Chinook database, ordering the results by artist name and limiting the output to 50 records.\n\nThe SQL script performs an inner join between the 'Artist' and 'Album' tables in the Chinook database, matching records based on the 'ArtistId' field. It selects the 'Name' field from the 'Artist' table and the 'Title' field from the 'Album' table, ordering the results alphabetically by artist name. The query limits the output to the first 50 records, ensuring efficient data retrieval. This operation is executed within a SQLite database environment, and the results are returned to the caller, facilitating data access for authorized users.
 .arguments
-.description:Endpoint executing SQL and returns result of invocation to caller
 
 // Making sure user is authorized to invoke endpoint.
 auth.ticket.verify:enterprise

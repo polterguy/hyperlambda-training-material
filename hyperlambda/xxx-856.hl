@@ -1,7 +1,8 @@
 
 // Creates an impersonation token that can be used to pay for a cloudlet on behalf of another user.
+
+// Endpoint CANNOT be given any arguments, and if user invokes with query parameters, the endpoint will throw an exception
 .arguments
-.description:Creates an impersonation token that can be used to pay for a cloudlet on behalf of another user
 
 // Ensuring user is authorised to invoke endpoint.
 auth.ticket.verify:root, guest

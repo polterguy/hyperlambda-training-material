@@ -8,12 +8,6 @@
    // role_id column value
    role_id:long
 
-// Meta data description for endpoint
-.description:Create one record in your user_roles table in your cms database
-
-// Type of endpoint
-.type:crud-create
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

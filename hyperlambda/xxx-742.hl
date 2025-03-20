@@ -14,12 +14,6 @@
    // description column value
    description:string
 
-// Meta data description for endpoint
-.description:Create inserting one record into your accounts table
-
-// Type of endpoint
-.type:crud-create
-
 // Opening up database connection.
 data.connect:[generic|robo-crm]
    database-type:sqlite

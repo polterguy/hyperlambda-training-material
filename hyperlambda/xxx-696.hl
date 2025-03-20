@@ -11,12 +11,6 @@
    // is_active column value
    is_active:long
 
-// Meta data description for endpoint
-.description:Create one record in your plugins table in your cms database
-
-// Type of endpoint
-.type:crud-create
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

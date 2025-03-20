@@ -1,12 +1,10 @@
 
 // Returns all clients that are affiliated with the currently authenticated client.
-.description:Returns all clients that are affiliated with the currently authenticated client
 .arguments
    limit:long
    offset:long
    from:date
    to:date
-type:crud-read
 
 // Verifying user has access to endpoint.
 auth.ticket.verify:root, admin, guest

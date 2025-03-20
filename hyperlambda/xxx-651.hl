@@ -29,12 +29,6 @@
    // UnitPrice column value
    UnitPrice:decimal
 
-// Meta data description for endpoint
-.description:Create one record in your Track table in your chinook database
-
-// Type of endpoint
-.type:crud-create
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 

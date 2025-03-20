@@ -17,12 +17,6 @@
    // Features column's new value
    Features:string
 
-// Meta data description for endpoint
-.description:Update one record in your SubscriptionPlan table in your saas database
-
-// Type of endpoint
-.type:crud-update
-
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/PlanId
 

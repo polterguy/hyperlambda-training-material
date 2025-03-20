@@ -9,8 +9,6 @@
    clusters.name.like:string
    clusters.name.eq:string
    clusters.enabled.eq:bool
-.description:Counts items from your clusters table in your [generic|hub] database according to the specified arguments
-.type:crud-count
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

@@ -51,12 +51,6 @@
    CustomerId.CompanyName.eq:string
    CustomerId.CompanyName.like:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your Payment table in your saas database
-
-// Type of endpoint
-.type:crud-aggregate
-
 // Sanity checking mandatory arguments.
 validators.mandatory:x:@.arguments/*/aggregate_function
 validators.mandatory:x:@.arguments/*/aggregate_column

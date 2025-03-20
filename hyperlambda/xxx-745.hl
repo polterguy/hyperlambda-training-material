@@ -5,12 +5,6 @@
    // Primary key of record to delete, mandatory argument
    contact_id:long
 
-// Meta data description for endpoint
-.description:Delete one record from your contacts table
-
-// Type of endpoint
-.type:crud-delete
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 

@@ -3,8 +3,6 @@
 .arguments
    username:string
    recaptcha_response:string
-.description:Adds additional extra fields to be associated with the user after registration
-.type:custom
 
 // Sanity checking invocation
 validators.mandatory:x:@.arguments/*/username

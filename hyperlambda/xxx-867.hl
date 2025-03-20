@@ -5,8 +5,6 @@
    country:string
    name:string
    enabled:bool
-.description:Creates an item in your clusters table in your [generic|hub] database according to the specified arguments
-.type:crud-create
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

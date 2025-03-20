@@ -2,7 +2,6 @@
 // Reads contacts from HubSpot
 .arguments
    after:string
-.description:Reads contacts from HubSpot
 .type:public
 
 // Forwarding request to our HTTP POST Hyperlambda file.

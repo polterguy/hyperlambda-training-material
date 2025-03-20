@@ -24,7 +24,6 @@
 
    // Not used, but allows embedders to do a hard refresh to reload JavaScript.
    v:string
-.description:Returns the JavaScript required to embed a ChatGPT based chatbot on some website to caller.
 
 // Sanity checking invocation.
 validators.mandatory:x:@.arguments/*/type

@@ -1,7 +1,6 @@
 
 // Write a Hyperlambda script to return all available themes from the backend.
 .arguments
-.description:Returns all available themes from the backend
 .type:internal
 
 // Making sure user has access to invoked endpoint.

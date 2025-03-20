@@ -4,7 +4,6 @@
    sku:string
    quantity:int
    _session:string
-.description:Adds an item to your shopping cart
 .type:public
 
 // Defaulting [quantity] to 1 if not specified.

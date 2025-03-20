@@ -1,7 +1,6 @@
 
 // Lists all available products.
 .arguments
-.description:Lists all available products
 .type:public
 
 /*

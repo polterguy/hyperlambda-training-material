@@ -2,8 +2,6 @@
 // Create a Hyperlambda endpoint that deletes a specified cache item, ensuring the user is authorized, and handles both single and multiple cache item deletions.
 .arguments
    id:string
-.description:Deletes the specified cache item
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

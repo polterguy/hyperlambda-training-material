@@ -73,9 +73,6 @@
    address.last_update.neq:date
    address.last_update.eq:date
 
-// Meta data description for endpoint
-.description:Returns unique and distinct values from your address table in your sakila database
-
 // Type of endpoint
 .type:crud-distinct
 

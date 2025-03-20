@@ -46,9 +46,6 @@
    user_id.username.eq:string
    user_id.username.like:string
 
-// Meta data description for endpoint
-.description:Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from comments / cms database
-
 // Type of endpoint
 .type:crud-aggregate
 

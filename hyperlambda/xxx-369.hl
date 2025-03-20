@@ -2,7 +2,6 @@
 // Write a Hyperlambda script to delete all existing vectors for a specified model.
 .arguments
    type:string
-.description:Deletes all existing vectors for specified model
 .type:internal
 
 // Ensures user is authorized to access endpoint.

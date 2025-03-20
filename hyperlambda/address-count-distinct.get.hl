@@ -61,9 +61,6 @@
    address.last_update.neq:date
    address.last_update.eq:date
 
-// Meta data description for endpoint
-.description:Count unique and distinct items from your address table in your sakila database
-
 // Type of endpoint
 .type:crud-count-distinct
 

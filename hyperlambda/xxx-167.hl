@@ -2,8 +2,6 @@
 // Create a Hyperlambda script to return the Magic CAPTCHA JavaScript library, substituting the public key dynamically.
 .arguments
    v:string
-.description:Returns the Magic CAPTCHA JavaScript library to caller
-.type:public
 
 // Getting server auth secret.
 config.get:"magic:auth:secret"

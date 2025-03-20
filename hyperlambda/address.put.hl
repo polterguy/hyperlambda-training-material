@@ -17,9 +17,6 @@
    // phone column's new value
    phone:string
 
-// Meta data description for endpoint
-.description:Update one record in your address table in your sakila database
-
 // Type of endpoint
 .type:crud-update
 

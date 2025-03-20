@@ -12,19 +12,6 @@
 // Verifying user is authorized to access endpoint.
 validators.mandatory:x:@.arguments/*/id
 auth.ticket.verify:root
-.foreign-keys
-   .
-      column:plan
-      table:plans
-      foreign_column:name
-      foreign_name:name
-      long:bool:false
-   .
-      column:cluster
-      table:clusters
-      foreign_column:id
-      foreign_name:id
-      long:bool:false
 
 // Opening up our database connection.
 data.connect:[generic|hub]

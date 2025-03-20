@@ -13,9 +13,6 @@
    ArtistId:long
 
 // Meta data description for endpoint
-.description:Create one record in your Album table in your chinook database
-
-// Type of endpoint
 .type:crud-create
 
 // Checking reCAPTCHA value if backend is configured with reCAPTCHA configuration settings.
@@ -52,13 +49,6 @@ lambda2hyper:x:@.arguments/*
 log.info:chinook.Album entry created
    username:x:@auth.ticket.get
    arguments:x:@lambda2hyper
-.foreign-keys
-   .
-      column:ArtistId
-      table:Artist
-      foreign_column:ArtistId
-      foreign_name:Name
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|chinook]

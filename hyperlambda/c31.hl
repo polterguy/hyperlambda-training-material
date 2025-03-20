@@ -3,6 +3,7 @@
  */
 .text:"Goodbye"
 .suffix:"bye"
+
 // Returns true
 strings.ends-with:x:@.text
    get-value:x:@.suffix

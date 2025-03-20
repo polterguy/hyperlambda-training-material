@@ -34,9 +34,6 @@
    actor.last_update.neq:date
    actor.last_update.eq:date
 
-// Meta data description for endpoint
-.description:Count unique and distinct items from your actor table in your sakila database
-
 // Type of endpoint
 .type:crud-count-distinct
 

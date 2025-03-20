@@ -3,8 +3,8 @@
 .arguments
    file:*
    folder:string
-.description:Uploads, unzips, and overwrites the specified folder
-.type:internal
+
+// Endpoint can accept form-data
 .accept:multipart/form-data
 
 // Ensures user is authorized to access endpoint.

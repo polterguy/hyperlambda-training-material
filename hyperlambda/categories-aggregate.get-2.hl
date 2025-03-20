@@ -31,10 +31,7 @@
    categories.description.neq:string
    categories.description.eq:string
 
-// Meta data description for endpoint
-.description:Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from categories / cms database
-
-// Type of endpoint
+// By declaring type of endpoint as 'crud-WHATEVER' the endpoint becomes possible to add as an AI function to a Machine Learning type
 .type:crud-aggregate
 
 // Sanity checking mandatory arguments.

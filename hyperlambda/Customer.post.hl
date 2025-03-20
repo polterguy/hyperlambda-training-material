@@ -41,9 +41,6 @@
    // SupportRepId column value
    SupportRepId:long
 
-// Meta data description for endpoint
-.description:Create one record in your Customer table in your chinook database
-
 // Type of endpoint
 .type:crud-create
 
@@ -54,13 +51,6 @@
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-.foreign-keys
-   .
-      column:SupportRepId
-      table:Employee
-      foreign_column:EmployeeId
-      foreign_name:LastName
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|chinook]

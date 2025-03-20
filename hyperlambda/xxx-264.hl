@@ -1,7 +1,5 @@
 
 // Create a Hyperlambda script that returns the setup status of the system, ensuring the user is authorized.
-.description:Returns the setup status of the system
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

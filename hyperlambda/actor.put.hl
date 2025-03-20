@@ -11,9 +11,6 @@
    // last_name column's new value
    last_name:string
 
-// Meta data description for endpoint
-.description:Update one record in your actor table in your sakila database
-
 // Type of endpoint
 .type:crud-update
 

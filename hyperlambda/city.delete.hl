@@ -8,9 +8,6 @@
    // Primary key of record to delete, mandatory argument
    city_id:long
 
-// Meta data description for endpoint
-.description:Delete one record from your city table in your sakila database
-
 // Type of endpoint
 .type:crud-delete
 

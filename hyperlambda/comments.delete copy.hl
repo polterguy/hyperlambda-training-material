@@ -5,9 +5,6 @@
    // Primary key of record to delete, mandatory argument
    id:long
 
-// Meta data description for endpoint
-.description:CRUD Hyperlambda file that deletes one record from your comments table in your cms database
-
 // Type of endpoint
 .type:crud-delete
 

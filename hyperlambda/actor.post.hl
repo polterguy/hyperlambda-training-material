@@ -11,9 +11,6 @@
    // last_update column value
    last_update:date
 
-// Meta data description for endpoint
-.description:Create one record in your actor table in your sakila database
-
 // Type of endpoint
 .type:crud-create
 

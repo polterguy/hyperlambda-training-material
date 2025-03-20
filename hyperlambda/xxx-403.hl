@@ -2,8 +2,6 @@
 // Write a Hyperlambda script to list all connection strings in your installation for a specified database type.
 .arguments
    databaseType:string
-.description:Returns all connection strings in your installation for the specified database type
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

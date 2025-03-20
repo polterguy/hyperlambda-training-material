@@ -11,8 +11,6 @@
    created.lt:date
    created.mteq:date
    created.lteq:date
-.description:Returns items from your users table in your [generic|magic] database according to the specified arguments
-.type:crud-read
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

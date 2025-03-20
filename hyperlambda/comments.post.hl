@@ -14,27 +14,11 @@
    // created_at column value
    created_at:date
 
-// Meta data description for endpoint
-.description:Create one record in your comments table in your cms database
-
 // Type of endpoint
 .type:crud-create
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:enterprise,root
-.foreign-keys
-   .
-      column:post_id
-      table:posts
-      foreign_column:id
-      foreign_name:title
-      long:bool:true
-   .
-      column:user_id
-      table:users
-      foreign_column:id
-      foreign_name:username
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|cms]

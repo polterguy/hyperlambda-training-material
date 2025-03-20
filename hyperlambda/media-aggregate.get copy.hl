@@ -45,12 +45,6 @@
    post_id.title.eq:string
    post_id.title.like:string
 
-// Meta data description for endpoint
-.description:Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from media / cms database
-
-// Type of endpoint
-.type:crud-aggregate
-
 // Sanity checking mandatory arguments.
 validators.mandatory:x:@.arguments/*/aggregate_function
 validators.mandatory:x:@.arguments/*/aggregate_column
@@ -107,6 +101,8 @@ data.connect:[generic|cms]
    // Adding filtering arguments.
    add:x:+/*/where/*
       get-nodes:x:@.arguments/*
+
+   // Notice, data slots must be wrapped inside an open database connection, such as for instance [data.connect].
 
    // Reading data from database.
    data.read

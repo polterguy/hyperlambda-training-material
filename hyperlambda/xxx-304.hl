@@ -2,8 +2,6 @@
 // Write a Hyperlambda script to return a specified log item based on its ID.
 .arguments
    id:string
-.description:Returns the specified log item
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

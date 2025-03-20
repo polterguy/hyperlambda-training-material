@@ -29,9 +29,6 @@
    city.country_id.eq:long
    city.last_update.eq:date
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average, sum or count from your city table in your sakila database grouped by a column
-
 // Type of endpoint
 .type:crud-group
 

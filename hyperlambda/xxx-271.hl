@@ -1,7 +1,5 @@
 
 // Create a Hyperlambda script that returns the reCAPTCHA key if required, otherwise returns null or an empty string.
-.description:This endpoint returns the reCAPTCHA key if registrations etc requires a reCAPTCHA token, otherwise it returns null or empty string.
-.type:public
 
 // Retrieving key configuration setting and returning to caller.
 config.get:"magic:auth:recaptcha:key"

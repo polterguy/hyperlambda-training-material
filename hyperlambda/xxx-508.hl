@@ -20,9 +20,6 @@
    // image_url column's new value
    image_url:string
 
-// Meta data description for endpoint
-.description:Update endpoint updating one record in your products table in your shopping-cart-demo database filtering which item to update with product_id updating name, description, sku, price, image_url fields with authentication and authorisation for root,admin roles
-
 // Type of endpoint
 .type:crud-update
 

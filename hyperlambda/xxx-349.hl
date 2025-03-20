@@ -1,7 +1,5 @@
 
 // Write a Hyperlambda script to return all models from OpenAI, including fine-tuned models.
-.type:internal
-.description:Returns all models from OpenAI, including fine tuned models
 .arguments
    api_key:string
 

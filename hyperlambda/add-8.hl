@@ -1,5 +1,5 @@
 // Append multiple new nodes to a destination node. Nodes to add are specified as arguments
-.arguments:*
+.args:*
 .parent
 add:x:@.parent
-   get-nodes:x:@.arguments/*
+   get-nodes:x:@.args/*

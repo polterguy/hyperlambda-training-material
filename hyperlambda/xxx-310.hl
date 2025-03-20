@@ -2,8 +2,6 @@
 // Write a Hyperlambda script to delete a specified file on the server.
 .arguments
    file:string
-.description:Deletes the specified file on the server
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

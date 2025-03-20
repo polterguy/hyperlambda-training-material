@@ -40,12 +40,6 @@
    post_id.title.eq:string
    post_id.title.like:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average, sum or count from your media table in your cms database grouped by a column
-
-// Type of endpoint
-.type:crud-group
-
 // Sanity checking mandatory arguments.
 validators.mandatory:x:@.arguments/*/group_column
 validators.mandatory:x:@.arguments/*/aggregate_function
@@ -133,6 +127,8 @@ data.connect:[generic|cms]
    data.read
       database-type:sqlite
       table:media
+
+         // Joining media on posts
          join:posts
             as:post_id
             type:left

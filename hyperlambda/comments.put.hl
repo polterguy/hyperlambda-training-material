@@ -14,9 +14,6 @@
    // content column's new value
    content:string
 
-// Meta data description for endpoint
-.description:Update one record in your comments table in your cms database
-
 // Type of endpoint
 .type:crud-update
 
@@ -25,19 +22,6 @@ validators.mandatory:x:@.arguments/*/id
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:enterprise,root
-.foreign-keys
-   .
-      column:post_id
-      table:posts
-      foreign_column:id
-      foreign_name:title
-      long:bool:true
-   .
-      column:user_id
-      table:users
-      foreign_column:id
-      foreign_name:username
-      long:bool:true
 
 // Opening up our database connection.
 data.connect:[generic|cms]

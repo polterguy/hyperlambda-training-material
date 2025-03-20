@@ -117,9 +117,6 @@
    SupportRepId.LastName.eq:string
    SupportRepId.LastName.like:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average, sum or count from your Customer table in your chinook database grouped by a column
-
 // Type of endpoint
 .type:crud-group
 

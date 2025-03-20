@@ -7,6 +7,17 @@
 
    // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
    operator:string
+
+   /*
+    * Optional filtering arguments
+    * eq implies 'equal'
+    * like becomes a LIKE SQL comparison
+    * mt implies 'more than'
+    * lt implies 'less than'
+    * lteq implies 'less than or equal'
+    * mteq implies 'more than or equal'
+    * neq implies 'not equal'
+    */
    Album.AlbumId.mt:long
    Album.AlbumId.lt:long
    Album.AlbumId.mteq:long
@@ -28,9 +39,6 @@
    Album.ArtistId.eq:long
    ArtistId.Name.eq:string
    ArtistId.Name.like:string
-
-// Meta data description for endpoint
-.description:Count unique and distinct items from your Album table in your chinook database
 
 // Type of endpoint
 .type:crud-count-distinct

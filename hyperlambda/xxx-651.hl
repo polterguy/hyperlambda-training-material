@@ -37,25 +37,6 @@
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-.foreign-keys
-   .
-      column:AlbumId
-      table:Album
-      foreign_column:AlbumId
-      foreign_name:Title
-      long:bool:true
-   .
-      column:MediaTypeId
-      table:MediaType
-      foreign_column:MediaTypeId
-      foreign_name:Name
-      long:bool:true
-   .
-      column:GenreId
-      table:Genre
-      foreign_column:GenreId
-      foreign_name:Name
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|chinook]

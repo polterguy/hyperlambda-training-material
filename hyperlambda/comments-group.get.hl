@@ -41,9 +41,6 @@
    user_id.username.eq:string
    user_id.username.like:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average, sum or count from your comments table in your cms database grouped by a column
-
 // Type of endpoint
 .type:crud-group
 

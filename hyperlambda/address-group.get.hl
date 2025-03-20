@@ -79,9 +79,6 @@
    address.last_update.neq:date
    address.last_update.eq:date
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average, sum or count from your address table in your sakila database grouped by a column
-
 // Type of endpoint
 .type:crud-group
 

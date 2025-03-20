@@ -47,9 +47,6 @@
    ArtistId.Name.eq:string
    ArtistId.Name.like:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average, sum or count from your Album table in your chinook database grouped by a column
-
 // Type of endpoint
 .type:crud-group
 

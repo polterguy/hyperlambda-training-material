@@ -25,9 +25,6 @@
    categories.description.neq:string
    categories.description.eq:string
 
-// Meta data description for endpoint
-.description:Hyperlambda endpoint returning count of items from categories table in cms database
-
 // Type of endpoint
 .type:crud-count
 

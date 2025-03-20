@@ -1,3 +1,5 @@
 // Manifest with version and module name
 version:v2.0.0
 module_name:hub-api
+
+// Manifests are required for modules that are to be installed from the plugins component

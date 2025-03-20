@@ -1,7 +1,6 @@
 
 // Create a Hyperlambda script to create an HTTP interceptor or gateway that invokes another endpoint, executing lambda objects before and after the invocation.
 .arguments:*
-.description:HTTP gateway endpoint intercepting another endpoint, allowing you to evaluate some lambda object both before and after invoking your original HTTP endpoint
 
 // Endpoint we're intercepting.
 .endpoint:"https://your-app.com/your-endpoint"

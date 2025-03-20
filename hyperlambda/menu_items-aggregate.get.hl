@@ -45,12 +45,6 @@
    menu_id.name.eq:string
    menu_id.name.like:string
 
-// Meta data description for endpoint
-.description:Aggregate Hyperlambda HTTP endpoint returning min, max, avg, or sum from menu_items / cms database
-
-// Type of endpoint
-.type:crud-aggregate
-
 // Sanity checking mandatory arguments.
 validators.mandatory:x:@.arguments/*/aggregate_function
 validators.mandatory:x:@.arguments/*/aggregate_column

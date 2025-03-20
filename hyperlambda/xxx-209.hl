@@ -2,8 +2,6 @@
 // Create a Hyperlambda endpoint that exports all leads from training requests and returns them as a CSV file, ensuring the user is authorized.
 .arguments
    type:string
-.description:Exports all leads from training requests and returns as a CSV file
-.type:internal
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

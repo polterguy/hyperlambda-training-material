@@ -2,8 +2,6 @@
 // Write a Hyperlambda script to return all available template snippets from the backend, including prompt and completion details.
 .arguments
    private:bool
-.description:Returns all available template snippets from the backend
-.type:internal
 
 // Making sure user has access to invoked endpoint.
 auth.ticket.verify:root

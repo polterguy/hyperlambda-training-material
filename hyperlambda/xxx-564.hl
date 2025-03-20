@@ -9,9 +9,6 @@
    // Name column's new value
    Name:string
 
-// Meta data description for endpoint
-.description:Update one record in your Artist table in your chinook database
-
 // Type of endpoint
 .type:crud-update
 

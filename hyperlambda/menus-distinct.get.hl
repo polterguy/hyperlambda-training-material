@@ -33,12 +33,6 @@
    menus.name.neq:string
    menus.name.eq:string
 
-// Meta data description for endpoint
-.description:Hyperlambda CRUD endpoint file returning unique and distinct menus / cms
-
-// Type of endpoint
-.type:crud-distinct
-
 // Sanity checking that distinct column was passed in.
 validators.mandatory:x:@.arguments/*/distinct_column
 

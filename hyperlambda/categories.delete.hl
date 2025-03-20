@@ -5,9 +5,6 @@
    // Primary key of record to delete, mandatory argument
    CategoryID:long
 
-// Meta data description for endpoint
-.description:Delete one record from your Categories table in your northwind database
-
 // Type of endpoint
 .type:crud-delete
 validators.mandatory:x:@.arguments/*/CategoryID

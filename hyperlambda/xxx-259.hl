@@ -3,8 +3,6 @@
 .arguments
    username:string
    password:string
-.description:Updates an existing item in your users table in your [generic|magic] database according to the specified arguments
-.type:crud-update
 
 // Verifying user is authorized to access endpoint.
 validators.mandatory:x:@.arguments/*/username

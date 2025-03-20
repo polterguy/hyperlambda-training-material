@@ -2,8 +2,6 @@
 // Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the ml_types table in the magic database with a type matching the argument, ensuring authentication and authorization for root roles.
 .arguments
    type:string
-.description:CRUD delete endpoint deleting one record from your ml_types table in your magic database with type matching argument with authentication and authorisation for root roles
-.type:crud-delete
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

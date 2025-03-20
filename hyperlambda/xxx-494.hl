@@ -2,7 +2,6 @@
 // Hyperlambda endpoint taking arguments. This SQL query selects media types and their aggregate counts, ordering the results by count in descending order, filtered by a specified name pattern.
 .arguments
    filter:string
-.description:Endpoint executing SQL and returns result of invocation to caller with argument filter
 
 // Connecting to database.
 data.connect:chinook

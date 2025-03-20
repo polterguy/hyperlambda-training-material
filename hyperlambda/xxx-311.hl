@@ -2,8 +2,6 @@
 // Write a Hyperlambda script to load a specified file and return it as 'application/octet-stream' with appropriate headers.
 .arguments
    file:string
-.description:"Loads the specified file and returns to caller as 'application/octet-stream' Content-Type"
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

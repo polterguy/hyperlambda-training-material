@@ -22,13 +22,6 @@
 
 // Type of endpoint
 .type:crud-create
-.foreign-keys
-   .
-      column:CustomerId
-      table:Customer
-      foreign_column:CustomerId
-      foreign_name:CompanyName
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|saas]

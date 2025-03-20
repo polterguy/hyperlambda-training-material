@@ -54,13 +54,6 @@ remove-nodes:x:@.arguments/*/recaptcha/[0,1]
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-.foreign-keys
-   .
-      column:OrderID
-      table:Orders
-      foreign_column:OrderID
-      foreign_name:OrderDate
-      long:bool:true
 
 // Opening up our database connection.
 data.connect:[generic|logistics]

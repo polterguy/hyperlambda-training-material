@@ -11,9 +11,6 @@
    // ArtistId column's new value
    ArtistId:long
 
-// Meta data description for endpoint
-.description:Update one record in your Album table in your chinook database
-
 // Type of endpoint
 .type:crud-update
 
@@ -22,13 +19,6 @@ validators.mandatory:x:@.arguments/*/AlbumId
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-.foreign-keys
-   .
-      column:ArtistId
-      table:Artist
-      foreign_column:ArtistId
-      foreign_name:Name
-      long:bool:true
 
 // Opening up our database connection.
 data.connect:[generic|chinook]

@@ -2,8 +2,6 @@
 // Write a Hyperlambda script to list all folders in a specified folder.
 .arguments
    folder:string
-.description:List all folders in the specified folder
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

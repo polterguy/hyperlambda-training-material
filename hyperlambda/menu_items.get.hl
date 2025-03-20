@@ -51,12 +51,6 @@
    menu_id.name.eq:string
    menu_id.name.like:string
 
-// Meta data description for endpoint
-.description:CRUD endpoint that lists records from your menu_items table in your cms database
-
-// Type of endpoint
-.type:crud-read
-
 // Columns with custom handling as frontend is generated.
 .handling
    menu_items.url:url

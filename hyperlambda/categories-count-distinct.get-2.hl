@@ -28,9 +28,6 @@
    categories.description.neq:string
    categories.description.eq:string
 
-// Meta data description for endpoint
-.description:Count unique and distinct items from your categories table in your cms database
-
 // Type of endpoint
 .type:crud-count-distinct
 

@@ -1,7 +1,6 @@
 
 // Hyperlambda endpoint taking arguments. This SQL query retrieves and returns the names of artists and the titles of their albums from the Chinook database, ordering the results by artist name and limiting the output to 50 records.
 .arguments
-.description:Endpoint executing SQL and returns result of invocation to caller
 
 // Making sure user is authorized to invoke endpoint.
 auth.ticket.verify:enterprise

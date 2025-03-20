@@ -9,9 +9,6 @@
    Categories.Picture.like:string
    Categories.Picture.eq:string
 
-// Meta data description for endpoint
-.description:Counts items from your Categories table in your northwind database
-
 // Type of endpoint
 .type:crud-count
 

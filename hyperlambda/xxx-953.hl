@@ -52,19 +52,6 @@ lambda2hyper:x:@.arguments/*
 log.info:logistics.OrderDetails entry created
    username:x:@auth.ticket.get
    arguments:x:@lambda2hyper
-.foreign-keys
-   .
-      column:OrderID
-      table:Orders
-      foreign_column:OrderID
-      foreign_name:OrderDate
-      long:bool:true
-   .
-      column:ProductID
-      table:Products
-      foreign_column:ProductID
-      foreign_name:Name
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|logistics]

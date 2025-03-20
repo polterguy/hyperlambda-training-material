@@ -6,21 +6,12 @@
    questionnaire:string
    type:string
    name:string
-.description:CRUD update endpoint updating one record in your questions table in your magic database filtering which item to update with question_id updating question, questionnaire fields with authentication and authorisation for root,admin roles
-.type:crud-update
 
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/question_id
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root
-.foreign-keys
-   .
-      column:questionnaire
-      table:questionnaires
-      foreign_column:name
-      foreign_name:name
-      long:bool:true
 
 // Opening up our database connection.
 data.connect:[generic|magic]

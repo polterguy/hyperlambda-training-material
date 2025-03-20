@@ -2,8 +2,6 @@
 // Write a Hyperlambda script to return all available workflows from the backend, including their names, descriptions, and arguments.
 .arguments
    private:bool
-.description:Returns all available workflows from the backend
-.type:internal
 
 // Making sure user has access to invoked endpoint.
 auth.ticket.verify:root

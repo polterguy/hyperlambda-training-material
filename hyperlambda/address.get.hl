@@ -70,9 +70,6 @@
    address.last_update.neq:date
    address.last_update.eq:date
 
-// Meta data description for endpoint
-.description:Read or list records from your address table in your sakila database
-
 // Type of endpoint
 .type:crud-read
 

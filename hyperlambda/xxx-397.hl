@@ -1,6 +1,5 @@
 
 // Write a Hyperlambda script for a Twilio webhook callback to handle notifications when your Twilio account receives messages.
-.description:Twilio webhook callback allowing you to configure Twilio to send your backend notifications when your Twilio account receives messages over WhatsApp, Messenger, or SMS etc
 
 // Retrieving actual message.
 .body

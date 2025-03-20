@@ -16,19 +16,6 @@
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
-.foreign-keys
-   .
-      column:user_id
-      table:users
-      foreign_column:id
-      foreign_name:username
-      long:bool:true
-   .
-      column:role_id
-      table:roles
-      foreign_column:id
-      foreign_name:name
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|cms]

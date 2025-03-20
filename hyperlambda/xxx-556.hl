@@ -21,9 +21,6 @@
    Artist.Name.neq:string
    Artist.Name.eq:string
 
-// Meta data description for endpoint
-.description:Count unique and distinct items from your Artist table in your chinook database
-
 // Type of endpoint
 .type:crud-count-distinct
 

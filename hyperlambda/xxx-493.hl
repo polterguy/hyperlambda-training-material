@@ -1,7 +1,6 @@
 
 // Hyperlambda endpoint taking arguments. The SQL aggregates and returns the top 25 artists with the most albums from the chinook database.
 .arguments
-.description:Endpoint executing SQL and returns result of invocation to caller
 
 // Making sure user is authorized to invoke endpoint.
 auth.ticket.verify:root,admin

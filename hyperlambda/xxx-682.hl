@@ -32,13 +32,6 @@ validators.mandatory:x:@.arguments/*/id
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
-.foreign-keys
-   .
-      column:menu_id
-      table:menus
-      foreign_column:id
-      foreign_name:name
-      long:bool:true
 
 // Opening up our database connection.
 data.connect:[generic|cms]

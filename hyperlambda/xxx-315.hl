@@ -2,8 +2,8 @@
 // Write a Hyperlambda script to upload and install a specified ZIP file module.
 .arguments
    file:*
-.description:Uploads and installs the specified ZIP file module
-.type:internal
+
+// Declaring MIME type endpoint accepts
 .accept:multipart/form-data
 
 // Ensures user is authorized to access endpoint.

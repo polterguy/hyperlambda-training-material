@@ -1,7 +1,5 @@
 
 // Create a Hyperlambda endpoint that returns all endpoints in the system along with their associated meta information, ensuring the user is authorized to access the endpoint.
-.description:Returns all endpoints in the system, and their associated meta information
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

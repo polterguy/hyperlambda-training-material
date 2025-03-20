@@ -5,8 +5,6 @@
    connectionString:string
    databaseName:string
    generate:bool
-.description:Deletes the specified database
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

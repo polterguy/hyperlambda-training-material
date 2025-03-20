@@ -2,8 +2,6 @@
 // Create a Hyperlambda script to verify a specified CAPTCHA token.
 .arguments
    token:string
-.description:Verifies the specified [token] as a valid CAPTCHA token
-.type:public
 
 // Invoking method responsible for verifying CAPTCHA token, which will throw if not valid.
 execute:magic.auth.captcha-verify

@@ -1,7 +1,5 @@
 
 // Write a Hyperlambda script to return the default database type the system is using and options for alternative database types.
-.description:Returns the default database type the system is using and your options for alternative database types
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

@@ -54,12 +54,6 @@
    menu_id.name.eq:string
    menu_id.name.like:string
 
-// Meta data description for endpoint
-.description:Hyperlambda CRUD endpoint file returning unique and distinct menu_items / cms
-
-// Type of endpoint
-.type:crud-distinct
-
 // Sanity checking that distinct column was passed in.
 validators.mandatory:x:@.arguments/*/distinct_column
 

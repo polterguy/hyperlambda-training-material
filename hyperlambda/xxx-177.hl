@@ -1,7 +1,5 @@
 
 // Create a Hyperlambda endpoint to return all slots registered in the system.
-.description:Returns all slots registered in the system
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

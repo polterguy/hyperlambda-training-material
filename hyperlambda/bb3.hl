@@ -11,5 +11,5 @@
 </body>
 </html>"
 
-// HTML decodes the above HTML
+// HTML encodes the above HTML
 strings.html-encode:x:@.html

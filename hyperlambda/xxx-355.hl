@@ -5,7 +5,6 @@
    type:string
    recaptcha_response:string
    max:int
-.description:OpenAI AI search endpoint returning only references to matching training snippets
 .type:public
 
 // Invoking slot containing commonalities for all endpoints.

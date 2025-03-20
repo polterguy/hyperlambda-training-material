@@ -8,7 +8,6 @@
  */
 .arguments
    filter:string
-.description:Endpoint executing SQL and returns result of invocation to caller with argument filter
 
 // Connecting to database.
 data.connect:chinook

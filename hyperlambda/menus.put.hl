@@ -8,12 +8,6 @@
    // name column's new value
    name:string
 
-// Meta data description for endpoint
-.description:CRUD update Hyperlambda that updates one record in your menus table in your cms database
-
-// Type of endpoint
-.type:crud-update
-
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/id
 

@@ -39,12 +39,6 @@
    menu_id.name.eq:string
    menu_id.name.like:string
 
-// Meta data description for endpoint
-.description:Hyperlambda endpoint returning count of items from menu_items table in cms database
-
-// Type of endpoint
-.type:crud-count
-
 // Sanity checking invocation.
 validators.enum:x:@.arguments/*/operator
    .:or

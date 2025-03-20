@@ -2,8 +2,6 @@
 // Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the questions table in the magic database with a question_id matching the argument, ensuring authentication and authorization for root and admin roles.
 .arguments
    question_id:long
-.description:CRUD delete endpoint deleting one record from your questions table in your magic database with question_id matching argument with authentication and authorisation for root,admin roles
-.type:crud-delete
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

@@ -10,8 +10,6 @@
    pkLength:int
    pkDefault:string
    generate:bool
-.description:Adds the specified table to the specified database
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

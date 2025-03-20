@@ -5,12 +5,6 @@
    // Primary key of record to delete
    product_id:long
 
-// Meta data description for endpoint
-.description:Delete endpoint deleting one record from your products table in your shopping-cart-demo database with product_id matching argument with authentication and authorisation for root,admin roles
-
-// Type of endpoint
-.type:crud-delete
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 

@@ -18,13 +18,6 @@
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-.foreign-keys
-   .
-      column:product_id
-      table:products
-      foreign_column:product_id
-      foreign_name:name
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|shopping-cart-demo]

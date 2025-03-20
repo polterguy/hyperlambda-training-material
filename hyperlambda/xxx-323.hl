@@ -8,7 +8,6 @@
    answer:string
    context:int
    recaptcha_response:string
-.description:Answers a single question from a questionnaire
 
 // Sanity checking invocation.
 validators.mandatory:x:@.arguments/*/type

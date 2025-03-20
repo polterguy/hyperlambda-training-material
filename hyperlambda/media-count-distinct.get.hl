@@ -22,12 +22,6 @@
    post_id.title.eq:string
    post_id.title.like:string
 
-// Meta data description for endpoint
-.description:Count unique and distinct items from your media table in your cms database
-
-// Type of endpoint
-.type:crud-count-distinct
-
 // Sanity checking that distinct column was passed in.
 validators.mandatory:x:@.arguments/*/distinct_column
 

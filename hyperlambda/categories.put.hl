@@ -14,9 +14,6 @@
    // Picture column's new value
    Picture:string
 
-// Meta data description for endpoint
-.description:Update one record in your Categories table in your northwind database
-
 // Type of endpoint
 .type:crud-update
 

@@ -4,8 +4,6 @@
    operator:string
    role.eq:string
    user.eq:string
-.description:Counts items from your users_roles table in your [generic|magic] database according to the specified arguments
-.type:crud-count
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

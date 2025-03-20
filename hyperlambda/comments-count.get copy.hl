@@ -40,9 +40,6 @@
    user_id.username.eq:string
    user_id.username.like:string
 
-// Meta data description for endpoint
-.description:Hyperlambda endpoint returning count of items from comments table in cms database
-
 // Type of endpoint
 .type:crud-count
 

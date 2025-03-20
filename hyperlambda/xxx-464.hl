@@ -5,9 +5,6 @@
    // Primary key of record to delete
    crawl_url_id:long
 
-// Meta data description for endpoint
-.description:Delete endpoint deleting one record from your crawl_urls table in your scraper database with crawl_url_id matching argument with authentication and authorisation for root,admin roles
-
 // Type of endpoint
 .type:crud-delete
 

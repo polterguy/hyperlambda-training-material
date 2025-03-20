@@ -3,7 +3,6 @@
 .arguments
    item_id:int
    _session:string
-.description:Removes one item from your shopping cart
 .type:public
 
 // Opening up database connection.

@@ -17,12 +17,6 @@
    // position column's new value
    position:long
 
-// Meta data description for endpoint
-.description:CRUD update Hyperlambda that updates one record in your menu_items table in your cms database
-
-// Type of endpoint
-.type:crud-update
-
 // Columns with custom handling as we generate a frontend
 .handling
    url:url
@@ -32,13 +26,6 @@ validators.mandatory:x:@.arguments/*/id
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-.foreign-keys
-   .
-      column:menu_id
-      table:menus
-      foreign_column:id
-      foreign_name:name
-      long:bool:true
 
 // Opening up our database connection.
 data.connect:[generic|cms]

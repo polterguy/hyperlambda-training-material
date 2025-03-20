@@ -2,8 +2,6 @@
 // Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the roles table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
 .arguments
    name:string
-.description:Deletes one item from your roles table in your [generic|magic] database matching the specified argument(s)
-.type:crud-delete
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root

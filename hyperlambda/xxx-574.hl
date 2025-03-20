@@ -54,13 +54,6 @@
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,service
-.foreign-keys
-   .
-      column:SupportRepId
-      table:Employee
-      foreign_column:EmployeeId
-      foreign_name:LastName
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|chinook]

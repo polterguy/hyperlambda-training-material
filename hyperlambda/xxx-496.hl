@@ -2,7 +2,6 @@
 // Hyperlambda endpoint taking arguments. The SQL query selects distinct email, first name, last name, and genre name of customers who listen to rock music from the Chinook database.
 .arguments
    filter:string
-.description:Endpoint executing SQL and returns result of invocation to caller with argument filter
 
 // Connecting to database.
 data.connect:chinook

@@ -46,9 +46,6 @@
    categories.description.neq:string
    categories.description.eq:string
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average, sum or count from your categories table in your cms database grouped by a column
-
 // Type of endpoint
 .type:crud-group
 

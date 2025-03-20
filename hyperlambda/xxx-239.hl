@@ -5,18 +5,10 @@
    questionnaire:string
    type:string
    name:string
-.description:CRUD create endpoint inserting one record into your questions table in your magic database taking question, questionnaire with authentication and authorisation for root,admin roles
 .type:crud-create
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root
-.foreign-keys
-   .
-      column:questionnaire
-      table:questionnaires
-      foreign_column:name
-      foreign_name:name
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|magic]

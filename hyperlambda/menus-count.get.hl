@@ -18,12 +18,6 @@
    menus.name.neq:string
    menus.name.eq:string
 
-// Meta data description for endpoint
-.description:Hyperlambda endpoint returning count of items from menus table in cms database
-
-// Type of endpoint
-.type:crud-count
-
 // Sanity checking invocation.
 validators.enum:x:@.arguments/*/operator
    .:or

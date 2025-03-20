@@ -30,12 +30,6 @@
    menus.name.neq:string
    menus.name.eq:string
 
-// Meta data description for endpoint
-.description:CRUD endpoint that lists records from your menus table in your cms database
-
-// Type of endpoint
-.type:crud-read
-
 // Sanity checking invocation.
 validators.enum:x:@.arguments/*/operator
    .:or

@@ -5,7 +5,6 @@
    template:string
    instruction:string
    channel:string
-.description:Creates a system message from the specified arguments
 
 // Sanity checking invocation.
 validators.mandatory:x:@.arguments/*/url

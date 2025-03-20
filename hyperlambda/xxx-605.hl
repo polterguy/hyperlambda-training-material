@@ -40,13 +40,6 @@ validators.mandatory:x:@.arguments/*/InvoiceId
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-.foreign-keys
-   .
-      column:CustomerId
-      table:Customer
-      foreign_column:CustomerId
-      foreign_name:FirstName
-      long:bool:true
 
 // Opening up our database connection.
 data.connect:[generic|chinook]

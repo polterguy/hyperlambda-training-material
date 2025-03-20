@@ -1,8 +1,6 @@
 
 // Write a Hyperlambda script to return true if OpenAI is configured and can be used.
 .arguments
-.description:Returns true if OpenAI is configured and can be used
-.type:internal
 
 // Making sure user has access to invoked endpoint.
 auth.ticket.verify:root

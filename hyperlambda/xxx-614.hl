@@ -28,19 +28,6 @@ validators.mandatory:x:@.arguments/*/InvoiceLineId
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-.foreign-keys
-   .
-      column:InvoiceId
-      table:Invoice
-      foreign_column:InvoiceId
-      foreign_name:BillingAddress
-      long:bool:true
-   .
-      column:TrackId
-      table:Track
-      foreign_column:TrackId
-      foreign_name:Name
-      long:bool:true
 
 // Opening up our database connection.
 data.connect:[generic|chinook]

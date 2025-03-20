@@ -1,7 +1,5 @@
 
 // Write a Hyperlambda script to return system information, including version, tasks, log items, and module details.
-.description:Returns system information to caller
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

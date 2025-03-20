@@ -11,9 +11,6 @@
    // type column's new value
    type:string
 
-// Meta data description for endpoint
-.description:Update endpoint updating one record in your crawl_urls table in your scraper database filtering which item to update with crawl_url_id updating url, type fields with authentication and authorisation for root,admin roles
-
 // Type of endpoint
 .type:crud-update
 

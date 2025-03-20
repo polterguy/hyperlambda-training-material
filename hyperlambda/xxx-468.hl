@@ -17,9 +17,6 @@
    // spice_urls table type column equality exact match filtering
    spice_urls.type.eq:string
 
-// Meta data description for endpoint
-.description:Counts items from your spice_urls table in your scraper database
-
 // Type of endpoint
 .type:crud-count
 

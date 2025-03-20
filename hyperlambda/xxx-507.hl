@@ -17,9 +17,6 @@
    // image_url column value
    image_url:string
 
-// Meta data description for endpoint
-.description:Create endpoint inserting one record into your products table in your shopping-cart-demo database taking name, description, sku, price, image_url with authentication and authorisation for root,admin roles
-
 // Type of endpoint
 .type:crud-create
 

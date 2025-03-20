@@ -1,7 +1,6 @@
 
 // Hyperlambda endpoint taking arguments. The SQL query retrieves distinct customer details who have purchased tracks from the "Rock" genre.
 .arguments
-.description:Endpoint executing SQL and returns result of invocation to caller
 
 // Connecting to database.
 data.connect:chinook

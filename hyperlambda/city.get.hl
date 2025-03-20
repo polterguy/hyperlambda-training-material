@@ -20,9 +20,6 @@
    city.country_id.eq:long
    city.last_update.eq:date
 
-// Meta data description for endpoint
-.description:Read or list records from your city table in your sakila database
-
 // Type of endpoint
 .type:crud-read
 

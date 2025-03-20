@@ -11,9 +11,6 @@
    // session_id column's new value
    session_id:string
 
-// Meta data description for endpoint
-.description:Update endpoint updating one record in your items table in your shopping-cart-demo database filtering which item to update with item_id updating product_id, session_id fields with authentication and authorisation for root,admin roles
-
 // Type of endpoint
 .type:crud-update
 
@@ -22,13 +19,6 @@ validators.mandatory:x:@.arguments/*/item_id
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-.foreign-keys
-   .
-      column:product_id
-      table:products
-      foreign_column:product_id
-      foreign_name:name
-      long:bool:true
 
 // Opening up our database connection.
 data.connect:[generic|shopping-cart-demo]

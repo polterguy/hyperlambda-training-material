@@ -2,8 +2,6 @@
 // Write a Hyperlambda script to delete a specified folder on the server, including uninstalling a module if necessary.
 .arguments
    folder:string
-.description:Deletes the specified [folder] on your server
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

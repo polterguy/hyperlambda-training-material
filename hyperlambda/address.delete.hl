@@ -5,10 +5,7 @@
    // Primary key of record to delete, mandatory argument
    address_id:long
 
-// Meta data description for endpoint
-.description:Delete one record from your address table in your sakila database
-
-// Type of endpoint
+// Meta information about endpoint. 'crud-XXX' makes the endpoint possible to use as AI function from Machine Learning component
 .type:crud-delete
 
 // Logging invocation.

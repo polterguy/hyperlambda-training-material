@@ -5,9 +5,6 @@
    // Primary key of record to delete, mandatory argument
    ArtistId:long
 
-// Meta data description for endpoint
-.description:Delete one record from your Artist table in your chinook database
-
 // Type of endpoint
 .type:crud-delete
 

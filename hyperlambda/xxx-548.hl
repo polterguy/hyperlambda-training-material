@@ -42,9 +42,6 @@
    ArtistId.Name.like:string
 
 // Meta data description for endpoint
-.description:Returns unique and distinct values from your Album table in your chinook database
-
-// Type of endpoint
 .type:crud-distinct
 
 // Sanity checking that distinct column was passed in.

@@ -39,9 +39,6 @@
    ArtistId.Name.like:string
 
 // Meta data description for endpoint
-.description:Read or list records from your Album table in your chinook database
-
-// Type of endpoint
 .type:crud-read
 
 // Adding Cache-Control HTTP header.

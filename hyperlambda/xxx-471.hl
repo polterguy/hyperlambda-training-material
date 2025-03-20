@@ -8,9 +8,6 @@
    // type column value
    type:string
 
-// Meta data description for endpoint
-.description:Create endpoint inserting one record into your spice_urls table in your scraper database taking url, type with authentication and authorisation for root,admin roles
-
 // Type of endpoint
 .type:crud-create
 

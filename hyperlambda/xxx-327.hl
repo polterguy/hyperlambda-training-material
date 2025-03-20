@@ -11,8 +11,6 @@
    stream:bool
    data:string
    referrer:string
-.description:"OpenAI chat endpoint, for having conversations using 'gpt-xxx' models"
-.type:public
 
 // Forwarding to get Hyperlambda file.
 add:x:+

@@ -12,9 +12,6 @@
    // country_id column's new value
    country_id:long
 
-// Meta data description for endpoint
-.description:Update one record in your city table in your sakila database
-
 // Type of endpoint
 .type:crud-update
 

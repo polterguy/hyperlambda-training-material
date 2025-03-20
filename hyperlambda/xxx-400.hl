@@ -2,8 +2,6 @@
 // Write a Hyperlambda script to upload a specified backup file.
 .arguments
    file:*
-.description:Uploads the specified backup
-.type:internal
 .accept:multipart/form-data
 
 // Ensures user is authorized to access endpoint.

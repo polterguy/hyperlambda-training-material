@@ -55,13 +55,6 @@ lambda2hyper:x:@.arguments/*
 log.info:logistics.Tracking entry created
    username:x:@auth.ticket.get
    arguments:x:@lambda2hyper
-.foreign-keys
-   .
-      column:ShipmentID
-      table:Shipments
-      foreign_column:ShipmentID
-      foreign_name:ShipmentDate
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|logistics]

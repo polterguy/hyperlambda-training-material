@@ -2,13 +2,6 @@
 // Create a Hyperlambda script to update one record in a specified table in a database with optional filtering arguments.
 .arguments
 
-// Meta data description for endpoint
-.description:Update one record in your {table} table in your {database} database
-
-// Type of endpoint
-.type:crud-update
-.foreign-keys
-
 // Opening up our database connection.
 data.connect:{database}
    database-type:{database-type}

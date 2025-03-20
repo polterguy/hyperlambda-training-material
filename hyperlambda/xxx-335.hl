@@ -2,7 +2,6 @@
 // Write a Hyperlambda script to return the greeting for a specified type.
 .arguments
    type:string
-.description:Returns the greeting for the specified type
 
 // Sanity checking invocation.
 validators.mandatory:x:@.arguments/*/type

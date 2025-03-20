@@ -2,8 +2,6 @@
 // Create a Hyperlambda script that changes the password of the currently authenticated user, ensuring the user is authorized.
 .arguments
    password:string
-.description:Changes the password of the currently authenticated user
-.type:public
 
 // Sanity checking invocation.
 validators.mandatory:x:@.arguments/*/password

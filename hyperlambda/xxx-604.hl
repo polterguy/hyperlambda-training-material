@@ -37,13 +37,6 @@
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
-.foreign-keys
-   .
-      column:CustomerId
-      table:Customer
-      foreign_column:CustomerId
-      foreign_name:FirstName
-      long:bool:true
 
 // Opening up database connection.
 data.connect:[generic|chinook]

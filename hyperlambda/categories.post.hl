@@ -11,9 +11,6 @@
    // Picture column value
    Picture:string
 
-// Meta data description for endpoint
-.description:Create one record in your Categories table in your northwind database
-
 // Type of endpoint
 .type:crud-create
 

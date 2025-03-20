@@ -24,9 +24,6 @@
    category.last_update.neq:date
    category.last_update.eq:date
 
-// Meta data description for endpoint
-.description:Counts items from your category table in your sakila database
-
 // Type of endpoint
 .type:crud-count
 

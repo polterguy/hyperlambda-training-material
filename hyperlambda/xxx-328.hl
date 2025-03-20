@@ -2,8 +2,6 @@
 // Write a Hyperlambda script to return the maximum tokens for a specified completion slot.
 .arguments
    slot:string
-.description:Returns maximum tokens for specified completion slot
-.type:internal
 
 // Making sure user is authenticate to access endpoint
 auth.ticket.verify:root

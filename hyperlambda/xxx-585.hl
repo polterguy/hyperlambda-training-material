@@ -67,13 +67,6 @@ lambda2hyper:x:@.arguments/*
 log.info:chinook.Employee entry updated
    username:x:@auth.ticket.get
    arguments:x:@lambda2hyper
-.foreign-keys
-   .
-      column:ReportsTo
-      table:Employee
-      foreign_column:EmployeeId
-      foreign_name:LastName
-      long:bool:true
 
 // Opening up our database connection.
 data.connect:[generic|chinook]

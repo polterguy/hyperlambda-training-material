@@ -2,7 +2,6 @@
 // Write a Hyperlambda script to return the initial questionnaire for a specified type.
 .arguments
    type:string
-.description:Returns the initial questionnaire for the specified type
 
 // Sanity checking invocation.
 validators.mandatory:x:@.arguments/*/type

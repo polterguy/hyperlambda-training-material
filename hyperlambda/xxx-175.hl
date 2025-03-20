@@ -2,8 +2,6 @@
 // Create a Hyperlambda endpoint to return the arguments required by specified Hyperlambda code.
 .arguments
    hyperlambda:string
-.description:Returns arguments the specified Hyperlambda require if any
-.type:internal
 
 // Ensures user is authorized to access endpoint.
 auth.ticket.verify:root

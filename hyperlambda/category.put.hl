@@ -8,9 +8,6 @@
    // name column's new value
    name:string
 
-// Meta data description for endpoint
-.description:Update one record in your category table in your sakila database
-
 // Type of endpoint
 .type:crud-update
 

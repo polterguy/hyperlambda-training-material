@@ -10,7 +10,7 @@ validators.mandatory:x:@.arguments/*/type
 data.connect:[generic|magic]
 
    // Retrieving all questions from database.
-   data.select:"\nselect greeting\n\tfrom ml_types\n\twhere type = @type"
+   data.select:"select greeting from ml_types where type = @type"
       type:x:@.arguments/*/type
 
    // Returning greeting to caller.

@@ -1,3 +1,0 @@
-
-// What is magic.node?
-magic.node is a simple name/value/children graph object, along with a Hyperlambda parser that allows you to create textual representations of graph objects. It enables declarative execution trees in a format similar to YAML, which can then be accessed programmatically from C# or Hyperlambda.

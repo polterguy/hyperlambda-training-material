@@ -11,6 +11,8 @@
    public
       type:bool
       mandatory:bool:false
+
+// Use any Angular icon reference here to make sure the action gets a toolbox icon
 .icon:warning
 
 // Sanity checking invocation.

@@ -52,10 +52,6 @@
    CarrierID.Name.eq:string
    CarrierID.Name.like:string
 
-// Columns with custom handling as frontend is generated.
-.handling
-   Drivers.Phone:phone
-
 // Adding Cache-Control HTTP header.
 response.headers.set
    Cache-Control:public, max-age=50

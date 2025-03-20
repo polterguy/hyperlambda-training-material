@@ -28,10 +28,6 @@
 // Type of endpoint
 .type:crud-create
 
-// Columns with custom handling as we generate a frontend
-.handling
-   phone:phone
-
 // Logging invocation.
 auth.ticket.get
 lambda2hyper:x:@.arguments/*

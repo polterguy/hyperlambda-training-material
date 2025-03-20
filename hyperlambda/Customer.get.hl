@@ -111,11 +111,6 @@
 // Type of endpoint
 .type:crud-read
 
-// Columns with custom handling as frontend is generated.
-.handling
-   Customer.Phone:phone
-   Customer.Email:email
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 

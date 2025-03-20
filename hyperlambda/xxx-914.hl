@@ -44,11 +44,6 @@
    Carriers.Email.neq:string
    Carriers.Email.eq:string
 
-// Columns with custom handling as frontend is generated.
-.handling
-   Carriers.Phone:phone
-   Carriers.Email:email
-
 // Adding Cache-Control HTTP header.
 response.headers.set
    Cache-Control:public, max-age=50

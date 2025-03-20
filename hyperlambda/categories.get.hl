@@ -24,10 +24,6 @@
 // Type of endpoint
 .type:crud-read
 
-// Columns with custom handling as frontend is generated.
-.handling
-   Categories.Picture:image
-
 // Opening up our database connection.
 data.connect:[generic|northwind]
    database-type:sqlite

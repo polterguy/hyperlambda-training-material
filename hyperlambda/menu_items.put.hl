@@ -17,10 +17,6 @@
    // position column's new value
    position:long
 
-// Columns with custom handling as we generate a frontend
-.handling
-   url:url
-
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/id
 

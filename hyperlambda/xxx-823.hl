@@ -29,11 +29,6 @@
    // CreatedAt column value
    CreatedAt:date
 
-// Columns with custom handling as we generate a frontend
-.handling
-   Email:email
-   Phone:phone
-
 // Opening up database connection.
 data.connect:[generic|saas]
    database-type:sqlite

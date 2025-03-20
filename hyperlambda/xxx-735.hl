@@ -11,10 +11,6 @@
    // email column's new value
    email:string
 
-// Columns with custom handling as we generate a frontend
-.handling
-   email:email
-
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/id
 

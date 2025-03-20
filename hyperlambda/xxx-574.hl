@@ -41,11 +41,6 @@
    // SupportRepId column value
    SupportRepId:long
 
-// Columns with custom handling as we generate a frontend
-.handling
-   Phone:phone
-   Email:email
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,service
 

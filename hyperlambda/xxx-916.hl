@@ -15,11 +15,6 @@
    // Email column's new value
    Email:string
 
-// Columns with custom handling as we generate a frontend
-.handling
-   Phone:phone
-   Email:email
-
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/CarrierID
 

@@ -20,10 +20,6 @@
 // Type of endpoint
 .type:crud-update
 
-// Columns with custom handling as we generate a frontend
-.handling
-   phone:phone
-
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/address_id
 

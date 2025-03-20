@@ -29,11 +29,6 @@
    // Country column's new value
    Country:string
 
-// Columns with custom handling as we generate a frontend
-.handling
-   Email:email
-   Phone:phone
-
 // Sanity checking invocation, making sure primary key(s) are specified.
 validators.mandatory:x:@.arguments/*/CustomerId
 

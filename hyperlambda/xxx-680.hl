@@ -19,10 +19,6 @@
    menu_id.name.eq:string
    menu_id.name.like:string
 
-// Columns with custom handling as frontend is generated.
-.handling
-   menu_items.url:url
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

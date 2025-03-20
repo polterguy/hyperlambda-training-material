@@ -19,10 +19,6 @@
 // Type of endpoint
 .type:crud-create
 
-// Columns with custom handling as we generate a frontend
-.handling
-   url:url
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root,admin
 

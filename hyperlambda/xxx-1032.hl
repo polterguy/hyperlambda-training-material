@@ -51,10 +51,6 @@
    Users.Role.neq:string
    Users.Role.eq:string
 
-// Columns with custom handling as frontend is generated.
-.handling
-   Users.Email:email
-
 // Adding Cache-Control HTTP header.
 response.headers.set
    Cache-Control:public, max-age=50

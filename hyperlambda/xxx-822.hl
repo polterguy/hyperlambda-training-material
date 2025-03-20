@@ -85,11 +85,6 @@
    Customer.CreatedAt.neq:date
    Customer.CreatedAt.eq:date
 
-// Columns with custom handling as frontend is generated.
-.handling
-   Customer.Email:email
-   Customer.Phone:phone
-
 // Adding Cache-Control HTTP header.
 response.headers.set
    Cache-Control:private, max-age=50

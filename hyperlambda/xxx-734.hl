@@ -11,10 +11,6 @@
    // created_at column value
    created_at:date
 
-// Columns with custom handling as we generate a frontend
-.handling
-   email:email
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

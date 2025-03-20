@@ -51,11 +51,6 @@
    Customers.Email.neq:string
    Customers.Email.eq:string
 
-// Columns with custom handling as frontend is generated.
-.handling
-   Customers.Phone:phone
-   Customers.Email:email
-
 // Adding Cache-Control HTTP header.
 response.headers.set
    Cache-Control:public, max-age=50

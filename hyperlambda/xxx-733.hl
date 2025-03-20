@@ -16,10 +16,6 @@
    users.email.eq:string
    users.created_at.eq:date
 
-// Columns with custom handling as frontend is generated.
-.handling
-   users.email:email
-
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:guest
 

@@ -1,0 +1,88 @@
+
+// Removes the specified [roles] from the specified [username]. - With Python equivalent
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   roles
+      type:array
+      mandatory:bool:true
+.icon:supervisor_account
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/roles
+
+// Connecting to database.
+data.connect:[generic|magic]
+
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
+
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Removing [roles] from [username]
+   for-each:x:@.arguments/*/roles/*
+      data.delete
+         table:users_roles
+         where
+            and
+               user.eq:x:@.arguments/*/username
+               role.eq:x:@.dp/#
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def remove_roles_from_user(username, roles):
+    """
+    This function removes the specified roles from the specified username.
+    
+    :param username: The username to remove roles from
+    :param roles: A list of roles to remove from the username
+    :raises ValueError: If username or roles are not provided
+    :raises Exception: If the user does not exist
+    """
+    # Validate mandatory fields
+    if not username:
+        raise ValueError("Username is mandatory")
+    if not roles:
+        raise ValueError("Roles are mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('magic.db')
+    cursor = conn.cursor()
+    
+    # Check if the user exists
+    cursor.execute("SELECT username FROM users WHERE username = ?", (username,))
+    if not cursor.fetchone():
+        raise Exception(f"No such user: {username}")
+    
+    # Remove the specified roles from the user
+    for role in roles:
+        cursor.execute("DELETE FROM users_roles WHERE user = ? AND role = ?", (username, role))
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+# Example usage
+# remove_roles_from_user("example_user", ["admin", "editor"])
+
+*/

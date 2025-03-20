@@ -1,7 +1,0 @@
-// Connects to database and inserts a new user into the 'roles' table
-pgsql.connect:[my_connection|customers]
-   pgsql.create
-      table:roles
-      values
-         name:employee
-         description:An employee at our Acme, Inc.

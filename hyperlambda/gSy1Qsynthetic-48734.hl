@@ -1,0 +1,75 @@
+
+// Write a Hyperlambda script to create a log item using specified arguments like type, content, and meta information. - With Python equivalent
+.arguments
+   type:string
+   content:string
+   meta:*
+.type:public
+
+/*
+ * Ensures user is authorized to access endpoint.
+ * Notice, we only allow authenticated users to access this endpoint.
+ * What roles they belong to is not important, as long as they're authenticated.
+ */
+auth.ticket.verify
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/content
+validators.enum:x:@.arguments/*/type
+   .:info
+   .:error
+   .:debug
+   .:fatal
+
+// Creating a log entry using the specified type of logger.
+add:x:../*/log-invocation
+   get-nodes:x:@.arguments/*/meta/*
+set-name:x:../*/log-invocation
+   strings.concat
+      .:log.
+      get-value:x:@.arguments/*/type
+log-invocation:x:@.arguments/*/content
+
+// Returning success to caller.
+return
+   result:success
+
+
+/*
+
+# Python equivalent
+import os
+import zipfile
+from flask import Flask, send_file, Response
+
+app = Flask(__name__)
+
+@app.route('/download-folder/<path:folder>', methods=['GET'])
+def download_folder(folder):
+    # Simulate verifying root access
+    if not verify_root_access():
+        return Response("Access denied", status=403)
+
+    # Create a zip file of the folder
+    zip_filename = f"{os.path.basename(folder)}.zip"
+    zip_filepath = f"/tmp/{zip_filename}"
+    with zipfile.ZipFile(zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, dirs, files in os.walk(folder):
+            for file in files:
+                file_path = os.path.join(root, file)
+                arcname = os.path.relpath(file_path, start=folder)
+                zipf.write(file_path, arcname)
+
+    # Send the zip file as a response
+    return send_file(zip_filepath, as_attachment=True, attachment_filename=zip_filename, mimetype='application/zip')
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage: Run the Flask app
+if __name__ == '__main__':
+    app.run(debug=True)
+
+*/

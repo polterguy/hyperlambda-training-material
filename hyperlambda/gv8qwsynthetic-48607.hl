@@ -1,0 +1,78 @@
+
+// Create a Hyperlambda script to return a named task to the caller. - With Python equivalent
+.arguments
+   offset:long
+   limit:long
+   filter:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Retrieves all scheduled tasks in the system.
+add:x:../*/tasks.list
+   get-nodes:x:@.arguments/*/offset
+   get-nodes:x:@.arguments/*/limit
+tasks.list:x:@.arguments/*/filter
+
+// Retrieving schedules for tasks, if any.
+include:x:@tasks.list/*
+   tasks.get:x:@.dp/#/*/id
+      schedules:true
+   add:x:+/*
+      get-nodes:x:@tasks.get/*/schedules/*
+   add:x:./*/return/*/schedules
+      .
+   return
+      schedules
+
+// Returning the results of the evaluation to caller.
+return-nodes:x:@tasks.list/*
+
+
+/*
+
+# Python equivalent
+def update_task(task_id, description, hyperlambda_code=None):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Check if hyperlambda_code is provided and not empty
+    if hyperlambda_code and hyperlambda_code.strip():
+        # Simulate converting Hyperlambda to a task
+        task_lambda = convert_hyperlambda_to_task(hyperlambda_code)
+        # Simulate updating the task with new lambda
+        update_task_lambda(task_id, task_lambda)
+
+    # Simulate updating the task description
+    update_task_description(task_id, description)
+
+    # Return success result
+    return {"result": "success"}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def convert_hyperlambda_to_task(hyperlambda_code):
+    # Simulate converting Hyperlambda code to a task
+    # This is a placeholder implementation
+    return f"Task based on {hyperlambda_code}"
+
+def update_task_lambda(task_id, task_lambda):
+    # Simulate updating the task lambda
+    print(f"Updating task lambda for ID: {task_id} with Lambda: {task_lambda}")
+
+def update_task_description(task_id, description):
+    # Simulate updating the task description
+    print(f"Updating task description for ID: {task_id} with Description: {description}")
+
+# Example usage
+try:
+    result = update_task("task1", "Updated Task Description", "example_hyperlambda_code")
+    print(result)
+except PermissionError as e:
+    print(e)
+
+*/

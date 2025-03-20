@@ -1,0 +1,50 @@
+
+// Generate a Hyperlambda snippet that fetches product details from the inventory database and products table. - With Python equivalent
+
+// Fetches product details from the inventory database and products table.
+data.connect:inventory_db
+
+   // MySQL database type selected.
+   database-type:mysql
+
+   // Retrieving product records.
+   data.read
+      database-type:mysql
+      table:products
+      sort
+         created_at
+      direction:asc
+
+
+/*
+
+# Python equivalent
+import psycopg2
+
+def retrieve_access_logs():
+    # Connect to the security database
+    connection = psycopg2.connect(
+        host='your_host',
+        user='your_user',
+        password='your_password',
+        dbname='security_db'
+    )
+    
+    cursor = connection.cursor()
+    
+    # Query to retrieve access logs from the access_logs table
+    query = "SELECT * FROM access_logs"
+    
+    cursor.execute(query)
+    access_logs = cursor.fetchall()
+    
+    cursor.close()
+    connection.close()
+    
+    return access_logs
+
+# Example usage
+access_logs = retrieve_access_logs()
+print(access_logs)
+
+*/

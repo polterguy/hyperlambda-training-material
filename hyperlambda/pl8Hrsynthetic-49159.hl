@@ -1,0 +1,71 @@
+
+// Create a Hyperlambda script to generate a grouped chart image with specified dimensions, bar values, and legend. - With Python equivalent
+image.chart:grouped
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets
+
+
+/*
+
+# Python equivalent
+import matplotlib.pyplot as plt
+import numpy as np
+
+def generate_grouped_chart_image():
+    """
+    This function generates a grouped chart image with specified dimensions, bar values, and legend.
+    
+    :return: The file path of the saved chart image
+    """
+    # Data for the grouped bar chart
+    categories = ['Spring', 'Summer', 'Autumn']
+    values = {
+        'Phones': [2, 4, 2],
+        'Computers': [5, 7, 5],
+        'Tablets': [10, 10, 4]
+    }
+    
+    # Create the grouped bar chart
+    x = np.arange(len(categories))
+    width = 0.2
+    
+    fig, ax = plt.subplots(figsize=(6, 3))
+    
+    for i, (label, data) in enumerate(values.items()):
+        ax.bar(x + i * width, data, width, label=label)
+    
+    # Add labels and legend
+    ax.set_xticks(x + width)
+    ax.set_xticklabels(categories)
+    ax.legend()
+    
+    # Save the chart to a file
+    file_path = '/chart.png'
+    plt.savefig(file_path)
+    plt.close(fig)
+    
+    # Return the file path
+    return file_path
+
+# Example usage
+# generate_grouped_chart_image()
+
+*/

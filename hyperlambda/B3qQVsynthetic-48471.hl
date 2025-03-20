@@ -1,0 +1,35 @@
+
+// Generate a Hyperlambda snippet that checks every second while [.time_left] is above 0. - With Python equivalent
+
+// Checks every second while [.time_left] is above 0.
+.time_left:int:5
+while
+   gt
+      get-value:x:@.time_left
+      .:int:0
+   .lambda
+
+      // Logging remaining time.
+      log.info:Time remaining
+
+      // Decrement time.
+      math.decrement:x:@.time_left
+
+
+/*
+
+# Python equivalent
+import logging
+
+def repeat_logging_while_attempts_below_3():
+    logging.basicConfig(level=logging.INFO)
+    
+    attempts = 0
+    while attempts < 3:
+        logging.info("Attempting task")
+        attempts += 1
+
+# Example usage
+repeat_logging_while_attempts_below_3()
+
+*/

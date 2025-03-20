@@ -1,0 +1,12 @@
+// Increment a value by 1 (default step) – with Python equivalent
+.value:int:3
+math.increment:x:@.value
+
+/*
+
+# Python equivalent
+# Increment a numeric value by 1 (default step)
+value = 3
+value += 1  # value is now 4
+
+*/

@@ -1,0 +1,81 @@
+
+// Create a Hyperlambda action to create a log entry with a specified 'type' (info, error, fatal, debug) and 'message'. Include optional 'args' for additional parameters. - With Python equivalent
+.arguments
+   type
+      type:enum
+      mandatory:bool:true
+      values
+         .:info
+         .:error
+         .:fatal
+         .:debug
+   message
+      type:string
+      mandatory:bool:true
+   args
+      type:key-value
+      mandatory:bool:false
+.icon:account_balance
+
+// Lambda object actually creating our log entry.
+.invoke-log
+   name:x:@.arguments/*/message
+
+// Parametrising invocation.
+set-name:x:@.invoke-log/*/name
+   strings.concat
+      .:log.
+      get-value:x:@.arguments/*/type
+add:x:@.invoke-log/*
+   get-nodes:x:@.arguments/*/args/*
+
+// Invoking lambda object responsible for creating our log entry.
+eval:x:@.invoke-log
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_ml_request_record(database, record_id):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Validate the record ID
+    if record_id is None:
+        raise ValueError("Record ID is mandatory")
+
+    # Connect to the specified database
+    connection = sqlite3.connect(database)
+    cursor = connection.cursor()
+
+    # Build the SQL query
+    query = "DELETE FROM ml_requests WHERE id = ?"
+
+    # Execute the query
+    cursor.execute(query, (record_id,))
+    connection.commit()
+
+    # Get the number of affected rows
+    affected_rows = cursor.rowcount
+
+    # Close the connection
+    connection.close()
+
+    # Return the number of affected rows
+    return {"affected": affected_rows}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+try:
+    result = delete_ml_request_record("magic.db", 12345)
+    print(result)
+except (ValueError, PermissionError) as e:
+    print(e)
+
+*/

@@ -1,0 +1,15 @@
+
+// Example: Convert an uppercase string to lowercase. - With Python equivalent
+
+// Result: "hello"
+strings.to-lower:HELLO
+
+
+/*
+
+# Python equivalent
+# Convert an uppercase string to lowercase
+uppercase_string = "HELLO"
+lowercase_string = uppercase_string.lower()
+
+*/

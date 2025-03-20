@@ -1,0 +1,21 @@
+
+// Example: Trim specific characters from the end of a string. - With Python equivalent
+
+// The trailing "xyz" will be removed
+strings.trim-end:abcxyzxyz
+   .:xyz
+
+// Result: "abc"
+
+
+/*
+
+# Python equivalent
+# Example: Trim specific characters from the end of a string.
+string_with_suffix = "abcxyzxyz"
+trimmed_string = string_with_suffix.rstrip("xyz")
+
+# Example usage
+# trimmed_string will be "abc"
+
+*/

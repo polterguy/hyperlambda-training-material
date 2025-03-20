@@ -1,0 +1,30 @@
+
+// Example of endpoint taking two arguments, concatenating them, and returning the result using [return]. - With Python equivalent
+.arguments
+   arg1:string
+   arg2:string
+strings.concat
+   get-value:x:@.arguments/*/arg1
+   get-value:x:@.arguments/*/arg2
+
+// MUST call [unwrap] otherwise we're simply returning the expression.
+unwrap:x:+/*
+return
+   result:x:@strings.concat
+
+
+/*
+
+# Python equivalent
+def concatenate_strings(arg1, arg2):
+    # Concatenate the two strings
+    result = arg1 + arg2
+    return result
+
+# Example usage
+arg1 = "Hello"
+arg2 = "World"
+result = concatenate_strings(arg1, arg2)
+print(result)  # Output: "HelloWorld"
+
+*/

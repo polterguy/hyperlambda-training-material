@@ -1,0 +1,29 @@
+
+// Connect to magic database and returns all roles - With Python equivalent
+data.connect:magic
+   data.read
+      table:roles
+      columns
+         name
+
+
+/*
+
+# Python equivalent
+# Connect to magic database and return all roles
+import sqlite3
+
+# Connect to the SQLite database
+connection = sqlite3.connect('magic.db')
+cursor = connection.cursor()
+
+# Read all role names from the roles table
+cursor.execute("SELECT name FROM roles")
+
+# Fetch all results
+roles = cursor.fetchall()
+
+# Close the connection
+connection.close()
+
+*/

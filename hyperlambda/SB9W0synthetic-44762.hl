@@ -1,0 +1,26 @@
+
+// Example: Use variables for the regex pattern and replacement string. - With Python equivalent
+.pattern:"\\d"
+.replacement:X
+.source:a1b2c3
+strings.regex-replace:x:@.source
+   get-value:x:@.pattern
+   get-value:x:@.replacement
+
+// Result: "aXbXcX"
+
+
+/*
+
+# Python equivalent
+# Use variables for the regex pattern and replacement string
+import re
+
+pattern = r"\d"
+replacement = "X"
+source = "a1b2c3"
+
+# Replace all digits with 'X'
+result = re.sub(pattern, replacement, source)
+
+*/

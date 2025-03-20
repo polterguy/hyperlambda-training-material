@@ -1,0 +1,16 @@
+
+// Return the URL of the current request - With Python equivalent
+request.url
+
+// Example result ==> magic/system/evaluator/evaluate
+
+// Notice, URL will always be returned as relative URL
+
+
+/*
+
+# Python equivalent
+# Return the URL of the current request
+url = request.url
+
+*/

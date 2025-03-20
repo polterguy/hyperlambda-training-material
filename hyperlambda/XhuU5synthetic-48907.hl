@@ -1,0 +1,57 @@
+
+// Authenticates the user with the specified [username] and [password]. - With Python equivalent
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   password
+      type:string
+      mandatory:bool:true
+.icon:shield
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
+
+// Invokes slot responsible for authenticating caller.
+execute:magic.auth.authenticate
+   username:x:@.arguments/*/username
+   password:x:@.arguments/*/password
+
+// Returning resulting ticket/token to caller.
+yield
+   ticket:x:@execute/*/ticket
+
+
+/*
+
+# Python equivalent
+def authenticate_user(username, password):
+    """
+    This function authenticates the user with the specified username and password.
+    
+    :param username: The username of the user
+    :param password: The password of the user
+    :return: The authentication ticket
+    :raises ValueError: If username or password is not provided
+    """
+    # Validate mandatory fields
+    if not username:
+        raise ValueError("Username is mandatory")
+    if not password:
+        raise ValueError("Password is mandatory")
+    
+    # Authenticate the user
+    ticket = authenticate(username, password)
+    
+    # Return the authentication ticket
+    return ticket
+
+def authenticate(username, password):
+    # Placeholder for authentication logic
+    return "example_ticket"
+
+# Example usage
+# authenticate_user("example_user", "example_pass")
+
+*/

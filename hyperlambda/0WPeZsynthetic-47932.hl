@@ -1,0 +1,57 @@
+
+// Traverse node hierarchy and look for nodes with a name starting with 'n'. Then change their values to 'visited'. - With Python equivalent
+.result
+.data
+   n1:howdy
+      n2:nope!
+   some-node-1
+      n3:" world"
+         is-not-considered
+
+            // Considered since it starts with 'n' character
+            nanna:". "
+            n4:old-value
+for-each:x:@.data/**
+   get-name:x:@.dp/#
+   if
+      strings.starts-with:x:@get-name
+         .:n
+      .lambda
+         set-value:x:@.dp/#
+            .:visited
+
+
+/*
+
+# Python equivalent
+def traverse_and_update(data):
+    # Recursive function to traverse and update nodes
+    def update_nodes(node):
+        for key, value in node.items():
+            if key.startswith('n'):
+                node[key] = 'visited'
+            if isinstance(value, dict):
+                update_nodes(value)
+
+    # Start the traversal and update process
+    update_nodes(data)
+    return data
+
+# Example usage
+data = {
+    'n1': {
+        'n2': 'nope!'
+    },
+    'some-node-1': {
+        'n3': {
+            'is-not-considered': {
+                'nanna': '. ',
+                'n4': 'old-value'
+            }
+        }
+    }
+}
+updated_data = traverse_and_update(data)
+print(updated_data)
+
+*/

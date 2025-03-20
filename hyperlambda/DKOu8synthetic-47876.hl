@@ -1,0 +1,39 @@
+
+// Subtract a computed sum and another number from a base value - With Python equivalent
+math.subtract:int:30
+
+   // compute a sum to subtract
+   math.add
+
+      // first addend
+      .:int:5
+
+      // second addend (5 + 3 = 8)
+      .:int:3
+
+   // subtract 2 after subtracting the above sum
+   .:int:2
+
+   // Step-by-step: 30 - 8 = 22, then 22 - 2 = 20
+
+
+/*
+
+# Python equivalent
+def subtract_computed_sum(base_value, addend1, addend2, subtractor):
+    # Compute the sum
+    computed_sum = addend1 + addend2
+
+    # Subtract the computed sum and another number from the base value
+    result = base_value - computed_sum - subtractor
+    return result
+
+# Example usage
+base_value = 30
+addend1 = 5
+addend2 = 3
+subtractor = 2
+result = subtract_computed_sum(base_value, addend1, addend2, subtractor)
+print(result)  # Output: 20
+
+*/

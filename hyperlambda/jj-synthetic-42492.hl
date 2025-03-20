@@ -1,0 +1,23 @@
+
+// Example: Replace all characters not in the given set (allow only lowercase letters). - With Python equivalent
+.text:abc123!?XYZ
+strings.replace-not-of:x:@.text
+   .:abcdefghijklmnopqrstuvwxyz
+   .:-
+
+/*
+ * Result: "abc--------"
+ * (digits, punctuation, and uppercase letters were replaced with '-')
+ */
+
+
+/*
+
+# Python equivalent
+# Variable for the input text
+text = "make me upper"
+
+# Convert the text to uppercase
+uppercase_text = text.upper()
+
+*/

@@ -1,0 +1,24 @@
+
+// Creates a bar chart - With Python equivalent
+image.chart:bars
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring:int:2
+      Summer:int:5
+      Autumn:int:10
+
+
+/*
+
+# Python equivalent
+# Creates a bar chart
+import matplotlib.pyplot as plt
+
+bars = {'Spring': 2, 'Summer': 5, 'Autumn': 10}
+plt.bar(bars.keys(), bars.values())
+plt.savefig('/chart.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+*/

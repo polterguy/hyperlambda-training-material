@@ -1,0 +1,64 @@
+
+// Write a Hyperlambda script to ask OpenAI a question with a specified type and return the answer to the caller. - With Python equivalent
+.arguments
+   prompt:string
+   type:string
+   references:bool
+   chat:bool
+   recaptcha_response:string
+   session:string
+   user_id:string
+.type:public
+
+/*
+ * Forward invocation to chat file, since there are no real differences
+ * between the two endpoints, since we're checking model type in chat file
+ * and acting accordingly.
+ * 
+ * However, we still need to keep this file for legacy reasons.
+ */
+add:x:+
+   get-nodes:x:@.arguments/*
+io.file.execute:/system/openai/chat.get.hl
+return:x:-/*
+
+
+/*
+
+# Python equivalent
+def ask_openai(prompt, type, references, chat, recaptcha_response, session, user_id):
+    """
+    This function asks OpenAI a question with a specified type and returns the answer.
+    
+    :param prompt: The question to ask OpenAI
+    :param type: The type of question
+    :param references: Boolean indicating if references are needed
+    :param chat: Boolean indicating if it's a chat session
+    :param recaptcha_response: The recaptcha response string
+    :param session: The session identifier
+    :param user_id: The user identifier
+    :return: The answer from OpenAI
+    """
+    # Collect arguments
+    arguments = {
+        "prompt": prompt,
+        "type": type,
+        "references": references,
+        "chat": chat,
+        "recaptcha_response": recaptcha_response,
+        "session": session,
+        "user_id": user_id
+    }
+    
+    # Execute the OpenAI chat function
+    response = execute_openai_chat(arguments)
+    
+    # Return the response
+    return response
+
+def execute_openai_chat(arguments):
+    # This function would interact with OpenAI's API
+    # Placeholder for actual implementation
+    return "OpenAI response based on arguments"
+
+*/

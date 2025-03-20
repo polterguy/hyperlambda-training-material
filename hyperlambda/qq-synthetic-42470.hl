@@ -1,0 +1,24 @@
+
+// Example: Use variables for the target substring and replacement. - With Python equivalent
+.target:world
+.replacement:WORLD!
+.phrase:Hello world
+strings.replace:x:@.phrase
+   get-value:x:@.target
+   get-value:x:@.replacement
+
+// Result: "Hello WORLD!"
+
+
+/*
+
+# Python equivalent
+import re
+
+# Original string
+original = "abc123xyz"
+
+# Remove all digits from the string using a regex
+modified_string = re.sub(r"\d+", "", original)
+
+*/

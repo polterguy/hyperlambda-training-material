@@ -1,0 +1,52 @@
+
+// Example of how to send an email using Hyperlambda. - With Python equivalent
+mail.smtp.send
+   message
+      to
+         Thomas Hansen:thomas@gaiasoul.com
+      from
+         Testing Gmail:testing.anarchy@gmail.com
+      subject:This is subject
+      entity:text/plain
+         content:This is body
+
+
+/*
+
+# Python equivalent
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+def send_email():
+    # SMTP server configuration
+    smtp_server = "your_smtp_server"
+    smtp_port = 587
+    smtp_username = "your_username"
+    smtp_password = "your_password"
+    use_tls = True
+
+    # Email message configuration
+    from_email = "testing.anarchy@gmail.com"
+    to_email = "thomas@gaiasoul.com"
+    subject = "This is subject"
+    body_content = "This is body"
+
+    # Create the email message
+    msg = MIMEMultipart()
+    msg['From'] = from_email
+    msg['To'] = to_email
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body_content, 'plain'))
+
+    # Send the email
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        if use_tls:
+            server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.sendmail(from_email, to_email, msg.as_string())
+
+# Example usage
+send_email()
+
+*/

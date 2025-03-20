@@ -1,0 +1,28 @@
+
+// Add children from multiple sources into multiple destinations - With Python equivalent
+.dest
+.dest
+.src1
+   foo1:bar1
+.src2
+   foo2:bar2
+add:x:../*/.dest
+   get-nodes:x:@.src1/*
+   get-nodes:x:@.src2/*
+
+
+/*
+
+# Python equivalent
+# Add children from multiple sources into multiple destinations
+dest1 = {}
+dest2 = {}
+src1 = {"foo1": "bar1"}
+src2 = {"foo2": "bar2"}
+
+dest1.update(src1)
+dest1.update(src2)
+dest2.update(src1)
+dest2.update(src2)
+
+*/

@@ -1,0 +1,34 @@
+
+// Write a Hyperlambda snippet that retrieves a post's body content from an API. - With Python equivalent
+
+// Retrieves a post's body content.
+http.get:"https://jsonplaceholder.typicode.com/posts/2"
+
+   // Converts response.
+   convert:true
+
+// Sets [.post_body] to the post's body
+.post_body
+set-value:x:@.post_body
+   get-value:x:@http.get/*/content/*/body
+
+
+/*
+
+# Python equivalent
+import requests
+
+def fetch_photo_title():
+    # Invoke the HTTP GET endpoint
+    response = requests.get("https://jsonplaceholder.typicode.com/photos/1")
+    response_data = response.json()
+    
+    # Extract the photo title from the response
+    photo_title = response_data.get('title')
+    return photo_title
+
+# Example usage
+photo_title = fetch_photo_title()
+print(photo_title)
+
+*/

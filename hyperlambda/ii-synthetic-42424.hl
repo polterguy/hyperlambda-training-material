@@ -1,0 +1,25 @@
+
+// Example: Find case-insensitive "foo" occurrences. - With Python equivalent
+strings.matches:Foo foo FOO
+   .:(?i)foo
+
+/*
+ * Resulting matches:
+ * .:Foo
+ * .:foo
+ * .:FOO
+ */
+
+
+/*
+
+# Python equivalent
+import re
+
+# String without digit sequences
+text = "no digits here"
+
+# Attempt to find digit sequences in the string
+digit_sequences = re.findall(r"\d+", text)
+
+*/

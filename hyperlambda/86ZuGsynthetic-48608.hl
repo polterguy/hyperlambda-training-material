@@ -1,0 +1,74 @@
+
+// Create a Hyperlambda script to update an existing task according to specified arguments. - With Python equivalent
+.arguments
+   id:string
+   description:string
+   hyperlambda:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Converting Hyperlambda to lambda.
+.lambda
+if
+   and
+      exists:x:@.arguments/*/hyperlambda
+      not
+         eq
+            get-value:x:@.arguments/*/hyperlambda
+            .
+      not
+         eq
+            get-value:x:@.arguments/*/hyperlambda
+            .:
+   .lambda
+      add:x:@.lambda/@.lambda
+         hyper2lambda:x:@.arguments/*/hyperlambda
+      add:x:../*/tasks.update
+         get-nodes:x:@.lambda/@.lambda
+tasks.update:x:@.arguments/*/id
+   description:x:@.arguments/*/description
+
+// Returning success to caller.
+return
+   result:success
+
+
+/*
+
+# Python equivalent
+def schedule_task(task_id, due_date, repeats=None):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Determine scheduling parameters
+    if repeats:
+        schedule_with_repeats(task_id, repeats)
+    else:
+        schedule_with_due_date(task_id, due_date)
+
+    # Return success result
+    return {"result": "success"}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def schedule_with_repeats(task_id, repeats):
+    # Simulate scheduling a task with repeats
+    print(f"Scheduling task with ID: {task_id} to repeat: {repeats}")
+
+def schedule_with_due_date(task_id, due_date):
+    # Simulate scheduling a task with a due date
+    print(f"Scheduling task with ID: {task_id} for due date: {due_date}")
+
+# Example usage
+try:
+    result = schedule_task("task1", "2023-12-31", "weekly")
+    print(result)
+except PermissionError as e:
+    print(e)
+
+*/

@@ -1,0 +1,25 @@
+// Append multiple new nodes to a destination node. Nodes to add are specified as arguments – with Python equivalent
+.arguments:*
+.parent
+add:x:@.parent
+   get-nodes:x:@.arguments/*
+
+/*
+
+# Python equivalent
+# Append multiple new nodes (provided as arguments) into a destination node
+def add_nodes_to_parent(parent, *args):
+    for arg in args:
+        parent.update(arg)
+
+# Example Usage:
+arguments = [
+    {'key1': 'value1'},
+    {'key2': 'value2'}
+]
+
+parent = {}
+add_nodes_to_parent(parent, *arguments)
+
+# After execution, parent = {'key1': 'value1', 'key2': 'value2'}
+*/

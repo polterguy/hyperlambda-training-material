@@ -1,0 +1,22 @@
+
+// Example: Use variables for the regex pattern and replacement string. - With Python equivalent
+.pattern:"\\d"
+.replacement:X
+.source:a1b2c3
+strings.regex-replace:x:@.source
+   get-value:x:@.pattern
+   get-value:x:@.replacement
+
+// Result: "aXbXcX"
+
+
+/*
+
+# Python equivalent
+# String to be split
+string = "one two three"
+
+# Split the string by spaces
+split_string = string.split(" ")
+
+*/

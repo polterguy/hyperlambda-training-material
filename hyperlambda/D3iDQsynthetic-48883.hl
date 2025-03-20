@@ -1,0 +1,50 @@
+
+// Returns all plans that exist. - With Python equivalent
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
+
+// Returns all plans in the system.
+execute:magic.workflows.actions.execute
+   name:hub-plans-get
+   filename:/modules/hub/workflows/actions/hub-plans-get.hl
+   arguments
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*
+
+
+/*
+
+# Python equivalent
+def get_all_plans():
+    """
+    This function returns all plans that exist.
+    
+    :return: A list of plans
+    """
+    # Authorize the user
+    authorize_user(["root", "gpt"])
+    
+    # Retrieve plans
+    plans = retrieve_plans()
+    
+    # Return the plans
+    return plans
+
+def authorize_user(roles):
+    # Placeholder for user authorization logic
+    pass
+
+def retrieve_plans():
+    # Placeholder for retrieving plans
+    return [{"plan": "example_plan"}]
+
+# Example usage
+# get_all_plans()
+
+*/

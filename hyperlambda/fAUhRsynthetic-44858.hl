@@ -1,0 +1,14 @@
+
+// Returns maximum legal value for a date object ==> 9999-12-31T23:59:59.999 - With Python equivalent
+date.max
+
+
+/*
+
+# Python equivalent
+# Returns maximum legal value for a date object
+from datetime import datetime
+
+max_date = datetime.max
+
+*/

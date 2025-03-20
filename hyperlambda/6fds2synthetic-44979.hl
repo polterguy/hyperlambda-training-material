@@ -1,0 +1,21 @@
+
+// Create HTTP GET invocation - With Python equivalent
+http.get:"https://docs.ainiro.io"
+
+
+/*
+
+# Python equivalent
+# Create HTTP GET invocation
+import requests
+
+url = "https://docs.ainiro.io"
+response = requests.get(url)
+
+# Check the response status
+if response.status_code == 200:
+    content = response.text
+else:
+    content = None
+
+*/

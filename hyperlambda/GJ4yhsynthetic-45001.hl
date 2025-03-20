@@ -1,0 +1,15 @@
+
+// Seed crypto library - With Python equivalent
+crypto.seed:Foo Bar Whatever Some Random Seed
+
+
+/*
+
+# Python equivalent
+# Seed crypto library
+import random
+
+seed_value = "Foo Bar Whatever Some Random Seed"
+random.seed(seed_value)
+
+*/

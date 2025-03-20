@@ -1,0 +1,20 @@
+
+// Example: Allowed set includes all characters in the input (no replacements occur). - With Python equivalent
+.input:ABC123
+strings.replace-not-of:x:@.input
+   .:ABC123
+   .:#
+
+// Result: "ABC123" (unchanged, since all characters were allowed)
+
+
+/*
+
+# Python equivalent
+# Subject string
+subject = "Test"
+
+# Extract the entire string using its full length
+substring = subject[0:4]
+
+*/

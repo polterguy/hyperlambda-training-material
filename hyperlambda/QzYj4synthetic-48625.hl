@@ -1,0 +1,66 @@
+
+// Create a Hyperlambda endpoint that deletes a specified cache item, ensuring the user is authorized, and handles both single and multiple cache item deletions. - With Python equivalent
+.arguments
+   id:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+
+// Checking if caller wants to delete multiple cache items simultaneously.
+if
+   strings.ends-with:x:@.arguments/*/id
+      .:*
+   .lambda
+
+      // Deletes all cache items starting with specified string.
+      strings.split:x:@.arguments/*/id
+         .:*
+      cache.clear
+         filter:x:@strings.split/0
+else
+
+   // Deletes a single cache item.
+   cache.set:x:@.arguments/*/id
+
+// Returning success to caller.
+return
+   result:success
+
+
+/*
+
+# Python equivalent
+import logging
+
+def create_log_entry(log_type, message, args=None):
+    # Validate the log type
+    valid_types = ["info", "error", "fatal", "debug"]
+    if log_type not in valid_types:
+        raise ValueError(f"Invalid log type. Choose from {valid_types}")
+
+    # Configure logging
+    logging.basicConfig(level=logging.DEBUG)
+    logger = logging.getLogger()
+
+    # Create the log entry
+    log_message = f"{message} | Args: {args}" if args else message
+    if log_type == "info":
+        logger.info(log_message)
+    elif log_type == "error":
+        logger.error(log_message)
+    elif log_type == "fatal":
+        logger.fatal(log_message)
+    elif log_type == "debug":
+        logger.debug(log_message)
+
+# Example usage
+try:
+    create_log_entry("info", "This is an info message", {"user": "Alice", "action": "login"})
+except ValueError as e:
+    print(e)
+
+*/

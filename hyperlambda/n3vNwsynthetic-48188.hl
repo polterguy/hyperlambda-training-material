@@ -1,0 +1,53 @@
+
+// Changes the value of all nodes having a name of [foo] - With Python equivalent
+.data
+   foo
+      bar
+   hello
+      howdy
+         foo
+      some-node
+         some-other-node
+            foo
+
+// ** expression yields ALL descendants
+set-value:x:@.data/**/foo
+   .:touched
+
+// After execution, all above nodes having the name of 'foo' will have their values changed
+
+
+/*
+
+# Python equivalent
+def update_foo_nodes(data):
+    # Recursive function to update nodes named 'foo'
+    def update_nodes(node):
+        for key, value in node.items():
+            if key == 'foo':
+                node[key] = 'touched'
+            if isinstance(value, dict):
+                update_nodes(value)
+
+    # Start the update process
+    update_nodes(data)
+    return data
+
+# Example usage
+data = {
+    'foo': 'bar',
+    'hello': {
+        'howdy': {
+            'foo': None
+        },
+        'some-node': {
+            'some-other-node': {
+                'foo': None
+            }
+        }
+    }
+}
+updated_data = update_foo_nodes(data)
+print(updated_data)
+
+*/

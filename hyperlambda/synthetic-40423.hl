@@ -1,0 +1,30 @@
+
+// Fetch a few film titles and release years using a raw SQL query - With Python equivalent
+data.connect:sakila
+   data.select:SELECT title, release_year FROM film LIMIT 3
+
+   // Executes the SQL directly on the database and returns up to 3 rows
+
+
+/*
+
+# Python equivalent
+# Fetch a few film titles and release years using a raw SQL query
+import sqlite3
+
+def fetch_film_titles_and_years(database_name):
+    connection = sqlite3.connect(database_name)
+    cursor = connection.cursor()
+    
+    sql = "SELECT title, release_year FROM film LIMIT 3"
+    cursor.execute(sql)
+    
+    films = cursor.fetchall()
+    connection.close()
+    return films
+
+# Example usage
+films = fetch_film_titles_and_years('sakila.db')
+# films will contain the first 3 film titles and release years from the film table
+
+*/

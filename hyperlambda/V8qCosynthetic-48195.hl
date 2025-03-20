@@ -1,0 +1,39 @@
+
+// Show me Hyperlambda that lists all files from '/modules/chinook/', check if they're Hyperlambda files, and if yes, adds the file path to a [.result] node - With Python equivalent
+.result
+io.file.list:/modules/chinook/
+for-each:x:@io.file.list/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         unwrap:x:+/*/*
+         add:x:@.result
+            .
+               .:x:@.dp/#
+
+
+/*
+
+# Python equivalent
+import os
+
+def list_hyperlambda_files(directory_path):
+    # Initialize the result list
+    result = []
+
+    # List all files in the specified directory
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            if file.endswith('.hl'):
+                file_path = os.path.join(root, file)
+                result.append(file_path)
+
+    return result
+
+# Example usage
+directory_path = '/modules/chinook/'
+hyperlambda_files = list_hyperlambda_files(directory_path)
+print(hyperlambda_files)
+
+*/

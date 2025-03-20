@@ -1,0 +1,63 @@
+
+// Create a Hyperlambda script to execute an existing task with a specified ID. - With Python equivalent
+.arguments
+   id:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Executing task on a different thread in case it takes a lot of time to execute.
+insert-before:x:./*/fork/0
+   get-nodes:x:@.arguments
+fork
+
+   // Executing task.
+   tasks.execute:x:@.arguments/*/id
+
+// Returning success to caller.
+return
+   result:success
+
+
+/*
+
+# Python equivalent
+def list_named_tasks(offset, limit, filter):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Simulate listing tasks with offset, limit, and filter
+    tasks = list_tasks(filter, offset, limit)
+
+    # Include schedules for each task
+    for task in tasks:
+        task_id = task.get("id")
+        task["schedules"] = get_task_schedules(task_id)
+
+    # Return the list of tasks with schedules
+    return tasks
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def list_tasks(filter, offset, limit):
+    # Simulate listing tasks based on filter, offset, and limit
+    # This is a placeholder implementation
+    return [{"id": "task1"}, {"id": "task2"}]
+
+def get_task_schedules(task_id):
+    # Simulate getting schedules for a task
+    # This is a placeholder implementation
+    return [{"schedule": "daily"}, {"schedule": "weekly"}]
+
+# Example usage
+try:
+    tasks_with_schedules = list_named_tasks(0, 10, "example_filter")
+    print(tasks_with_schedules)
+except PermissionError as e:
+    print(e)
+
+*/

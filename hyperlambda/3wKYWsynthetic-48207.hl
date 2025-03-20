@@ -1,0 +1,71 @@
+
+/*
+ * Inserts training data into database
+ * 
+ * Saves training data for using to fine-tune an LLM. - With Python equivalent
+ */
+.arguments
+
+   // Mandatory prompt used to generate specified Hyperlambda
+   prompt:string
+
+   // Mandatory reference to Hyperlambda file.
+   file-no:int
+
+// Public files can be used as AI functions in machine learning types.
+.type:public
+
+// Getting Hyperlambda.
+execute-file:/modules/fine-tune/workflows/create-training-data.hl
+   file-no:x:@.arguments/*/file-no
+
+// Inserting item.
+data.connect:fine-tune
+   data.create
+      table:hyperlambda
+      values
+         prompt:x:@.arguments/*/prompt
+         code:x:@execute-file/*/hyperlambda
+
+// Returning success.
+return
+   result:success
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def insert_training_data(prompt, file_no):
+    # Execute the file to get the hyperlambda code
+    hyperlambda_code = create_training_data(file_no)
+
+    # Connect to the fine-tune database
+    conn = sqlite3.connect('fine-tune.db')
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the insert statement
+        cursor.execute(
+            "INSERT INTO hyperlambda (prompt, code) VALUES (?, ?)",
+            (prompt, hyperlambda_code)
+        )
+        conn.commit()
+
+        return {"result": "success"}
+    finally:
+        conn.close()
+
+def create_training_data(file_no):
+    # Dummy function to simulate creating training data
+    # Replace with actual implementation
+    return f"Hyperlambda code for file {file_no}"
+
+# Example usage
+prompt = "Example prompt"
+file_no = 1
+result = insert_training_data(prompt, file_no)
+print(result)  # Output: {'result': 'success'}
+
+*/

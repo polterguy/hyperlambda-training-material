@@ -1,0 +1,31 @@
+
+// Generate a Hyperlambda snippet that executes multiple computational tasks in parallel. - With Python equivalent
+
+// An example of running multiple mathematical operations in parallel.
+join
+   fork
+      math.multiply
+         .:int:5
+         .:int:10
+   fork
+      math.add
+         .:int:20
+         .:int:30
+   fork
+      math.subtract
+         .:int:100
+         .:int:40
+
+
+/*
+
+# Python equivalent
+def format_name_and_age(first_name, last_name, age):
+    result = f"{first_name} {last_name}, you are {age} years old."
+    return result
+
+# Example usage
+formatted_string = format_name_and_age("John", "Doe", 30)
+print(formatted_string)
+
+*/

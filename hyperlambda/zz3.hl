@@ -1,9 +1,0 @@
-// Insert a new user into the 'users' table
-pgsql.create
-   table:users
-   values
-      username:john_doe
-      email:john.doe@example.com
-      created_at:date:"2025-03-18T09:09:13"
-
-// Notice, since dates contains : characters we have to wrap dates inside of double quotes (").

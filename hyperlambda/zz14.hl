@@ -1,4 +1,0 @@
-// Rollback the current transaction
-pgsql.transaction.rollback
-
-// Notice, must be inside a [pgsql.transaction.create] invocation

@@ -1,0 +1,75 @@
+
+// Write a Hyperlambda script to list all files in a specified folder, with an optional filter to match file names. - With Python equivalent
+.arguments
+   folder:string
+   filter:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Listing all files in specified folder.
+io.file.list:x:@.arguments/*/folder
+
+// Checking if we have a filter, and if so, only return files matching filter.
+if
+   exists:x:@.arguments/*/filter
+   .lambda
+
+      // Filtering out files not matching filter condition.
+      for-each:x:@io.file.list/*
+         if
+            strings.contains:x:@.dp/#
+               get-value:x:@.arguments/*/filter
+            .lambda
+               add:x:@for-each/./*/return-nodes
+                  get-nodes:x:@.dp/#
+      return-nodes
+else
+
+   // Returning all files from above invocation to caller.
+   return-nodes:x:@io.file.list/*
+
+
+/*
+
+# Python equivalent
+import os
+
+def list_folders_recursively(folder_path, display_hidden=True, display_system=False):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # List all folders recursively from the specified folder
+    folders_list = []
+    for root, dirs, files in os.walk(folder_path):
+        for dir in dirs:
+            if not display_hidden and dir.startswith('.'):  
+                continue
+            if not display_system and is_system_folder(dir):
+                continue
+            dir_path = os.path.join(root, dir)
+            folders_list.append(dir_path)
+
+    # Return the list of folders
+    return folders_list
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def is_system_folder(folder_name):
+    # Simulate checking if a folder is a system folder
+    # This is a placeholder implementation
+    return folder_name.startswith('sys_')
+
+# Example usage
+try:
+    folders = list_folders_recursively("/path/to/folder", display_hidden=True, display_system=False)
+    for folder in folders:
+        print(folder)
+except PermissionError as e:
+    print(e)
+
+*/

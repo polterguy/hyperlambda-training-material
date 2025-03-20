@@ -1,0 +1,19 @@
+
+// Example: Concatenate all strings stored as children of a list node. - With Python equivalent
+.items
+   .:Red
+   .:Green
+   .:Blue
+strings.concat:x:@.items/*
+
+// Result: "RedGreenBlue"
+
+
+/*
+
+# Python equivalent
+# Concatenate all strings stored as children of a list node
+items = ["Red", "Green", "Blue"]
+concatenated_string = "".join(items)
+
+*/

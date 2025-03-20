@@ -1,0 +1,25 @@
+
+// Store a value in context and retrieve it inside a nested execution - With Python equivalent
+.result
+context:foo
+   value:bar
+   .lambda
+      set-value:x:@.result
+         get-context:foo
+
+
+/*
+
+# Python equivalent
+# Store a value in context and retrieve it inside a nested execution
+context = {"foo": "bar"}
+
+def nested_execution(context):
+    result = context.get("foo")
+    return result
+
+# Example usage
+result = nested_execution(context)
+# result will be "bar"
+
+*/

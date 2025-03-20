@@ -1,0 +1,35 @@
+
+// Provide a Hyperlambda example where a value increases until [.value] is greater than 15. - With Python equivalent
+
+// Increases value until [.value] is greater than 15.
+.value:int:5
+while
+   lt
+      get-value:x:@.value
+      .:int:15
+   .lambda
+
+      // Logging current value.
+      log.info:Increasing value
+
+      // Incrementing value.
+      math.increment:x:@.value
+
+
+/*
+
+# Python equivalent
+import logging
+
+def loop_while_progress_not_100():
+    logging.basicConfig(level=logging.INFO)
+    
+    progress = 0
+    while progress != 100:
+        logging.info("Processing...")
+        progress += 1
+
+# Example usage
+loop_while_progress_not_100()
+
+*/

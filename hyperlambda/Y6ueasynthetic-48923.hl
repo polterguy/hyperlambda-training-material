@@ -1,0 +1,66 @@
+
+// Retrieves the specified [username] and return information associated with the user. - With Python equivalent
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+
+// Opens up database connection.
+data.connect:[generic|magic]
+
+   // Inserting user into database.
+   data.read
+      table:users
+      columns
+         username
+         created
+      where
+         and
+            username.eq:x:@.arguments/*/username
+   yield
+      created:x:@data.read/*/*/created
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def get_user_info(username):
+    """
+    This function retrieves the specified username and returns information associated with the user.
+    
+    :param username: The username to retrieve information for
+    :return: A dictionary containing user information
+    :raises ValueError: If username is not provided
+    """
+    # Validate mandatory fields
+    if not username:
+        raise ValueError("Username is mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('magic.db')
+    cursor = conn.cursor()
+    
+    # Retrieve user information
+    cursor.execute("SELECT username, created FROM users WHERE username = ?", (username,))
+    user_info = cursor.fetchone()
+    
+    # Close the connection
+    cursor.close()
+    conn.close()
+    
+    # Return the user information
+    if user_info:
+        return {"username": user_info[0], "created": user_info[1]}
+    else:
+        return None
+
+# Example usage
+# get_user_info("example_user")
+
+*/

@@ -1,0 +1,65 @@
+
+// Scrapes the specified [url] and returns as context data to caller. - With Python equivalent
+.arguments
+   url:string
+
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/modules/auth/workflows/actions/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
+
+// Returns [max_tokens] context from the specified [url].
+execute:magic.workflows.actions.execute
+   name:openai-context-from-url
+   filename:/modules/openai/workflows/actions/openai-context-from-url.hl
+   arguments
+      url:x:@.arguments/*/url
+      max_tokens:int:2000
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*
+
+
+/*
+
+# Python equivalent
+import requests
+
+def scrape_url_context(url):
+    """
+    This function scrapes the specified URL and returns it as context data to the caller.
+    
+    :param url: The URL to scrape
+    :return: The context data from the URL
+    """
+    # Authorize the user
+    authorize_user(["root", "gpt"])
+    
+    # Retrieve context data from the URL
+    context_data = get_context_from_url(url, max_tokens=2000)
+    
+    # Return the context data
+    return context_data
+
+def authorize_user(roles):
+    # Placeholder for user authorization logic
+    pass
+
+def get_context_from_url(url, max_tokens):
+    # Placeholder for scraping logic
+    response = requests.get(url)
+    return response.text[:max_tokens]
+
+# Example usage
+# scrape_url_context("https://example.com")
+
+*/

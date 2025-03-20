@@ -1,0 +1,31 @@
+
+// Demonstrate Hyperlambda string assignments, including special character handling, multi-line strings, and escape sequences. - With Python equivalent
+
+// Simple string without special characters
+.keyA:simple
+
+// Special character (colon) requires quotes
+.keyB:"config:set"
+
+// Multi-line string example
+.keyC:"This is\nmulti-line"
+
+// Alternative single quotes usage
+.keyD:alternate
+
+// Escape newline inside string
+.keyE:"Hello\nHyperlambda"
+
+
+/*
+
+# Python equivalent
+# String variables in Python demonstrating quoting variations, newlines, and multi-line strings
+text_alpha = "demo"
+text_beta = "value:pair"
+text_gamma = """first line
+second line"""
+text_delta = 'quotedText'
+text_epsilon = "split\nline"
+
+*/

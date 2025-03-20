@@ -1,0 +1,64 @@
+
+// Creates a new stacked chart - With Python equivalent
+image.chart:stacked
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   ticks
+      .:Spring
+      .:Summer
+      .:Autumn
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets
+
+
+/*
+
+# Python equivalent
+import matplotlib.pyplot as plt
+
+def create_stacked_chart(filename):
+    # Data for the chart
+    categories = ['Spring', 'Summer', 'Autumn']
+    data = {
+        'Phones': [2, 4, 2],
+        'Computers': [5, 7, 5],
+        'Tablets': [10, 10, 4]
+    }
+
+    # Create a stacked bar chart
+    fig, ax = plt.subplots(figsize=(6, 3))
+    bottom = [0] * len(categories)
+
+    for label, values in data.items():
+        ax.bar(categories, values, label=label, bottom=bottom)
+        bottom = [i + j for i, j in zip(bottom, values)]
+
+    # Add legend and labels
+    ax.set_ylabel('Units Sold')
+    ax.set_title('Stacked Bar Chart')
+    ax.legend()
+
+    # Save the chart as an image file
+    plt.savefig(filename)
+    plt.close()
+
+# Example usage
+create_stacked_chart('/chart.png')
+
+*/

@@ -1,0 +1,20 @@
+
+// Example: Use another slot's output as part of the concatenation. - With Python equivalent
+.prefix:"Value: "
+strings.concat
+   get-value:x:@.prefix
+   strings.to-upper:example
+
+// Result: "Value: EXAMPLE"
+
+
+/*
+
+# Python equivalent
+# Number to be concatenated
+number = 42
+
+# Concatenate the string and the number (converted to a string)
+concatenated_string = "Answer: " + str(number)
+
+*/

@@ -1,0 +1,61 @@
+
+// Creates a new training snippet from the specified [url] - With Python equivalent
+.arguments
+   _type:string
+
+   // Mandatory and is the URL from where to scrape training data from
+   url:string
+.type:public
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/_type
+validators.mandatory:x:@.arguments/*/url
+execute:magic.ai.url.scrape
+   url:x:@.arguments/*/url
+   type:x:@.arguments/*/_type
+   threshold:int:150
+   summarize:bool:true
+   lists:bool:false
+   images:bool:true
+   code:bool:false
+
+// Re-vectorising the type.
+execute:magic.ai.vectorise
+   type:x:@.arguments/*/_type
+
+
+/*
+
+# Python equivalent
+def create_training_snippet(_type, url):
+    # Validate mandatory fields
+    if not _type or not url:
+        raise ValueError("_type and url are mandatory")
+
+    # Scrape the URL
+    scraped_data = url_scrape(url, _type)
+
+    # Vectorise the scraped data
+    vectorised_data = vectorise(scraped_data, _type)
+
+    return vectorised_data
+
+def url_scrape(url, _type):
+    # Dummy function to simulate URL scraping
+    # Replace with actual implementation
+    print(f"Scraping URL: {url} with type: {_type}")
+    return "scraped_data"
+
+def vectorise(data, _type):
+    # Dummy function to simulate data vectorisation
+    # Replace with actual implementation
+    print(f"Vectorising data with type: {_type}")
+    return "vectorised_data"
+
+# Example usage
+_type = "example_type"
+url = "http://example.com"
+result = create_training_snippet(_type, url)
+print(result)
+
+*/

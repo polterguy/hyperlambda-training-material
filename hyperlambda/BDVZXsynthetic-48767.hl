@@ -1,0 +1,57 @@
+
+// Write a Hyperlambda script to return the JavaScript required to embed a ChatGPT-based chatbot on a website, with various customization options. - With Python equivalent
+.arguments
+   type:string
+   header:string
+   button:string
+   rtl:bool
+   color:string
+   start:string
+   end:string
+   link:string
+   theme:string
+   references:bool
+   file:string
+   placeholder:string
+   position:string
+   clear_button:bool
+   copyButton:bool
+   follow_up:bool
+   new_tab:bool
+   popup:string
+
+   // Not used, but allows embedders to do a hard refresh to reload JavaScript.
+   v:string
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/system/openai/include-chatbot.js.get.hl
+return:x:-
+
+
+/*
+
+# Python equivalent
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/get-headers', methods=['GET'])
+def get_headers():
+    # Get the list of headers to return from request arguments
+    headers_to_return = request.args.getlist('headers')
+
+    # Validate the headers list
+    if not headers_to_return:
+        return jsonify({"error": "Headers list is mandatory"}), 400
+
+    # Retrieve the specified headers from the request
+    headers = {header: request.headers.get(header) for header in headers_to_return if request.headers.get(header)}
+
+    # Return the headers
+    return jsonify(headers)
+
+# Example usage: Run the Flask app
+if __name__ == '__main__':
+    app.run(debug=True)
+
+*/

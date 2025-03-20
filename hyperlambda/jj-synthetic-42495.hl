@@ -1,0 +1,20 @@
+
+// Example: Trim specific characters from both ends. - With Python equivalent
+
+// The character "?" at both ends will be removed
+strings.trim:??hello??
+   .:?
+
+// Result: "hello"
+
+
+/*
+
+# Python equivalent
+# Original string
+string = "hello"
+
+# Attempt to trim '?' characters (not present in the string)
+trimmed_string = string.strip('?')
+
+*/

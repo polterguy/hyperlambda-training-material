@@ -1,0 +1,82 @@
+
+// Delete endpoint deleting one record from your crawl_urls table in your scraper database. - With Python equivalent
+.arguments
+
+   // Primary key of record to delete
+   crawl_url_id:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/crawl_url_id
+
+// Opening up our database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:crawl_urls
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_crawl_url(crawl_url_id):
+    """
+    This function deletes one record from the crawl_urls table in the scraper database.
+    
+    :param crawl_url_id: The ID of the crawl URL to delete
+    :return: The number of affected rows
+    """
+    # Verify authentication
+    verify_authentication(["root", "admin"])
+    
+    # Validate mandatory fields
+    if crawl_url_id is None:
+        raise ValueError("crawl_url_id is mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('scraper.db')
+    cursor = conn.cursor()
+    
+    # Delete the record
+    cursor.execute("DELETE FROM crawl_urls WHERE crawl_url_id = ?", (crawl_url_id,))
+    affected_rows = cursor.rowcount
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Return the number of affected rows
+    return affected_rows
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+# Example usage
+# delete_crawl_url(123)
+
+*/

@@ -1,0 +1,45 @@
+
+// Provide a Hyperlambda example where multiple loggers run in parallel. - With Python equivalent
+
+// An example of running multiple loggers in parallel.
+join
+   fork
+      log.info:Logging task 1 started
+      sleep:500
+      log.info:Logging task 1 completed
+   fork
+      log.info:Logging task 2 started
+      sleep:1000
+      log.info:Logging task 2 completed
+
+
+/*
+
+# Python equivalent
+import threading
+
+def multiply():
+    result = 5 * 10
+    print(f"Multiplication result: {result}")
+
+def add():
+    result = 20 + 30
+    print(f"Addition result: {result}")
+
+def subtract():
+    result = 100 - 40
+    print(f"Subtraction result: {result}")
+
+thread1 = threading.Thread(target=multiply)
+thread2 = threading.Thread(target=add)
+thread3 = threading.Thread(target=subtract)
+
+thread1.start()
+thread2.start()
+thread3.start()
+
+thread1.join()
+thread2.join()
+thread3.join()
+
+*/

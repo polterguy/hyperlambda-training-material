@@ -1,0 +1,47 @@
+
+// Hyperlambda that searches for specified query. - With Python equivalent
+.arguments
+   query:string
+   full_query:string
+execute:magic.workflows.actions.execute
+   name:execute-workflow
+   filename:/misc/workflows/actions/misc/execute-workflow.hl
+   arguments
+      workflow:/modules/openai/workflows/workflows/keyword-context-and-vss-search.hl
+      arguments
+         _type:csregs2
+         query:x:@.arguments/*/query
+         full_query:x:@.arguments/*/full_query
+         max_tokens:int:12000
+return-nodes:x:@execute/*
+
+
+/*
+
+# Python equivalent
+def search_with_query(query, full_query):
+    # Dummy function to simulate executing a workflow
+    def execute_workflow(workflow, arguments):
+        # Simulate search logic
+        return {"result": f"Search results for {arguments['query']}"}
+
+    # Prepare the arguments for the workflow
+    arguments = {
+        "_type": "csregs2",
+        "query": query,
+        "full_query": full_query,
+        "max_tokens": 12000
+    }
+
+    # Execute the workflow
+    result = execute_workflow("/modules/openai/workflows/workflows/keyword-context-and-vss-search.hl", arguments)
+
+    return result
+
+# Example usage
+query = "example query"
+full_query = "example full query"
+result = search_with_query(query, full_query)
+print(result)  # Output: {'result': 'Search results for example query'}
+
+*/

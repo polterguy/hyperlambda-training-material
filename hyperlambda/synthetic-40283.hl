@@ -1,0 +1,19 @@
+
+// Example: Use a variable as the input to uppercase. - With Python equivalent
+.text:make me upper
+
+// Result: "MAKE ME UPPER"
+strings.to-upper:x:@.text
+
+
+/*
+
+# Python equivalent
+# Example: Use a variable as the input to uppercase.
+text = "make me upper"
+uppercase_text = text.upper()
+
+# Example usage
+# uppercase_text will be "MAKE ME UPPER"
+
+*/

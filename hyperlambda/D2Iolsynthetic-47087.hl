@@ -1,0 +1,71 @@
+
+// Delete one record from your Album table in your chinook database - With Python equivalent
+.arguments
+
+   // Primary key of record to delete, mandatory argument
+   AlbumId:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/AlbumId
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Album
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_album_record(album_id):
+    # Verify authorization
+    if not verify_auth_ticket(['root', 'admin']):
+        raise PermissionError("Unauthorized access")
+
+    # Validate mandatory fields
+    if album_id is None:
+        raise ValueError("AlbumId is mandatory")
+
+    # Connect to the chinook database
+    conn = sqlite3.connect('chinook.db')
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the delete statement
+        cursor.execute("DELETE FROM Album WHERE AlbumId = ?", (album_id,))
+        conn.commit()
+
+        # Return the number of affected rows
+        return cursor.rowcount
+    finally:
+        conn.close()
+
+def verify_auth_ticket(roles):
+    # Dummy function for authorization check
+    # Replace with actual implementation
+    return True
+
+*/

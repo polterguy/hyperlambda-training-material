@@ -1,0 +1,40 @@
+
+// Provide a Hyperlambda example where 'logging_db' is queried to retrieve error logs. - With Python equivalent
+
+// Queries "logging_db" to retrieve error logs.
+.result
+data.connect:logging_db
+   database-type:mssql
+   data.select:select top 20 * from error_logs where severity > 3 order by created_at desc
+      database-type:mssql
+   add:x:@.result
+      get-nodes:x:@data.select/*
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def get_recent_inventory_changes():
+    # Connect to the warehouse_db database
+    connection = sqlite3.connect('warehouse_db.sqlite')
+    
+    cursor = connection.cursor()
+    
+    # Query to get recent inventory changes from the inventory_changes table
+    query = "SELECT * FROM inventory_changes ORDER BY modified_at DESC LIMIT 15"
+    
+    cursor.execute(query)
+    inventory_changes = cursor.fetchall()
+    
+    cursor.close()
+    connection.close()
+    
+    return inventory_changes
+
+# Example usage
+inventory_changes = get_recent_inventory_changes()
+print(inventory_changes)
+
+*/

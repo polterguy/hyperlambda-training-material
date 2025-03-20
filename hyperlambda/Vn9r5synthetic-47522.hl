@@ -1,0 +1,67 @@
+
+// Example of [whitelist] execution, where only two slots are legal - With Python equivalent
+.result
+whitelist
+   vocabulary
+      set-value
+      return
+   .lambda
+
+      // Inside of this [.lambda] object, we can only invoke [set-value], and no other slots!
+      set-value:x:@.result
+         .:foo
+
+      // Notice, the next line will throw an exception if you remove its "." character,
+
+      // because [add] is not whitelisted in our above [vocabulary] declaration!
+      .add:x:@.result
+         .
+            foo:bar
+      return
+         result:success
+
+
+/*
+
+# Python equivalent
+class WhitelistExecutionError(Exception):
+    pass
+
+class WhitelistExecutor:
+    def __init__(self):
+        self.vocabulary = {'set_value', 'return'}
+
+    def execute(self):
+        # Initialize the result
+        result = None
+
+        # Execute the whitelisted operations
+        try:
+            result = self.set_value("foo")
+            result = self.add(result, {'foo': 'bar'})
+            return self.return_value("success")
+        except WhitelistExecutionError as e:
+            print(e)
+
+    def set_value(self, value):
+        if 'set_value' not in self.vocabulary:
+            raise WhitelistExecutionError("set_value is not whitelisted")
+        return value
+
+    def add(self, result, addition):
+        if 'add' not in self.vocabulary:
+            raise WhitelistExecutionError("add is not whitelisted")
+        result.update(addition)
+        return result
+
+    def return_value(self, value):
+        if 'return' not in self.vocabulary:
+            raise WhitelistExecutionError("return is not whitelisted")
+        return {'result': value}
+
+# Example usage
+executor = WhitelistExecutor()
+result = executor.execute()
+print(result)  # Output: {'result': 'success'}
+
+*/

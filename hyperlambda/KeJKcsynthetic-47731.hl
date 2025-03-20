@@ -1,0 +1,92 @@
+
+/*
+ * Returns an access token for NetSuite.
+ * 
+ * Returns a JWT token that can be used to invoke NetSuite according to your configuration settings.
+ * Notice, this will read account-id, certificate-id, and consumer-key from your configuration settings,
+ * in addition to assume your private key exists in the file '/etc/netsuite/private-key.txt'. - With Python equivalent
+ */
+.arguments
+.icon:http
+
+// Loading private key.
+.key
+set-value:x:@.key
+   io.file.load:/etc/netsuite/private-key.txt
+
+/*
+ * Loading settings from configuration.
+ * 
+ * Notice, these settings must exist for the system to function.
+ */
+
+// Account id
+.account-id
+set-value:x:@.account-id
+   config.get:"magic:netsuite:account-id"
+validators.mandatory:x:@.account-id
+
+// Certificate id
+.certificate-id
+set-value:x:@.certificate-id
+   config.get:"magic:netsuite:certificate-id"
+validators.mandatory:x:@.certificate-id
+
+// Consumer key
+.consumer-key
+set-value:x:@.consumer-key
+   config.get:"magic:netsuite:consumer-key"
+validators.mandatory:x:@.consumer-key
+
+// Invoking slot doing the heavy lifting.
+netsuite.get-access-token
+   private-key:x:@.key
+   account-id:x:@.account-id
+   certificate-id:x:@.certificate-id
+   consumer-key:x:@.consumer-key
+
+// Returning result to caller.
+yield
+   access-token:x:@netsuite.get-access-token
+
+// This Hyperlambda code depends upon the netsuite plugin being available and installed
+
+
+/*
+
+# Python equivalent
+import jwt
+import configparser
+
+def get_netsuite_access_token():
+    # Load the private key from file
+    with open('/etc/netsuite/private-key.txt', 'r') as file:
+        private_key = file.read()
+
+    # Load configuration settings
+    config = configparser.ConfigParser()
+    config.read('config.ini')  # Assume configuration settings are in 'config.ini'
+
+    account_id = config.get('magic:netsuite', 'account-id')
+    certificate_id = config.get('magic:netsuite', 'certificate-id')
+    consumer_key = config.get('magic:netsuite', 'consumer-key')
+
+    # Validate mandatory fields
+    if not account_id or not certificate_id or not consumer_key:
+        raise ValueError("Missing mandatory configuration settings")
+
+    # Create a JWT token
+    payload = {
+        'account_id': account_id,
+        'certificate_id': certificate_id,
+        'consumer_key': consumer_key
+    }
+    access_token = jwt.encode(payload, private_key, algorithm='RS256')
+
+    return access_token
+
+# Example usage
+access_token = get_netsuite_access_token()
+print(access_token)
+
+*/

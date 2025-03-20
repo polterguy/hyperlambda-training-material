@@ -1,0 +1,64 @@
+
+// Returns [max_urls] matching specified query by searching DuckDuckGo. - With Python equivalent
+.arguments
+   query
+      type:string
+      mandatory:bool:true
+   max_urls
+      type:int
+      default:int:10
+.icon:extension
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/query
+
+// Applying default values for optional arguments.
+validators.default:x:@.arguments
+   max_urls:int:10
+
+// Converting to integer to make sure we've got the right type.
+set-value:x:@.arguments/*/max_urls
+   convert:x:@.arguments/*/max_urls
+      type:int
+
+// Retrieving context.
+execute:magic.http.duckduckgo-search
+   query:x:@.arguments/*/query
+   max:x:@.arguments/*/max_urls
+
+// Returning result to caller.
+return-nodes:x:@execute/*
+
+
+/*
+
+# Python equivalent
+def get_subscription_plans():
+    # Assuming there is a function or method to get all subscription plan slots
+    subscription_plan_slots = get_subscription_plan_slots()
+    plans = []
+    
+    for slot in subscription_plan_slots:
+        # Execute the slot to retrieve the subscription plan
+        plan = execute_slot(slot)
+        if plan:
+            plans.append(plan)
+    
+    return plans
+
+def get_subscription_plan_slots():
+    # Placeholder function to retrieve subscription plan slots
+    return []
+
+def execute_slot(slot):
+    # Placeholder function to execute a slot and retrieve a subscription plan
+    return {
+        "name": "Example Plan",
+        "description": "An example subscription plan",
+        "price": 9.99,
+        "currency": "USD",
+        "period": "month",
+        "stripe_price_id": "price_12345"
+    }
+
+*/

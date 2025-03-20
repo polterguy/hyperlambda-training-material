@@ -1,0 +1,78 @@
+
+// Changes the specified [username]'s password to [password]. - With Python equivalent
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   password
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
+validators.string:x:@.arguments/*/password
+   min:12
+
+// Hashing specified [password].
+crypto.password.hash:x:@.arguments/*/password
+
+// Opens up database connection.
+data.connect:[generic|magic]
+
+   // Updating user's password.
+   data.update
+      table:users
+      values
+         password:x:@crypto.password.hash
+      where
+         and
+            username.eq:x:@.arguments/*/password
+
+
+/*
+
+# Python equivalent
+import sqlite3
+import hashlib
+
+def change_user_password(username, password):
+    """
+    This function changes the specified username's password to the provided password.
+    
+    :param username: The username whose password is to be changed
+    :param password: The new password
+    :raises ValueError: If username or password is not provided, or if password is too short
+    """
+    # Validate mandatory fields
+    if not username:
+        raise ValueError("Username is mandatory")
+    if not password:
+        raise ValueError("Password is mandatory")
+    if len(password) < 12:
+        raise ValueError("Password must be at least 12 characters long")
+    
+    # Hash the password
+    hashed_password = hash_password(password)
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('magic.db')
+    cursor = conn.cursor()
+    
+    # Update the user's password
+    cursor.execute("UPDATE users SET password = ? WHERE username = ?", (hashed_password, username))
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+def hash_password(password):
+    # Hash the password using SHA-256
+    return hashlib.sha256(password.encode()).hexdigest()
+
+# Example usage
+# change_user_password("example_user", "new_secure_password")
+
+*/

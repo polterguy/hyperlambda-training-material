@@ -1,0 +1,54 @@
+
+// Connects to sakila and returns items from film, joining on film_actor and actor - With Python equivalent
+data.connect:sakila
+   data.read
+      columns
+         title
+         description
+         last_name
+         first_name
+      table:film
+         join:film_actor
+            type:inner
+            on
+               and
+                  film.film_id:film_actor.film_id
+            join:actor
+               type:inner
+               on
+                  and
+                     film_actor.actor_id:actor.actor_id
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def fetch_film_actor_details(database_name):
+    # Connect to the sakila database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the join query
+        query = """
+        SELECT film.title, film.description, actor.last_name, actor.first_name
+        FROM film
+        INNER JOIN film_actor ON film.film_id = film_actor.film_id
+        INNER JOIN actor ON film_actor.actor_id = actor.actor_id
+        """
+        cursor.execute(query)
+        results = cursor.fetchall()
+
+        return results
+    finally:
+        conn.close()
+
+# Example usage
+database_name = 'sakila.db'
+film_actor_details = fetch_film_actor_details(database_name)
+for detail in film_actor_details:
+    print(detail)
+
+*/

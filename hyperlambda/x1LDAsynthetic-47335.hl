@@ -1,0 +1,43 @@
+
+// Deletes one item from your DATABASE_NAME database and TABLE_NAME table with the id of WHATEVER_ID_HERE. - With Python equivalent
+data.connect:DATABASE_NAME
+   database-type:sqlite
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:TABLE_NAME
+      where
+         and
+            id.eq:x:@WHATEVER_ID_HERE
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_item(database_name, table_name, item_id):
+    # Connect to the specified database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the delete statement
+        query = f"DELETE FROM {table_name} WHERE id = ?"
+        cursor.execute(query, (item_id,))
+        conn.commit()
+
+        # Return the number of affected rows
+        return cursor.rowcount
+    finally:
+        conn.close()
+
+# Example usage
+database_name = 'your_database.db'
+table_name = 'your_table'
+item_id = 123  # Replace with the actual ID
+affected_rows = delete_item(database_name, table_name, item_id)
+print(f"Number of items deleted: {affected_rows}")
+
+*/

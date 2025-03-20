@@ -1,0 +1,83 @@
+
+/*
+ * Returns Stripe customers.
+ * 
+ * [limit] and [starting_after] are optional arguments and [limit] is the number of customers
+ * to return, while [starting_after] is from which record to start returning charges.
+ * 
+ * [email] is an optional case sensitive filter that emails must match. - With Python equivalent
+ */
+.arguments
+   limit:int
+   starting_after:string
+   email:string
+
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
+
+/*
+ * Retrieves charges from Stripe.
+ * 
+ * Will use your Stripe API token found from your settings as it's interacting
+ * with the Stripe API.
+ */
+execute:magic.workflows.actions.execute
+   name:stripe-customers-get
+   filename:/modules/stripe/workflows/actions/stripe-customers-get.hl
+   arguments
+      limit:x:@.arguments/*/limit
+      email:x:@.arguments/*/email
+      starting_after:x:@.arguments/*/starting_after
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*
+
+
+/*
+
+# Python equivalent
+import stripe
+
+def get_stripe_customers(limit=None, starting_after=None, email=None):
+    # Authorize the user
+    if not authorize_user(['root', 'gpt']):
+        raise PermissionError("Unauthorized access")
+
+    # Set your secret key: remember to switch to your live secret key in production
+    stripe.api_key = "your_secret_key"
+
+    # Prepare the arguments for the Stripe API call
+    params = {}
+    if limit is not None:
+        params['limit'] = limit
+    if starting_after is not None:
+        params['starting_after'] = starting_after
+    if email is not None:
+        params['email'] = email
+
+    # Retrieve Stripe customers
+    customers = stripe.Customer.list(**params)
+
+    return customers
+
+def authorize_user(roles):
+    # Dummy function to authorize user
+    # Replace with actual implementation
+    return True
+
+# Example usage
+customers = get_stripe_customers(limit=10, email="example@example.com")
+print(customers)
+
+*/

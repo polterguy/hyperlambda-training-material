@@ -1,0 +1,20 @@
+
+// Example: Ends-with check is case-sensitive. - With Python equivalent
+
+// Returns false
+strings.ends-with:Hello
+   .:LLO
+
+
+/*
+
+# Python equivalent
+# Example: Ends-with check is case-sensitive.
+string = "Hello"
+substring = "LLO"
+ends_with_substring = string.endswith(substring)
+
+# Example usage
+# ends_with_substring will be False because the check is case-sensitive
+
+*/

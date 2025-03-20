@@ -1,0 +1,54 @@
+
+// Deletes the specified [username] from the system. - With Python equivalent
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+
+// Opens up database connection.
+data.connect:[generic|magic]
+
+   // Deleting user from database.
+   data.delete
+      table:users
+      where
+         and
+            username.eq:x:@.arguments/*/username
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_user(username):
+    """
+    This function deletes the specified username from the system.
+    
+    :param username: The username to delete
+    :raises ValueError: If username is not provided
+    """
+    # Validate mandatory fields
+    if not username:
+        raise ValueError("Username is mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('magic.db')
+    cursor = conn.cursor()
+    
+    # Delete the user
+    cursor.execute("DELETE FROM users WHERE username = ?", (username,))
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+# Example usage
+# delete_user("example_user")
+
+*/

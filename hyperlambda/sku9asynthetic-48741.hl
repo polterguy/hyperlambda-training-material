@@ -1,0 +1,88 @@
+
+// Write a Hyperlambda script to delete a specified folder on the server, including uninstalling a module if necessary. - With Python equivalent
+.arguments
+   folder:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+/*
+ * Checking if this is a module folder, and if so, we uninstall module before actually
+ * deleting it.
+ */
+strings.split:x:@.arguments/*/folder
+   .:/
+if
+   and
+      eq
+         get-count:x:@strings.split/*
+         .:int:2
+      eq
+         get-value:x:@strings.split/0
+         .:modules
+   .lambda
+
+      // 'modules' folder, checking if it's got an uninstall file, and if so, executing it.
+      strings.concat
+         get-value:x:@.arguments/*/folder
+         .:uninstall.hl
+      if
+         io.file.exists:x:@strings.concat
+         .lambda
+
+            // Uninstall file exists
+            log.info:Uninstalling module
+               module:x:@strings.concat
+            io.file.execute:x:@strings.concat
+
+// Deletes the specified folder.
+io.folder.delete:x:@.arguments/*/folder
+
+// Returning success to caller.
+return
+   result:success
+
+
+/*
+
+# Python equivalent
+import os
+
+def list_files_recursively(folder_path, display_hidden=True, display_system=False):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # List all files recursively from the specified folder
+    files_list = []
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if not display_hidden and file.startswith('.'):  
+                continue
+            if not display_system and is_system_file(file):
+                continue
+            file_path = os.path.join(root, file)
+            files_list.append(file_path)
+
+    # Return the list of files
+    return files_list
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def is_system_file(file_name):
+    # Simulate checking if a file is a system file
+    # This is a placeholder implementation
+    return file_name.startswith('sys_')
+
+# Example usage
+try:
+    files = list_files_recursively("/path/to/folder", display_hidden=True, display_system=False)
+    for file in files:
+        print(file)
+except PermissionError as e:
+    print(e)
+
+*/

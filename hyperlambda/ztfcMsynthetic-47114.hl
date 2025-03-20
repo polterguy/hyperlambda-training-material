@@ -1,0 +1,43 @@
+
+// Return a list of all registered MIME types cloudlet can serve by default, and their filename extensions - With Python equivalent
+mime.list
+
+/*
+ * Result:
+ * mime.list
+ * json:application/json
+ * css:text/css
+ * txt:text/plain
+ * js:application/javascript
+ * jpeg:image/jpeg
+ * jpg:image/jpeg
+ * webp:image/webp
+ * png:image/png
+ * gif:image/gif
+ * svg:image/svg+xml
+ * md:text/markdown
+ * html:text/html
+ */
+
+
+/*
+
+# Python equivalent
+def get_registered_mime_types():
+    # List of registered MIME types and their file extensions
+    mime_types = {
+        "text/html": [".html", ".htm"],
+        "text/plain": [".txt"],
+        "image/jpeg": [".jpg", ".jpeg"],
+        "image/png": [".png"],
+        "application/json": [".json"],
+        # Add more MIME types and their extensions as needed
+    }
+
+    return mime_types
+
+# Example usage
+mime_types = get_registered_mime_types()
+print(mime_types)
+
+*/

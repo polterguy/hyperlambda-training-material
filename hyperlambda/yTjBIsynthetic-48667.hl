@@ -1,0 +1,107 @@
+
+// Create a Hyperlambda script for a CRUD update endpoint that updates an existing item in the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles. - With Python equivalent
+.arguments
+   name:string
+   description:string
+.type:crud-update
+
+// Verifying user is authorized to access endpoint.
+validators.mandatory:x:@.arguments/*/name
+auth.ticket.verify:root
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
+
+   // Invoking our update slot.
+   data.update
+      table:roles
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning success to caller.
+   response.status.set:202
+   unwrap:x:+/*
+   return
+      affected:x:@data.update
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def count_users_extra(database, filters=None, operator="and"):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Validate the operator
+    if operator not in ["or", "and"]:
+        raise ValueError("Invalid operator. Choose 'or' or 'and'")
+
+    # Connect to the specified database
+    connection = sqlite3.connect(database)
+    cursor = connection.cursor()
+
+    # Build the SQL query
+    query = "SELECT COUNT(*) as count FROM users_extra"
+    conditions = []
+    parameters = []
+
+    # Add filters to the query
+    if filters:
+        for key, value in filters.items():
+            if key.endswith(".like"):
+                conditions.append(f"{key.split('.')[0]} LIKE ?")
+                parameters.append(f"%{value}%")
+            elif key.endswith(".eq"):
+                conditions.append(f"{key.split('.')[0]} = ?")
+                parameters.append(value)
+
+    if conditions:
+        query += " WHERE " + f" {operator} ".join(conditions)
+
+    # Execute the query
+    cursor.execute(query, parameters)
+    result = cursor.fetchone()
+
+    # Close the connection
+    connection.close()
+
+    # Return the count
+    return {"count": result[0]}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+filters = {
+    "type.eq": "admin",
+    "value.like": "example",
+    "user.eq": "user1"
+}
+try:
+    result = count_users_extra("magic.db", filters, operator="or")
+    print(result)
+except (ValueError, PermissionError) as e:
+    print(e)
+
+*/

@@ -1,0 +1,82 @@
+
+// Lists all database in your MySQL instance. - With Python equivalent
+slots.create:magic.db.mysql.databases
+
+   // Opens up our connection
+   .connection:[information_schema]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               .:information_schema]
+   mysql.connect:x:@.connection
+
+      // Runs our query
+      mysql.select:show databases
+
+      // Renaming "Database" nodes.
+      set-name:x:@mysql.select/*/*
+         .:db
+
+      // Returns the remaining databases to caller.
+      return-nodes:x:@mysql.select/*
+
+
+/*
+
+# Python equivalent
+import mysql.connector
+
+def list_mysql_databases(connection_string=None):
+    """
+    This function lists all databases in your MySQL instance.
+    
+    :param connection_string: The connection string for the MySQL instance
+    :return: A list of database names
+    """
+    # Default connection to information_schema
+    connection_config = {
+        'user': 'root',
+        'password': 'password',
+        'host': 'localhost',
+        'database': 'information_schema'
+    }
+    
+    # Update connection config if a connection string is provided
+    if connection_string:
+        connection_config.update(parse_connection_string(connection_string))
+    
+    # Connect to MySQL and list databases
+    databases = []
+    try:
+        conn = mysql.connector.connect(**connection_config)
+        cursor = conn.cursor()
+        cursor.execute("SHOW DATABASES")
+        databases = [{"db": db[0]} for db in cursor.fetchall()]
+    finally:
+        cursor.close()
+        conn.close()
+    
+    # Return the list of databases
+    return databases
+
+def parse_connection_string(connection_string):
+    # Placeholder for parsing the connection string into a config dictionary
+    return {}
+
+# Example usage
+# list_mysql_databases("user:password@localhost")
+
+*/

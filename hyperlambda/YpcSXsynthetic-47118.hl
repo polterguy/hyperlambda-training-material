@@ -1,0 +1,39 @@
+
+// Encodes the specified HTML - With Python equivalent
+.html:"<html>\n<body>\n  <h1>Quarterly Newsletter - Q1 2025</h1>\n  <p>Our Q1 results are now available.</p>\n  <ul>\n    <li>Total revenue increased by <strong>15%</strong> compared to Q4 2024</li>\n    <li>Customer satisfaction reached <strong>94%</strong></li>\n  </ul>\n  <p>View the <a href=\"https://company.com/reports/q1-2025\">full report</a>.</p>\n</body>\n</html>"
+
+// HTML decodes the above HTML
+strings.html-encode:x:@.html
+
+
+/*
+
+# Python equivalent
+import html
+
+def encode_html():
+    # Define the HTML content
+    html_content = """
+    <html>
+    <body>
+      <h1>Quarterly Newsletter - Q1 2025</h1>
+      <p>Our Q1 results are now available.</p>
+      <ul>
+        <li>Total revenue increased by <strong>15%</strong> compared to Q4 2024</li>
+        <li>Customer satisfaction reached <strong>94%</strong></li>
+      </ul>
+      <p>View the <a href="https://company.com/reports/q1-2025">full report</a>.</p>
+    </body>
+    </html>
+    """
+
+    # Encode the HTML content
+    encoded_html = html.escape(html_content)
+
+    return encoded_html
+
+# Example usage
+encoded_html = encode_html()
+print(encoded_html)
+
+*/

@@ -1,0 +1,20 @@
+
+// Adding expressions as new nodes but unwrapping expressions before executing [add] - With Python equivalent
+.data
+   foo:some value
+unwrap:x:+/*/*
+add:x:@.data
+   .
+      bar:x:@.data/*/foo
+
+// Both nodes will contain the values of the above [foo] nodes after [add].
+
+
+/*
+
+# Python equivalent
+# Adding expressions as new nodes but unwrapping expressions before executing
+data = {'foo': 'some value'}
+data['bar'] = data['foo']
+
+*/

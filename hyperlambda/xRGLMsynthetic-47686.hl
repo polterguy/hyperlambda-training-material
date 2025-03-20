@@ -1,0 +1,87 @@
+
+/*
+ * Gets a company
+ * 
+ * Will return the company with the specified name. - With Python equivalent
+ */
+.arguments
+   query:string
+.type:public
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/query
+
+// Connecting to database.
+data.connect:[finovo|finovo]
+   database-type:pgsql
+
+   // Retrieving items.
+   data.read
+      database-type:pgsql
+      table:basic
+      columns
+         org_number
+         company_name
+      where
+         and
+            legalgroup_code.eq:AB
+            company_name.ilike:x:@.arguments/*/query
+      limit:1
+
+   // Checking we've got data.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+         return
+            result:No results were found
+
+   // Returning result to caller.
+   return-nodes:x:@data.read/*/*
+
+
+/*
+
+# Python equivalent
+import psycopg2
+
+def get_company(query):
+    # Validate mandatory fields
+    if not query:
+        raise ValueError("query is mandatory")
+
+    # Connect to the finovo database
+    conn = psycopg2.connect(
+        dbname="finovo",
+        user="your_username",
+        password="your_password",
+        host="localhost"
+    )
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the select statement
+        query_string = """
+        SELECT org_number, company_name
+        FROM basic
+        WHERE legalgroup_code = 'AB' AND company_name ILIKE %s
+        LIMIT 1
+        """
+        cursor.execute(query_string, (f"%{query}%",))
+        result = cursor.fetchone()
+
+        # Check if no results were found
+        if result is None:
+            return {"result": "No results were found"}
+
+        # Return the result
+        return {"org_number": result[0], "company_name": result[1]}
+    finally:
+        cursor.close()
+        conn.close()
+
+# Example usage
+query = "example_company"
+company = get_company(query)
+print(company)
+
+*/

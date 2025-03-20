@@ -1,0 +1,37 @@
+
+// Provide a Hyperlambda example where [.lambda] runs based on the boolean value of [.flag]. - With Python equivalent
+
+// Runs [.lambda] based on the boolean value of [.flag].
+.flag:bool:true
+if
+   eq:x:@.flag
+      .:bool:true
+   .lambda
+
+      // Runs when [.flag] is set to true.
+      log.info:[.flag] is enabled
+else
+
+   // Runs when [.flag] is false.
+   log.info:[.flag] is disabled
+
+
+/*
+
+# Python equivalent
+import logging
+
+def determine_and_execute_lambda():
+    logging.basicConfig(level=logging.INFO)
+    
+    toggle = True
+    
+    if toggle:
+        logging.info("[.toggle] is on")
+    else:
+        logging.info("[.toggle] is off")
+
+# Example usage
+determine_and_execute_lambda()
+
+*/

@@ -1,0 +1,36 @@
+
+// Hyperlambda [set-value] - With Python equivalent
+.data
+   item1
+   item2
+set-value:x:@.data/*
+   .:Updated Value
+
+// Results in:
+.data
+   item1:Updated Value
+   item2:Updated Value
+set-value:x:@.data/*
+   .:Updated Value
+
+// Notice how [set-value] can change multiple nodes at the same time
+
+
+/*
+
+# Python equivalent
+def update_values(data):
+    # Update all values in the data dictionary to "Updated Value"
+    for key in data.keys():
+        data[key] = "Updated Value"
+    return data
+
+# Example usage
+data = {
+    'item1': None,
+    'item2': None
+}
+updated_data = update_values(data)
+print(updated_data)  # Output: {'item1': 'Updated Value', 'item2': 'Updated Value'}
+
+*/

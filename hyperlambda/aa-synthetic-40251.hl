@@ -1,0 +1,23 @@
+
+// Example: Join multiple strings with a comma separator. - With Python equivalent
+.input
+   .:A
+   .:B
+   .:C
+strings.join:x:@.input/*
+   .:,
+
+// Result: "A,B,C"
+
+
+/*
+
+# Python equivalent
+# Example: Join multiple strings with a comma separator.
+input_strings = ["A", "B", "C"]
+joined_string = ",".join(input_strings)
+
+# Example usage
+# joined_string will be "A,B,C"
+
+*/

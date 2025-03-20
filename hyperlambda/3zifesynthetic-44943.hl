@@ -1,0 +1,31 @@
+
+// Create a new customer with only a name field - With Python equivalent
+data.connect:shopDB
+   data.create
+      table:customers
+      values
+
+         // Insert "Alice" into the name column
+         name:Alice
+
+
+/*
+
+# Python equivalent
+# Create a new customer with only a name field
+import sqlite3
+
+# Connect to the SQLite database
+connection = sqlite3.connect('shopDB.db')
+cursor = connection.cursor()
+
+# Create a new customer with the name 'Alice'
+cursor.execute("INSERT INTO customers (name) VALUES (?)", ('Alice',))
+
+# Commit the changes
+connection.commit()
+
+# Close the connection
+connection.close()
+
+*/

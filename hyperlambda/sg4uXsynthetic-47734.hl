@@ -1,0 +1,54 @@
+
+// Hyperlambda endpoint that takes two arguments, calculates the modulo, and then returns true if it's 0, otherwise false - With Python equivalent
+.arguments
+   arg1:int
+   arg2:int
+.type:public
+.accept:application/json
+
+// Sanity checking invocation
+validators.mandatory:x:@.arguments/*/arg1
+validators.mandatory:x:@.arguments/*/arg2
+
+// Calculating modulo
+math.modulo
+   get-value:x:@.arguments/*/arg1
+   get-value:x:@.arguments/*/arg2
+
+// Checking if modulo result is 0
+if
+   eq:x:@math.modulo
+      .:int:0
+   .lambda
+      set-value:x:../*/return/*/result
+         .:bool:true
+else
+   set-value:x:../*/return/*/result
+      .:bool:false
+
+// Returning result to caller
+return
+   result
+
+
+/*
+
+# Python equivalent
+def is_modulo_zero(arg1, arg2):
+    # Validate mandatory fields
+    if arg1 is None or arg2 is None:
+        raise ValueError("Both arg1 and arg2 are mandatory")
+
+    # Calculate the modulo
+    modulo_result = arg1 % arg2
+
+    # Return true if modulo is 0, otherwise false
+    return modulo_result == 0
+
+# Example usage
+arg1 = 10
+arg2 = 5
+result = is_modulo_zero(arg1, arg2)
+print(result)  # Output: True
+
+*/

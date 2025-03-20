@@ -1,0 +1,59 @@
+
+// Write a Hyperlambda script for an OpenAI chat endpoint to handle conversations using 'gpt-xxx' models, with an option to stream response tokens. - With Python equivalent
+.arguments
+   prompt:string
+   type:string
+   references:bool
+   chat:bool
+   recaptcha_response:string
+   user_id:string
+   session:string
+   stream:bool
+   data:string
+   referrer:string
+.type:public
+
+// Forwarding to get Hyperlambda file.
+add:x:+
+   get-nodes:x:@.arguments/*
+execute-file:/system/openai/chat.get.hl
+
+// Returning result to caller.
+return-nodes:x:-/*
+
+
+/*
+
+# Python equivalent
+def get_max_tokens_for_slot(slot):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Split the slot to construct the config key
+    slot_parts = slot.split('.')
+    config_key = f"magic:{slot_parts[0]}:max_tokens"
+
+    # Simulate getting the max tokens from config
+    max_tokens = get_config_value(config_key)
+
+    # Return the max tokens
+    return {"max_tokens": max_tokens}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def get_config_value(key):
+    # Simulate getting a configuration value
+    # This is a placeholder implementation
+    return 2048
+
+# Example usage
+try:
+    result = get_max_tokens_for_slot("example_slot")
+    print(result)
+except PermissionError as e:
+    print(e)
+
+*/

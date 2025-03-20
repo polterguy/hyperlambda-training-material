@@ -1,4 +1,0 @@
-// Create a new transaction
-pgsql.transaction.create
-
-// Notice, must be invoked inside a pgsql.connect or data.connect with database-type being 'pgsql'

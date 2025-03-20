@@ -1,0 +1,83 @@
+
+// Delete endpoint deleting one record from your items table in your shopping-cart-demo database. - With Python equivalent
+.arguments
+
+   // Primary key of record to delete
+   item_id:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/item_id
+
+// Opening up our database connection.
+data.connect:[generic|shopping-cart-demo]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:items
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_item(item_id):
+    """
+    This function deletes one record from the items table in the shopping-cart-demo database.
+    
+    :param item_id: The ID of the item to delete
+    :return: The number of affected rows
+    :raises ValueError: If item_id is not provided
+    """
+    # Verify authentication
+    verify_authentication(["root", "admin"])
+    
+    # Validate mandatory fields
+    if item_id is None:
+        raise ValueError("item_id is mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('shopping-cart-demo.db')
+    cursor = conn.cursor()
+    
+    # Delete the record
+    cursor.execute("DELETE FROM items WHERE item_id = ?", (item_id,))
+    affected_rows = cursor.rowcount
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Return the number of affected rows
+    return affected_rows
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+# Example usage
+# delete_item(123)
+
+*/

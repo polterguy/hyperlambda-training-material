@@ -1,0 +1,96 @@
+
+// Create one record in your menus table in your cms database - With Python equivalent
+.arguments
+
+   // name column value
+   name:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:menus
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.menus.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def create_menu(name):
+    """
+    This function creates one record in the menus table in the cms database.
+    
+    :param name: The name of the menu
+    :return: The ID of the created record
+    :raises ValueError: If name is not provided
+    """
+    # Verify authentication
+    verify_authentication(["guest"])
+    
+    # Validate mandatory fields
+    if not name:
+        raise ValueError("Name is mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('cms.db')
+    cursor = conn.cursor()
+    
+    # Insert the record
+    cursor.execute("INSERT INTO menus (name) VALUES (?)", (name,))
+    record_id = cursor.lastrowid
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Signal the creation (placeholder for actual implementation)
+    signal_menu_creation(name)
+    
+    # Return the ID of the created record
+    return record_id
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+def signal_menu_creation(name):
+    # Placeholder for signaling logic
+    print(f"Menu created: Name={name}")
+
+# Example usage
+# create_menu("Main Menu")
+
+*/

@@ -1,0 +1,110 @@
+
+// Counts items from your spice_urls table in your scraper database. - With Python equivalent
+.arguments
+
+   // spice_urls table spice_url_id column equality exact match filtering
+   spice_urls.spice_url_id.eq:long
+
+   // spice_urls table url column wildcard filtering with SQL like '%' comparison
+   spice_urls.url.like:string
+
+   // spice_urls table url column equality exact match filtering
+   spice_urls.url.eq:string
+
+   // spice_urls table type column wildcard filtering with SQL like '%' comparison
+   spice_urls.type.like:string
+
+   // spice_urls table type column equality exact match filtering
+   spice_urls.type.eq:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-count
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up our database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:spice_urls
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def count_spice_urls(spice_url_id=None, url_like=None, url_eq=None, type_like=None, type_eq=None):
+    """
+    This function counts items from the spice_urls table in the scraper database.
+    
+    :param spice_url_id: The ID of the spice URL to filter by
+    :param url_like: The URL pattern to filter by
+    :param url_eq: The exact URL to filter by
+    :param type_like: The type pattern to filter by
+    :param type_eq: The exact type to filter by
+    :return: The count of items matching the criteria
+    """
+    # Verify authentication
+    verify_authentication(["root", "admin"])
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('scraper.db')
+    cursor = conn.cursor()
+    
+    # Build the query
+    query = "SELECT COUNT(*) AS count FROM spice_urls WHERE 1=1"
+    params = []
+    
+    if spice_url_id is not None:
+        query += " AND spice_url_id = ?"
+        params.append(spice_url_id)
+    if url_like is not None:
+        query += " AND url LIKE ?"
+        params.append(f"%{url_like}%")
+    if url_eq is not None:
+        query += " AND url = ?"
+        params.append(url_eq)
+    if type_like is not None:
+        query += " AND type LIKE ?"
+        params.append(f"%{type_like}%")
+    if type_eq is not None:
+        query += " AND type = ?"
+        params.append(type_eq)
+    
+    # Execute the query
+    cursor.execute(query, params)
+    count = cursor.fetchone()[0]
+    
+    # Close the connection
+    cursor.close()
+    conn.close()
+    
+    # Return the count
+    return count
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+# Example usage
+# count_spice_urls(url_like="example")
+
+*/

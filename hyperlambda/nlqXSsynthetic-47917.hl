@@ -1,0 +1,72 @@
+
+// CRUD / Create Hyperlambda that creates one record in your menus table in your cms database - With Python equivalent
+.arguments
+
+   // name column value
+   name:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:menus
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def create_menu_record(name):
+    # Verify authorization
+    if not verify_auth_ticket(['root', 'admin']):
+        raise PermissionError("Unauthorized access")
+
+    # Connect to the cms database
+    conn = sqlite3.connect('cms.db')
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the insert statement
+        cursor.execute(
+            "INSERT INTO menus (name) VALUES (?)",
+            (name,)
+        )
+        conn.commit()
+
+        # Return the ID of the newly created record
+        return cursor.lastrowid
+    finally:
+        conn.close()
+
+def verify_auth_ticket(roles):
+    # Dummy function for authorization check
+    # Replace with actual implementation
+    return True
+
+*/

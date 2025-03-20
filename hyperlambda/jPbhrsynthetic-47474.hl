@@ -1,0 +1,35 @@
+
+// If with else-if - With Python equivalent
+.dest
+if
+   .:bool:false
+   .lambda
+      set-value:x:@.dest
+         .:yup!
+else-if
+   .:bool:true
+   .lambda
+      set-value:x:@.dest
+         .:yup2.0!
+
+
+/*
+
+# Python equivalent
+def conditional_logic():
+    # Initialize the destination variable
+    dest = None
+
+    # If-else logic
+    if False:
+        dest = "yup!"
+    elif True:
+        dest = "yup2.0!"
+
+    return dest
+
+# Example usage
+result = conditional_logic()
+print(result)  # Output: "yup2.0!"
+
+*/

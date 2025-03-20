@@ -1,0 +1,30 @@
+
+// Create a Hyperlambda snippet that formats user profile details. - With Python equivalent
+
+// Hyperlambda file that formats user profile details.
+.arguments
+   username:string
+   role:string
+   country:string
+strings.concat
+   get-value:x:@.arguments/*/username
+   .:" is a "
+   get-value:x:@.arguments/*/role
+   .:" from "
+   get-value:x:@.arguments/*/country
+yield
+   result:x:@strings.concat
+
+
+/*
+
+# Python equivalent
+def create_email_address(username, domain):
+    email = f"{username}@{domain}"
+    return email
+
+# Example usage
+email_address = create_email_address("john.doe", "example.com")
+print(email_address)
+
+*/

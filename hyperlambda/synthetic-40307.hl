@@ -1,0 +1,20 @@
+
+// Example: URL-decode an email address. - With Python equivalent
+strings.url-decode:user%40example.com
+
+// Result: "user@example.com"
+
+
+/*
+
+# Python equivalent
+# Example: URL-decode an email address.
+import urllib.parse
+
+encoded_email = "user%40example.com"
+decoded_email = urllib.parse.unquote(encoded_email)
+
+# Example usage
+# decoded_email will be "user@example.com"
+
+*/

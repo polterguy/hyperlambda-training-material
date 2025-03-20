@@ -1,0 +1,77 @@
+
+// Returns Stripe charges. - With Python equivalent
+.arguments
+   limit:int
+   starting_after:string
+   customer_id:string
+
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
+
+/*
+ * Retrieves charges from Stripe.
+ * 
+ * Will use your Stripe API token found from your settings as it's interacting
+ * with the Stripe API.
+ */
+execute:magic.workflows.actions.execute
+   name:stripe-charges-get
+   filename:/modules/stripe/workflows/actions/stripe-charges-get.hl
+   arguments
+      limit:x:@.arguments/*/limit
+      starting_after:x:@.arguments/*/starting_after
+      customer_id:x:@.arguments/*/customer_id
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*
+
+
+/*
+
+# Python equivalent
+import stripe
+
+def get_stripe_charges(limit, starting_after=None, customer_id=None):
+    """
+    This function returns Stripe charges.
+    
+    :param limit: The maximum number of charges to return
+    :param starting_after: The ID of the charge to start after
+    :param customer_id: The ID of the customer to filter charges by
+    :return: A list of Stripe charges
+    """
+    # Authorize the user
+    authorize_user(["root", "gpt"])
+    
+    # Set your secret key: remember to switch to your live secret key in production
+    stripe.api_key = "your_secret_key"
+    
+    # Retrieve Stripe charges
+    charges = stripe.Charge.list(
+        limit=limit,
+        starting_after=starting_after,
+        customer=customer_id
+    )
+    
+    # Return the charges
+    return charges
+
+def authorize_user(roles):
+    # Placeholder for user authorization logic
+    pass
+
+# Example usage
+# get_stripe_charges(10, "ch_1Ish2Y2eZvKYlo2C0FJd3j2Q", "cus_J5OeG0s2eZvKYlo2C")
+
+*/

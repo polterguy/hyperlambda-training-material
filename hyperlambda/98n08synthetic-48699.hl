@@ -1,0 +1,68 @@
+
+// Create a Hyperlambda script that refreshes the currently authenticated user's token and returns a new JWT token with a new expiration date, ensuring the user is authorized. - With Python equivalent
+.type:public
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify
+
+/*
+ * Invokes [auth.ticket.refresh] that does the heavy lifting, and creates our JWT token,
+ * making sure we return that token to caller.
+ */
+auth.ticket.refresh
+
+// Returns the authentication JWT ticket created above to caller.
+yield
+   ticket:x:@auth.ticket.refresh
+
+
+/*
+
+# Python equivalent
+import sqlite3
+import bcrypt
+
+def change_user_password(password):
+    # Validate the password
+    if not password:
+        raise ValueError("Password is mandatory")
+
+    # Simulate getting the authenticated user's username
+    username = get_authenticated_username()
+    if username is None:
+        raise PermissionError("Access denied")
+
+    # Hash the password
+    hashed_password = hash_password(password)
+
+    # Connect to the magic database
+    connection = sqlite3.connect("magic.db")
+    cursor = connection.cursor()
+
+    # Update the user's password
+    query = "UPDATE users SET password = ? WHERE username = ?"
+    cursor.execute(query, (hashed_password, username))
+    connection.commit()
+
+    # Close the connection
+    connection.close()
+
+def get_authenticated_username():
+    # Simulate getting the authenticated user's username
+    # This is a placeholder implementation
+    return "example_user"
+
+def hash_password(password):
+    # Generate a salt and hash the password
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode(), salt)
+    return hashed.decode()
+
+# Example usage
+try:
+    change_user_password("new_secure_password123")
+    print("Password changed successfully")
+except (ValueError, PermissionError) as e:
+    print(e)
+
+*/

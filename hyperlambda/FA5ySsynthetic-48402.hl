@@ -1,0 +1,37 @@
+
+// Generate a Hyperlambda snippet that evaluates specified [.check] if condition evaluates to true. - With Python equivalent
+
+// Evaluates specified [.check] if condition evaluates to true.
+.check:bool:true
+if
+   eq:x:@.check
+      .:bool:true
+   .lambda
+
+      // Lambda evaluates if condition is true.
+      log.info:[.check] is true
+else
+
+   // Lambda evaluated if condition is NOT true.
+   log.info:[.check] is false
+
+
+/*
+
+# Python equivalent
+import logging
+
+def execute_lambda_if_status_active():
+    logging.basicConfig(level=logging.INFO)
+    
+    status = True
+    
+    if status:
+        logging.info("[.status] is active")
+    else:
+        logging.info("[.status] is inactive")
+
+# Example usage
+execute_lambda_if_status_active()
+
+*/

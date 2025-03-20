@@ -1,0 +1,18 @@
+
+// Logs a fatal error - With Python equivalent
+log.fatal:Fatal error we cannot recover from
+
+
+/*
+
+# Python equivalent
+# Logs a fatal error
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logging.fatal("Fatal error we cannot recover from")
+
+# Example usage
+# This will log a fatal error message
+
+*/

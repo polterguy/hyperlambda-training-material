@@ -1,0 +1,52 @@
+
+// Write a Hyperlambda script to list all files in a specified folder recursively, with options to display hidden and system files. - With Python equivalent
+.arguments
+   folder:string
+   sys:bool
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Listing all file in specified folder.
+io.file.list-recursively:x:@.arguments/*/folder
+   display-hidden:bool:true
+   display-system:x:@.arguments/*/sys
+
+// Returning results of above invocation to caller.
+return-nodes:x:@io.file.list-recursively/*
+
+
+/*
+
+# Python equivalent
+import os
+
+def list_files_with_filter(folder_path, name_filter=None):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # List all files in the specified folder
+    files_list = os.listdir(folder_path)
+
+    # Apply the filter if provided
+    if name_filter:
+        files_list = [file for file in files_list if name_filter in file]
+
+    # Return the list of files
+    return files_list
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+try:
+    files = list_files_with_filter("/path/to/folder", name_filter="example")
+    for file in files:
+        print(file)
+except PermissionError as e:
+    print(e)
+
+*/

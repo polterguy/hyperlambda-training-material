@@ -1,0 +1,18 @@
+
+// Create a folder - With Python equivalent
+io.folder.create:/misc/foo/
+
+
+/*
+
+# Python equivalent
+# Create a folder
+import os
+
+folder_path = "/misc/foo/"
+os.makedirs(folder_path, exist_ok=True)
+
+# Example usage
+# This will create the folder "/misc/foo/" if it doesn't already exist
+
+*/

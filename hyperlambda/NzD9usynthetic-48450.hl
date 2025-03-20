@@ -1,0 +1,44 @@
+
+// Provide a Hyperlambda example where orders are counted in the 'ecommerce_db' database from the 'orders' table. - With Python equivalent
+
+// Counts orders in the "ecommerce_db" database from the "orders" table.
+data.connect:ecommerce_db
+   database-type:mssql
+
+   // Counting total orders.
+   data.read
+      database-type:mssql
+      table:orders
+      columns
+         count(*)
+            as:count
+      limit:long:1
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def count_products_in_inventory_db():
+    # Connect to the inventory_db database
+    connection = sqlite3.connect('inventory_db.sqlite')
+    
+    cursor = connection.cursor()
+    
+    # Query to count products in the products table
+    query = "SELECT COUNT(*) AS count FROM products"
+    
+    cursor.execute(query)
+    product_count = cursor.fetchone()[0]
+    
+    cursor.close()
+    connection.close()
+    
+    return product_count
+
+# Example usage
+product_count = count_products_in_inventory_db()
+print(product_count)
+
+*/

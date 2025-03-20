@@ -1,0 +1,35 @@
+
+// Create a Hyperlambda snippet that repeats logging while [.attempts] is below 3. - With Python equivalent
+
+// Repeats logging while [.attempts] is below 3.
+.attempts:int:0
+while
+   lt
+      get-value:x:@.attempts
+      .:int:3
+   .lambda
+
+      // Logging attempt.
+      log.info:Attempting task
+
+      // Increasing attempt count.
+      math.increment:x:@.attempts
+
+
+/*
+
+# Python equivalent
+import logging
+
+def increase_value_until_greater_than_15():
+    logging.basicConfig(level=logging.INFO)
+    
+    value = 5
+    while value < 15:
+        logging.info("Increasing value")
+        value += 1
+
+# Example usage
+increase_value_until_greater_than_15()
+
+*/

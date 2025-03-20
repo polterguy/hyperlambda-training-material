@@ -1,0 +1,42 @@
+
+// [include] example illustrating basic usage. - With Python equivalent
+.static:JO
+.data
+   foo1:bar1
+   foo2:bar2
+   foo3:bar3
+include:x:@.data/*
+   strings.concat
+      get-value:x:@.dp/#
+      .:" howdy "
+      get-value:x:@.static
+   unwrap:x:+/*
+   return
+      howdy:x:@strings.concat
+
+
+/*
+
+# Python equivalent
+def include_example(static_value, data):
+    # Initialize the result list
+    result = []
+
+    # Iterate through the data and concatenate strings
+    for key, value in data.items():
+        concatenated_string = f"{value} howdy {static_value}"
+        result.append(concatenated_string)
+
+    return result
+
+# Example usage
+static_value = "JO"
+data = {
+    'foo1': 'bar1',
+    'foo2': 'bar2',
+    'foo3': 'bar3'
+}
+result = include_example(static_value, data)
+print(result)  # Output: ['bar1 howdy JO', 'bar2 howdy JO', 'bar3 howdy JO']
+
+*/

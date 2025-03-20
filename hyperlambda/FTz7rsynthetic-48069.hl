@@ -1,0 +1,39 @@
+
+// Switch-case with a default when no case matches - With Python equivalent
+.val:baz
+.result
+switch:x:@.val
+   case:foo
+      set-value:x:@.result
+         .:First
+   case:bar
+      set-value:x:@.result
+         .:Second
+   default
+      set-value:x:@.result
+         .:None
+
+
+/*
+
+# Python equivalent
+def switch_case(val):
+    # Initialize the result variable
+    result = None
+
+    # Switch-case logic
+    if val == "foo":
+        result = "First"
+    elif val == "bar":
+        result = "Second"
+    else:
+        result = "None"
+
+    return result
+
+# Example usage
+val = "baz"
+result = switch_case(val)
+print(result)  # Output: "None"
+
+*/

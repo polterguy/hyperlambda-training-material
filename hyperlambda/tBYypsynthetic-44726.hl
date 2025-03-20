@@ -1,0 +1,18 @@
+
+// Example: Concatenate multiple strings without separators. - With Python equivalent
+strings.concat
+   .:I
+   .:love
+   .:Hyperlambda
+
+// Result: "IloveHyperlambda"
+
+
+/*
+
+# Python equivalent
+# Concatenate multiple strings without separators
+strings = ["I", "love", "Hyperlambda"]
+concatenated_string = "".join(strings)
+
+*/

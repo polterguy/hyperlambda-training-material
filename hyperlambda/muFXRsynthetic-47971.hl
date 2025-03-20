@@ -1,0 +1,43 @@
+
+// Hyperlambda Example 5: Equality comparison - With Python equivalent
+.value1:hello
+.value2:hello
+.result
+if
+   eq
+      get-value:x:@.value1
+      get-value:x:@.value2
+   .lambda
+      set-value:x:@.result
+         .:Values match
+
+/*
+ * Python Equivalent
+ * value1 = "hello"
+ * value2 = "hello"
+ * result = None
+ * if value1 == value2:
+ * result = "Values match"
+ */
+
+
+/*
+
+# Python equivalent
+def check_values_equality(value1, value2):
+    # Initialize the result variable
+    result = None
+
+    # Equality comparison logic
+    if value1 == value2:
+        result = "Values match"
+
+    return result
+
+# Example usage
+value1 = "hello"
+value2 = "hello"
+result = check_values_equality(value1, value2)
+print(result)  # Output: "Values match"
+
+*/

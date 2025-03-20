@@ -1,0 +1,82 @@
+
+// Lists all database in your MySQL instance. - With Python equivalent
+slots.create:magic.db.pgsql.databases
+
+   // Opens up our connection
+   .connection:[postgres]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               .:postgres]
+   pgsql.connect:x:@.connection
+
+      // Runs our query
+      pgsql.select:select datname from pg_database
+
+      // Renaming "Database" nodes.
+      set-name:x:@pgsql.select/*/*
+         .:db
+
+      // Returns the remaining databases to caller.
+      return-nodes:x:@pgsql.select/*
+
+
+/*
+
+# Python equivalent
+import psycopg2
+
+def list_pgsql_databases(connection_string=None):
+    """
+    This function lists all databases in your PostgreSQL instance.
+    
+    :param connection_string: The connection string for the PostgreSQL instance
+    :return: A list of database names
+    """
+    # Default connection to postgres
+    connection_config = {
+        'dbname': 'postgres',
+        'user': 'postgres',
+        'password': 'password',
+        'host': 'localhost'
+    }
+    
+    # Update connection config if a connection string is provided
+    if connection_string:
+        connection_config.update(parse_connection_string(connection_string))
+    
+    # Connect to PostgreSQL and list databases
+    databases = []
+    try:
+        conn = psycopg2.connect(**connection_config)
+        cursor = conn.cursor()
+        cursor.execute("SELECT datname FROM pg_database")
+        databases = [{"db": db[0]} for db in cursor.fetchall()]
+    finally:
+        cursor.close()
+        conn.close()
+    
+    # Return the list of databases
+    return databases
+
+def parse_connection_string(connection_string):
+    # Placeholder for parsing the connection string into a config dictionary
+    return {}
+
+# Example usage
+# list_pgsql_databases("user:password@localhost")
+
+*/

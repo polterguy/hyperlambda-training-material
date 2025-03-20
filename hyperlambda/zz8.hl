@@ -1,8 +1,0 @@
-// Delete the user with ID 1
-pgsql.delete
-   table:users
-   where
-      and
-         id.eq:int:1
-
-// Notice, the above where can be written as both "id.eq" or "id" since "eq" is the default comparison operators used if none is specified

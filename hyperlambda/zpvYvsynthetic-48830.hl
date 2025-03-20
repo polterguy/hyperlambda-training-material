@@ -1,0 +1,70 @@
+
+// Write a Hyperlambda script to list all connection strings in your installation for a specified database type. - With Python equivalent
+.arguments
+   databaseType:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/databaseType
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:pgsql
+   .:mssql
+   .:sqlite
+
+// Retrieves all connection strings according to database type specified.
+strings.concat
+   .:"magic:databases:"
+   get-value:x:@.arguments/*/databaseType
+config.section:x:-
+add:x:+
+   get-nodes:x:@config.section/*
+return
+
+
+/*
+
+# Python equivalent
+def list_connection_strings(database_type):
+    """
+    This function lists all connection strings in your installation for a specified database type.
+    
+    :param database_type: The type of the database (mysql, pgsql, mssql, sqlite)
+    :raises ValueError: If any validation fails
+    :return: A list of connection strings
+    """
+    # Verify authentication
+    verify_authentication(["root"])
+    
+    # Validate mandatory fields
+    if not database_type:
+        raise ValueError("Database type is mandatory")
+    
+    # Validate database type
+    if database_type not in ["mysql", "pgsql", "mssql", "sqlite"]:
+        raise ValueError("Invalid database type")
+    
+    # Load configuration
+    config = load_config()
+    
+    # Get the connection strings for the specified database type
+    connection_strings = config['magic']['databases'].get(database_type, {})
+    
+    # Return the list of connection strings
+    return list(connection_strings.keys())
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+def load_config():
+    # Placeholder for loading configuration
+    return {"magic": {"databases": {"mysql": {}, "pgsql": {}, "mssql": {}, "sqlite": {}}}}
+
+# Example usage
+# list_connection_strings("mysql")
+
+*/

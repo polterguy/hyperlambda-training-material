@@ -1,0 +1,27 @@
+
+// Example: Use variables for the string, start index, and length. - With Python equivalent
+.text:Magic
+.start:int:1
+.len:int:3
+strings.substring:x:@.text
+   get-value:x:@.start
+   get-value:x:@.len
+
+// Result: "agi"
+
+
+/*
+
+# Python equivalent
+# Example: Use variables for the string, start index, and length.
+text = "Magic"
+start = 1
+length = 3
+
+def get_substring(text, start, length):
+    return text[start:start+length]
+
+# Example usage
+substring = get_substring(text, start, length)
+
+*/

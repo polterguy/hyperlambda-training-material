@@ -1,0 +1,14 @@
+
+// Returns the IP address of the cloudlet - With Python equivalent
+server.ip
+
+
+/*
+
+# Python equivalent
+import platform
+
+# Retrieve the operating system information
+operating_system = platform.system()
+
+*/

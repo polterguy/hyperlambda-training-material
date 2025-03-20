@@ -1,0 +1,35 @@
+
+// Creates a new item in DATABASE_NAME database and its TABLE_NAME table. - With Python equivalent
+data.connect:DATABASE_NAME
+   database-type:sqlite
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:TABLE_NAME
+      values
+
+
+/*
+
+# Python equivalent
+# Creates a new item in DATABASE_NAME database and its TABLE_NAME table.
+import sqlite3
+
+def create_item_in_table(database_name, table_name, values):
+    connection = sqlite3.connect(database_name)
+    cursor = connection.cursor()
+    
+    # Assuming values is a dictionary with column names as keys
+    columns = ', '.join(values.keys())
+    placeholders = ', '.join('?' * len(values))
+    sql = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
+    
+    cursor.execute(sql, tuple(values.values()))
+    connection.commit()
+    connection.close()
+
+# Example usage
+# create_item_in_table('DATABASE_NAME.db', 'TABLE_NAME', {'column1': 'value1', 'column2': 'value2'})
+
+*/

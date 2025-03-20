@@ -1,0 +1,23 @@
+
+// Example: Split a string by spaces. - With Python equivalent
+strings.split:one two three
+   .:" "
+
+/*
+ * Resulting parts:
+ * .:one
+ * .:two
+ * .:three
+ */
+
+
+/*
+
+# Python equivalent
+# Comma-separated string
+string = "a,b,c"
+
+# Split the string by commas
+split_string = string.split(",")
+
+*/

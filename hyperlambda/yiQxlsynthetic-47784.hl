@@ -1,0 +1,71 @@
+
+// Generate an endpoint returning line_items from financial database. Add optional paging support and optional filtering on name - With Python equivalent
+.arguments
+   limit:long
+   offset:long
+   comments.name.eq:string
+
+// Type of endpoint
+.type:crud-read
+
+// Opening up our database connection.
+data.connect:financial
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*/and
+      get-nodes:x:@.arguments/*/comments.name.eq
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   data.read
+      table:line_items
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   yield
+      result:x:@data.read/*
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def get_line_items(database_name, limit=None, offset=None, name_filter=None):
+    # Connect to the financial database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # Prepare the SQL query with optional filtering and paging
+        query = "SELECT * FROM line_items WHERE 1=1"
+        params = []
+
+        if name_filter:
+            query += " AND comments.name = ?"
+            params.append(name_filter)
+
+        if limit is not None:
+            query += " LIMIT ?"
+            params.append(limit)
+
+        if offset is not None:
+            query += " OFFSET ?"
+            params.append(offset)
+
+        # Execute the query
+        cursor.execute(query, params)
+        results = cursor.fetchall()
+
+        return results
+    finally:
+        conn.close()
+
+# Example usage
+database_name = 'financial.db'
+line_items = get_line_items(database_name, limit=10, offset=0, name_filter="example_name")
+for item in line_items:
+    print(item)
+
+*/

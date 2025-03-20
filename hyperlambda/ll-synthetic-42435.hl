@@ -1,0 +1,17 @@
+
+// Example: Capitalize a string starting with a digit (no alphabetical character to capitalize). - With Python equivalent
+
+// Result: "42hello"
+strings.capitalize:42hello
+
+
+/*
+
+# Python equivalent
+# String starting with whitespace
+string = " hello"
+
+# Capitalize the string (no effect on the leading space)
+capitalized_string = string.capitalize()
+
+*/

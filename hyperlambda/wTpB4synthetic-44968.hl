@@ -1,0 +1,31 @@
+
+// Evaluate all lambda objects under the current node sequentially (result becomes 'Second') - With Python equivalent
+.res:
+.lambda
+   set-value:x:@.res
+      .:First
+.lambda
+   set-value:x:@.res
+      .:Second
+eval:x:../*/.lambda
+
+
+/*
+
+# Python equivalent
+# Evaluate all lambda objects under the current node sequentially (result becomes 'Second')
+res = None
+
+def lambda1():
+    global res
+    res = "First"
+
+def lambda2():
+    global res
+    res = "Second"
+
+# Evaluate the lambda functions sequentially
+lambda1()
+lambda2()
+
+*/

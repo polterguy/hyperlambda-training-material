@@ -1,0 +1,18 @@
+
+// Example: Check if a string starts with itself. - With Python equivalent
+
+// Returns true
+strings.starts-with:Test
+   .:Test
+
+
+/*
+
+# Python equivalent
+# List of strings to be joined
+input_strings = ["A", "B", "C"]
+
+# Join the strings with a comma separator
+joined_string = ",".join(input_strings)
+
+*/

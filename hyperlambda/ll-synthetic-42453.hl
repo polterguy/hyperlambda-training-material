@@ -1,0 +1,19 @@
+
+// Example: Ends-with check is case-sensitive. - With Python equivalent
+
+// Returns false
+strings.ends-with:Hello
+   .:LLO
+
+
+/*
+
+# Python equivalent
+# Variables for the string and suffix
+text = "Goodbye"
+suffix = "bye"
+
+# Check if the text ends with the suffix
+ends_with_suffix = text.endswith(suffix)
+
+*/

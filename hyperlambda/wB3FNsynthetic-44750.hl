@@ -1,0 +1,20 @@
+
+// Example: Join all strings stored as children of a list node. - With Python equivalent
+.words
+   .:one
+   .:two
+   .:three
+strings.join:x:@.words/*
+   .:|
+
+// Result: "one|two|three"
+
+
+/*
+
+# Python equivalent
+# Join all strings stored as children of a list node
+words = ["one", "two", "three"]
+joined_string = "|".join(words)
+
+*/

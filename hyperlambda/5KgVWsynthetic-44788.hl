@@ -1,0 +1,23 @@
+
+// Example: Trim specific characters from the beginning of a string. - With Python equivalent
+
+// The leading "xyz" will be removed
+strings.trim-start:xyzabcxyz
+   .:xyz
+
+// Result: "abcxyz"
+
+
+/*
+
+# Python equivalent
+# Trim specific characters from the beginning of a string
+string = "xyzabcxyz"
+chars_to_trim = "xyz"
+
+# Custom implementation to mimic trim-start
+trimmed_string = string
+while trimmed_string.startswith(chars_to_trim):
+    trimmed_string = trimmed_string[len(chars_to_trim):]
+
+*/

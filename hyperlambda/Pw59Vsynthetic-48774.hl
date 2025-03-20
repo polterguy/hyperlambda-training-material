@@ -1,0 +1,50 @@
+
+// Write a Hyperlambda script to return a specified CSS file to the caller, with options for position, color, link, start, and end. - With Python equivalent
+.arguments
+   file:string
+   position:string
+   color:string
+   link:string
+   start:string
+   end:string
+   v:string
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/system/openai/include-style.css.get.hl
+return:x:-
+
+
+/*
+
+# Python equivalent
+def is_openai_configured():
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Simulate getting the OpenAI key from config
+    openai_key = get_config_value("magic:openai:key")
+
+    # Check if the OpenAI key is configured
+    if openai_key is None or openai_key == "":
+        return {"result": False}
+    else:
+        return {"result": True}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def get_config_value(key):
+    # Simulate getting a configuration value
+    # This is a placeholder implementation
+    return "your_openai_key"
+
+# Example usage
+try:
+    result = is_openai_configured()
+    print(result)
+except PermissionError as e:
+    print(e)
+
+*/

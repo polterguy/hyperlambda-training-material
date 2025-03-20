@@ -1,0 +1,63 @@
+
+// Create a new order and update product stock in one atomic transaction - With Python equivalent
+data.connect:shopDB
+   data.transaction.create
+      data.create
+         table:orders
+         values
+            customer_id:42
+            total:100.00
+      data.update
+         table:products
+         values
+            stock:long:50
+         where
+            and
+               product_id:123
+
+      // Commit the transaction to save both changes
+      data.transaction.commit
+
+   // Both the new order and the stock update are committed together
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def create_order_and_update_stock(database_name, customer_id, total, product_id, new_stock):
+    # Connect to the specified database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # Begin a transaction
+        conn.execute('BEGIN')
+
+        # Create a new order
+        cursor.execute(
+            "INSERT INTO orders (customer_id, total) VALUES (?, ?)",
+            (customer_id, total)
+        )
+
+        # Update product stock
+        cursor.execute(
+            "UPDATE products SET stock = ? WHERE product_id = ?",
+            (new_stock, product_id)
+        )
+
+        # Commit the transaction
+        conn.commit()
+    except Exception as e:
+        # Rollback the transaction in case of error
+        conn.rollback()
+        raise e
+    finally:
+        conn.close()
+
+# Example usage
+database_name = 'shopDB.db'
+create_order_and_update_stock(database_name, 42, 100.00, 123, 50)
+
+*/

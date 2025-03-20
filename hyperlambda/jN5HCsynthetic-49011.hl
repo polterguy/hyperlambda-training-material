@@ -1,0 +1,95 @@
+
+// Delete one record from your Customer table in your chinook database. - With Python equivalent
+.arguments
+
+   // Primary key of record to delete, mandatory argument
+   CustomerId:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:admin,basic,enterprise
+validators.mandatory:x:@.arguments/*/CustomerId
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Customer
+      where
+         and
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:chinook.customer.delete
+      args
+      roles:enterprise,guest
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_customer(customer_id):
+    """
+    This function deletes one record from the Customer table in the chinook database.
+    
+    :param customer_id: The ID of the customer to delete
+    :return: The number of affected rows
+    :raises ValueError: If customer_id is not provided
+    """
+    # Verify authentication
+    verify_authentication(["admin", "basic", "enterprise"])
+    
+    # Validate mandatory fields
+    if customer_id is None:
+        raise ValueError("CustomerId is mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('chinook.db')
+    cursor = conn.cursor()
+    
+    # Delete the record
+    cursor.execute("DELETE FROM Customer WHERE CustomerId = ?", (customer_id,))
+    affected_rows = cursor.rowcount
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Signal the deletion (placeholder for actual implementation)
+    signal_customer_deletion(customer_id)
+    
+    # Return the number of affected rows
+    return affected_rows
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+def signal_customer_deletion(customer_id):
+    # Placeholder for signaling logic
+    print(f"Customer with ID {customer_id} deleted.")
+
+# Example usage
+# delete_customer(123)
+
+*/

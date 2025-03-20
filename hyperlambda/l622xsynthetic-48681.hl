@@ -1,0 +1,96 @@
+
+// Create a Hyperlambda endpoint for a CRUD create endpoint that creates an item in the users table in the magic database according to specified arguments, ensuring authentication and authorization for root roles. - With Python equivalent
+.arguments
+   username:string
+   password:string
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
+eval:x:+
+signal:transformers.hash-password
+   reference:x:@.arguments/*/password
+
+// Opening up database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      table:users
+      return-id:bool:false
+      values
+
+   // Returning result of above invoction to caller.
+   response.status.set:201
+   unwrap:x:+/*
+   return
+      result:success
+
+
+/*
+
+# Python equivalent
+import sqlite3
+import bcrypt
+
+def update_user_record(database, username, password):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Validate the username
+    if not username:
+        raise ValueError("Username is mandatory")
+
+    # Hash the password
+    hashed_password = hash_password(password)
+
+    # Connect to the specified database
+    connection = sqlite3.connect(database)
+    cursor = connection.cursor()
+
+    # Build the SQL query
+    query = "UPDATE users SET password = ? WHERE username = ?"
+
+    # Execute the query
+    cursor.execute(query, (hashed_password, username))
+    connection.commit()
+
+    # Get the number of affected rows
+    affected_rows = cursor.rowcount
+
+    # Close the connection
+    connection.close()
+
+    # Check if any record was updated
+    if affected_rows == 0:
+        return {"result": "Record not found", "status": 404}
+    else:
+        return {"affected": affected_rows, "status": 202}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def hash_password(password):
+    # Generate a salt and hash the password
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode(), salt)
+    return hashed.decode()
+
+# Example usage
+try:
+    result = update_user_record("magic.db", "example_user", "new_secure_password")
+    print(result)
+except (ValueError, PermissionError) as e:
+    print(e)
+
+*/

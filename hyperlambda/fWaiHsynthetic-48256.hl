@@ -1,0 +1,69 @@
+
+// Create a global exception handler in Hyperlambda that logs error messages, URLs, and stack traces. It should check if the 'public' argument exists and is true or if the user has the 'root' role to decide whether to propagate the exception message to the client. If not, return a generic error message. - With Python equivalent
+log.error:x:@.arguments/*/message
+   url:x:@.arguments/*/path
+   exception:x:@.arguments/*/stack
+
+/*
+ * Notice, unless the [public] argument exists, and is true,
+ * we return a "generic" error to caller to make sure we don't
+ * disclose any security information originating from exceptions.
+ */
+if
+   or
+      auth.ticket.in-role:root
+      and
+         exists:x:@.arguments/*/public
+         or
+            get-value:x:@.arguments/*/public
+            convert:x:@.arguments/*/public
+               type:bool
+   .lambda
+
+      // Exception message is supposed to propagate to client.
+      set-value:x:../*/return/*/message
+         get-value:x:@.arguments/*/message
+
+// Parametrizing return invocation.
+add:x:+
+   get-nodes:x:@.arguments/*/status
+   get-nodes:x:@.arguments/*/field
+return
+   message:Guru meditation, come back when Universe is in order!
+
+
+/*
+
+# Python equivalent
+def global_exception_handler(arguments):
+    # Log error message, URL, and stack trace
+    log_error(arguments['message'], arguments['path'], arguments['stack'])
+
+    # Check if the exception message should be propagated
+    if is_root_user() or (arguments.get('public') and bool(arguments['public'])):
+        return {"message": arguments['message']}
+    
+    # Return a generic error message
+    return {"message": "Guru meditation, come back when Universe is in order!"}
+
+def log_error(message, url, stack):
+    # Dummy function to log error
+    # Replace with actual implementation
+    print(f"Error: {message}, URL: {url}, Stack: {stack}")
+
+def is_root_user():
+    # Dummy function to check if user is root
+    # Replace with actual implementation
+    return False
+
+# Example usage
+arguments = {
+    "message": "An error occurred",
+    "path": "/example/path",
+    "stack": "Stack trace details",
+    "public": True
+}
+result = global_exception_handler(arguments)
+print(result)
+
+*/

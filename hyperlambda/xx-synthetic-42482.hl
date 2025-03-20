@@ -1,0 +1,25 @@
+
+// Example: Use variables to supply the string and delimiter. - With Python equivalent
+.text:x|y|z
+.delim:|
+strings.split:x:@.text
+   get-value:x:@.delim
+
+/*
+ * Resulting parts:
+ * .:x
+ * .:y
+ * .:z
+ */
+
+
+/*
+
+# Python equivalent
+# Uppercase string
+string = "HELLO"
+
+# Convert the string to lowercase
+lowercase_string = string.lower()
+
+*/

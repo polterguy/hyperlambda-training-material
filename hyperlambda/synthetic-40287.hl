@@ -1,0 +1,19 @@
+
+// Example: Trim a string consisting only of trim characters (result is empty). - With Python equivalent
+
+// Result: "" (empty string)
+strings.trim:!!!
+   .:!
+
+
+/*
+
+# Python equivalent
+# Example: Trim a string consisting only of trim characters (result is empty).
+string_with_only_trim_chars = "!!!"
+trimmed_string = string_with_only_trim_chars.strip("!")
+
+# Example usage
+# trimmed_string will be ""
+
+*/

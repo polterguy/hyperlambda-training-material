@@ -1,0 +1,30 @@
+
+// Else-if using an expression shorthand for its condition - With Python equivalent
+.flag:bool:true
+.result
+if
+   .:bool:false
+   .lambda
+      set-value:x:@.result
+         .:First
+else-if:x:@.flag
+   set-value:x:@.result
+      .:Second
+
+
+/*
+
+# Python equivalent
+# Else-if using an expression shorthand for its condition
+flag = True
+result = None
+
+if False:
+    result = "First"
+elif flag:
+    result = "Second"
+
+# Example usage
+# result will be "Second"
+
+*/

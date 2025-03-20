@@ -1,0 +1,39 @@
+
+// Complex if with both [and] and [or] - With Python equivalent
+.foo1:bar
+.foo2:bool:false
+.foo3:bool:true
+.result
+if
+   and
+      eq:x:@.foo1
+         .:bar
+      or
+         get-value:x:@.foo2
+         get-value:x:@.foo3
+   .lambda
+      set-value:x:@.result
+         .:Yup!
+
+
+/*
+
+# Python equivalent
+def complex_condition(foo1, foo2, foo3):
+    # Initialize the result variable
+    result = None
+
+    # Complex if logic with and/or conditions
+    if foo1 == "bar" and (foo2 or foo3):
+        result = "Yup!"
+
+    return result
+
+# Example usage
+foo1 = "bar"
+foo2 = False
+foo3 = True
+result = complex_condition(foo1, foo2, foo3)
+print(result)  # Output: "Yup!"
+
+*/

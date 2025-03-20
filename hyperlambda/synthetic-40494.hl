@@ -1,0 +1,26 @@
+
+// Show me an example lambda object with 3 nodes, the third node having two children with values. Use random names and values. - With Python equivalent
+foo:bar
+foo:int:5
+foo
+   child1:its-value
+   child2:its-value
+
+
+/*
+
+# Python equivalent
+# Show me an example Python dictionary with 3 keys, the third key having a nested dictionary with values. Use random names and values.
+example_dict = {
+    "foo1": "bar",
+    "foo2": 5,
+    "foo3": {
+        "child1": "its-value",
+        "child2": "its-value"
+    }
+}
+
+# Example usage
+# example_dict will be a dictionary with the specified structure
+
+*/

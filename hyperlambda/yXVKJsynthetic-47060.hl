@@ -1,0 +1,79 @@
+
+// CRUD endpoint - Create one record in your actor table in your sakila database with authorization - With Python equivalent
+.arguments
+
+   // first_name column value
+   first_name:string
+
+   // last_name column value
+   last_name:string
+
+   // last_update column value
+   last_update:date
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|sakila]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:actor
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create
+
+
+/*
+
+# Python equivalent
+import sqlite3
+from datetime import datetime
+
+def create_actor_record(first_name, last_name, last_update):
+    # Verify authorization
+    if not verify_auth_ticket(['root', 'admin']):
+        raise PermissionError("Unauthorized access")
+
+    # Connect to the sakila database
+    conn = sqlite3.connect('sakila.db')
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the insert statement
+        cursor.execute(
+            "INSERT INTO actor (first_name, last_name, last_update) VALUES (?, ?, ?)",
+            (first_name, last_name, last_update)
+        )
+        conn.commit()
+
+        # Return the ID of the newly created record
+        return cursor.lastrowid
+    finally:
+        conn.close()
+
+def verify_auth_ticket(roles):
+    # Dummy function for authorization check
+    # Replace with actual implementation
+    return True
+
+*/

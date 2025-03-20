@@ -1,0 +1,20 @@
+
+// Example: Use variables to supply the string and suffix to check. - With Python equivalent
+.text:Goodbye
+.suffix:bye
+
+// Returns true
+strings.ends-with:x:@.text
+   get-value:x:@.suffix
+
+
+/*
+
+# Python equivalent
+# Original string
+string = "Test"
+
+# Check if the string ends with itself
+ends_with_itself = string.endswith(string)
+
+*/

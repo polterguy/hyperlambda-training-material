@@ -1,0 +1,16 @@
+
+// Return the HTTP verb of the current request - With Python equivalent
+request.verb
+
+// Result ==> One of get, post, put, patch, or delete
+
+
+/*
+
+# Python equivalent
+from flask import request
+
+# List all cookies in the current request
+cookies_list = request.cookies
+
+*/

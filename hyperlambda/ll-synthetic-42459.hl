@@ -1,0 +1,20 @@
+
+// Example: Use variables to supply the string and prefix to check. - With Python equivalent
+.text:Sample
+.prefix:Sam
+
+// Returns true
+strings.starts-with:x:@.text
+   get-value:x:@.prefix
+
+
+/*
+
+# Python equivalent
+# Original string
+string = "Test"
+
+# Check if the string starts with itself
+starts_with_itself = string.startswith(string)
+
+*/

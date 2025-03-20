@@ -1,0 +1,100 @@
+
+// Create one record in your categories table in your cms database - With Python equivalent
+.arguments
+
+   // name column value
+   name:string
+
+   // description column value
+   description:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:categories
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.categories.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def create_category(name, description):
+    """
+    This function creates one record in the categories table in the cms database.
+    
+    :param name: The name of the category
+    :param description: The description of the category
+    :return: The ID of the created record
+    :raises ValueError: If name or description is not provided
+    """
+    # Verify authentication
+    verify_authentication(["guest"])
+    
+    # Validate mandatory fields
+    if not name or not description:
+        raise ValueError("Name and description are mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('cms.db')
+    cursor = conn.cursor()
+    
+    # Insert the record
+    cursor.execute("INSERT INTO categories (name, description) VALUES (?, ?)", (name, description))
+    record_id = cursor.lastrowid
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Signal the creation (placeholder for actual implementation)
+    signal_category_creation(name, description)
+    
+    # Return the ID of the created record
+    return record_id
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+def signal_category_creation(name, description):
+    # Placeholder for signaling logic
+    print(f"Category created: Name={name}, Description={description}")
+
+# Example usage
+# create_category("New Category", "This is a new category.")
+
+*/

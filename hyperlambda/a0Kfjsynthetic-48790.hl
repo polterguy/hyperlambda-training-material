@@ -1,0 +1,102 @@
+
+// Write a Hyperlambda script to create a new training snippet with optional URL, prompt, completion, and type. - With Python equivalent
+.arguments
+
+   // Optional URL for citations
+   uri:string
+
+   // Mandatory prompt or short one liner description
+   prompt:string
+
+   // Mandatory completion being the content or body of your snippet
+   completion:string
+
+   // Mandatory machine learning to to associate snippet with
+   type:string
+.type:private
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,service
+
+// Opening up database connection.
+data.connect:[generic|magic]
+
+   // Verifying user can create more snippets.
+   add:x:+
+      get-nodes:x:@.arguments/*/type
+   try-signal:magic.ai.can-create-snippet
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      table:ml_training_snippets
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create
+
+
+/*
+
+# Python equivalent
+def create_training_snippet(uri=None, prompt=None, completion=None, snippet_type=None):
+    """
+    This function creates a new training snippet with optional URL, prompt, completion, and type.
+    
+    :param uri: The URI of the snippet
+    :param prompt: The prompt for the snippet
+    :param completion: The completion text for the snippet
+    :param snippet_type: The type of the snippet
+    :return: The ID of the created snippet
+    """
+    # Verify authentication
+    verify_authentication(["root", "service"])
+    
+    # Connect to the database and prepare data
+    snippet_data = {
+        "uri": uri,
+        "prompt": prompt,
+        "completion": completion,
+        "type": snippet_type
+    }
+    
+    # Check if snippet can be created
+    if not can_create_snippet():
+        raise PermissionError("Cannot create snippet")
+    
+    # Create the snippet in the database
+    snippet_id = create_snippet_in_db(snippet_data)
+    
+    # Set response status
+    set_response_status(201)
+    
+    # Return the snippet ID
+    return {"id": snippet_id}
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+def can_create_snippet():
+    # Placeholder for logic to check if snippet can be created
+    return True
+
+def create_snippet_in_db(snippet_data):
+    # Placeholder for database creation logic
+    # This would return the ID of the created snippet
+    return 1
+
+def set_response_status(status_code):
+    # Placeholder for setting the response status
+    pass
+
+*/

@@ -1,0 +1,25 @@
+// Append multiple new child nodes to a destination node - With Python equivalent
+.dest
+add:x:@.dest
+   .
+      foo1:hello
+      foo2:world
+   .
+      bar1:hi
+      bar2:planet
+
+/*
+
+# Python equivalent
+# Append multiple new child nodes (nested dictionaries) to a destination node
+dest = []
+dest.append({
+    'foo1': 'hello',
+    'foo2': 'world'
+})
+dest.append({
+    'bar1': 'hi',
+    'bar2': 'planet'
+})
+
+*/

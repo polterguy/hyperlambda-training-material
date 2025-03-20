@@ -1,0 +1,21 @@
+
+// Example: Extract with length exceeding string bounds (returns till end). - With Python equivalent
+strings.substring:Hello
+   .:2
+   .:10
+
+// Result: "llo"
+
+
+/*
+
+# Python equivalent
+# Extract with length exceeding string bounds (returns till end)
+text = "Hello"
+start_index = 2
+length = 10
+
+# Python handles out-of-bounds gracefully
+substring = text[start_index:start_index + length]
+
+*/

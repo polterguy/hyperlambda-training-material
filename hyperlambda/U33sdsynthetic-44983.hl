@@ -1,0 +1,15 @@
+
+// Delete a folder - With Python equivalent
+io.folder.delete:/misc/foo/
+
+
+/*
+
+# Python equivalent
+# Delete a folder
+import shutil
+
+folder_path = "/misc/foo/"
+shutil.rmtree(folder_path, ignore_errors=True)
+
+*/

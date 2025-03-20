@@ -1,0 +1,20 @@
+
+// Returns the operating system to caller - With Python equivalent
+system.os
+
+// Results in (for Mac); Darwin 23.1.0 Darwin Kernel Version 23.1.0: Mon Oct  9 21:32:11 PDT 2023; root:xnu-10002.41.9~7/RELEASE_ARM64_T6030
+
+
+/*
+
+# Python equivalent
+# Using a list to build strings in Python
+string_builder = []
+string_builder.append("Hello")
+string_builder.append(" ")
+string_builder.append("world")
+
+# Join the list into a single string
+result_string = "".join(string_builder)
+
+*/

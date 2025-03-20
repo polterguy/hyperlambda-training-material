@@ -1,0 +1,48 @@
+
+// Create a Hyperlambda script to demonstrate a switch case comparison evaluating lambda objects based on the expression's value. - With Python equivalent
+.source:foo
+.result
+switch:x:@.source
+   case:foo
+
+      // Lambda object to evaluate if expression's value equals 'foo'.
+      set-value:x:@.result
+         .:Is foo
+   case:bar
+
+      // Lambda object to evaluate if expression's value equals 'bar'.
+      set-value:x:@.result
+         .:Is bar
+   default
+
+      /*
+       * Lambda object to evaluate if expression is not matched to any
+       * of the above values.
+       */
+      set-value:x:@.result
+         .:None of the above
+
+
+/*
+
+# Python equivalent
+def evaluate_source(source):
+    # Initialize the result variable
+    result = None
+
+    # Switch-case logic
+    if source == "foo":
+        result = "Is foo"
+    elif source == "bar":
+        result = "Is bar"
+    else:
+        result = "None of the above"
+
+    return result
+
+# Example usage
+source = "foo"
+result = evaluate_source(source)
+print(result)  # Output: "Is foo"
+
+*/

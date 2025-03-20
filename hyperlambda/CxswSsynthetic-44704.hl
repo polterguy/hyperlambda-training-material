@@ -1,0 +1,12 @@
+
+// Lists all cookies in current request - With Python equivalent
+request.cookies.list
+
+
+/*
+
+# Python equivalent
+# Lists all cookies in the current request
+cookies_list = request.cookies.items()
+
+*/

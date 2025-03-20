@@ -1,0 +1,18 @@
+
+// Example: Invoke a slot - With Python equivalent
+signal:foo
+
+
+/*
+
+# Python equivalent
+# Example: Invoke a slot
+
+# Define the slot function
+def foo():
+    return "Slot invoked"
+
+# Invoke the slot
+result = foo()
+
+*/

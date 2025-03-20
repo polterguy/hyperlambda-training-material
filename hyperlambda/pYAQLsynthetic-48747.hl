@@ -1,0 +1,55 @@
+
+// Write a Hyperlambda script to list all folders in a specified folder. - With Python equivalent
+.arguments
+   folder:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Listing all folders in specified folder.
+io.folder.list:x:@.arguments/*/folder
+
+// Returning results of above invocation to caller.
+return-nodes:x:@io.folder.list/*
+
+
+/*
+
+# Python equivalent
+import os
+import logging
+
+def rename_file_or_folder(old_name, new_name):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Log the renaming action
+    logging.info(f"Renaming file object from {old_name} to {new_name}")
+
+    # Check if the old name is a folder
+    if os.path.isdir(old_name):
+        # Rename the folder
+        os.rename(old_name, new_name)
+    else:
+        # Rename the file
+        folder_path = os.path.dirname(old_name)
+        new_file_path = os.path.join(folder_path, new_name)
+        os.rename(old_name, new_file_path)
+
+    # Return success result
+    return {"result": "success"}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+try:
+    result = rename_file_or_folder("/path/to/old_name", "/path/to/new_name")
+    print(result)
+except PermissionError as e:
+    print(e)
+
+*/

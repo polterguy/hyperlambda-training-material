@@ -1,0 +1,63 @@
+
+// Creates a grouped chart - With Python equivalent
+image.chart:grouped
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets
+
+
+/*
+
+# Python equivalent
+import matplotlib.pyplot as plt
+import numpy as np
+
+def create_grouped_chart(filename):
+    # Data for the chart
+    categories = ['Spring', 'Summer', 'Autumn']
+    data = {
+        'Phones': [2, 4, 2],
+        'Computers': [5, 7, 5],
+        'Tablets': [10, 10, 4]
+    }
+
+    # Create a grouped bar chart
+    fig, ax = plt.subplots(figsize=(6, 3))
+    x = np.arange(len(categories))
+    width = 0.2
+
+    for i, (label, values) in enumerate(data.items()):
+        ax.bar(x + i * width, values, width, label=label)
+
+    # Add legend and labels
+    ax.set_ylabel('Units Sold')
+    ax.set_title('Grouped Bar Chart')
+    ax.set_xticks(x + width)
+    ax.set_xticklabels(categories)
+    ax.legend()
+
+    # Save the chart as an image file
+    plt.savefig(filename)
+    plt.close()
+
+# Example usage
+create_grouped_chart('/chart.png')
+
+*/

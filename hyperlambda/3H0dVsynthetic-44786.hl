@@ -1,0 +1,20 @@
+
+// Example: Use variables for the string and characters to trim. - With Python equivalent
+.text:xyzyx
+.chars:xy
+
+// Result: "z"
+strings.trim:x:@.text
+   get-value:x:@.chars
+
+
+/*
+
+# Python equivalent
+# Use variables for the string and characters to trim
+text = "xyzyx"
+chars = "xy"
+
+trimmed_text = text.strip(chars)
+
+*/

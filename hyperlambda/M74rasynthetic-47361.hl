@@ -1,0 +1,45 @@
+
+// Delete a single customer record by customer_id - With Python equivalent
+data.connect:shopDB
+   data.delete
+      table:customers
+      where
+         and
+
+            // Only delete the customer with ID 987
+            customer_id.eq:987
+
+   // WARNING: Without a WHERE clause, this would delete all customers!
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_customer_record(database_name, customer_id):
+    # Connect to the specified database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the delete statement
+        query = """
+        DELETE FROM customers
+        WHERE customer_id = ?
+        """
+        cursor.execute(query, (customer_id,))
+        conn.commit()
+
+        # Return the number of affected rows
+        return cursor.rowcount
+    finally:
+        conn.close()
+
+# Example usage
+database_name = 'shopDB.db'
+customer_id = 987
+affected_rows = delete_customer_record(database_name, customer_id)
+print(f"Number of customer records deleted: {affected_rows}")
+
+*/

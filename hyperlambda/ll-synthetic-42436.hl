@@ -1,0 +1,17 @@
+
+// Example: Capitalize a string starting with whitespace (no effect on the leading space). - With Python equivalent
+
+// Result: " hello" (leading space preserved)
+strings.capitalize:" hello"
+
+
+/*
+
+# Python equivalent
+# Empty string
+string = ""
+
+# Capitalize the empty string (result is still an empty string)
+capitalized_string = string.capitalize()
+
+*/

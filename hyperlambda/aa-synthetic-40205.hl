@@ -1,0 +1,22 @@
+
+// Return the URL of the current request - With Python equivalent
+request.url
+
+// Example result ==> magic/system/evaluator/evaluate
+
+// Notice, URL will always be returned as relative URL
+
+
+/*
+
+# Python equivalent
+# Return the URL of the current request
+from flask import request
+
+def get_request_url():
+    return request.url
+
+# Example usage
+# current_url = get_request_url()
+
+*/

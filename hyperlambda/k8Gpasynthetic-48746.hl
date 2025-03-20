@@ -1,0 +1,48 @@
+
+// Write a Hyperlambda script to list all folders in a specified folder recursively, with options to display hidden and system folders. - With Python equivalent
+.arguments
+   folder:string
+   sys:bool
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Listing all folders in specified folder.
+io.folder.list-recursively:x:@.arguments/*/folder
+   display-hidden:bool:true
+   display-system:x:@.arguments/*/sys
+
+// Returning results of above invocation to caller.
+return-nodes:x:@io.folder.list-recursively/*
+
+
+/*
+
+# Python equivalent
+import os
+
+def list_folders(folder_path):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # List all folders in the specified folder
+    folders_list = [name for name in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, name))]
+
+    # Return the list of folders
+    return folders_list
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+try:
+    folders = list_folders("/path/to/folder")
+    for folder in folders:
+        print(folder)
+except PermissionError as e:
+    print(e)
+
+*/

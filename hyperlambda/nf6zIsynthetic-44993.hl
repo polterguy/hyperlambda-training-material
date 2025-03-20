@@ -1,0 +1,17 @@
+
+// Move file - With Python equivalent
+io.file.move:/misc/README.md
+   .:/misc/backup/README-backup.md
+
+
+/*
+
+# Python equivalent
+# Move file
+import shutil
+
+source_file = "/misc/README.md"
+destination_file = "/misc/backup/README-backup.md"
+shutil.move(source_file, destination_file)
+
+*/

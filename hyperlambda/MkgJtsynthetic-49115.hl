@@ -1,0 +1,94 @@
+
+// Delete one record from your comments table in your cms database - With Python equivalent
+.arguments
+
+   // Primary key of record to delete, mandatory argument
+   id:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+validators.mandatory:x:@.arguments/*/id
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:comments
+      where
+         and
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.comments.delete
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_comment(comment_id):
+    """
+    This function deletes one record from the comments table in the cms database.
+    
+    :param comment_id: The ID of the comment to delete
+    :return: The number of affected rows
+    :raises ValueError: If comment_id is not provided
+    """
+    # Verify authentication
+    verify_authentication(["guest"])
+    
+    # Validate mandatory fields
+    if comment_id is None:
+        raise ValueError("Comment ID is mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('cms.db')
+    cursor = conn.cursor()
+    
+    # Delete the record
+    cursor.execute("DELETE FROM comments WHERE id = ?", (comment_id,))
+    affected_rows = cursor.rowcount
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Signal the deletion (placeholder for actual implementation)
+    signal_comment_deletion(comment_id)
+    
+    # Return the number of affected rows
+    return affected_rows
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+def signal_comment_deletion(comment_id):
+    # Placeholder for signaling logic
+    print(f"Comment with ID {comment_id} deleted.")
+
+# Example usage
+# delete_comment(1)
+
+*/

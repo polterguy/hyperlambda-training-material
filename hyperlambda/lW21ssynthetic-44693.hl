@@ -1,0 +1,15 @@
+
+// Returns the IP address of the cloudlet - With Python equivalent
+server.ip
+
+
+/*
+
+# Python equivalent
+# Returns the IP address of the server
+import socket
+
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
+
+*/

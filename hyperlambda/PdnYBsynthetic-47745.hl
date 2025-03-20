@@ -1,0 +1,41 @@
+
+// Delete an item by ID with authorization, specifying a short timeout - With Python equivalent
+http.delete:"https://api.example.com/items/123"
+
+   // attach query parameters instead of hardcoding them in URL
+   query
+      category:cars
+
+   // include Bearer token for auth if required by the API
+   token:XYZ_SECRET_TOKEN_123
+
+   // abort if no response within 5 seconds
+   timeout:int:5
+
+
+/*
+
+# Python equivalent
+import requests
+
+def delete_item_by_id():
+    # Define the URL and parameters
+    url = "https://api.example.com/items/123"
+    headers = {
+        "Authorization": "Bearer XYZ_SECRET_TOKEN_123"
+    }
+    params = {
+        "category": "cars"
+    }
+    timeout = 5  # Timeout in seconds
+
+    # Send the HTTP DELETE request
+    response = requests.delete(url, headers=headers, params=params, timeout=timeout)
+
+    return response.status_code, response.text
+
+# Example usage
+status_code, response_text = delete_item_by_id()
+print(f"Status Code: {status_code}, Response: {response_text}")
+
+*/

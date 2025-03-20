@@ -1,0 +1,53 @@
+
+// Create a Hyperlambda snippet that retrieves access logs from the security database and access_logs table. - With Python equivalent
+
+// Retrieves access logs from the security database and access_logs table.
+data.connect:security_db
+
+   // PostgreSQL database used.
+   database-type:pgsql
+
+   // Querying access logs without sorting or limiting.
+   data.read
+      database-type:pgsql
+      table:access_logs
+
+
+/*
+
+# Python equivalent
+import mysql.connector
+from datetime import datetime
+
+def create_new_user():
+    # Connect to the auth_db database
+    connection = mysql.connector.connect(
+        host='your_host',
+        user='your_user',
+        password='your_password',
+        database='auth_db'
+    )
+    
+    cursor = connection.cursor()
+    
+    # Query to create a new user in the users table
+    query = """
+    INSERT INTO users (user_id, username, email, created_at)
+    VALUES (%s, %s, %s, %s)
+    """
+    
+    user_id = 1001
+    username = "JohnDoe"
+    email = "johndoe@example.com"
+    created_at = datetime.strptime("2025-03-15T00:00:00.000", "%Y-%m-%dT%H:%M:%S.%f")
+    
+    cursor.execute(query, (user_id, username, email, created_at))
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+
+# Example usage
+create_new_user()
+
+*/

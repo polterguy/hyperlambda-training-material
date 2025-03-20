@@ -1,0 +1,91 @@
+
+// Returns true if the specified username is available. - With Python equivalent
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   throw
+      type:bool
+      mandatory:bool:false
+.icon:supervisor_account
+
+// Applying defaults.
+validators.default:x:@.arguments
+   throw:bool:false
+
+// Opens up database connection.
+data.connect:[generic|magic]
+
+   // Selecting user from database such that we can check if it exists or not.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
+
+   // Checks if above invocation returned anything.
+   if
+      exists:x:@data.read/*
+      .lambda
+
+         // Checking if we should throw an exception instead of returning false.
+         if:x:@.arguments/*/throw
+            throw:User already exists
+               status:int:400
+               public:bool:true
+
+         // User exists, returning false to caller.
+         return
+            available:bool:false
+   else
+
+      // User does not exist, returning true to caller.
+      return
+         available:bool:true
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def is_username_available(username, throw=False):
+    """
+    This function returns true if the specified username is available.
+    
+    :param username: The username to check availability for
+    :param throw: Whether to throw an exception if the username is not available
+    :return: A dictionary indicating if the username is available
+    :raises ValueError: If username is not provided
+    :raises Exception: If the username already exists and throw is True
+    """
+    # Validate mandatory fields
+    if not username:
+        raise ValueError("Username is mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('magic.db')
+    cursor = conn.cursor()
+    
+    # Check if the username exists
+    cursor.execute("SELECT username FROM users WHERE username = ?", (username,))
+    user_exists = cursor.fetchone() is not None
+    
+    # Close the connection
+    cursor.close()
+    conn.close()
+    
+    # Handle the result
+    if user_exists:
+        if throw:
+            raise Exception("User already exists")
+        return {"available": False}
+    else:
+        return {"available": True}
+
+# Example usage
+# is_username_available("example_user", throw=True)
+
+*/

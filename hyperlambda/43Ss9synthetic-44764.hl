@@ -1,0 +1,23 @@
+
+// Example: Split a comma-separated string. - With Python equivalent
+strings.split:a,b,c
+   .:,
+
+/*
+ * Resulting parts:
+ * .:a
+ * .:b
+ * .:c
+ */
+
+
+/*
+
+# Python equivalent
+# Split a comma-separated string
+string = "a,b,c"
+separator = ","
+
+split_list = string.split(separator)
+
+*/

@@ -1,0 +1,61 @@
+
+// Create a Hyperlambda action to execute a specified slot with optional arguments. Validate the slot parameter and return the execution result. - With Python equivalent
+.arguments
+   slot
+      type:string
+      mandatory:bool:true
+   args
+      type:key-value
+.icon:settings
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/slot
+
+// Decorating slot invocation
+set-value:x:./*/execute
+   get-value:x:@.arguments/*/slot
+add:x:./*/execute
+   get-nodes:x:@.arguments/*/args/*
+
+// Invokes slot.
+execute
+
+// Parametrizing [return] invocation.
+add:x:./*/return
+   get-nodes:x:@execute/*
+
+// Returning resulting ticket/token to caller.
+return
+
+
+/*
+
+# Python equivalent
+def get_required_arguments(hyperlambda_code):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Simulate parsing Hyperlambda code to extract arguments
+    required_arguments = parse_hyperlambda_arguments(hyperlambda_code)
+
+    # Return the required arguments
+    return required_arguments
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def parse_hyperlambda_arguments(hyperlambda_code):
+    # Simulate parsing the Hyperlambda code to extract arguments
+    # This is a placeholder implementation
+    return ["arg1", "arg2", "arg3"]
+
+# Example usage
+try:
+    arguments = get_required_arguments("example_hyperlambda_code")
+    print(f"Required arguments: {arguments}")
+except PermissionError as e:
+    print(e)
+
+*/

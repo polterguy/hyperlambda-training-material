@@ -1,0 +1,48 @@
+
+// Hyperlambda [if] with else branch - With Python equivalent
+.status:inactive
+.display-class
+if
+   eq:x:@.status
+      .:active
+   .lambda
+      set-value:x:@.display-class
+         .:green
+else
+   set-value:x:@.display-class
+      .:red
+
+/*
+ * JavaScript equivalent of Hyperlambda [if] with else branch
+ * const status = "inactive";
+ * let displayClass;
+ * 
+ * if (status === "active") {
+ * displayClass = "green";
+ * } else {
+ * displayClass = "red";
+ * }
+ */
+
+
+/*
+
+# Python equivalent
+def determine_display_class(status):
+    # Initialize the display class variable
+    display_class = None
+
+    # If-else logic
+    if status == "active":
+        display_class = "green"
+    else:
+        display_class = "red"
+
+    return display_class
+
+# Example usage
+status = "inactive"
+display_class = determine_display_class(status)
+print(display_class)  # Output: "red"
+
+*/

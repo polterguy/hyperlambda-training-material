@@ -1,0 +1,41 @@
+
+// Hyperlambda [if] checking for empty value - With Python equivalent
+.user-input:
+.validation-message
+if
+   eq:x:@.user-input
+      .:
+   .lambda
+      set-value:x:@.validation-message
+         .:Input required
+
+/*
+ * JavaScript equivalent of Hyperlambda [if] checking for empty value
+ * const userInput = "";
+ * let validationMessage;
+ * 
+ * if (userInput === "") {
+ * validationMessage = "Input required";
+ * }
+ */
+
+
+/*
+
+# Python equivalent
+def check_user_input(user_input):
+    # Initialize the validation message variable
+    validation_message = None
+
+    # Check for empty value
+    if user_input == "":
+        validation_message = "Input required"
+
+    return validation_message
+
+# Example usage
+user_input = ""
+validation_message = check_user_input(user_input)
+print(validation_message)  # Output: "Input required"
+
+*/

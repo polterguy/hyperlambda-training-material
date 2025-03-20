@@ -1,0 +1,20 @@
+
+// Example: Pass arguments to the inline Hyperlambda code. - With Python equivalent
+strings.mixin:"2 + val equals {{\nmath.add\n   .:int:2\n   get-value:x:@.arguments/*/val\nreturn:x:-\n}}"
+   val:int:5
+
+// Result: "2 + val equals 7"
+
+
+/*
+
+# Python equivalent
+# Example: Pass arguments to the inline Python code.
+val = 5
+result = 2 + val
+output_string = f"2 + {val} equals {result}"
+
+# Example usage
+# output_string will be "2 + 5 equals 7"
+
+*/

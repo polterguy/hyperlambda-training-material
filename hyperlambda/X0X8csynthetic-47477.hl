@@ -1,0 +1,39 @@
+
+// Switch lambda - With Python equivalent
+.val:fooXX
+.result
+switch:x:@.val
+   case:bar
+      set-value:x:@.result
+         .:Oops
+   case:foo
+      set-value:x:@.result
+         .:Oops2.0
+   default
+      set-value:x:@.result
+         .:Success!
+
+
+/*
+
+# Python equivalent
+def switch_logic(val):
+    # Initialize the result variable
+    result = None
+
+    # Switch logic using if-elif-else
+    if val == "bar":
+        result = "Oops"
+    elif val == "foo":
+        result = "Oops2.0"
+    else:
+        result = "Success!"
+
+    return result
+
+# Example usage
+val = "fooXX"
+result = switch_logic(val)
+print(result)  # Output: "Success!"
+
+*/

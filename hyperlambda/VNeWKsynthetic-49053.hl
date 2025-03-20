@@ -1,0 +1,62 @@
+
+// Create a Hyperlambda script to update an item in a specified database and table using SQLite, with a specific ID and new values. - With Python equivalent
+data.connect:DATABASE_NAME
+   database-type:sqlite
+
+   // Invoking our update slot.
+   data.update
+      database-type:sqlite
+      table:TABLE_NAME
+      values
+         column1:NEW_VALUE_HERE
+         column2:ANOTHER NEW_VALUE_HERE
+      where
+         and
+            id.eq:x:@WHATEVER_ID_HERE
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def update_item_in_table(database_name, table_name, item_id, new_values):
+    """
+    This function updates an item in a specified database and table using SQLite, with a specific ID and new values.
+    
+    :param database_name: The name of the database
+    :param table_name: The name of the table
+    :param item_id: The ID of the item to update
+    :param new_values: A dictionary containing column names and their new values
+    :return: The number of affected rows
+    :raises ValueError: If any of the arguments are not provided
+    """
+    # Validate mandatory fields
+    if not all([database_name, table_name, item_id, new_values]):
+        raise ValueError("Database name, table name, item ID, and new values are mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect(f'{database_name}.db')
+    cursor = conn.cursor()
+    
+    # Build the update query
+    set_clause = ", ".join([f"{column} = ?" for column in new_values.keys()])
+    query = f"UPDATE {table_name} SET {set_clause} WHERE id = ?"
+    params = list(new_values.values()) + [item_id]
+    
+    # Execute the update
+    cursor.execute(query, params)
+    affected_rows = cursor.rowcount
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Return the number of affected rows
+    return affected_rows
+
+# Example usage
+# update_item_in_table("chinook", "Album", 1, {"Title": "New Title", "ArtistId": 2})
+
+*/

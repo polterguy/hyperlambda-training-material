@@ -1,0 +1,49 @@
+
+// Write a Hyperlambda snippet that queries 'messaging_db' for recent chat logs. - With Python equivalent
+
+// Queries "messaging_db" for recent chat logs.
+.result
+data.connect:messaging_db
+   database-type:sqlite
+   data.select:select * from chat_logs order by timestamp desc limit 100
+      database-type:sqlite
+   add:x:@.result
+      get-nodes:x:@data.select/*
+
+
+/*
+
+# Python equivalent
+import mysql.connector
+
+def retrieve_product_inventory():
+    # Connect to the inventory_db database
+    connection = mysql.connector.connect(
+        host='your_host',
+        user='your_user',
+        password='your_password',
+        database='inventory_db'
+    )
+    
+    cursor = connection.cursor(dictionary=True)
+    
+    # Query to retrieve product inventory from the products table
+    query = """
+    SELECT product_id, name, stock, price FROM products
+    WHERE stock > 0
+    ORDER BY stock ASC
+    """
+    
+    cursor.execute(query)
+    product_inventory = cursor.fetchall()
+    
+    cursor.close()
+    connection.close()
+    
+    return product_inventory
+
+# Example usage
+product_inventory = retrieve_product_inventory()
+print(product_inventory)
+
+*/

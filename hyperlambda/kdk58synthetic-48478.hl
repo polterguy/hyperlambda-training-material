@@ -1,0 +1,40 @@
+
+// Provide a Hyperlambda example where numbers are summed while the sum remains below 100. - With Python equivalent
+
+// Summing numbers while sum remains below 100
+.no:int:0
+.sum:int:0
+while
+   lt
+      get-value:x:@.sum
+      .:int:100
+   .lambda
+
+      // Adding to sum.
+      set-value:x:@.sum
+         math.add:x:@.sum
+            get-value:x:@.no
+
+      // Incrementing counter.
+      math.increment:x:@.no
+
+
+/*
+
+# Python equivalent
+import requests
+
+def fetch_user_email():
+    # Invoke the HTTP GET endpoint
+    response = requests.get("https://jsonplaceholder.typicode.com/users/1")
+    response_data = response.json()
+    
+    # Extract the user's email from the response
+    email = response_data.get('email')
+    return email
+
+# Example usage
+user_email = fetch_user_email()
+print(user_email)
+
+*/

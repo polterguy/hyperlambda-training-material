@@ -1,0 +1,112 @@
+
+// Create one record in your address table in your sakila database without authorization. Log invocation - With Python equivalent
+.arguments
+
+   // address column value
+   address:string
+
+   // address2 column value
+   address2:string
+
+   // district column value
+   district:string
+
+   // city_id column value
+   city_id:long
+
+   // postal_code column value
+   postal_code:string
+
+   // phone column value
+   phone:string
+
+   // last_update column value
+   last_update:date
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Columns with custom handling as we generate a frontend
+.handling
+   phone:phone
+
+// Logging invocation.
+auth.ticket.get
+lambda2hyper:x:@.arguments/*
+log.info:sakila.address entry created
+   username:x:@auth.ticket.get
+   arguments:x:@lambda2hyper
+
+// Opening up database connection.
+data.connect:[generic|sakila]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:address
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create
+
+
+/*
+
+# Python equivalent
+import sqlite3
+from datetime import datetime
+
+def create_address_record(address, address2, district, city_id, postal_code, phone, last_update):
+    # Log the invocation
+    username = get_auth_ticket()
+    log_info("sakila.address entry created", username=username, arguments={
+        "address": address,
+        "address2": address2,
+        "district": district,
+        "city_id": city_id,
+        "postal_code": postal_code,
+        "phone": phone,
+        "last_update": last_update
+    })
+
+    # Connect to the sakila database
+    conn = sqlite3.connect('sakila.db')
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the insert statement
+        cursor.execute(
+            "INSERT INTO address (address, address2, district, city_id, postal_code, phone, last_update) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (address, address2, district, city_id, postal_code, phone, last_update)
+        )
+        conn.commit()
+
+        # Return the ID of the newly created record
+        return cursor.lastrowid
+    finally:
+        conn.close()
+
+def get_auth_ticket():
+    # Dummy function to get auth ticket
+    # Replace with actual implementation
+    return "dummy_user"
+
+def log_info(message, **kwargs):
+    # Dummy function to log information
+    # Replace with actual implementation
+    print(message, kwargs)
+
+*/

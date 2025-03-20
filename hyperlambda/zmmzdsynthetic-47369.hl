@@ -1,0 +1,60 @@
+
+// Use nested data.connect to interact with two databases in one snippet - With Python equivalent
+data.connect:MainDB
+   data.read
+
+      // Query orders from MainDB
+      table:orders
+
+   // Insert a log in LogsDB
+   data.connect:LogsDB
+      data.create
+         table:log_storage
+         values
+            message:Checked orders
+   data.read
+
+      // Back to MainDB connection (still open) to re-query orders
+      table:orders
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def interact_with_databases(main_db_name, logs_db_name):
+    # Connect to the MainDB
+    main_conn = sqlite3.connect(main_db_name)
+    main_cursor = main_conn.cursor()
+
+    # Connect to the LogsDB
+    logs_conn = sqlite3.connect(logs_db_name)
+    logs_cursor = logs_conn.cursor()
+
+    try:
+        # Read from orders table in MainDB
+        main_cursor.execute("SELECT * FROM orders")
+        orders = main_cursor.fetchall()
+
+        # Log the interaction in LogsDB
+        logs_cursor.execute(
+            "INSERT INTO log_storage (message) VALUES (?)",
+            ("Checked orders",)
+        )
+        logs_conn.commit()
+
+        # Return the orders
+        return orders
+    finally:
+        main_conn.close()
+        logs_conn.close()
+
+# Example usage
+main_db_name = 'MainDB.db'
+logs_db_name = 'LogsDB.db'
+orders = interact_with_databases(main_db_name, logs_db_name)
+for order in orders:
+    print(order)
+
+*/

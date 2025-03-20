@@ -1,0 +1,29 @@
+
+// Connect to the "sakila" database using the default connection string (SQLite) and retrieve actors (default adapter from config) - With Python equivalent
+data.connect:sakila
+   data.read
+
+      // Reads from the "actor" table (returns first 25 records by default)
+      table:actor
+
+
+/*
+
+# Python equivalent
+# Connect to the "sakila" database using the default connection string (SQLite) and retrieve actors
+import sqlite3
+
+# Connect to the SQLite database
+connection = sqlite3.connect('sakila.db')
+cursor = connection.cursor()
+
+# Read actors from the actor table
+cursor.execute("SELECT * FROM actor")
+
+# Fetch all results
+actors = cursor.fetchall()
+
+# Close the connection
+connection.close()
+
+*/

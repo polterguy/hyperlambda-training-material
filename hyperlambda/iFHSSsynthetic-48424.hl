@@ -1,0 +1,43 @@
+
+// Provide a Hyperlambda example where error logs are retrieved from the logging database and its error_logs table. - With Python equivalent
+
+// Retrieves logs from the logging database and its error_logs table.
+data.connect:logging_db
+
+   // Database type is Microsoft SQL Server.
+   database-type:mssql
+
+   // Fetching error log data.
+   data.read
+      database-type:mssql
+      table:error_logs
+      limit:50
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def query_inventory_data():
+    # Connect to the warehouse database
+    connection = sqlite3.connect('warehouse_db.sqlite')
+    
+    cursor = connection.cursor()
+    
+    # Query to retrieve inventory data from the items table
+    query = "SELECT * FROM items ORDER BY updated_at DESC"
+    
+    cursor.execute(query)
+    inventory_data = cursor.fetchall()
+    
+    cursor.close()
+    connection.close()
+    
+    return inventory_data
+
+# Example usage
+inventory_data = query_inventory_data()
+print(inventory_data)
+
+*/

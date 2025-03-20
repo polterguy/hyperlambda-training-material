@@ -1,0 +1,23 @@
+
+// Example: Pattern not found yields an empty result set. - With Python equivalent
+strings.matches:no digits here
+   .:"\\d+"
+
+// Result: No child nodes (no matches found)
+
+
+/*
+
+# Python equivalent
+import re
+
+# Variable for the regex pattern
+pattern = r"[A-Z]+"
+
+# Source string
+source = "abcDEFghi"
+
+# Find uppercase sequences using the pattern
+matches = re.findall(pattern, source)
+
+*/

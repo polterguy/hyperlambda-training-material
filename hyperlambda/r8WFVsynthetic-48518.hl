@@ -1,0 +1,38 @@
+
+// Create a Hyperlambda snippet that evaluates numeric values using a switch case without a default option. - With Python equivalent
+
+// Switch case comparison for numeric values.
+.value:int:10
+.result
+switch:x:@.value
+   case:int:5
+
+      // If value is 5.
+      set-value:x:@.result
+         .:Value is five
+   case:int:10
+
+      // If value is 10.
+      set-value:x:@.result
+         .:Value is ten
+   case:int:20
+
+      // If value is 20.
+      set-value:x:@.result
+         .:Value is twenty
+
+
+/*
+
+# Python equivalent
+status = True
+result = ""
+
+if status is True:
+    result = "Status is active"
+elif status is False:
+    result = "Status is inactive"
+else:
+    result = "Invalid status"
+
+*/

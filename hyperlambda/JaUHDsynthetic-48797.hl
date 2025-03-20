@@ -1,0 +1,65 @@
+
+// Write a Hyperlambda script to delete all existing vectors for a specified model. - With Python equivalent
+.arguments
+   type:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+
+// Connecting to database.
+data.connect:[generic|magic]
+
+   // Deleting VSS data.
+   data.execute:delete from vss_ml_training_snippets where rowid in (select id as rowid from ml_training_snippets where type = @type)
+      @type:x:@.arguments/*/type
+
+   // Deleting embeddings.
+   data.execute:update ml_training_snippets set embedding = null where type = @type
+      @type:x:@.arguments/*/type
+
+// Returning success to caller.
+return
+   result:success
+
+
+/*
+
+# Python equivalent
+def delete_vectors_for_model(model_type):
+    """
+    This function deletes all existing vectors for a specified model.
+    
+    :param model_type: The type of the model for which vectors are to be deleted
+    :return: A dictionary indicating success
+    """
+    # Verify authentication
+    verify_authentication(["root"])
+    
+    # Ensure type is provided
+    if not model_type:
+        raise ValueError("Type is mandatory")
+    
+    # Connect to the database and execute deletion
+    delete_vectors_from_db(model_type)
+    update_embeddings_to_null(model_type)
+    
+    # Return success result
+    return {"result": "success"}
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+def delete_vectors_from_db(model_type):
+    # Placeholder for database execution logic to delete vectors
+    pass
+
+def update_embeddings_to_null(model_type):
+    # Placeholder for database execution logic to update embeddings to null
+    pass
+
+*/

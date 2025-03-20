@@ -1,0 +1,30 @@
+
+// This snippet uses the '*' iterator to retrieve all children of a node, in addition to the # reference iterator. - With Python equivalent
+.data
+   item1:one
+   item2:two
+for-each:x:@.data/*
+   set-value:x:@.dp/#
+      :processed
+
+// The expression @.data/* selects both item1 and item2 nodes, and the for-each loop sets each of their values to "processed" since it's using the [.dp] node by reference which is injected by the [for-each] slot.
+
+
+/*
+
+# Python equivalent
+def process_data(data):
+    # Iterate through the data and mark each item as processed
+    for key in data.keys():
+        data[key] = "processed"
+    return data
+
+# Example usage
+data = {
+    'item1': 'one',
+    'item2': 'two'
+}
+processed_data = process_data(data)
+print(processed_data)  # Output: {'item1': 'processed', 'item2': 'processed'}
+
+*/

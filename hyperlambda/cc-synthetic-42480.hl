@@ -1,0 +1,24 @@
+
+// Example: Split a string with consecutive delimiters (empty segments). - With Python equivalent
+strings.split:one,,two
+   .:,
+
+/*
+ * Resulting parts:
+ * .:one
+ * .:two
+ * 
+ * Notice, empty strings are ignored
+ */
+
+
+/*
+
+# Python equivalent
+# Original sentence
+sentence = "Apples and oranges"
+
+# Remove the substring 'and ' by replacing it with an empty string
+modified_sentence = sentence.replace("and ", "")
+
+*/

@@ -1,0 +1,17 @@
+
+// Return specified lambda from Hyperlambda file or endpoint - With Python equivalent
+return
+   result:Hello from Magic Backend
+
+
+/*
+
+# Python equivalent
+# Return specified value from a function or endpoint
+def magic_backend():
+    return "Hello from Magic Backend"
+
+# Call the function
+result = magic_backend()
+
+*/

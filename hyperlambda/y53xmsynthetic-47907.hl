@@ -1,0 +1,92 @@
+
+// CRUD / Create Hyperlambda that creates one record in your menu_items table in your cms database - With Python equivalent
+.arguments
+
+   // menu_id column value
+   menu_id:long
+
+   // title column value
+   title:string
+
+   // url column value
+   url:string
+
+   // position column value
+   position:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Columns with custom handling as we generate a frontend
+.handling
+   url:url
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+.foreign-keys
+   .
+      column:menu_id
+      table:menus
+      foreign_column:id
+      foreign_name:name
+      long:bool:true
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:menu_items
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def create_menu_item_record(menu_id, title, url, position):
+    # Verify authorization
+    if not verify_auth_ticket(['root', 'admin']):
+        raise PermissionError("Unauthorized access")
+
+    # Connect to the cms database
+    conn = sqlite3.connect('cms.db')
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the insert statement
+        cursor.execute(
+            "INSERT INTO menu_items (menu_id, title, url, position) VALUES (?, ?, ?, ?)",
+            (menu_id, title, url, position)
+        )
+        conn.commit()
+
+        # Return the ID of the newly created record
+        return cursor.lastrowid
+    finally:
+        conn.close()
+
+def verify_auth_ticket(roles):
+    # Dummy function for authorization check
+    # Replace with actual implementation
+    return True
+
+*/

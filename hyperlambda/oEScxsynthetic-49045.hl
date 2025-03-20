@@ -1,0 +1,81 @@
+
+// Delete one record from your Invoice table in your chinook database. - With Python equivalent
+.arguments
+
+   // Primary key of record to delete, mandatory argument
+   InvoiceId:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/InvoiceId
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Invoice
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_invoice(invoice_id):
+    """
+    This function deletes one record from the Invoice table in the chinook database.
+    
+    :param invoice_id: The ID of the invoice to delete
+    :return: The number of affected rows
+    :raises ValueError: If invoice_id is not provided
+    """
+    # Verify authentication
+    verify_authentication(["root", "admin"])
+    
+    # Validate mandatory fields
+    if invoice_id is None:
+        raise ValueError("InvoiceId is mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('chinook.db')
+    cursor = conn.cursor()
+    
+    # Delete the record
+    cursor.execute("DELETE FROM Invoice WHERE InvoiceId = ?", (invoice_id,))
+    affected_rows = cursor.rowcount
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Return the number of affected rows
+    return affected_rows
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+# Example usage
+# delete_invoice(1)
+
+*/

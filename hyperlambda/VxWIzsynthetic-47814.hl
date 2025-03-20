@@ -1,0 +1,67 @@
+
+// Show me Hyperlambda that selects all contacts from an employees database, extracts their name and email, and send these an email each. I will provide the subject and body myself. - With Python equivalent
+data.connect:employees
+   data.select:select name, email from contacts
+   for-each:x:@data.select/*
+      unwrap:x:+/**
+      mail.smtp.send
+         message
+            to
+               .
+                  name:x:@.dp/#/*/name
+                  email:x:@.dp/#/*/email
+            subject:REPLACE WITH YOUR SUBJECT
+            entity:text/plain
+               content:REPLACE WITH YOUR BODY
+
+
+/*
+
+# Python equivalent
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import sqlite3
+
+def send_emails_to_contacts(database_name, subject, body):
+    # Connect to the employees database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # Select name and email from contacts
+        cursor.execute("SELECT name, email FROM contacts")
+        contacts = cursor.fetchall()
+
+        # SMTP server configuration
+        smtp_server = "your_smtp_server"
+        smtp_port = 587
+        smtp_username = "your_username"
+        smtp_password = "your_password"
+        use_tls = True
+
+        # Send an email to each contact
+        for name, email in contacts:
+            # Create the email message
+            msg = MIMEMultipart()
+            msg['From'] = smtp_username
+            msg['To'] = email
+            msg['Subject'] = subject
+            msg.attach(MIMEText(body, 'plain'))
+
+            # Send the email
+            with smtplib.SMTP(smtp_server, smtp_port) as server:
+                if use_tls:
+                    server.starttls()
+                server.login(smtp_username, smtp_password)
+                server.sendmail(smtp_username, email, msg.as_string())
+    finally:
+        conn.close()
+
+# Example usage
+database_name = 'employees.db'
+subject = "REPLACE WITH YOUR SUBJECT"
+body = "REPLACE WITH YOUR BODY"
+send_emails_to_contacts(database_name, subject, body)
+
+*/

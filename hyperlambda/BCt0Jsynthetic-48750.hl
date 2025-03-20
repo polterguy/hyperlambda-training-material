@@ -1,0 +1,78 @@
+
+// Write a Hyperlambda script to rename a specified file or folder. - With Python equivalent
+.arguments
+   oldName:string
+   newName:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Basic logging.
+log.info:Renaming file object
+   old_name:x:@.arguments/*/oldName
+   new_name:x:@.arguments/*/newName
+
+// Checking if specified object is a file or a folder.
+if
+   io.folder.exists:x:@.arguments/*/oldName
+   .lambda
+
+      // File object is a folder, renaming it.
+      io.folder.move:x:@.arguments/*/oldName
+         get-value:x:@.arguments/*/newName
+else
+
+   // File object is a file, renaming it.
+   io.file.move:x:@.arguments/*/oldName
+      strings.concat
+         io.path.get-folder:x:@.arguments/*/oldName
+         get-value:x:@.arguments/*/newName
+
+// Returning result to caller.
+return-nodes
+   result:success
+
+
+/*
+
+# Python equivalent
+import os
+import zipfile
+
+def unzip_file(file_path, create_folder=False):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Determine the extraction folder
+    if create_folder:
+        base_name = os.path.splitext(file_path)[0]
+        extraction_folder = base_name
+        if not os.path.exists(extraction_folder):
+            os.makedirs(extraction_folder)
+        else:
+            os.rmdir(extraction_folder)
+            os.makedirs(extraction_folder)
+    else:
+        extraction_folder = os.path.dirname(file_path)
+
+    # Unzip the file
+    with zipfile.ZipFile(file_path, 'r') as zip_ref:
+        zip_ref.extractall(extraction_folder)
+
+    # Return success result
+    return {"result": "success"}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+try:
+    result = unzip_file("/path/to/file.zip", create_folder=True)
+    print(result)
+except PermissionError as e:
+    print(e)
+
+*/

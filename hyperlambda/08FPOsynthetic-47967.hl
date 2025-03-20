@@ -1,0 +1,39 @@
+
+// Hyperlambda Example 2: If with variable condition - With Python equivalent
+.status:active
+.message
+if
+   eq:x:@.status
+      .:active
+   .lambda
+      set-value:x:@.message
+         .:System is running
+
+/*
+ * Python Equivalent
+ * status = "active"
+ * message = None
+ * if status == "active":
+ * message = "System is running"
+ */
+
+
+/*
+
+# Python equivalent
+def check_system_status(status):
+    # Initialize the message variable
+    message = None
+
+    # Conditional logic
+    if status == "active":
+        message = "System is running"
+
+    return message
+
+# Example usage
+status = "active"
+message = check_system_status(status)
+print(message)  # Output: "System is running"
+
+*/

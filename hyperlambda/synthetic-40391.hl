@@ -1,0 +1,18 @@
+
+// Convert a numeric string to an integer type - With Python equivalent
+.str:42
+convert:x:@.str
+   type:int
+
+
+/*
+
+# Python equivalent
+# Convert a numeric string to an integer type
+str_value = "42"
+converted_value = int(str_value)
+
+# Example usage
+# converted_value will be 42
+
+*/

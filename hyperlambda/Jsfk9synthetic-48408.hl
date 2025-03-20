@@ -1,0 +1,39 @@
+
+// Create a Hyperlambda snippet that executes [.lambda] if [.status] does not equal Ready. - With Python equivalent
+
+// Executes [.lambda] if [.status] does not equal Ready.
+.status:Ready
+if
+
+   // [neq] checks inequality.
+   neq:x:@.status
+      .:Ready
+   .lambda
+
+      // Executes when [.status] is not Ready.
+      log.info:[.status] is NOT Ready
+else
+
+   // Executes when [.status] is Ready.
+   log.info:[.status] is Ready
+
+
+/*
+
+# Python equivalent
+import logging
+
+def run_lambda_if_message_not_welcome_home():
+    logging.basicConfig(level=logging.INFO)
+    
+    message = "Welcome Home"
+    
+    if message != "Welcome Home":
+        logging.info("[.message] is NOT Welcome Home")
+    else:
+        logging.info("[.message] is Welcome Home")
+
+# Example usage
+run_lambda_if_message_not_welcome_home()
+
+*/

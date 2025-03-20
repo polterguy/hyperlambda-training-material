@@ -1,3 +1,0 @@
-// Retrieve all records from the 'users' table
-pgsql.read
-   table:users

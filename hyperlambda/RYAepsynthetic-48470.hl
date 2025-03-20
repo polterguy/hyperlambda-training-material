@@ -1,0 +1,37 @@
+
+// Write a Hyperlambda snippet that loops while [.score] is less than 50. - With Python equivalent
+
+// Loops while [.score] is less than 50.
+.score:int:0
+while
+   lt
+      get-value:x:@.score
+      .:int:50
+   .lambda
+
+      // Score increasing.
+      log.info:Increasing score
+
+      // Incrementing score.
+      math.increment:x:@.score
+
+
+/*
+
+# Python equivalent
+import logging
+import time
+
+def check_every_second_while_time_left_above_0():
+    logging.basicConfig(level=logging.INFO)
+    
+    time_left = 5
+    while time_left > 0:
+        logging.info("Time remaining")
+        time_left -= 1
+        time.sleep(1)
+
+# Example usage
+check_every_second_while_time_left_above_0()
+
+*/

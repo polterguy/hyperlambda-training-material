@@ -1,0 +1,43 @@
+
+// Write a Hyperlambda script to ensure the cache folder exists and empty it for JavaScript files. - With Python equivalent
+if
+   not
+      io.folder.exists:/etc/cache/
+   .lambda
+      io.folder.create:/etc/cache/
+else
+
+   // Empties cache folder for JavaScript files.
+   io.file.list:/etc/cache/
+   for-each:x:@io.file.list/*
+      io.file.delete:x:@.dp/#
+
+
+/*
+
+# Python equivalent
+import os
+import glob
+
+def ensure_and_empty_cache_folder():
+    """
+    This function ensures the cache folder exists and empties it for JavaScript files.
+    """
+    cache_folder = '/etc/cache/'
+    
+    # Check if the cache folder exists
+    if not os.path.exists(cache_folder):
+        # Create the cache folder if it doesn't exist
+        os.makedirs(cache_folder)
+    else:
+        # List all files in the cache folder
+        files = glob.glob(os.path.join(cache_folder, '*'))
+        
+        # Delete each file
+        for file_path in files:
+            os.remove(file_path)
+
+# Call the function to ensure and empty the cache folder
+ensure_and_empty_cache_folder()
+
+*/

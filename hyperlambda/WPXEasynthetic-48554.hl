@@ -1,0 +1,31 @@
+
+// Write a Hyperlambda code snippet showcasing string handling, multi-line strings, and different quoting styles. - With Python equivalent
+
+// No special characters, no quotes required
+.variableOne:data
+
+// Contains a colon, requires double quotes
+.variableTwo:"key:value"
+
+// Multi-line string using @ notation
+.variableThree:"alpha\nbeta"
+
+// Single-quote alternative
+.variableFour:Hyperlambda
+
+// Escaping newline character in text
+.variableFive:"code\nsnippet"
+
+
+/*
+
+# Python equivalent
+# String assignments in Python including special character handling, multi-line strings, and escape sequences
+key_a = "simple"
+key_b = "config:set"
+key_c = """This is
+multi-line"""
+key_d = 'alternate'
+key_e = "Hello\nHyperlambda"
+
+*/

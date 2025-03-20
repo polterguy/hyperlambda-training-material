@@ -1,0 +1,48 @@
+
+// Create a Hyperlambda script to count items from a specified database and table using SQLite. - With Python equivalent
+data.connect:DATABASE_NAME
+   database-type:sqlite
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:TABLE_NAME
+      columns
+         count(*)
+            as:count
+      limit:long:1
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def count_items_from_table(database_name, table_name):
+    """
+    This function counts items from a specified database and table using SQLite.
+    
+    :param database_name: The name of the database
+    :param table_name: The name of the table
+    :return: The count of items in the table
+    """
+    # Connect to the SQLite database
+    conn = sqlite3.connect(f'{database_name}.db')
+    cursor = conn.cursor()
+    
+    # Execute the query to count items in the table
+    query = f"SELECT COUNT(*) AS count FROM {table_name}"
+    cursor.execute(query)
+    count = cursor.fetchone()[0]
+    
+    # Close the connection
+    cursor.close()
+    conn.close()
+    
+    # Return the count
+    return count
+
+# Example usage
+# count_items_from_table("chinook", "Album")
+
+*/

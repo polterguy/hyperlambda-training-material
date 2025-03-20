@@ -1,0 +1,35 @@
+
+// Generate a Hyperlambda snippet that logs messages while [.count] is less than 10. - With Python equivalent
+
+// Logs messages while [.count] is less than 10.
+.count:int:0
+while
+   lt
+      get-value:x:@.count
+      .:int:10
+   .lambda
+
+      // Logging iteration message.
+      log.info:Iteration running
+
+      // Incrementing counter.
+      math.increment:x:@.count
+
+
+/*
+
+# Python equivalent
+import logging
+
+def check_until_tries_reach_5():
+    logging.basicConfig(level=logging.INFO)
+    
+    tries = 0
+    while tries < 5:
+        logging.info("Retrying operation")
+        tries += 1
+
+# Example usage
+check_until_tries_reach_5()
+
+*/

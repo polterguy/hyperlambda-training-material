@@ -1,0 +1,21 @@
+
+// Example: Replace all occurrences of a substring. - With Python equivalent
+.text:abababab
+strings.replace:x:@.text
+   .:ab
+   .:AB
+
+// Result: "ABABABAB"
+
+
+/*
+
+# Python equivalent
+# Replace all occurrences of a substring
+text = "abababab"
+old_substring = "ab"
+new_substring = "AB"
+
+replaced_text = text.replace(old_substring, new_substring)
+
+*/

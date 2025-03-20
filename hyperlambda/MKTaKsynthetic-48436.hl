@@ -1,0 +1,45 @@
+
+// Generate a Hyperlambda snippet that opens a connection to 'sales_db' and retrieves records from 'transactions' table. - With Python equivalent
+
+// Opens a connection to "sales_db" and retrieves records from "transactions" table.
+.result
+data.connect:sales_db
+   database-type:mysql
+   data.select:select * from transactions order by transaction_date desc limit 10
+      database-type:mysql
+   add:x:@.result
+      get-nodes:x:@data.select/*
+
+
+/*
+
+# Python equivalent
+import psycopg2
+
+def fetch_user_accounts():
+    # Connect to the auth_db database
+    connection = psycopg2.connect(
+        host='your_host',
+        user='your_user',
+        password='your_password',
+        dbname='auth_db'
+    )
+    
+    cursor = connection.cursor()
+    
+    # Query to fetch user accounts from the user_accounts table
+    query = "SELECT user_id, username, email FROM user_accounts WHERE active=true LIMIT 50"
+    
+    cursor.execute(query)
+    user_accounts = cursor.fetchall()
+    
+    cursor.close()
+    connection.close()
+    
+    return user_accounts
+
+# Example usage
+user_accounts = fetch_user_accounts()
+print(user_accounts)
+
+*/

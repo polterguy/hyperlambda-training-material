@@ -1,0 +1,73 @@
+
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the roles table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles. - With Python equivalent
+.arguments
+   name:string
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+validators.mandatory:x:@.arguments/*/name
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      table:roles
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete
+
+
+/*
+
+# Python equivalent
+import sqlite3
+import re
+
+def create_role_record(database, name, description):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Validate the name using regex
+    if not re.match(r"^[A-Za-z0-9\-_]*$", name):
+        raise ValueError("Name does not match the required pattern")
+
+    # Connect to the specified database
+    connection = sqlite3.connect(database)
+    cursor = connection.cursor()
+
+    # Build the SQL query
+    query = "INSERT INTO roles (name, description) VALUES (?, ?)"
+
+    # Execute the query
+    cursor.execute(query, (name, description))
+    connection.commit()
+
+    # Close the connection
+    connection.close()
+
+    # Return success result
+    return {"result": "success", "status": 201}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+try:
+    result = create_role_record("magic.db", "admin", "Administrator role")
+    print(result)
+except (ValueError, PermissionError) as e:
+    print(e)
+
+*/

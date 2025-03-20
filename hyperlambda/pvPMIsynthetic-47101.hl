@@ -1,0 +1,75 @@
+
+// Create one record in your Artist table in your chinook database - With Python equivalent
+.arguments
+
+   // ArtistId column value
+   ArtistId:long
+
+   // Name column value
+   Name:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:Artist
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def create_artist_record(artist_id, name):
+    # Verify authorization
+    if not verify_auth_ticket(['root', 'admin']):
+        raise PermissionError("Unauthorized access")
+
+    # Connect to the chinook database
+    conn = sqlite3.connect('chinook.db')
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the insert statement
+        cursor.execute(
+            "INSERT INTO Artist (ArtistId, Name) VALUES (?, ?)",
+            (artist_id, name)
+        )
+        conn.commit()
+
+        # Return success message
+        return "success"
+    finally:
+        conn.close()
+
+def verify_auth_ticket(roles):
+    # Dummy function for authorization check
+    # Replace with actual implementation
+    return True
+
+*/

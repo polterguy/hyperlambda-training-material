@@ -1,0 +1,21 @@
+
+// Example: Check if a string starts with a substring that is not at the beginning. - With Python equivalent
+
+// Returns false
+strings.starts-with:HelloWorld
+   .:World
+
+
+/*
+
+# Python equivalent
+# Original string
+string = "Hello"
+
+# Substring to check (case-sensitive)
+substring = "hello"
+
+# Check if the string starts with the substring (case-sensitive)
+starts_with_substring = string.startswith(substring)
+
+*/

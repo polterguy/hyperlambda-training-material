@@ -1,0 +1,26 @@
+
+// Connect using a named connection string "foo" and database "bar", then count records - With Python equivalent
+data.connect:[foo|bar]
+   data.scalar:select count(*) from users
+
+   // [foo|bar] uses connection string "foo" and database "bar" from configuration
+
+
+/*
+
+# Python equivalent
+# Connect using a named connection string "foo" and database "bar", then count records
+import sqlite3
+
+# Connect to the SQLite database
+connection = sqlite3.connect('bar.db')
+cursor = connection.cursor()
+
+# Execute the scalar query to count records
+cursor.execute("SELECT COUNT(*) FROM users")
+record_count = cursor.fetchone()[0]
+
+# Close the connection
+connection.close()
+
+*/

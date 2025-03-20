@@ -1,0 +1,17 @@
+
+// Example: Mix in a slot that returns a string to be inserted. - With Python equivalent
+strings.mixin:"Hello, {{\nstrings.to-upper:world\nreturn:x:-\n}}!"
+
+// Result: "Hello, WORLD!"
+
+
+/*
+
+# Python equivalent
+# Word to be capitalized
+word = "hyperlambda"
+
+# Capitalize the word
+capitalized_word = word.capitalize()
+
+*/

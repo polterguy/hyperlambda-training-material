@@ -1,0 +1,41 @@
+
+// Generate a Hyperlambda snippet that handles division by zero using a try/catch/finally block. - With Python equivalent
+
+// Handles division by zero inside a try/catch/finally block
+try
+
+   // Attempting division by zero
+   math.divide
+      .:int:10
+      .:int:0
+.catch
+
+   // Logging the error
+   log.error:x:@.arguments/*/message
+.finally
+
+   // Final block executed after try/catch
+   log.info:Completed division attempt
+
+
+/*
+
+# Python equivalent
+import logging
+import requests
+
+def handle_http_request_failure():
+    logging.basicConfig(level=logging.INFO)
+    
+    try:
+        response = requests.get("https://invalid-url.com")
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        logging.error(f"HTTP request failed: {str(e)}")
+    finally:
+        logging.info("HTTP request attempt finished")
+
+# Example usage
+handle_http_request_failure()
+
+*/

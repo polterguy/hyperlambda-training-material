@@ -1,0 +1,49 @@
+
+// Create a Hyperlambda if/else-if/else condition that checks two variables, 'var1' and 'var2'. Log a message if the first condition is true, another message if the second condition is true, and a default message if neither condition is true. - With Python equivalent
+if
+   eq:x:@.arguments/*/var1
+      .:bool:true
+   .lambda
+
+      // First condition is true.
+      log.info:First condition is true
+else-if
+   eq:x:@.arguments/*/var2
+      .:bool:true
+   .lambda
+
+      // Second condition is true.
+      log.info:Second condition is true
+else
+
+   // Both above conditions are false.
+   log.info:Both conditions are false
+
+
+/*
+
+# Python equivalent
+import logging
+
+def check_conditions(var1, var2):
+    """
+    This function checks two variables, 'var1' and 'var2', and logs a message based on their values.
+    
+    :param var1: The first variable to check
+    :param var2: The second variable to check
+    """
+    # Configure logging
+    logging.basicConfig(level=logging.INFO)
+    
+    # Check the conditions and log the appropriate message
+    if var1 is True:
+        logging.info("First condition is true")
+    elif var2 is True:
+        logging.info("Second condition is true")
+    else:
+        logging.info("Both conditions are false")
+
+# Example usage
+check_conditions(True, False)
+
+*/

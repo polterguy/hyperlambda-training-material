@@ -1,0 +1,52 @@
+
+// Updates SQLIte's table1, setting field1 to 'howdy' with filtering on field2 and field3 - With Python equivalent
+sqlite.update
+   table:table1
+   values
+      field1:howdy
+   where
+
+      // [where] node MUST have either [and] or [or] child, which becomes the logical operator to filter on
+      and
+
+         // more than comparison
+         field2.mt:someValue
+
+         // Less than or equal to comparison
+         field3.lte:someValue
+
+// Notice, before executing [sqlite.update] you must have an open database connection using [data.connect].
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def update_table(database_name, some_value):
+    # Connect to the specified database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the update statement
+        query = """
+        UPDATE table1
+        SET field1 = 'howdy'
+        WHERE field2 > ? AND field3 <= ?
+        """
+        cursor.execute(query, (some_value, some_value))
+        conn.commit()
+
+        # Return the number of affected rows
+        return cursor.rowcount
+    finally:
+        conn.close()
+
+# Example usage
+database_name = 'your_database.db'
+some_value = 'someValue'
+affected_rows = update_table(database_name, some_value)
+print(f"Number of rows updated: {affected_rows}")
+
+*/

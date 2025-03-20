@@ -1,0 +1,22 @@
+
+// Example: Concatenate multiple strings with spaces included as separate parts. - With Python equivalent
+strings.concat
+   .:I
+   .:" "
+   .:love
+   .:" "
+   .:Hyperlambda
+
+// Result: "I love Hyperlambda"
+
+
+/*
+
+# Python equivalent
+# Original text
+text = "abababab"
+
+# Replace all occurrences of 'ab' with 'AB'
+modified_text = text.replace("ab", "AB")
+
+*/

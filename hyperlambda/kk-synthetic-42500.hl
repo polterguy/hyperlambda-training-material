@@ -1,0 +1,17 @@
+
+// Example: Trim whitespace from the beginning of a string. - With Python equivalent
+
+// Result: "hello   "
+strings.trim-start:"   hello   "
+
+
+/*
+
+# Python equivalent
+# String with specific characters at the beginning
+string = "xyzabcxyz"
+
+# Trim 'x', 'y', and 'z' characters from the beginning of the string
+trimmed_string = string.lstrip('xyz')
+
+*/

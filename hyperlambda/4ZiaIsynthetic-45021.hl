@@ -1,0 +1,17 @@
+
+// Retrieve a node's value using expressions - With Python equivalent
+.foo:hello world
+get-value:x:@.foo
+
+
+/*
+
+# Python equivalent
+# Retrieve a node's value using expressions
+node = {
+    "foo": "hello world"
+}
+
+value = node.get("foo")
+
+*/

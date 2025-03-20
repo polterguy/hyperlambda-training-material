@@ -1,0 +1,46 @@
+
+// Retrieve all pending orders of amount 100 (using AND conditions in where clause) - With Python equivalent
+data.connect:shopDB
+   data.read
+      table:orders
+
+      // No limit on results (-1 means no limit)
+      limit:long:-1
+      where
+
+         // Both conditions must be true (AND)
+         and
+            status.eq:pending
+            amount.eq:long:100
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def retrieve_pending_orders(database_name):
+    # Connect to the specified database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the select statement
+        query = """
+        SELECT * FROM orders
+        WHERE status = 'pending' AND amount = 100
+        """
+        cursor.execute(query)
+        orders = cursor.fetchall()
+
+        return orders
+    finally:
+        conn.close()
+
+# Example usage
+database_name = 'shopDB.db'
+orders = retrieve_pending_orders(database_name)
+for order in orders:
+    print(order)
+
+*/

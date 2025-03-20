@@ -1,0 +1,62 @@
+
+/*
+ * Hyperlambda endpoint taking arguments. This SQL query selects media types and their aggregate counts, ordering the results by count in descending order, filtered by a specified name pattern.
+ * 
+ * The SQL code is executed within a SQLite database connection to the Chinook database. It performs an inner join between the MediaType and Track tables to count the occurrences of each media type. The query filters media types based on a provided pattern using the LIKE operator, groups the results by MediaTypeId, and orders them by the count of tracks associated with each media type in descending order. This allows users to retrieve media type information and their usage frequency, filtered by a specific name pattern, from the Chinook database.
+ * 
+ * All arguments are mandatory. - With Python equivalent
+ */
+.arguments
+   filter:string
+
+// Connecting to database.
+data.connect:chinook
+   database-type:sqlite
+
+   // Parametrizing [data.select].
+   add:x:./*/data.select
+      get-nodes:x:@.arguments/*
+
+   // Executing [data.select] slot with our SQL.
+   data.select:"\n/*\n * Selects media types and aggregate of counts, and orders by count descending.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect mt.Name, count(mt.MediaTypeId) as Amount \n  from MediaType mt\n    inner join Track t on mt.MediaTypeId = t.MediaTypeId\n  where mt.Name like @filter\n  group by mt.MediaTypeId\n  order by Amount desc;\n"
+      database-type:sqlite
+
+   // Returning a result of above invocation to caller.
+   return-nodes:x:@data.select/*
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def get_media_types_with_counts(database_name, filter_pattern):
+    # Connect to the chinook database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the SQL query
+        query = """
+        SELECT mt.Name, count(mt.MediaTypeId) as Amount
+        FROM MediaType mt
+        INNER JOIN Track t ON mt.MediaTypeId = t.MediaTypeId
+        WHERE mt.Name LIKE ?
+        GROUP BY mt.MediaTypeId
+        ORDER BY Amount DESC;
+        """
+        cursor.execute(query, (f"%{filter_pattern}%",))
+        results = cursor.fetchall()
+
+        return results
+    finally:
+        conn.close()
+
+# Example usage
+database_name = 'chinook.db'
+filter_pattern = "example_pattern"
+media_types = get_media_types_with_counts(database_name, filter_pattern)
+for media_type in media_types:
+    print(media_type)
+
+*/

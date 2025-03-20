@@ -1,0 +1,40 @@
+
+// Provide a Hyperlambda example where a boolean status is evaluated using a switch case with a default option. - With Python equivalent
+
+// Switch case comparison for boolean values.
+.status:bool:true
+.result
+switch:x:@.status
+   case:bool:true
+
+      // If status is true.
+      set-value:x:@.result
+         .:Status is active
+   case:bool:false
+
+      // If status is false.
+      set-value:x:@.result
+         .:Status is inactive
+   default
+
+      // If the value does not match true/false.
+      set-value:x:@.result
+         .:Invalid status
+
+
+/*
+
+# Python equivalent
+http_code = 404
+result = ""
+
+if http_code == 200:
+    result = "Success"
+elif http_code == 400:
+    result = "Bad Request"
+elif http_code == 404:
+    result = "Not Found"
+elif http_code == 500:
+    result = "Internal Server Error"
+
+*/

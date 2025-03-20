@@ -1,0 +1,18 @@
+
+// Example: Check for a special character in a string. - With Python equivalent
+
+// Returns true
+strings.contains:Hello, world!
+   .:!
+
+
+/*
+
+# Python equivalent
+# Check for a special character in a string
+string = "Hello, world!"
+special_character = "!"
+
+contains_special_character = special_character in string
+
+*/

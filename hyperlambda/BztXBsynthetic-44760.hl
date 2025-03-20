@@ -1,0 +1,24 @@
+
+// Example: Perform a case-insensitive replacement. - With Python equivalent
+.input:Yes yes YES
+strings.regex-replace:x:@.input
+   .:(?i)yes
+   .:no
+
+// Result: "no no no"
+
+
+/*
+
+# Python equivalent
+# Perform a case-insensitive replacement
+import re
+
+input_string = "Yes yes YES"
+pattern = r"(?i)yes"
+replacement = "no"
+
+# Replace all occurrences of 'yes' with 'no', case-insensitively
+result = re.sub(pattern, replacement, input_string)
+
+*/

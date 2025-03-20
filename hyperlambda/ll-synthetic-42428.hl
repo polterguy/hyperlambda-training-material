@@ -1,0 +1,20 @@
+
+// Example: Mix in a dynamic slot call inside a string. - With Python equivalent
+strings.mixin:"Current year is {{\ndate.now\nreturn:x:-\n}}"
+
+// Result: "Current year is 2025" (assuming year 2025)
+
+
+/*
+
+# Python equivalent
+# Value to be added
+val = 5
+
+# Calculate the result of 2 + val
+result = 2 + val
+
+# Mix the result into a string
+mixed_string = f"2 + val equals {result}"
+
+*/

@@ -1,0 +1,69 @@
+
+// Create a Hyperlambda script to schedule a task with a specified ID for execution according to specified parameters. - With Python equivalent
+.arguments
+   id:string
+   due:date
+   repeats:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+/*
+ * Adds either a [repeats] or [due] argument to invocation below,
+ * depending upon what argument was supplied by caller.
+ */
+if
+   not
+      eq
+         get-value:x:@.arguments/*/repeats
+         .
+   .lambda
+      add:x:../*/tasks.schedule
+         get-nodes:x:@.arguments/*/repeats
+else
+   add:x:../*/tasks.schedule
+      get-nodes:x:@.arguments/*/due
+
+// Performs actual scheduling of task.
+tasks.schedule:x:@.arguments/*/id
+
+// Returns success to caller.
+return-nodes
+   result:success
+
+
+/*
+
+# Python equivalent
+def delete_task(task_id):
+    # Validate the task ID
+    if task_id is None:
+        raise ValueError("Task ID is mandatory")
+
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Simulate deleting a scheduled task
+    delete_scheduled_task(task_id)
+
+    # Return success result
+    return {"result": "Success"}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def delete_scheduled_task(task_id):
+    # Simulate deleting a task
+    print(f"Deleting scheduled task with ID: {task_id}")
+
+# Example usage
+try:
+    result = delete_task(12345)
+    print(result)
+except (ValueError, PermissionError) as e:
+    print(e)
+
+*/

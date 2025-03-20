@@ -1,0 +1,25 @@
+
+// Example: Find all digit sequences in a string. - With Python equivalent
+strings.matches:abc123xyz45
+   .:"\\d+"
+
+/*
+ * Resulting matches:
+ * .:123
+ * .:45
+ */
+
+
+/*
+
+# Python equivalent
+# Find all digit sequences in a string
+import re
+
+input_string = "abc123xyz45"
+pattern = r"\d+"
+
+# Find all matches
+matches = re.findall(pattern, input_string)
+
+*/

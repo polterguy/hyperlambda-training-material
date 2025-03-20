@@ -1,0 +1,61 @@
+
+// Create a Hyperlambda script that returns the reCAPTCHA secret and key if existing, ensuring the user is authorized. - With Python equivalent
+.type:internal
+
+// Making sure user is allowed to invoke endpoint
+auth.ticket.verify:root
+
+// Retrieving key configuration setting and returning to caller.
+config.get:"magic:auth:recaptcha:secret"
+config.get:"magic:auth:recaptcha:key"
+unwrap:x:+/*
+return-nodes
+   key:x:@config.get
+   secret:x:@config.get/@config.get
+
+
+/*
+
+# Python equivalent
+import json
+
+def set_recaptcha_credentials(key, secret, file_path="appsettings.json"):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Validate the key and secret
+    if not key:
+        raise ValueError("Key is mandatory")
+    if not secret:
+        raise ValueError("Secret is mandatory")
+
+    # Load the existing configuration
+    with open(file_path, 'r') as file:
+        config = json.load(file)
+
+    # Update the reCAPTCHA credentials
+    config["magic"]["auth"]["recaptcha"] = {
+        "key": key,
+        "secret": secret
+    }
+
+    # Save the updated configuration
+    with open(file_path, 'w') as file:
+        json.dump(config, file, indent=4)
+
+    # Return success result
+    return {"result": "success"}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+try:
+    result = set_recaptcha_credentials("new_key", "new_secret")
+    print(result)
+except (ValueError, PermissionError) as e:
+    print(e)
+
+*/

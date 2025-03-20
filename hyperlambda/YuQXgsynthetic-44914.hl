@@ -1,0 +1,23 @@
+
+// Invokes some dynamic slot and sets the value of [.res] to the result of the invocation - With Python equivalent
+signal:SOME_DYNAMIC_SLOT
+.res
+set-value:x:@.res
+   get-value:x:@signal
+
+
+/*
+
+# Python equivalent
+# Invokes some dynamic slot and sets the value of [.res] to the result of the invocation
+def some_dynamic_slot():
+    # Placeholder for dynamic slot logic
+    return "result_from_dynamic_slot"
+
+# Invoke the dynamic slot
+signal_result = some_dynamic_slot()
+
+# Set the value of .res to the result of the invocation
+res = signal_result
+
+*/

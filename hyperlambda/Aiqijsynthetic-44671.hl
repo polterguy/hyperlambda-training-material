@@ -1,0 +1,14 @@
+
+// [and] returns true only if all arguments are true - With Python equivalent
+and
+   .:bool:true
+   .:bool:true
+
+
+/*
+
+# Python equivalent
+# Returns True only if all arguments are True
+result = all([True, True])
+
+*/

@@ -1,0 +1,77 @@
+
+// Creates a contact in HubSpot - With Python equivalent
+.arguments
+   email:string
+   first_name:string
+   last_name:string
+   phone:string
+   company:string
+   website:string
+   lifecyclestage:string
+.type:public
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/email
+
+// Forwarding request to our HTTP POST Hyperlambda file.
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/modules/hubspot/contacts.post.hl
+
+// Returning whatever above invocation returned.
+add:x:./*/return
+   get-nodes:x:@execute-file/*
+return
+
+
+/*
+
+# Python equivalent
+import requests
+
+def create_hubspot_contact(email, first_name=None, last_name=None, phone=None, company=None, website=None, lifecyclestage=None):
+    """
+    This function creates a contact in HubSpot.
+    
+    :param email: The email of the contact
+    :param first_name: The first name of the contact
+    :param last_name: The last name of the contact
+    :param phone: The phone number of the contact
+    :param company: The company of the contact
+    :param website: The website of the contact
+    :param lifecyclestage: The lifecycle stage of the contact
+    :return: The response from the HubSpot API
+    :raises ValueError: If email is not provided
+    """
+    # Validate mandatory fields
+    if not email:
+        raise ValueError("Email is mandatory")
+    
+    # Prepare the contact data
+    contact_data = {
+        "email": email,
+        "first_name": first_name,
+        "last_name": last_name,
+        "phone": phone,
+        "company": company,
+        "website": website,
+        "lifecyclestage": lifecyclestage
+    }
+    
+    # Create the contact in HubSpot
+    response = post_contact_to_hubspot(contact_data)
+    
+    # Return the response
+    return response
+
+def post_contact_to_hubspot(contact_data):
+    # Placeholder for HubSpot API call to create a contact
+    url = "https://api.hubapi.com/contacts/v1/contact"
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer YOUR_ACCESS_TOKEN"}
+    response = requests.post(url, json={"properties": [{"property": k, "value": v} for k, v in contact_data.items() if v]}, headers=headers)
+    return response.json()
+
+# Example usage
+# create_hubspot_contact("example@example.com", first_name="John", last_name="Doe")
+
+*/

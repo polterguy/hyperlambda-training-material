@@ -1,0 +1,18 @@
+
+// Example: Split on a substring that is not present. - With Python equivalent
+strings.split:hello
+   .:,
+
+// Result: The string remains "hello" as a single part (no split)
+
+
+/*
+
+# Python equivalent
+# String with consecutive delimiters
+string = "one,,two"
+
+# Split the string by commas
+split_string = string.split(",")
+
+*/

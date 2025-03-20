@@ -1,0 +1,17 @@
+
+// Example: Embed multiple inline expressions in a single string. - With Python equivalent
+strings.mixin:"Sum {{\nmath.add\n   .:int:1\n   .:int:2\nreturn:x:-\n}} and Product {{\nmath.multiply\n   .:int:3\n   .:int:4\nreturn:x:-\n}}"
+
+// Result: "Sum 3 and Product 12"
+
+
+/*
+
+# Python equivalent
+# Convert "world" to uppercase
+uppercased_word = "world".upper()
+
+# Mix the result into a string
+mixed_string = f"Hello, {uppercased_word}!"
+
+*/

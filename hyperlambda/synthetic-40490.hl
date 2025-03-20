@@ -1,0 +1,25 @@
+
+// Publish a socket message for user1, 2, and 3 - With Python equivalent
+sockets.signal:foo.bar
+   users:user1, user2, user3
+   args
+      howdy:world
+
+
+/*
+
+# Python equivalent
+# Publish a socket message for user1, 2, and 3 using a hypothetical socket library
+
+def publish_socket_message(event, users, args):
+    # Placeholder for socket message publishing logic
+    for user in users:
+        print(f"Sending message to {user}: {event} with args {args}")
+
+# Example usage
+users = ["user1", "user2", "user3"]
+args = {"howdy": "world"}
+publish_socket_message("foo.bar", users, args)
+# This will print the message being sent to each user
+
+*/

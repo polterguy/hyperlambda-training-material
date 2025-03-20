@@ -1,0 +1,22 @@
+
+// Example: Extract entire string by using its full length. - With Python equivalent
+.subject:Test
+strings.substring:x:@.subject
+   .:0
+   .:4
+
+// Result: "Test"
+
+
+/*
+
+# Python equivalent
+# Variables for the string, start index, and length
+text = "Magic"
+start = 1
+length = 3
+
+# Extract the substring using the start index and length
+substring = text[start:start + length]
+
+*/

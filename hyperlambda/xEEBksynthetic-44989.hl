@@ -1,0 +1,24 @@
+
+// Example: Create a dynamic slot, then invoke it - With Python equivalent
+
+// First we create a dynamic slot.
+slots.create:foo
+   return-value:int:57
+
+// Then we invoke it.
+signal:foo
+
+
+/*
+
+# Python equivalent
+# Example: Create a dynamic slot, then invoke it
+
+# Define the dynamic slot function
+def foo():
+    return 57
+
+# Invoke the dynamic slot
+result = foo()
+
+*/

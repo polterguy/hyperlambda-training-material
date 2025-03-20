@@ -1,0 +1,20 @@
+
+// Example: Use variables for the string and characters to trim. - With Python equivalent
+.text:xyzyx
+.chars:xy
+
+// Result: "z"
+strings.trim:x:@.text
+   get-value:x:@.chars
+
+
+/*
+
+# Python equivalent
+# String with whitespace at the beginning
+string = "   hello   "
+
+# Trim whitespace from the beginning of the string
+trimmed_string = string.lstrip()
+
+*/

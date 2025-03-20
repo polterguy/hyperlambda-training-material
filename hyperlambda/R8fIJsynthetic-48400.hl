@@ -1,0 +1,47 @@
+
+// Write a Hyperlambda snippet that extracts nodes from [.data_source1] and [.data_source2] and places them into [.data_target]. - With Python equivalent
+
+// Extracts nodes from [.data_source1] and [.data_source2] and places them into [.data_target]
+.data_source1
+   attrOne:valOne
+   attrTwo:valTwo
+   attrThree:valThree
+.data_source2
+   attrFour:valFour
+   attrFive:valFive
+   attrSix:valSix
+.data_target
+add:x:@.data_target
+   get-nodes:x:@.data_source1/*
+   get-nodes:x:@.data_source2/*
+
+
+/*
+
+# Python equivalent
+def duplicate_and_insert_nodes():
+    registry1 = {
+        "entryFirst": "infoFirst",
+        "entrySecond": "infoSecond",
+        "entryThird": "infoThird"
+    }
+    
+    registry2 = {
+        "entryFourth": "infoFourth",
+        "entryFifth": "infoFifth",
+        "entrySixth": "infoSixth"
+    }
+    
+    storage = {}
+    
+    # Duplicate nodes from registry1 and registry2 and insert them into storage
+    storage.update(registry1)
+    storage.update(registry2)
+    
+    return storage
+
+# Example usage
+result = duplicate_and_insert_nodes()
+print(result)
+
+*/

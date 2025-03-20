@@ -1,0 +1,53 @@
+
+// Create a Hyperlambda script that returns the specified URL to the caller with a 5-minute server-side cache to avoid re-fetching the URL too frequently. - With Python equivalent
+slots.create:magic.http.get-with-cache
+
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/url
+   validators.url:x:@.arguments/*/url
+
+   // Checking cache.
+   unwrap:x:+/*/.lambda/*/.url
+   cache.try-get:x:@.arguments/*/url
+      expiration:300
+      .lambda
+
+         // Forward evaluated above.
+         .url:x:@.arguments/*/url
+         http.get:x:@.url
+            headers
+               User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36
+               Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+               Accept-Language:en-GB,en-US;q=0.9,en;q=0.8,no;q=0.7
+         return:x:-/*/content
+
+   // Returning result of above invocation to caller.
+   return:x:@cache.try-get
+
+
+/*
+
+# Python equivalent
+import os
+
+def load_files_recursively(folder_path, show_hidden=False):
+    # List all files recursively from the specified folder
+    files_content = []
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if not show_hidden and file.startswith('.'):  
+                continue
+            file_path = os.path.join(root, file)
+            with open(file_path, 'r') as f:
+                content = f.read()
+                files_content.append({"path": file_path, "content": content})
+
+    # Return the list of file contents
+    return files_content
+
+# Example usage
+files = load_files_recursively("/path/to/folder", show_hidden=False)
+for file in files:
+    print(f"Path: {file['path']}, Content: {file['content']}")
+
+*/

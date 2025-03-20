@@ -1,0 +1,58 @@
+
+// Generate a Hyperlambda snippet that updates an employee record in the 'hr_db' database within the 'employees' table. - With Python equivalent
+
+// Updates an employee record in the "hr_db" database within the "employees" table.
+.arguments
+   employee_id:int
+data.connect:hr_db
+   database-type:mysql
+
+   // Updating the employee's department and salary.
+   data.update
+      database-type:mysql
+      table:employees
+      values
+         department:Finance
+         salary:decimal:75000.00
+      where
+         and
+            employee_id.eq:x:@.arguments/*/employee_id
+   return:x:@data.update
+
+
+/*
+
+# Python equivalent
+import psycopg2
+
+def update_user_email(user_id):
+    # Connect to the auth_db database
+    connection = psycopg2.connect(
+        host='your_host',
+        user='your_user',
+        password='your_password',
+        dbname='auth_db'
+    )
+    
+    cursor = connection.cursor()
+    
+    # Query to update a user's email in the users table
+    query = """
+    UPDATE users
+    SET email = %s, status = %s
+    WHERE user_id = %s
+    """
+    
+    email = "newuser@example.com"
+    status = "active"
+    
+    cursor.execute(query, (email, status, user_id))
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+
+# Example usage
+update_user_email(1001)
+
+*/

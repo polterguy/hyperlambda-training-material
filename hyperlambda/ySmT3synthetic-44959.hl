@@ -1,0 +1,24 @@
+
+// Example: Convert a lowercase string to uppercase. - With Python equivalent - With Python equivalent
+
+// Result: "HELLO"
+strings.to-upper:hello
+
+/*
+ * # Python equivalent
+ * # Uppercase string
+ * string = "HELLO"
+ * 
+ * # Convert the string to uppercase (no change)
+ * uppercase_string = string.upper()
+ */
+
+
+/*
+
+# Python equivalent
+# Convert a lowercase string to uppercase
+lowercase_string = "hello"
+uppercased_string = lowercase_string.upper()
+
+*/

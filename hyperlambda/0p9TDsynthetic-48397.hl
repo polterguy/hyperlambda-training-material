@@ -1,0 +1,47 @@
+
+// Generate a Hyperlambda snippet that copies nodes from [.input1] and [.input2] and appends them into [.output]. - With Python equivalent
+
+// Copies nodes from [.input1] and [.input2] and appends into [.output]
+.input1
+   itemA:dataA
+   itemB:dataB
+   itemC:dataC
+.input2
+   itemD:dataD
+   itemE:dataE
+   itemF:dataF
+.output
+add:x:@.output
+   get-nodes:x:@.input1/*
+   get-nodes:x:@.input2/*
+
+
+/*
+
+# Python equivalent
+def retrieve_and_add_nodes():
+    sourceA = {
+        "keyX": "valX",
+        "keyY": "valY",
+        "keyZ": "valZ"
+    }
+    
+    sourceB = {
+        "keyM": "valM",
+        "keyN": "valN",
+        "keyO": "valO"
+    }
+    
+    target = {}
+    
+    # Retrieve nodes from sourceA and sourceB and add them into target
+    target.update(sourceA)
+    target.update(sourceB)
+    
+    return target
+
+# Example usage
+result = retrieve_and_add_nodes()
+print(result)
+
+*/

@@ -1,0 +1,29 @@
+
+// Iterates through timestamps and logs them. - With Python equivalent
+.timestamps
+   time1:date:"2025-03-15T14:30:00.000Z"
+   time2:date:"2025-03-16T09:00:00.000Z"
+   time3:date:"2025-03-17T18:45:00.000Z"
+for-each:x:@.timestamps/*
+
+   // Logging each timestamp.
+   log.info:x:@.dp/#
+
+
+/*
+
+# Python equivalent
+import logging
+
+def log_while_count_less_than_10():
+    logging.basicConfig(level=logging.INFO)
+    
+    count = 0
+    while count < 10:
+        logging.info("Iteration running")
+        count += 1
+
+# Example usage
+log_while_count_less_than_10()
+
+*/

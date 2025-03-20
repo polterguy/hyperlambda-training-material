@@ -1,0 +1,42 @@
+
+// Create a new product with name and price fields - With Python equivalent
+data.connect:shopDB
+   data.create
+      table:products
+      values
+         name:Coffee Mug
+
+         // Use decimale
+         price:decimal:9.99
+
+         // Use bool type for a boolean column
+         in_stock:bool:true
+
+   // After execution, the node's value will contain the new record's ID (if available)
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def create_product(database_name, name, price, in_stock):
+    # Connect to the specified database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # Prepare and execute the insert statement
+        cursor.execute(
+            "INSERT INTO products (name, price, in_stock) VALUES (?, ?, ?)",
+            (name, price, in_stock)
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+# Example usage
+database_name = 'shopDB.db'
+create_product(database_name, 'Coffee Mug', 9.99, True)
+
+*/

@@ -1,0 +1,72 @@
+
+// Executing the following Hyperlambda results in the following - With Python equivalent
+
+// When executing the following Hyperlambda
+.folder:/system/
+.loc:int:0
+.files:int:0
+unwrap:x:+/*
+signal:magic.io.file.load-recursively
+   .:x:@.folder
+for-each:x:@signal/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         hyper2lambda:x:@.dp/#/0
+         math.increment:x:@.loc
+            get-count:x:@hyper2lambda/**
+         math.increment:x:@.files
+remove-nodes:x:@signal/*
+
+// We end up with this result
+.folder:/system/
+.loc:int:19696
+.files:int:292
+unwrap:x:+/*
+signal
+for-each:x:@signal/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         hyper2lambda:x:@.dp/#/0
+         math.increment:x:@.loc
+            get-count:x:@hyper2lambda/**
+         math.increment:x:@.files
+remove-nodes:x:@signal/*
+
+// Above you can see how executing Hyperlambda transforms the original node hierarchy, changing it, allowing us to store state in nodes
+
+
+/*
+
+# Python equivalent
+import os
+
+def count_hyperlambda_files_and_nodes(folder_path):
+    # Initialize counters
+    loc = 0
+    files_count = 0
+
+    # Walk through the directory recursively
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith('.hl'):
+                files_count += 1
+                file_path = os.path.join(root, file)
+
+                # Count nodes in the Hyperlambda file
+                with open(file_path, 'r') as f:
+                    content = f.read()
+                    node_count = content.count('\n')  # Assuming each line is a node
+                    loc += node_count
+
+    return files_count, loc
+
+# Example usage
+folder_path = '/system/'
+file_count, loc = count_hyperlambda_files_and_nodes(folder_path)
+print(f"Hyperlambda files: {file_count}, Total nodes: {loc}")
+
+*/

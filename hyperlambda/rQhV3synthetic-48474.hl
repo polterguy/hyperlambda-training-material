@@ -1,0 +1,35 @@
+
+// Write a Hyperlambda snippet that loops while [.progress] is not equal to 100. - With Python equivalent
+
+// Loops while [.progress] is not equal to 100.
+.progress:int:0
+while
+   neq
+      get-value:x:@.progress
+      .:int:100
+   .lambda
+
+      // Logging progress.
+      log.info:Processing...
+
+      // Increasing progress.
+      math.increment:x:@.progress
+
+
+/*
+
+# Python equivalent
+import logging
+
+def loop_until_requests_reach_10():
+    logging.basicConfig(level=logging.INFO)
+    
+    requests = 1
+    while requests < 10:
+        logging.info("Processing request")
+        requests += 1
+
+# Example usage
+loop_until_requests_reach_10()
+
+*/

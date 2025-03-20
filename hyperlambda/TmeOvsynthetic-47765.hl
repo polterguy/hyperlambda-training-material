@@ -1,0 +1,40 @@
+
+// Evaluates specified [.lambda] if condition evaluates to true. - With Python equivalent
+if
+   or
+      eq:x:@SOME_EXPRESSION
+         .:SOME_VALUE
+      eq:x:@SOME_OTHER_EXPRESSION
+         .:SOME_OTHER_VALUE
+   .lambda
+
+      // Lambda evaluates if condition is true.
+else
+
+   // Lambda evaluated if condition is NOT true.
+
+
+/*
+
+# Python equivalent
+def evaluate_conditions(some_expression, some_other_expression):
+    # Initialize the result variable
+    result = None
+
+    # Conditional logic
+    if some_expression == "SOME_VALUE" or some_other_expression == "SOME_OTHER_VALUE":
+        # Execute some logic if any condition is true
+        result = "At least one condition is true"
+    else:
+        # Execute some other logic if no conditions are true
+        result = "No conditions are true"
+
+    return result
+
+# Example usage
+some_expression = "SOME_VALUE"
+some_other_expression = "DIFFERENT_VALUE"
+result = evaluate_conditions(some_expression, some_other_expression)
+print(result)  # Output: "At least one condition is true"
+
+*/

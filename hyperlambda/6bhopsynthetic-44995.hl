@@ -1,0 +1,19 @@
+
+// Example: Create a slot - With Python equivalent
+slots.create:foo
+   return-value:int:57
+
+
+/*
+
+# Python equivalent
+# Example: Create a slot
+
+# Define the slot function
+def foo():
+    return 57
+
+# The slot can be invoked like a regular function
+result = foo()
+
+*/

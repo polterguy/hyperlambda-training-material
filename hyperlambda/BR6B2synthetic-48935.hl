@@ -1,0 +1,98 @@
+
+// Create endpoint inserting one record into your items table in your shopping-cart-demo database. - With Python equivalent
+.arguments
+
+   // product_id column value
+   product_id:long
+
+   // quantity column value
+   quantity:long
+
+   // session_id column value
+   session_id:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+.foreign-keys
+   .
+      column:product_id
+      table:products
+      foreign_column:product_id
+      foreign_name:name
+      long:bool:true
+
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:items
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def create_item(product_id, quantity, session_id):
+    """
+    This function inserts one record into the items table in the shopping-cart-demo database.
+    
+    :param product_id: The ID of the product
+    :param quantity: The quantity of the product
+    :param session_id: The session ID
+    :return: The ID of the created record
+    :raises ValueError: If any of the arguments are not provided
+    """
+    # Verify authentication
+    verify_authentication(["root", "admin"])
+    
+    # Validate mandatory fields
+    if product_id is None or quantity is None or not session_id:
+        raise ValueError("product_id, quantity, and session_id are mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('shopping-cart-demo.db')
+    cursor = conn.cursor()
+    
+    # Insert the record
+    cursor.execute("INSERT INTO items (product_id, quantity, session_id) VALUES (?, ?, ?)", (product_id, quantity, session_id))
+    record_id = cursor.lastrowid
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Return the ID of the created record
+    return record_id
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+# Example usage
+# create_item(1, 2, "session123")
+
+*/

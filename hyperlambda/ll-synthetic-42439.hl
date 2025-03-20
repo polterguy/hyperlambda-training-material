@@ -1,0 +1,20 @@
+
+// Example: Concatenate multiple strings without separators. - With Python equivalent
+strings.concat
+   .:I
+   .:love
+   .:Hyperlambda
+
+// Result: "IloveHyperlambda"
+
+
+/*
+
+# Python equivalent
+# Strings to be concatenated with spaces
+strings = ["I", " ", "love", " ", "Hyperlambda"]
+
+# Concatenate the strings
+concatenated_string = "".join(strings)
+
+*/

@@ -1,0 +1,53 @@
+
+// Ensures user is authorized to access endpoint. - With Python equivalent
+.arguments
+   roles
+      type:array
+      mandatory:bool:false
+.icon:shield
+
+/*
+ * Checking if we've got a [roles] argument,
+ * and if so, joining all roles into a comma separated string of roles.
+ */
+.roles
+if
+   exists:x:@.arguments/*/roles/*
+   .lambda
+
+      // Creating comma separated list of roles.
+      set-value:x:@.roles
+         strings.join:x:@.arguments/*/roles/*
+            .:,
+
+// Making sure user is authenticated, and optionally authorised.
+auth.ticket.verify:x:@.roles
+
+
+/*
+
+# Python equivalent
+def ensure_authorization(roles=None):
+    """
+    This function ensures the user is authorized to access the endpoint.
+    
+    :param roles: A list of roles to check authorization against
+    :raises PermissionError: If the user is not authorized
+    """
+    # Join roles into a comma-separated string if roles are provided
+    roles_string = ",".join(roles) if roles else None
+    
+    # Verify the user's authorization
+    verify_authorization(roles_string)
+
+def verify_authorization(roles_string):
+    # Placeholder for authorization verification logic
+    if roles_string:
+        print(f"Verifying authorization for roles: {roles_string}")
+    else:
+        print("No specific roles required for authorization")
+
+# Example usage
+# ensure_authorization(["admin", "user"])
+
+*/

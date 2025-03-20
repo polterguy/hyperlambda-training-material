@@ -1,0 +1,20 @@
+
+// Example: Replace all occurrences of a substring. - With Python equivalent
+.text:abababab
+strings.replace:x:@.text
+   .:ab
+   .:AB
+
+// Result: "ABABABAB"
+
+
+/*
+
+# Python equivalent
+# Strings to be concatenated, with one part being empty
+strings = ["Hello", "", "World"]
+
+# Concatenate the strings
+concatenated_string = "".join(strings)
+
+*/

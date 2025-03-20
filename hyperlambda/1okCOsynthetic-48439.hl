@@ -1,0 +1,45 @@
+
+// Write a Hyperlambda snippet that opens a connection to 'warehouse_db' and gets recent inventory changes. - With Python equivalent
+
+// Opens a connection to "warehouse_db" and gets recent inventory changes.
+.result
+data.connect:warehouse_db
+   database-type:sqlite
+   data.select:select * from inventory_changes order by modified_at desc limit 15
+      database-type:sqlite
+   add:x:@.result
+      get-nodes:x:@data.select/*
+
+
+/*
+
+# Python equivalent
+import mysql.connector
+
+def retrieve_active_customers():
+    # Connect to the crm_db database
+    connection = mysql.connector.connect(
+        host='your_host',
+        user='your_user',
+        password='your_password',
+        database='crm_db'
+    )
+    
+    cursor = connection.cursor(dictionary=True)
+    
+    # Query to retrieve all active customers from the customers table
+    query = "SELECT id, name, email FROM customers WHERE status='active'"
+    
+    cursor.execute(query)
+    active_customers = cursor.fetchall()
+    
+    cursor.close()
+    connection.close()
+    
+    return active_customers
+
+# Example usage
+active_customers = retrieve_active_customers()
+print(active_customers)
+
+*/

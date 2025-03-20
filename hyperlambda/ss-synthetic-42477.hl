@@ -1,0 +1,23 @@
+
+// Example: Split a comma-separated string. - With Python equivalent
+strings.split:a,b,c
+   .:,
+
+/*
+ * Resulting parts:
+ * .:a
+ * .:b
+ * .:c
+ */
+
+
+/*
+
+# Python equivalent
+# String with a multi-character delimiter
+string = "foo||bar||baz"
+
+# Split the string using the multi-character delimiter '||'
+split_string = string.split("||")
+
+*/

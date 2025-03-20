@@ -1,0 +1,28 @@
+// Creates a bar chart with given categories and values – with Python equivalent
+.image
+image:charts.bar
+   filename:"chart.png"
+   width:int:600
+   height:int:300
+   data
+      Spring:int:2
+      Summer:int:5
+      Autumn:int:10
+
+/*
+
+# Python equivalent
+# Creates a bar chart with matplotlib
+import matplotlib.pyplot as plt
+
+data = {'Spring': 2, 'Summer': 5, 'Autumn': 10}
+categories = list(data.keys())
+values = list(data.values())
+
+# Size in inches corresponds approximately to pixel dimensions divided by dpi (assuming 100 dpi)
+plt.figure(figsize=(6, 3))
+plt.bar(categories, values)
+
+plt.savefig('chart.png')
+plt.close()
+*/

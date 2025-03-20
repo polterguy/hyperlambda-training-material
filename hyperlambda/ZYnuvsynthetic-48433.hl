@@ -1,0 +1,57 @@
+
+// Create a Hyperlambda snippet that adds a new product to the 'inventory_db' database and its 'products' table. - With Python equivalent
+
+// Adds a new product to the "inventory_db" database and its "products" table.
+data.connect:inventory_db
+   database-type:pgsql
+
+   // Creating a product entry.
+   data.create
+      database-type:pgsql
+      table:products
+      values
+         product_id:int:2005
+         name:Laptop
+         price:decimal:999.99
+         stock:int:50
+
+
+/*
+
+# Python equivalent
+import pyodbc
+from datetime import datetime
+
+def insert_new_order():
+    # Connect to the ecommerce_db database
+    connection = pyodbc.connect(
+        'DRIVER={ODBC Driver 17 for SQL Server};'
+        'SERVER=your_server;'
+        'DATABASE=ecommerce_db;'
+        'UID=your_user;'
+        'PWD=your_password'
+    )
+    
+    cursor = connection.cursor()
+    
+    # Query to insert a new order into the orders table
+    query = """
+    INSERT INTO orders (order_id, user_id, total, order_date)
+    VALUES (?, ?, ?, ?)
+    """
+    
+    order_id = 12345
+    user_id = 1001
+    total = 199.99
+    order_date = datetime.strptime("2025-04-01T00:00:00.000", "%Y-%m-%dT%H:%M:%S.%f")
+    
+    cursor.execute(query, (order_id, user_id, total, order_date))
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+
+# Example usage
+insert_new_order()
+
+*/

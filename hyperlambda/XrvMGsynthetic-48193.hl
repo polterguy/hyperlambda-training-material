@@ -1,0 +1,59 @@
+
+// Limit the slots that can be invoked within a code block - With Python equivalent
+.result
+whitelist
+   vocabulary
+      set-value
+      return
+   .lambda
+
+      // Allowed: this uses whitelisted [set-value]
+      set-value:x:@.result
+         .:foo
+
+      // Disallowed if dot is removed: [add] is not whitelisted
+      .add:x:@.result
+         .
+            extra:bar
+      return
+         status:success
+
+
+/*
+
+# Python equivalent
+class WhitelistExecutionError(Exception):
+    pass
+
+class WhitelistExecutor:
+    def __init__(self):
+        self.vocabulary = {'set_value', 'return'}
+
+    def execute(self):
+        # Initialize the result
+        result = {'extra': 'bar'}
+
+        # Execute the whitelisted operations
+        try:
+            result['result'] = self.set_value("foo")
+            return self.return_value("success", result)
+        except WhitelistExecutionError as e:
+            print(e)
+
+    def set_value(self, value):
+        if 'set_value' not in self.vocabulary:
+            raise WhitelistExecutionError("set_value is not whitelisted")
+        return value
+
+    def return_value(self, status, result):
+        if 'return' not in self.vocabulary:
+            raise WhitelistExecutionError("return is not whitelisted")
+        result['status'] = status
+        return result
+
+# Example usage
+executor = WhitelistExecutor()
+result = executor.execute()
+print(result)  # Output: {'extra': 'bar', 'result': 'foo', 'status': 'success'}
+
+*/

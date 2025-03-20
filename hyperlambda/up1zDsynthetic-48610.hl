@@ -1,0 +1,52 @@
+
+// Create a Hyperlambda script to delete a task due with a specified ID. - With Python equivalent
+.arguments
+   id:long
+.type:internal
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Deletes task due instance.
+tasks.schedule.delete:x:@.arguments/*/id
+
+// Returns success to caller.
+return-nodes
+   result:Success
+
+
+/*
+
+# Python equivalent
+def handle_exception(message, path, stack, status=None, field=None):
+    # Log the error details
+    log_error(message, path, stack)
+
+    # Collect additional information
+    additional_info = {
+        "status": status,
+        "message": message,
+        "field": field
+    }
+
+    # Return the additional information
+    return additional_info
+
+def log_error(message, path, stack):
+    # Simulate logging the error details
+    print(f"Error: {message}, URL: {path}, Exception: {stack}")
+
+# Example usage
+exception_info = handle_exception(
+    message="An error occurred",
+    path="/example/path",
+    stack="Stack trace here",
+    status="500",
+    field="example_field"
+)
+print(exception_info)
+
+*/

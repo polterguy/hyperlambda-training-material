@@ -1,0 +1,29 @@
+
+// Set all inactive users to have NULL last_login - With Python equivalent
+data.connect:authDB
+   data.execute:UPDATE users SET last_login = NULL WHERE active = 0
+
+   // Executes the UPDATE; number of affected records returned
+
+
+/*
+
+# Python equivalent
+# Set all inactive users to have NULL last_login
+import sqlite3
+
+def set_inactive_users_last_login_to_null(database_name):
+    connection = sqlite3.connect(database_name)
+    cursor = connection.cursor()
+    
+    sql = "UPDATE users SET last_login = NULL WHERE active = 0"
+    cursor.execute(sql)
+    
+    connection.commit()
+    connection.close()
+
+# Example usage
+set_inactive_users_last_login_to_null('authDB.db')
+# This will set last_login to NULL for all inactive users in the users table
+
+*/

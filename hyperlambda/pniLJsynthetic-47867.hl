@@ -1,0 +1,32 @@
+
+// Divide a number by a dynamic value and then by a static value - With Python equivalent
+.dividend:int:24
+.divisor:int:4
+math.divide
+
+   // fetches 24
+   get-value:x:@.dividend
+
+   // divides 24 by 4 -> result 6
+   get-value:x:@.divisor
+
+   // divides 6 by 2 -> result 3
+   .:int:2
+
+
+/*
+
+# Python equivalent
+def divide_numbers(dividend, divisor, static_value):
+    # Perform division by dynamic and static values
+    result = dividend / divisor / static_value
+    return result
+
+# Example usage
+dividend = 24
+divisor = 4
+static_value = 2
+result = divide_numbers(dividend, divisor, static_value)
+print(result)  # Output: 3.0
+
+*/

@@ -1,0 +1,22 @@
+
+// Example: Join all strings stored as children of a list node. - With Python equivalent
+.words
+   .:one
+   .:two
+   .:three
+strings.join:x:@.words/*
+   .:|
+
+// Result: "one|two|three"
+
+
+/*
+
+# Python equivalent
+# String to get the length of
+string = "OpenAI"
+
+# Get the length of the string
+length_of_string = len(string)
+
+*/

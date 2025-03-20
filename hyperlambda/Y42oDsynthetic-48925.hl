@@ -1,0 +1,60 @@
+
+// Hyperlambda endpoint taking arguments. This SQL query selects media types and their aggregate counts, ordering the results by count in descending order, filtered by a specified name pattern. - With Python equivalent
+.arguments
+   filter:string
+
+// Connecting to database.
+data.connect:chinook
+   database-type:sqlite
+
+   // Parametrizing [data.select].
+   add:x:./*/data.select
+      get-nodes:x:@.arguments/*
+
+   // Executing [data.select] slot with our SQL.
+   data.select:"\n/*\n * Selects media types and aggregate of counts, and orders by count descending.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect mt.Name, count(mt.MediaTypeId) as Amount \n  from MediaType mt\n    inner join Track t on mt.MediaTypeId = t.MediaTypeId\n  where mt.Name like @filter\n  group by mt.MediaTypeId\n  order by Amount desc;\n"
+      database-type:sqlite
+
+   // Returning a result of above invocation to caller.
+   return-nodes:x:@data.select/*
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def get_media_types(filter_pattern):
+    """
+    This function selects media types and their aggregate counts, ordering the results by count in descending order, filtered by a specified name pattern.
+    
+    :param filter_pattern: The pattern to filter media types by name
+    :return: A list of dictionaries containing media type names and their counts
+    """
+    # Connect to the SQLite database
+    conn = sqlite3.connect('chinook.db')
+    cursor = conn.cursor()
+    
+    # Execute the query to get media types and their counts
+    query = """
+    SELECT mt.Name, COUNT(mt.MediaTypeId) AS Amount
+    FROM MediaType mt
+    INNER JOIN Track t ON mt.MediaTypeId = t.MediaTypeId
+    WHERE mt.Name LIKE ?
+    GROUP BY mt.MediaTypeId
+    ORDER BY Amount DESC;
+    """
+    cursor.execute(query, (f"%{filter_pattern}%",))
+    media_types = [{"Name": row[0], "Amount": row[1]} for row in cursor.fetchall()]
+    
+    # Close the connection
+    cursor.close()
+    conn.close()
+    
+    # Return the list of media types
+    return media_types
+
+# Example usage
+# get_media_types("Rock")
+
+*/

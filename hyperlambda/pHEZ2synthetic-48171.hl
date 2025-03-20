@@ -1,0 +1,34 @@
+
+// Creates a try/catch/finally block - With Python equivalent
+try
+
+   // Perform your unsafe operation here.
+   throw:Some error is thrown here
+.catch
+
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:x:@.arguments/*/message
+.finally
+
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:Try finished evaluating
+
+
+/*
+
+# Python equivalent
+def try_catch_finally():
+    try:
+        # Simulate throwing an error
+        raise Exception("Some error is thrown here")
+    except Exception as e:
+        # Log the error message
+        print(f"Error: {e}")
+    finally:
+        # Log that the try block has finished
+        print("Try finished evaluating")
+
+# Example usage
+try_catch_finally()
+
+*/

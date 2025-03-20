@@ -1,0 +1,73 @@
+
+// Ensures our system messages are updated during deployments. - With Python equivalent
+
+// Listing all system messages we've got.
+io.file.list:/modules/finovo/system-messages/
+
+// Opening up database connection.
+data.connect:magic
+
+   // Looping through each system message and updating our machine learning type accordingly.
+   for-each:x:@io.file.list/*
+
+      // Loading file.
+      io.file.load:x:@.dp/#
+
+      // Finding type name
+      .type
+      strings.split:x:@.dp/#
+         .:/
+      strings.split:x:-/0/-
+         .:.
+      set-value:x:@.type
+         get-value:x:@strings.split/0
+
+      // Updating type name's system message.
+      data.update
+         table:ml_types
+         values
+            system_message:x:@io.file.load
+         where
+            and
+               type.eq:x:@.type
+
+
+/*
+
+# Python equivalent
+import os
+import sqlite3
+
+def update_system_messages(directory_path, database_name):
+    # Connect to the specified database
+    conn = sqlite3.connect(database_name)
+    cursor = conn.cursor()
+
+    try:
+        # List all files in the specified directory
+        for root, dirs, files in os.walk(directory_path):
+            for file in files:
+                file_path = os.path.join(root, file)
+
+                # Load the content of the file
+                with open(file_path, 'r') as f:
+                    system_message = f.read()
+
+                # Extract the type from the file path
+                type_name = file.split('.')[0]
+
+                # Update the system message in the database
+                cursor.execute(
+                    "UPDATE ml_types SET system_message = ? WHERE type = ?",
+                    (system_message, type_name)
+                )
+                conn.commit()
+    finally:
+        conn.close()
+
+# Example usage
+directory_path = '/modules/finovo/system-messages/'
+database_name = 'magic.db'
+update_system_messages(directory_path, database_name)
+
+*/

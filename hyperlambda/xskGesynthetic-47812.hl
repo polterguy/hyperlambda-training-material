@@ -1,0 +1,52 @@
+
+// Create Hyperlambda that sends an email to peter@microsoft.com informing him I'll be late for our meeting - With Python equivalent
+mail.smtp.send
+   message
+      to
+         .
+            name:Peter
+            email:peter@microsoft.com
+      subject:I will be late
+      entity:text/plain
+         content:Sorry Peter, but I will be late to our meeting
+
+
+/*
+
+# Python equivalent
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+def send_late_meeting_email():
+    # SMTP server configuration
+    smtp_server = "your_smtp_server"
+    smtp_port = 587
+    smtp_username = "your_username"
+    smtp_password = "your_password"
+    use_tls = True
+
+    # Email message configuration
+    from_email = "your_email@example.com"
+    to_email = "peter@microsoft.com"
+    subject = "I will be late"
+    body_content = "Sorry Peter, but I will be late to our meeting"
+
+    # Create the email message
+    msg = MIMEMultipart()
+    msg['From'] = from_email
+    msg['To'] = to_email
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body_content, 'plain'))
+
+    # Send the email
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        if use_tls:
+            server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.sendmail(from_email, to_email, msg.as_string())
+
+# Example usage
+send_late_meeting_email()
+
+*/

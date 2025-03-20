@@ -1,0 +1,18 @@
+
+// Seed crypto library - With Python equivalent
+crypto.seed:Foo Bar Whatever Some Random Seed
+
+
+/*
+
+# Python equivalent
+# Seed random number generator
+import random
+
+seed_value = "Foo Bar Whatever Some Random Seed"
+random.seed(seed_value)
+
+# Example usage
+# The random number generator is now seeded with the specified seed value
+
+*/

@@ -1,0 +1,55 @@
+
+// Write a Hyperlambda script to return a specified PDF training data file to the client. - With Python equivalent
+.arguments
+   file:string
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/file
+
+// Figuringout full path of file.
+strings.concat
+   .:/etc/system/openai/pdf/
+   get-value:x:@.arguments/*/file
+
+// Getting our response HTTP headers sorted out.
+strings.concat
+   .:"attachment; filename=\""
+   get-value:x:@.arguments/*/file
+   .:"\""
+response.headers.set
+   Content-Type:application/pdf
+   Content-Disposition:x:@strings.concat
+   Access-Control-Expose-Headers:Content-Disposition
+
+// Returning file to caller.
+io.stream.open-file:x:@strings.concat/@strings.concat
+return:x:-
+
+
+/*
+
+# Python equivalent
+from flask import Flask, send_file, Response
+
+app = Flask(__name__)
+
+@app.route('/download-txt', methods=['GET'])
+def download_txt():
+    # Get the file name from request arguments
+    file_name = request.args.get('file')
+
+    # Validate the file name
+    if not file_name:
+        return Response("File name is mandatory", status=400)
+
+    # Construct the file path
+    file_path = f"/etc/system/openai/pdf/{file_name}"
+
+    # Send the file as a response with appropriate headers
+    return send_file(file_path, as_attachment=True, attachment_filename=file_name, mimetype='text/plain')
+
+# Example usage: Run the Flask app
+if __name__ == '__main__':
+    app.run(debug=True)
+
+*/

@@ -1,0 +1,23 @@
+
+// Show me an example lambda object with 3 nodes, the third node having two children with values. Use random names and values. - With Python equivalent
+foo:bar
+foo:int:5
+foo
+   child1:its-value
+   child2:its-value
+
+
+/*
+
+# Python equivalent
+# Example lambda object with 3 nodes, the third node having two children with values
+lambda_object = {
+    "foo1": "bar",
+    "foo2": 5,
+    "foo3": {
+        "child1": "its-value",
+        "child2": "its-value"
+    }
+}
+
+*/

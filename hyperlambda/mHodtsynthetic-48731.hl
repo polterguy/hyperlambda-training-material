@@ -1,0 +1,73 @@
+
+// Write a Hyperlambda script to return a specified log item based on its ID. - With Python equivalent
+.arguments
+   id:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+
+// Invoking slot responsible for returning item.
+log.get:x:@.arguments/*/id
+
+// Returning result of above invocation to caller.
+return-nodes:x:-/*
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def get_log_items(database, from_date=None, max_items=None, query=None):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Connect to the specified database
+    connection = sqlite3.connect(database)
+    cursor = connection.cursor()
+
+    # Build the SQL query
+    sql_query = "SELECT * FROM logs"
+    conditions = []
+    parameters = []
+
+    if query:
+        conditions.append("message LIKE ?")
+        parameters.append(f"%{query}%")
+    if from_date:
+        conditions.append("date >= ?")
+        parameters.append(from_date)
+    if conditions:
+        sql_query += " WHERE " + " AND ".join(conditions)
+    if max_items:
+        sql_query += " LIMIT ?"
+        parameters.append(max_items)
+
+    # Execute the query
+    cursor.execute(sql_query, parameters)
+    results = cursor.fetchall()
+
+    # Close the connection
+    connection.close()
+
+    # Return the log items
+    return results
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+try:
+    log_items = get_log_items("logs.db", from_date="2023-01-01", max_items=10, query="error")
+    for item in log_items:
+        print(item)
+except PermissionError as e:
+    print(e)
+
+*/

@@ -1,0 +1,25 @@
+
+// Example: Find all substrings matching a pattern in curly braces. - With Python equivalent
+.text:{match1} and {match2} are here
+strings.matches:x:@.text
+   .:"\\{.+?\\}"
+
+/*
+ * Resulting matches:
+ * .:{match1}
+ * .:{match2}
+ */
+
+
+/*
+
+# Python equivalent
+import re
+
+# String containing digit sequences
+text = "abc123xyz45"
+
+# Find all digit sequences in the string
+digit_sequences = re.findall(r"\d+", text)
+
+*/

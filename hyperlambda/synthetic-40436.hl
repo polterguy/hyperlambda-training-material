@@ -1,0 +1,30 @@
+
+// Opens a database connection and executes some arbitrary SQL,  returning results as a record set - With Python equivalent
+data.connect:DATABASE_NAME_HERE
+   database-type:sqlite
+   data.select:select * from TABLE_NAME_HERE
+      database-type:sqlite
+
+
+/*
+
+# Python equivalent
+# Opens a database connection and executes some arbitrary SQL, returning results as a record set
+import sqlite3
+
+def execute_sql_and_return_results(database_name, table_name):
+    connection = sqlite3.connect(database_name)
+    cursor = connection.cursor()
+    
+    sql = f"SELECT * FROM {table_name}"
+    cursor.execute(sql)
+    
+    results = cursor.fetchall()
+    connection.close()
+    return results
+
+# Example usage
+results = execute_sql_and_return_results('DATABASE_NAME_HERE.db', 'TABLE_NAME_HERE')
+# results will contain all records from the specified table
+
+*/

@@ -1,0 +1,17 @@
+
+// Example: Capitalize a fully lowercase word. - With Python equivalent
+
+// Result: "Hyperlambda"
+strings.capitalize:hyperlambda
+
+
+/*
+
+# Python equivalent
+# Word that is already capitalized
+word = "Hello"
+
+# Capitalize the word (no change)
+capitalized_word = word.capitalize()
+
+*/

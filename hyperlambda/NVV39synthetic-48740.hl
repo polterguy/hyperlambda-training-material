@@ -1,0 +1,71 @@
+
+// Write a Hyperlambda script to save a specified file in a specified folder. - With Python equivalent
+.arguments
+   file:*
+   folder:string
+.type:internal
+.accept:multipart/form-data
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/file
+validators.mandatory:x:@.arguments/*/file/*/name
+validators.mandatory:x:@.arguments/*/file/*/stream
+validators.mandatory:x:@.arguments/*/folder
+
+// Saves the file to the specified folder.
+.full-path
+set-value:x:@.full-path
+   strings.concat
+      get-value:x:@.arguments/*/folder
+      get-value:x:@.arguments/*/file/*/name
+io.stream.save-file:x:@.full-path
+   get-value:x:@.arguments/*/file/*/stream
+
+
+/*
+
+# Python equivalent
+import os
+import shutil
+import logging
+
+def delete_folder(folder_path):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Split the folder path to check if it's a module
+    folder_parts = folder_path.split(os.sep)
+
+    # Check if the folder is a module and has an uninstall script
+    if len(folder_parts) == 2 and folder_parts[0] == "modules":
+        uninstall_script = os.path.join(folder_path, "uninstall.hl")
+        if os.path.exists(uninstall_script):
+            logging.info(f"Uninstalling module: {folder_path}")
+            execute_uninstall_script(uninstall_script)
+
+    # Delete the folder
+    shutil.rmtree(folder_path)
+
+    # Return success result
+    return {"result": "success"}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+def execute_uninstall_script(script_path):
+    # Simulate executing an uninstall script
+    print(f"Executing uninstall script: {script_path}")
+
+# Example usage
+try:
+    result = delete_folder("modules/example_module")
+    print(result)
+except PermissionError as e:
+    print(e)
+
+*/

@@ -1,0 +1,48 @@
+
+// Hyperlambda authenticate endpoint - With Python equivalent
+.arguments
+   username:string
+   password:string
+
+/*
+ * Authenticates the user with the specified [username] and [password].
+ * 
+ * Returns a JWT Bearer token that can be used for consecutive requests authorizing user according
+ * to his or her roles.
+ */
+execute:magic.workflows.actions.execute
+   name:authenticate
+   filename:/modules/auth/workflows/actions/authenticate.hl
+   arguments
+      username:x:@.arguments/*/username
+      password:x:@.arguments/*/password
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*
+
+
+/*
+
+# Python equivalent
+def authenticate_user(username, password):
+    # Dummy function to simulate user authentication
+    # Replace with actual implementation
+    def authenticate(username, password):
+        # Simulate authentication logic
+        if username == "admin" and password == "secret":
+            return {"status": "success", "message": "Authenticated successfully"}
+        else:
+            return {"status": "failure", "message": "Invalid credentials"}
+
+    # Execute the authentication action
+    result = authenticate(username, password)
+
+    return result
+
+# Example usage
+username = "admin"
+password = "secret"
+result = authenticate_user(username, password)
+print(result)  # Output: {'status': 'success', 'message': 'Authenticated successfully'}
+
+*/

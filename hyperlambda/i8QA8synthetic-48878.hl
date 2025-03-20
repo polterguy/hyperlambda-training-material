@@ -1,0 +1,84 @@
+
+// Returns all cloudlets in the system. - With Python equivalent
+.arguments
+   name:string
+   limit:int
+   offset:int
+
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
+
+/*
+ * Returns the username of the currently authenticated user,
+ * or null if user isn't authenticated.
+ */
+execute:magic.workflows.actions.execute
+   name:username-get
+   filename:/misc/workflows/actions/security/username-get.hl
+   arguments
+
+// Returns all cloudlets in the system.
+execute:magic.workflows.actions.execute
+   name:hub-cloudlets-get
+   filename:/modules/hub/workflows/actions/hub-cloudlets-get.hl
+   arguments
+      username:x:--/execute/=username-get/*/username
+      name:x:@.arguments/*/name
+      limit:x:@.arguments/*/limit
+      offset:x:@.arguments/*/offset
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*
+
+
+/*
+
+# Python equivalent
+def get_cloudlets(name=None, limit=10, offset=0):
+    """
+    This function returns all cloudlets in the system.
+    
+    :param name: The name of the cloudlet to filter by
+    :param limit: The maximum number of cloudlets to return
+    :param offset: The number of cloudlets to skip
+    :return: A list of cloudlets
+    """
+    # Authorize the user
+    authorize_user(["root", "gpt"])
+    
+    # Get the username
+    username = get_username()
+    
+    # Retrieve cloudlets
+    cloudlets = retrieve_cloudlets(username, name, limit, offset)
+    
+    # Return the cloudlets
+    return cloudlets
+
+def authorize_user(roles):
+    # Placeholder for user authorization logic
+    pass
+
+def get_username():
+    # Placeholder for getting the username
+    return "example_username"
+
+def retrieve_cloudlets(username, name, limit, offset):
+    # Placeholder for retrieving cloudlets
+    return [{"cloudlet": "example_cloudlet"}]
+
+# Example usage
+# get_cloudlets("example_name", 10, 0)
+
+*/

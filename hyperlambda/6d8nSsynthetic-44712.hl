@@ -1,0 +1,21 @@
+
+// Example: Pattern not found yields an empty result set. - With Python equivalent
+strings.matches:no digits here
+   .:"\\d+"
+
+// Result: No child nodes (no matches found)
+
+
+/*
+
+# Python equivalent
+# Pattern not found yields an empty result set
+import re
+
+input_string = "no digits here"
+pattern = r"\d+"
+
+# Find all matches
+matches = re.findall(pattern, input_string)
+
+*/

@@ -1,0 +1,49 @@
+
+// Generate a Hyperlambda snippet that evaluates [.lambda] when at least one condition evaluates to true. - With Python equivalent
+
+// Evaluates [.lambda] when at least one condition evaluates to true.
+.result
+.factor1:int:1
+.factor2:int:20
+if
+   or
+
+      // Condition 1: Less than
+      lt:x:@.factor1
+         .:int:2
+
+      // Condition 2: More than
+      mt:x:@.factor2
+         .:int:19
+   .lambda
+
+      // Assigning true to [.result]
+      set-value:x:@.result
+         .:bool:true
+else
+
+   // Assigning false to [.result]
+   set-value:x:@.result
+      .:bool:false
+
+
+/*
+
+# Python equivalent
+def evaluate_lambda_if_both_conditions_true():
+    value1 = 3
+    value2 = 10
+    result = False
+    
+    if value1 < 4 and value2 > 9:
+        result = True
+    else:
+        result = False
+    
+    return result
+
+# Example usage
+result = evaluate_lambda_if_both_conditions_true()
+print(result)
+
+*/

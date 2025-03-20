@@ -1,0 +1,49 @@
+
+// Generate a Hyperlambda snippet that retrieves product inventory from 'inventory_db'. - With Python equivalent
+
+// Retrieves product inventory from "inventory_db".
+.result
+data.connect:inventory_db
+   database-type:mysql
+   data.select:select product_id, name, stock, price from products where stock > 0 order by stock asc
+      database-type:mysql
+   add:x:@.result
+      get-nodes:x:@data.select/*
+
+
+/*
+
+# Python equivalent
+import mysql.connector
+
+def update_employee_record(employee_id):
+    # Connect to the hr_db database
+    connection = mysql.connector.connect(
+        host='your_host',
+        user='your_user',
+        password='your_password',
+        database='hr_db'
+    )
+    
+    cursor = connection.cursor()
+    
+    # Query to update an employee record in the employees table
+    query = """
+    UPDATE employees
+    SET department = %s, salary = %s
+    WHERE employee_id = %s
+    """
+    
+    department = "Finance"
+    salary = 75000.00
+    
+    cursor.execute(query, (department, salary, employee_id))
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+
+# Example usage
+update_employee_record(301)
+
+*/

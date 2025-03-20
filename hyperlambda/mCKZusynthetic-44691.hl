@@ -1,0 +1,12 @@
+
+// Returns a specific cookie from current HTTP request - With Python equivalent
+request.cookies.get:COOKIE_NAME_HERE
+
+
+/*
+
+# Python equivalent
+# Returns a specific cookie from the current HTTP request
+cookie_value = request.cookies.get('COOKIE_NAME_HERE')
+
+*/

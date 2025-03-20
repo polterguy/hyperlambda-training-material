@@ -1,0 +1,15 @@
+
+// Lists all cookies in current request - With Python equivalent
+request.cookies.list
+
+
+/*
+
+# Python equivalent
+# Original text
+original_text = "Hello world"
+
+# Replace 'world' with 'there'
+modified_text = original_text.replace("world", "there")
+
+*/

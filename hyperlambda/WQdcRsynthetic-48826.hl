@@ -1,0 +1,47 @@
+
+// Create a Hyperlambda action to ensure a specified 'value' is given and matches one of the specified 'values'. Validate mandatory fields. - With Python equivalent
+.arguments
+   value
+      type:string
+      mandatory:bool:true
+   values
+      type:array
+      mandatory:bool:true
+.icon:shield
+
+// Parametrising validator.
+add:x:./*/validators.enum
+   get-nodes:x:@.arguments/*/values/*
+
+// Invoking validators, making sure value is mandatory.
+validators.mandatory:x:@.arguments/*/value
+validators.enum:x:@.arguments/*/value
+
+
+/*
+
+# Python equivalent
+def validate_value(value, values):
+    """
+    This function ensures a specified 'value' is given and matches one of the specified 'values'.
+    
+    :param value: The value to be validated
+    :param values: The list of valid values
+    :raises ValueError: If the value is not provided or does not match any of the valid values
+    """
+    # Validate that 'value' is provided
+    if value is None:
+        raise ValueError("Value is mandatory")
+    
+    # Validate that 'values' is provided and is a list
+    if not isinstance(values, list) or not values:
+        raise ValueError("Values must be a non-empty list")
+    
+    # Validate that 'value' matches one of the specified 'values'
+    if value not in values:
+        raise ValueError(f"Value '{value}' is not in the list of valid values")
+
+# Example usage
+validate_value("apple", ["apple", "banana", "cherry"])
+
+*/

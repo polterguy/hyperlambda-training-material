@@ -1,0 +1,69 @@
+
+// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the users_extra table in the magic database according to specified arguments, ensuring authentication and authorization for root roles. - With Python equivalent
+.arguments
+   type:string
+   value:string
+   user:string
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.regex:x:@.arguments/*/type
+   regex:^[a-zA-Z0-9-_]+$
+
+// Opening up database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      table:users_extra
+      return-id:bool:false
+      values
+
+   // Returning result of above invoction to caller.
+   response.status.set:201
+   unwrap:x:+/*
+   return
+      result:success
+
+
+/*
+
+# Python equivalent
+def publish_websocket_message(channel, args, roles=None):
+    # Validate mandatory fields
+    if not channel:
+        raise ValueError("Channel is mandatory")
+    if not args:
+        raise ValueError("Args are mandatory")
+
+    # Prepare the message
+    message = {
+        "channel": channel,
+        "args": args
+    }
+
+    # Optionally include roles
+    if roles:
+        message["roles"] = ",".join(roles)
+
+    # Simulate publishing the message to a web socket
+    send_websocket_message(message)
+
+def send_websocket_message(message):
+    # Simulate sending a web socket message
+    print(f"Sending message: {message}")
+
+# Example usage
+try:
+    publish_websocket_message("example_channel", {"key": "value"}, ["admin", "user"])
+except ValueError as e:
+    print(e)
+
+*/

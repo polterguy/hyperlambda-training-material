@@ -1,0 +1,21 @@
+
+// Example: No trim characters at start (string remains unchanged). - With Python equivalent
+
+// Result: "abc"
+strings.trim-start:abc
+   .:z
+
+
+/*
+
+# Python equivalent
+# No trim characters at start (string remains unchanged)
+string = "abc"
+chars_to_trim = "z"
+
+# Custom implementation to mimic trim-start
+trimmed_string = string
+while trimmed_string.startswith(chars_to_trim):
+    trimmed_string = trimmed_string[len(chars_to_trim):]
+
+*/

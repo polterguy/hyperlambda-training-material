@@ -1,0 +1,25 @@
+
+// Executes any Hyperlambda segments found in string, passing in arguments, and substitutes Hyperlambda segment with result of execution - With Python equivalent
+.mixin:"The sum of your arguments is {{\nmath.add\n   get-value:x:@.arguments/*/arg1\n   get-value:x:@.arguments/*/arg2\n\n// Whatever we return here substitutes the mixin in the result\nreturn:x:-\n}}"
+strings.mixin:x:-
+   arg1:int:2
+   arg2:int:3
+
+// Result ==> "The sum of your arguments is 5"
+
+
+/*
+
+# Python equivalent
+def calculate_sum(arg1, arg2):
+    # Perform addition
+    result = arg1 + arg2
+
+    # Return the result as part of a formatted string
+    return f"The sum of your arguments is {result}"
+
+# Example usage
+result = calculate_sum(2, 3)
+print(result)  # Output will be "The sum of your arguments is 5"
+
+*/

@@ -1,0 +1,14 @@
+
+// Returns a specific cookie from current HTTP request - With Python equivalent
+request.cookies.get:COOKIE_NAME_HERE
+
+
+/*
+
+# Python equivalent
+from flask import request
+
+# Retrieve the IP address of the server
+server_ip = request.remote_addr
+
+*/

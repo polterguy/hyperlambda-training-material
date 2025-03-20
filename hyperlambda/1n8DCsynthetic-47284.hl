@@ -1,0 +1,63 @@
+
+/*
+ * This script counts the number of Hyperlambda files, in addition to the combined
+ * number of nodes, within the specified folder. - With Python equivalent
+ */
+.folder:/modules/cms/
+unwrap:x:+/*
+signal:magic.io.file.load-recursively
+   .:x:@.folder
+for-each:x:@signal/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         hyper2lambda:x:@.dp/#/0
+            comments:true
+         set-value:x:@hyper2lambda/0
+            strings.concat
+               .:"Generate a Hyperlambda with authorization for 'guest' roles files that "
+               get-value:x:@hyper2lambda/0
+         lambda2hyper:x:@hyper2lambda/*
+            comments:true
+         io.file.save:x:@.dp/#
+            get-value:x:@lambda2hyper
+remove-nodes:x:@signal/*
+
+
+/*
+
+# Python equivalent
+import os
+
+def count_hyperlambda_files_and_nodes(folder_path):
+    # Initialize counters
+    hyperlambda_file_count = 0
+    total_node_count = 0
+
+    # Walk through the directory recursively
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith('.hl'):
+                hyperlambda_file_count += 1
+                file_path = os.path.join(root, file)
+
+                # Count nodes in the Hyperlambda file
+                with open(file_path, 'r') as f:
+                    content = f.read()
+                    node_count = content.count('\n')  # Assuming each line is a node
+                    total_node_count += node_count
+
+                    # Modify the file content
+                    modified_content = f"Generate a Hyperlambda with authorization for 'guest' roles files that {content}"
+                    with open(file_path, 'w') as f:
+                        f.write(modified_content)
+
+    return hyperlambda_file_count, total_node_count
+
+# Example usage
+folder_path = '/modules/cms/'
+file_count, node_count = count_hyperlambda_files_and_nodes(folder_path)
+print(f"Hyperlambda files: {file_count}, Total nodes: {node_count}")
+
+*/

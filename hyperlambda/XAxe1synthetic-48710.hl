@@ -1,0 +1,71 @@
+
+// Create a Hyperlambda script that returns arguments the specified file can handle, ensuring the user is authorized. - With Python equivalent
+.arguments
+   file:string
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+/*
+ * Loading action file and transforming Hyperlambda to lambda and making sure
+ * we return [.arguments] collection as [input].
+ * 
+ * This becomes our input arguments to our action.
+ */
+load-file:x:@.arguments/*/file
+hyper2lambda:x:@load-file
+add:x:./*/return
+   get-nodes:x:@hyper2lambda/*/.arguments/*
+
+// Returning arguments to caller.
+return
+
+
+/*
+
+# Python equivalent
+import requests
+from cachetools import TTLCache
+
+# Create a cache with a TTL of 300 seconds (5 minutes)
+url_cache = TTLCache(maxsize=100, ttl=300)
+
+def get_url_with_cache(url):
+    # Validate the URL
+    if not url:
+        raise ValueError("URL is mandatory")
+    if not is_valid_url(url):
+        raise ValueError("Invalid URL")
+
+    # Check if the URL is in the cache
+    if url in url_cache:
+        return url_cache[url]
+
+    # Fetch the URL content
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8,no;q=0.7"
+    }
+    response = requests.get(url, headers=headers)
+    content = response.content
+
+    # Store the content in the cache
+    url_cache[url] = content
+
+    # Return the content
+    return content
+
+def is_valid_url(url):
+    # Simulate URL validation
+    # This is a placeholder implementation
+    return url.startswith("http://") or url.startswith("https://")
+
+# Example usage
+try:
+    content = get_url_with_cache("https://example.com")
+    print(content)
+except ValueError as e:
+    print(e)
+
+*/

@@ -1,0 +1,93 @@
+
+// Deletes the training snippet with the specified [id] - With Python equivalent
+.arguments
+
+   // Mandatory and is the ID of the training snippet to delete.
+   id:int
+.type:public
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+validators.integer:x:@.arguments/*/id
+   min:int:0
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Making sure snippet exists.
+   data.read
+      table:ml_training_snippets
+      columns
+         prompt
+         completion
+         uri
+      where
+         and
+            id.eq:x:@.arguments/*/id
+   if
+      not-exists:x:@data.read/*
+      .lambda
+         throw:Now such snippet
+         public:bool:true
+         status:int:401
+
+   // Deleting snippet.
+   data.execute:delete from vss_ml_training_snippets where rowid = @id
+      @id:x:@.arguments/*/id
+   data.delete
+      table:ml_training_snippets
+      where
+         and
+            id.eq:x:@.arguments/*/id
+return
+   result:success
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def delete_training_snippet(snippet_id):
+    # Validate mandatory fields
+    if snippet_id is None or snippet_id < 0:
+        raise ValueError("id is mandatory and must be a non-negative integer")
+
+    # Connect to the magic database
+    conn = sqlite3.connect('magic.db')
+    cursor = conn.cursor()
+
+    try:
+        # Check if the snippet exists
+        cursor.execute(
+            "SELECT prompt, completion, uri FROM ml_training_snippets WHERE id = ?",
+            (snippet_id,)
+        )
+        snippet = cursor.fetchone()
+
+        if snippet is None:
+            raise Exception("No such snippet")
+
+        # Delete from vss_ml_training_snippets
+        cursor.execute(
+            "DELETE FROM vss_ml_training_snippets WHERE rowid = ?",
+            (snippet_id,)
+        )
+
+        # Delete from ml_training_snippets
+        cursor.execute(
+            "DELETE FROM ml_training_snippets WHERE id = ?",
+            (snippet_id,)
+        )
+        conn.commit()
+
+        return {"result": "success"}
+    finally:
+        conn.close()
+
+# Example usage
+snippet_id = 1
+result = delete_training_snippet(snippet_id)
+print(result)  # Output: {'result': 'success'}
+
+*/

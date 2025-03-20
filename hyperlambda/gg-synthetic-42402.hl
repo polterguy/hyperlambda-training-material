@@ -1,0 +1,21 @@
+
+// Creates a bar chart - With Python equivalent
+image.chart:bars
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring:int:2
+      Summer:int:5
+      Autumn:int:10
+
+
+/*
+
+# Python equivalent
+from flask import request
+
+# Retrieve a specific cookie from the current HTTP request
+cookie_value = request.cookies.get('COOKIE_NAME_HERE')
+
+*/

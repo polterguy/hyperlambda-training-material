@@ -1,0 +1,56 @@
+
+// Converts the specified lambda to XML - With Python equivalent
+.lambda
+   customers
+      customer
+         name
+            #text:John Doe
+         email
+            #text:john@doe.com
+
+// Expression referencing above [.lambda] node's children nodes
+lambda2xml:x:@.lambda/*
+
+/*
+ * Resulting Hyperlambda;
+ * lambda2xml:@"<customers>
+ * <customer>
+ * <name>John Doe</name>
+ * <email>john@doe.com</email>
+ * </customer>
+ * </customers>"
+ */
+
+
+/*
+
+# Python equivalent
+import xml.etree.ElementTree as ET
+
+def lambda_to_xml():
+    # Define the lambda structure
+    customers = {
+        "customers": {
+            "customer": {
+                "name": "John Doe",
+                "email": "john@doe.com"
+            }
+        }
+    }
+    
+    # Convert the lambda structure to XML
+    root = ET.Element("customers")
+    customer = ET.SubElement(root, "customer")
+    name = ET.SubElement(customer, "name")
+    name.text = customers["customers"]["customer"]["name"]
+    email = ET.SubElement(customer, "email")
+    email.text = customers["customers"]["customer"]["email"]
+
+    # Return the XML string
+    return ET.tostring(root, encoding='unicode')
+
+# Example usage
+xml_string = lambda_to_xml()
+print(xml_string)
+
+*/

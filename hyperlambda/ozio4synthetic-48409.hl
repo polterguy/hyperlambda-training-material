@@ -1,0 +1,39 @@
+
+// Provide a Hyperlambda example where [.lambda] runs when [.message] is different from Welcome Home. - With Python equivalent
+
+// Runs [.lambda] when [.message] is different from Welcome Home.
+.message:Welcome Home
+if
+
+   // Condition ensures inequality.
+   neq:x:@.message
+      .:Welcome Home
+   .lambda
+
+      // Runs when [.message] is different.
+      log.info:[.message] is NOT Welcome Home
+else
+
+   // Runs when [.message] is exactly Welcome Home.
+   log.info:[.message] is Welcome Home
+
+
+/*
+
+# Python equivalent
+import logging
+
+def check_and_execute_lambda_if_state_not_open():
+    logging.basicConfig(level=logging.INFO)
+    
+    state = "Open"
+    
+    if state != "Open":
+        logging.info("[.state] is NOT Open")
+    else:
+        logging.info("[.state] is Open")
+
+# Example usage
+check_and_execute_lambda_if_state_not_open()
+
+*/

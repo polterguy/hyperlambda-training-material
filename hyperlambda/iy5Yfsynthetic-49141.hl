@@ -1,0 +1,100 @@
+
+// Counts items from your plugins table in your cms database - With Python equivalent
+.arguments
+
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+
+   // Offset into the dataset of where to start retrieving records
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   plugins.id.eq:long
+   plugins.name.like:string
+   plugins.name.eq:string
+   plugins.description.like:string
+   plugins.description.eq:string
+   plugins.is_active.eq:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-count
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:plugins
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def count_plugins(filters=None):
+    """
+    This function counts items from the plugins table in the cms database.
+    
+    :param filters: A dictionary containing filter conditions
+    :return: The count of items matching the criteria
+    """
+    # Verify authentication
+    verify_authentication(["guest"])
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('cms.db')
+    cursor = conn.cursor()
+    
+    # Build the query
+    query = "SELECT COUNT(*) AS count FROM plugins WHERE 1=1"
+    params = []
+    
+    if filters:
+        for key, value in filters.items():
+            if key.endswith(".eq"):
+                column = key.split(".")[1]
+                query += f" AND {column} = ?"
+                params.append(value)
+            elif key.endswith(".like"):
+                column = key.split(".")[1]
+                query += f" AND {column} LIKE ?"
+                params.append(f"%{value}%")
+    
+    # Execute the query
+    cursor.execute(query, params)
+    count = cursor.fetchone()[0]
+    
+    # Close the connection
+    cursor.close()
+    conn.close()
+    
+    # Return the count
+    return count
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+# Example usage
+# count_plugins({"plugins.name.like": "example"})
+
+*/

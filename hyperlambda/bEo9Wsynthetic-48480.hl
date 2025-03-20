@@ -1,0 +1,34 @@
+
+// Create a Hyperlambda snippet that invokes an HTTP GET endpoint to fetch a post title. - With Python equivalent
+
+// Invokes an HTTP GET endpoint to fetch a post title.
+http.get:"https://jsonplaceholder.typicode.com/posts/1"
+
+   // Converts response from JSON to lambda.
+   convert:true
+
+// Sets [.title] to the post's title
+.title
+set-value:x:@.title
+   get-value:x:@http.get/*/content/*/title
+
+
+/*
+
+# Python equivalent
+import requests
+
+def fetch_comment_body():
+    # Invoke the HTTP GET endpoint
+    response = requests.get("https://jsonplaceholder.typicode.com/comments/1")
+    response_data = response.json()
+    
+    # Extract the comment body from the response
+    comment_body = response_data.get('body')
+    return comment_body
+
+# Example usage
+comment_body = fetch_comment_body()
+print(comment_body)
+
+*/

@@ -1,0 +1,20 @@
+
+// Example: Use an empty allowed set (no characters allowed, so every character is replaced). - With Python equivalent
+.original:Hello
+strings.replace-not-of:x:@.original
+   .:
+   .:*
+
+// Result: "*****"
+
+
+/*
+
+# Python equivalent
+# Original string
+string = "abc"
+
+# Attempt to trim 'z' characters (not present at the start)
+trimmed_string = string.lstrip('z')
+
+*/

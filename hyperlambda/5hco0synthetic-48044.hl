@@ -1,0 +1,42 @@
+
+// Hyperlambda [if] with not operator - With Python equivalent
+.is-weekend:bool:false
+.schedule
+if
+   not
+      eq:x:@.is-weekend
+         .:bool:true
+   .lambda
+      set-value:x:@.schedule
+         .:Work day
+
+/*
+ * JavaScript equivalent of Hyperlambda [if] with not operator
+ * const isWeekend = false;
+ * let schedule;
+ * 
+ * if (!isWeekend) {
+ * schedule = "Work day";
+ * }
+ */
+
+
+/*
+
+# Python equivalent
+def determine_schedule(is_weekend):
+    # Initialize the schedule variable
+    schedule = None
+
+    # Not operator logic
+    if not is_weekend:
+        schedule = "Work day"
+
+    return schedule
+
+# Example usage
+is_weekend = False
+schedule = determine_schedule(is_weekend)
+print(schedule)  # Output: "Work day"
+
+*/

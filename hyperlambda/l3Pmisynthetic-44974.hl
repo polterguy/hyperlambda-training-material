@@ -1,0 +1,18 @@
+
+// [exists] returns true if the expression finds any node - With Python equivalent
+.present
+   node
+exists:x:@.present/*
+
+
+/*
+
+# Python equivalent
+# [exists] returns true if the expression finds any node
+present = {
+    "node": {}
+}
+
+exists = bool(present)
+
+*/

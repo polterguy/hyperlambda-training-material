@@ -1,0 +1,17 @@
+
+// Retrieves the value of foo1 argument using expressions - With Python equivalent
+get-value:x:@.arguments/*/foo1
+
+
+/*
+
+# Python equivalent
+# Retrieves the value of foo1 argument using expressions
+arguments = {
+    "foo1": "value1",
+    "foo2": "value2"
+}
+
+foo1_value = arguments.get("foo1")
+
+*/

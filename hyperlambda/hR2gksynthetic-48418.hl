@@ -1,0 +1,49 @@
+
+// Create a Hyperlambda snippet that executes [.lambda] only if both conditions are met. - With Python equivalent
+
+// Executes [.lambda] only if both conditions are met.
+.output
+.numA:int:6
+.numB:int:12
+if
+   and
+
+      // Less than check
+      lt:x:@.numA
+         .:int:7
+
+      // Greater than check
+      mt:x:@.numB
+         .:int:11
+   .lambda
+
+      // Setting [.output] to true
+      set-value:x:@.output
+         .:bool:true
+else
+
+   // Setting [.output] to false
+   set-value:x:@.output
+      .:bool:false
+
+
+/*
+
+# Python equivalent
+def run_lambda_if_all_conditions_true():
+    check1 = 2
+    check2 = 8
+    state = False
+    
+    if check1 < 3 and check2 > 7:
+        state = True
+    else:
+        state = False
+    
+    return state
+
+# Example usage
+state = run_lambda_if_all_conditions_true()
+print(state)
+
+*/

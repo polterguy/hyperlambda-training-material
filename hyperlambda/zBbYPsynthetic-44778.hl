@@ -1,0 +1,15 @@
+
+// Example: Convert a string with letters and numbers to uppercase. - With Python equivalent
+
+// Result: "MIXEDCASE123"
+strings.to-upper:MixedCase123
+
+
+/*
+
+# Python equivalent
+# Convert a string with letters and numbers to uppercase
+mixed_case_string = "MixedCase123"
+uppercased_string = mixed_case_string.upper()
+
+*/

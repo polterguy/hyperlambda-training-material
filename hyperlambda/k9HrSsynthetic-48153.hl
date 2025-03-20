@@ -1,0 +1,45 @@
+
+// Executing the following Hyperlambda results in the following - With Python equivalent
+
+// When executing the following Hyperlambda
+.result
+.foo:whatever
+if:x:-
+   set-value:x:@.result
+      .:Yup!
+else
+   set-value:x:@.result
+      .:Nope!
+
+// We end up with this result
+.result:Yup!
+.foo:whatever
+if:bool:true
+   set-value:x:@.result
+      .:Yup!
+else:bool:false
+   set-value:x:@.result
+      .:Nope!
+
+
+/*
+
+# Python equivalent
+def execute_logic(foo):
+    # Initialize the result variable
+    result = None
+
+    # Conditional logic
+    if foo:
+        result = "Yup!"
+    else:
+        result = "Nope!"
+
+    return result
+
+# Example usage
+foo = "whatever"
+result = execute_logic(foo)
+print(result)  # Output: "Yup!"
+
+*/

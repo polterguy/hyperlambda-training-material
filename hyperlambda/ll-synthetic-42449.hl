@@ -1,0 +1,21 @@
+
+// Example: Check for a special character in a string. - With Python equivalent
+
+// Returns true
+strings.contains:Hello, world!
+   .:!
+
+
+/*
+
+# Python equivalent
+# Original string
+string = "WelcomeHome"
+
+# Substring to check
+substring = "Home"
+
+# Check if the string ends with the substring
+ends_with_substring = string.endswith(substring)
+
+*/

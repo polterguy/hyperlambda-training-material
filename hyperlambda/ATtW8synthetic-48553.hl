@@ -1,0 +1,31 @@
+
+// Provide a Hyperlambda example with string variables, covering cases of colons, multi-line strings, and escaped characters. - With Python equivalent
+
+// No special characters, so no quotes required
+.text1:sample
+
+// Contains a colon, requiring quotes
+.text2:"sample:value"
+
+// Multi-line string, using @ notation
+.text3:"lineA\nlineB"
+
+// Alternative quoting with single quotes
+.text4:test
+
+// Escaped newline within a string
+.text5:"first\nsecond"
+
+
+/*
+
+# Python equivalent
+# String handling in Python showcasing multi-line strings and different quoting styles
+variable_one = "data"
+variable_two = "key:value"
+variable_three = """alpha
+beta"""
+variable_four = 'Hyperlambda'
+variable_five = "code\nsnippet"
+
+*/

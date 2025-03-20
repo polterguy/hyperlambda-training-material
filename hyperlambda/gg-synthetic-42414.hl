@@ -1,0 +1,19 @@
+
+// How to use string builder in Hyperlambda - With Python equivalent
+strings.builder
+   strings.builder.append:Hello
+   strings.builder.append:" "
+   strings.builder.append:world
+
+// Results in; Hello world
+
+
+/*
+
+# Python equivalent
+from flask import request
+
+# Retrieve the URL of the current request
+current_url = request.url
+
+*/

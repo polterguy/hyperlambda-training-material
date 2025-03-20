@@ -1,0 +1,93 @@
+
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the ml_types table in the magic database with a type matching the argument, ensuring authentication and authorization for root roles. - With Python equivalent
+.arguments
+   type:string
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/type
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Deleting referenced rows in vss_ml_training_snippets
+   data.execute:"delete from vss_ml_training_snippets where rowid in\n   (select id as rowid from ml_training_snippets where type = @type)"
+      type:x:@.arguments/*/type
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      table:ml_types
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def count_questionnaires(database, filters=None):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Connect to the specified database
+    connection = sqlite3.connect(database)
+    cursor = connection.cursor()
+
+    # Build the SQL query
+    query = "SELECT COUNT(*) as count FROM questionnaires"
+    conditions = []
+    parameters = []
+
+    # Add filters to the query
+    if filters:
+        for key, value in filters.items():
+            if key.endswith(".like"):
+                conditions.append(f"{key.split('.')[1]} LIKE ?")
+                parameters.append(f"%{value}%")
+            elif key.endswith(".eq"):
+                conditions.append(f"{key.split('.')[1]} = ?")
+                parameters.append(value)
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
+    # Execute the query
+    cursor.execute(query, parameters)
+    result = cursor.fetchone()
+
+    # Close the connection
+    connection.close()
+
+    # Return the count
+    return {"count": result[0]}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+filters = {
+    "questionnaires.name.like": "example",
+    "questionnaires.type.eq": "survey"
+}
+try:
+    result = count_questionnaires("magic.db", filters)
+    print(result)
+except PermissionError as e:
+    print(e)
+
+*/

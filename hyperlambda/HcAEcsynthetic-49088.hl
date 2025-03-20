@@ -1,0 +1,99 @@
+
+// Create one record in your PlaylistTrack table in your chinook database - With Python equivalent
+.arguments
+
+   // PlaylistId column value
+   PlaylistId:long
+
+   // TrackId column value
+   TrackId:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+.foreign-keys
+   .
+      column:PlaylistId
+      table:Playlist
+      foreign_column:PlaylistId
+      foreign_name:Name
+      long:bool:true
+   .
+      column:TrackId
+      table:Track
+      foreign_column:TrackId
+      foreign_name:Name
+      long:bool:true
+
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:PlaylistTrack
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def create_playlist_track(playlist_id, track_id):
+    """
+    This function creates one record in the PlaylistTrack table in the chinook database.
+    
+    :param playlist_id: The ID of the playlist
+    :param track_id: The ID of the track
+    :return: A dictionary indicating success
+    :raises ValueError: If playlist_id or track_id is not provided
+    """
+    # Verify authentication
+    verify_authentication(["root", "admin"])
+    
+    # Validate mandatory fields
+    if playlist_id is None or track_id is None:
+        raise ValueError("PlaylistId and TrackId are mandatory")
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('chinook.db')
+    cursor = conn.cursor()
+    
+    # Insert the record
+    cursor.execute("INSERT INTO PlaylistTrack (PlaylistId, TrackId) VALUES (?, ?)", (playlist_id, track_id))
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Return success result
+    return {"result": "success"}
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+# Example usage
+# create_playlist_track(1, 1)
+
+*/

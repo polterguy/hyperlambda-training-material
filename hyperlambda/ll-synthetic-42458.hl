@@ -1,0 +1,19 @@
+
+// Example: Starts-with check is case-sensitive. - With Python equivalent
+
+// Returns false
+strings.starts-with:Hello
+   .:hello
+
+
+/*
+
+# Python equivalent
+# Variables for the string and prefix
+text = "Sample"
+prefix = "Sam"
+
+# Check if the text starts with the prefix
+starts_with_prefix = text.startswith(prefix)
+
+*/

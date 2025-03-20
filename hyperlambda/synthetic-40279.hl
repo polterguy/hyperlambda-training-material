@@ -1,0 +1,18 @@
+
+// Example: Convert an already uppercase string (no change). - With Python equivalent
+
+// Result: "HELLO"
+strings.to-upper:HELLO
+
+
+/*
+
+# Python equivalent
+# Example: Convert an already uppercase string (no change).
+uppercase_string = "HELLO"
+result_string = uppercase_string.upper()
+
+# Example usage
+# result_string will be "HELLO"
+
+*/

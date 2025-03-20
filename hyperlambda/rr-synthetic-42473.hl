@@ -1,0 +1,22 @@
+
+// Example: Perform a case-insensitive replacement. - With Python equivalent
+.input:Yes yes YES
+strings.regex-replace:x:@.input
+   .:(?i)yes
+   .:no
+
+// Result: "no no no"
+
+
+/*
+
+# Python equivalent
+import re
+
+# Original phrase
+phrase = "apple apples applepie"
+
+# Replace only whole word matches of 'apple' with 'fruit'
+modified_phrase = re.sub(r"\bapple\b", "fruit", phrase)
+
+*/

@@ -1,0 +1,23 @@
+
+// Example: Remove all digits from a string using a regex. - With Python equivalent
+.original:abc123xyz
+strings.regex-replace:x:@.original
+   .:"\\d+"
+   .:
+
+// Result: "abcxyz"
+
+
+/*
+
+# Python equivalent
+# Example: Remove all digits from a string using a regex.
+import re
+
+original = "abc123xyz"
+modified_string = re.sub(r"\d+", "", original)
+
+# Example usage
+# modified_string will be "abcxyz"
+
+*/

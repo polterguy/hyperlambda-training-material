@@ -1,0 +1,26 @@
+
+// Example: Use a variable to provide the input string. - With Python equivalent - With Python equivalent
+.text:Test
+
+// Returns 4
+strings.length:x:@.text
+
+/*
+ * # Python equivalent
+ * # Example: Use a variable to provide the input string.
+ * text = "Test"
+ * length_of_text = len(text)
+ * 
+ * # Example usage
+ * # length_of_text will be 4
+ */
+
+
+/*
+
+# Python equivalent
+# Example: Use a variable to provide the input string. - With Python equivalent
+text = "Test"
+length_of_text = len(text)
+
+*/

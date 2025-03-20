@@ -1,0 +1,18 @@
+
+// Create HTTP GET invocation - With Python equivalent
+http.get:"https://docs.ainiro.io"
+
+
+/*
+
+# Python equivalent
+# Create HTTP GET invocation
+import requests
+
+url = "https://docs.ainiro.io"
+response = requests.get(url)
+
+# Example usage
+# response will contain the HTTP response from the GET request
+
+*/

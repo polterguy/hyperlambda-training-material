@@ -1,0 +1,19 @@
+
+// Example: No trim characters at start (string remains unchanged). - With Python equivalent
+
+// Result: "abc"
+strings.trim-start:abc
+   .:z
+
+
+/*
+
+# Python equivalent
+# Example: No trim characters at start (string remains unchanged).
+string = "abc"
+trimmed_string = string.lstrip("z")
+
+# Example usage
+# trimmed_string will be "abc" since there are no 'z' characters at the start
+
+*/

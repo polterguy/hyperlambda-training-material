@@ -1,0 +1,85 @@
+
+// Write a Hyperlambda script to vectorize all training snippets in a specified model/type. - With Python equivalent
+.arguments
+   type:string
+   feedback-channel:string
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+
+// Doing some basic logging.
+log.info:Started vectorising model
+   model:x:@.arguments/*/type
+
+// Creating a thread and invoking file doing the heavy lifting.
+insert-before:x:./*/fork/0
+   get-nodes:x:@.arguments
+fork
+   add:x:./*/signal
+      get-nodes:x:@.arguments/*
+   signal:magic.ai.vectorise
+      .onafter
+         sockets.signal:x:@.arguments/*/feedback-channel
+            args
+               message:Done!
+               type:success
+
+// Returning success to caller.
+return
+   result:success
+
+
+/*
+
+# Python equivalent
+def vectorize_training_snippets(model_type, feedback_channel):
+    """
+    This function vectorizes all training snippets in a specified model/type.
+    
+    :param model_type: The type of the model to vectorize
+    :param feedback_channel: The channel to send feedback to
+    :return: A dictionary indicating success
+    """
+    # Verify authentication
+    verify_authentication(["root"])
+    
+    # Ensure type is provided
+    if not model_type:
+        raise ValueError("Type is mandatory")
+    
+    # Log the start of vectorization
+    log_info(f"Started vectorising model: {model_type}")
+    
+    # Fork the process to vectorize
+    fork_vectorization_process(model_type, feedback_channel)
+    
+    # Return success result
+    return {"result": "success"}
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+def log_info(message):
+    # Placeholder for logging information
+    print(message)
+
+def fork_vectorization_process(model_type, feedback_channel):
+    # Simulate signaling the vectorization process
+    response = signal_vectorization(model_type)
+    
+    # Send feedback upon completion
+    send_feedback(feedback_channel, "Done!", "success")
+
+def signal_vectorization(model_type):
+    # Placeholder for vectorization logic
+    pass
+
+def send_feedback(channel, message, message_type):
+    # Placeholder for sending feedback
+    pass
+
+*/

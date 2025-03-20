@@ -1,0 +1,78 @@
+
+// Executes the specified shell/bash command with the specified arguments, and returns the result to caller as a string - With Python equivalent
+.arguments
+   command
+      type:string
+      mandatory:bool:true
+   args
+      type:string
+      mandatory:bool:false
+   structured
+      type:bool
+      mandatory:bool:false
+.icon:rocket_launch
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/command
+
+// Checking if we've got arguments.
+if
+   exists:x:@.arguments/*/args
+   .lambda
+
+      // Adding argument to invocation below.
+      add:x:../*/system.execute
+         .
+            get-value:x:@.arguments/*/args
+
+// Executes shell command
+system.execute:x:@.arguments/*/command
+   structured:x:@.arguments/*/structured
+
+/*
+ * Checking if caller wanted structured results, at which point we return an array
+ * containing lines returned from above invocation.
+ */
+if:x:@.arguments/*/structured
+   return-nodes:x:@system.execute/*
+
+// Returning result of above invocation to caller.
+yield
+   result:x:@system.execute
+
+
+/*
+
+# Python equivalent
+import subprocess
+
+def execute_shell_command(command, args=None, structured=False):
+    """
+    This function executes the specified shell/bash command with the specified arguments, and returns the result to the caller as a string.
+    
+    :param command: The shell command to execute
+    :param args: The arguments for the command
+    :param structured: Whether to return the result as a structured output
+    :return: The result of the command execution
+    :raises ValueError: If command is not provided
+    """
+    # Validate mandatory fields
+    if not command:
+        raise ValueError("Command is mandatory")
+    
+    # Prepare the command with arguments
+    full_command = [command] + (args.split() if args else [])
+    
+    # Execute the command
+    result = subprocess.run(full_command, capture_output=True, text=True)
+    
+    # Return the result
+    if structured:
+        return {"stdout": result.stdout, "stderr": result.stderr, "returncode": result.returncode}
+    else:
+        return result.stdout
+
+# Example usage
+# execute_shell_command("ls", args="-l", structured=True)
+
+*/

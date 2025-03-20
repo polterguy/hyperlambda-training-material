@@ -1,0 +1,37 @@
+
+// Hyperlambda endpoint taking two decimal numbers, then multiplying these and returning the result - With Python equivalent
+.arguments
+   no1:decimal
+   no2:decimal
+
+// Making sure argument was given
+validators.mandatory:x:@.arguments/*/no1
+validators.mandatory:x:@.arguments/*/no2
+
+// Multiplying.
+math.multiply
+   get-value:x:@.arguments/*/no1
+   get-value:x:@.arguments/*/no2
+yield
+   result:x:@math.multiply
+
+
+/*
+
+# Python equivalent
+def multiply_decimals(no1, no2):
+    # Validate mandatory fields
+    if no1 is None or no2 is None:
+        raise ValueError("Both no1 and no2 are mandatory")
+
+    # Multiply the two decimal numbers
+    result = no1 * no2
+    return result
+
+# Example usage
+no1 = 3.5
+no2 = 2.0
+result = multiply_decimals(no1, no2)
+print(result)  # Output: 7.0
+
+*/

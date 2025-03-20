@@ -1,0 +1,49 @@
+
+// Reads contacts from HubSpot - With Python equivalent
+.arguments
+   after:string
+.type:public
+
+// Forwarding request to our HTTP POST Hyperlambda file.
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/modules/hubspot/contacts.get.hl
+
+// Returning whatever above invocation returned.
+add:x:./*/return
+   get-nodes:x:@execute-file/*
+return
+
+
+/*
+
+# Python equivalent
+import requests
+
+def read_hubspot_contacts(after=None):
+    """
+    This function reads contacts from HubSpot.
+    
+    :param after: The paging cursor to retrieve the next set of contacts
+    :return: The response from the HubSpot API
+    """
+    # Prepare the parameters
+    params = {"after": after} if after else {}
+    
+    # Retrieve contacts from HubSpot
+    response = get_contacts_from_hubspot(params)
+    
+    # Return the response
+    return response
+
+def get_contacts_from_hubspot(params):
+    # Placeholder for HubSpot API call to get contacts
+    url = "https://api.hubapi.com/contacts/v1/lists/all/contacts/all"
+    headers = {"Authorization": "Bearer YOUR_ACCESS_TOKEN"}
+    response = requests.get(url, headers=headers, params=params)
+    return response.json()
+
+# Example usage
+# read_hubspot_contacts(after="paging_cursor")
+
+*/

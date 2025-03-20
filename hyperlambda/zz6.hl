@@ -1,8 +1,0 @@
-// Update the email of the user with ID 1
-pgsql.update
-   table:users
-   where
-      and
-         id:int:1
-   values
-      email:new.email@example.com

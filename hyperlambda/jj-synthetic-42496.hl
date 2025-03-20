@@ -1,0 +1,18 @@
+
+// Example: Trim characters that are not present (no change). - With Python equivalent
+
+// Result: "hello"
+strings.trim:hello
+   .:?
+
+
+/*
+
+# Python equivalent
+# String consisting only of trim characters
+string = "!!!"
+
+# Trim '!' characters from the string
+trimmed_string = string.strip('!')
+
+*/

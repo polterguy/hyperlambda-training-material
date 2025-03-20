@@ -1,0 +1,49 @@
+
+// Generate a Hyperlambda snippet that counts users in the 'auth_db' database from the 'users' table. - With Python equivalent
+
+// Counts users in the "auth_db" database from the "users" table.
+data.connect:auth_db
+   database-type:mysql
+
+   // Counting total users.
+   data.read
+      database-type:mysql
+      table:users
+      columns
+         count(*)
+            as:count
+      limit:long:1
+
+
+/*
+
+# Python equivalent
+import psycopg2
+
+def count_transactions_in_finance_db():
+    # Connect to the finance_db database
+    connection = psycopg2.connect(
+        host='your_host',
+        user='your_user',
+        password='your_password',
+        dbname='finance_db'
+    )
+    
+    cursor = connection.cursor()
+    
+    # Query to count transactions in the transactions table
+    query = "SELECT COUNT(*) AS count FROM transactions"
+    
+    cursor.execute(query)
+    transaction_count = cursor.fetchone()[0]
+    
+    cursor.close()
+    connection.close()
+    
+    return transaction_count
+
+# Example usage
+transaction_count = count_transactions_in_finance_db()
+print(transaction_count)
+
+*/

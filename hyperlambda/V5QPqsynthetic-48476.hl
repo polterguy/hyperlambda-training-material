@@ -1,0 +1,34 @@
+
+// Create a Hyperlambda snippet that loops while [.stock] is above 0. - With Python equivalent
+
+// Loops while [.stock] is above 0.
+.stock:int:5
+while
+   gt
+      get-value:x:@.stock
+      .:int:0
+   .lambda
+
+      // Logging stock status.
+      log.info:Stock available
+
+      // Decrementing stock.
+      math.decrement:x:@.stock
+
+
+/*
+
+# Python equivalent
+def summarize_odd_numbers():
+    no = 1
+    total_sum = 0
+    while no < 20:
+        total_sum += no
+        no += 2
+    return total_sum
+
+# Example usage
+sum_of_odds = summarize_odd_numbers()
+print(sum_of_odds)
+
+*/

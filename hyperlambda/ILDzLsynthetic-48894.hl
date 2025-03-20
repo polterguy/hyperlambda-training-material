@@ -1,0 +1,86 @@
+
+// Create endpoint inserting one record into your crawl_urls table in your scraper database. - With Python equivalent
+.arguments
+
+   // url column value
+   url:string
+
+   // type column value
+   type:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Columns with custom handling as we generate a frontend
+.handling
+   url:url
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:crawl_urls
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def create_crawl_url(url, url_type):
+    """
+    This function inserts one record into the crawl_urls table in the scraper database.
+    
+    :param url: The URL to insert
+    :param url_type: The type of the URL
+    :return: The ID of the created record
+    """
+    # Verify authentication
+    verify_authentication(["root", "admin"])
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('scraper.db')
+    cursor = conn.cursor()
+    
+    # Insert the record
+    cursor.execute("INSERT INTO crawl_urls (url, type) VALUES (?, ?)", (url, url_type))
+    record_id = cursor.lastrowid
+    
+    # Commit and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Return the ID of the created record
+    return record_id
+
+def verify_authentication(roles):
+    # Placeholder for authentication verification logic
+    pass
+
+# Example usage
+# create_crawl_url("https://example.com", "example_type")
+
+*/

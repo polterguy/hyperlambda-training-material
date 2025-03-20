@@ -1,0 +1,91 @@
+
+// Create a Hyperlambda action to publish a web socket message with a specified 'channel' and 'args'. Optionally include 'roles' to restrict notifications. Validate mandatory fields. - With Python equivalent
+.arguments
+   channel
+      type:string
+      mandatory:bool:true
+   args
+      type:key-value
+      mandatory:bool:true
+   roles
+      type:array
+      mandatory:bool:false
+.icon:send
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/channel
+validators.mandatory:x:@.arguments/*/args
+
+// Decorating invocation.
+add:x:./*/sockets.signal/*/args
+   get-nodes:x:@.arguments/*/args/*
+
+// Checking if we've got a [roles] declaration and if so decorating invocation.
+if
+   and
+      exists:x:@.arguments/*/roles
+      not-null:x:@.arguments/*/roles
+   .lambda
+
+      // Decorating invocation with comma separated list of roles.
+      strings.join:x:@.arguments/*/roles
+         .:,
+      unwrap:x:+/*/*
+      add:x:../*/sockets.signal
+         .
+            roles:x:@strings.join
+
+// Publishing socket message.
+sockets.signal:x:@.arguments/*/channel
+   args
+
+
+/*
+
+# Python equivalent
+import sqlite3
+
+def update_user_extra_record(database, user, record_type, value):
+    # Simulate verifying root access
+    if not verify_root_access():
+        raise PermissionError("Root access required")
+
+    # Validate the type and user
+    if not record_type or not user:
+        raise ValueError("Type and User are mandatory")
+
+    # Connect to the specified database
+    connection = sqlite3.connect(database)
+    cursor = connection.cursor()
+
+    # Build the SQL query
+    query = "UPDATE users_extra SET value = ? WHERE user = ? AND type = ?"
+
+    # Execute the query
+    cursor.execute(query, (value, user, record_type))
+    connection.commit()
+
+    # Get the number of affected rows
+    affected_rows = cursor.rowcount
+
+    # Close the connection
+    connection.close()
+
+    # Check if any record was updated
+    if affected_rows == 0:
+        return {"result": "Record not found", "status": 404}
+    else:
+        return {"affected": affected_rows, "status": 202}
+
+def verify_root_access():
+    # Simulate root access verification
+    return True
+
+# Example usage
+try:
+    result = update_user_extra_record("magic.db", "user1", "admin", "new_value")
+    print(result)
+except (ValueError, PermissionError) as e:
+    print(e)
+
+*/

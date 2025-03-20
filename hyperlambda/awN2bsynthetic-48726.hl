@@ -1,0 +1,53 @@
+
+// Create a Hyperlambda action to save specified 'content' to a specified 'file'. Validate mandatory fields. - With Python equivalent
+.arguments
+   file
+      type:string
+      mandatory:bool:true
+   content
+      type:string
+      mandatory:bool:true
+.icon:save
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/file
+validators.mandatory:x:@.arguments/*/content
+
+// Saves the specified file.
+save-file:x:@.arguments/*/file
+   get-value:x:@.arguments/*/content
+
+
+/*
+
+# Python equivalent
+import os
+
+def install_module(module_name):
+    # Validate the module name
+    if not module_name:
+        raise ValueError("Module name is mandatory")
+
+    # Construct the module path
+    module_path = os.path.join("/modules/", module_name)
+
+    # List all files recursively in the module directory
+    for root, dirs, files in os.walk(module_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            # Check if the file is a magic.startup Hyperlambda file
+            if "/magic.startup/" in file_path and file_path.endswith(".hl"):
+                # Execute the Hyperlambda file
+                execute_hyperlambda_file(file_path)
+
+def execute_hyperlambda_file(file_path):
+    # Simulate executing a Hyperlambda file
+    print(f"Executing Hyperlambda file: {file_path}")
+
+# Example usage
+try:
+    install_module("example_module")
+except ValueError as e:
+    print(e)
+
+*/

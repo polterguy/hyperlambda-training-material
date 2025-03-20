@@ -1,0 +1,17 @@
+
+// Example: Get the length of an empty string. - With Python equivalent
+
+// Returns 0
+strings.length:
+
+
+/*
+
+# Python equivalent
+# String with spaces and punctuation
+string = "Hello world!"
+
+# Get the length of the string
+length_of_string = len(string)
+
+*/

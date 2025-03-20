@@ -1,0 +1,50 @@
+
+// Create a Hyperlambda snippet that counts tickets in the 'support_db' database from the 'tickets' table. - With Python equivalent
+
+// Counts tickets in the "support_db" database from the "tickets" table.
+data.connect:support_db
+   database-type:pgsql
+
+   // Counting total support tickets.
+   data.read
+      database-type:pgsql
+      table:tickets
+      columns
+         count(*)
+            as:count
+      limit:long:1
+
+
+/*
+
+# Python equivalent
+import pyodbc
+
+def count_employees_in_hr_db():
+    # Connect to the hr_db database
+    connection = pyodbc.connect(
+        'DRIVER={ODBC Driver 17 for SQL Server};'
+        'SERVER=your_server;'
+        'DATABASE=hr_db;'
+        'UID=your_user;'
+        'PWD=your_password'
+    )
+    
+    cursor = connection.cursor()
+    
+    # Query to count employees in the employees table
+    query = "SELECT COUNT(*) AS count FROM employees"
+    
+    cursor.execute(query)
+    employee_count = cursor.fetchone()[0]
+    
+    cursor.close()
+    connection.close()
+    
+    return employee_count
+
+# Example usage
+employee_count = count_employees_in_hr_db()
+print(employee_count)
+
+*/

@@ -1,0 +1,60 @@
+
+// Create a Hyperlambda snippet that updates a user's email in the 'auth_db' database within the 'users' table. - With Python equivalent
+
+// Updates a user's email in the "auth_db" database within the "users" table.
+.arguments
+   user_id:int
+data.connect:auth_db
+   database-type:pgsql
+
+   // Updating the user's email and status.
+   data.update
+      database-type:pgsql
+      table:users
+      values
+         email:newuser@example.com
+         status:active
+      where
+         and
+            user_id.eq:x:@.arguments/*/user_id
+   return:x:@data.update
+
+
+/*
+
+# Python equivalent
+import pyodbc
+from datetime import datetime
+
+def update_order_status(order_id):
+    # Connect to the ecommerce_db database
+    connection = pyodbc.connect(
+        'DRIVER={ODBC Driver 17 for SQL Server};'
+        'SERVER=your_server;'
+        'DATABASE=ecommerce_db;'
+        'UID=your_user;'
+        'PWD=your_password'
+    )
+    
+    cursor = connection.cursor()
+    
+    # Query to update an order status in the orders table
+    query = """
+    UPDATE orders
+    SET order_status = ?, shipped_date = ?
+    WHERE order_id = ?
+    """
+    
+    order_status = "shipped"
+    shipped_date = datetime.strptime("2025-04-01T00:00:00.000", "%Y-%m-%dT%H:%M:%S.%f")
+    
+    cursor.execute(query, (order_status, shipped_date, order_id))
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+
+# Example usage
+update_order_status(12345)
+
+*/

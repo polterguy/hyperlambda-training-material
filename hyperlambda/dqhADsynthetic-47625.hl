@@ -1,0 +1,107 @@
+
+/*
+ * Compiles a snippet of C# code down to a library,
+ * for then to dynamically load it as a plugin. - With Python equivalent
+ */
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.Private.CoreLib
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.signals.contracts
+   code:"\n\n// Example C# code creating a Hyperlambda slot.\nusing System;\nusing magic.node;\nusing magic.node.extensions;\nusing magic.signals.contracts;\n\n// Our slot class.\n[Slot(Name = \"foo\")]\npublic class Foo : ISlot\n{\n   public void Signal(ISignaler signaler, Node input)\n   {\n      input.Value = $\"Hi {input.GetEx<string>()}, how may I assist you?\";\n   }\n}"
+   assembly-name:foo.dll
+
+// Loading assembly from raw bytes now that we've created it.
+system.plugin.load:x:@system.compile
+
+// Executing [foo] slot now dynamically injected into AppDomain.
+.name:John Doe
+foo:x:@.name
+
+// Unloading plugin.
+system.plugin.unload:foo.dll
+
+
+/*
+
+# Python equivalent
+import subprocess
+
+def compile_and_load_plugin():
+    # Define the C# code
+    csharp_code = """
+    // Example C# code creating a Hyperlambda slot.
+    using System;
+    using magic.node;
+    using magic.node.extensions;
+    using magic.signals.contracts;
+
+    // Our slot class.
+    [Slot(Name = "foo")]
+    public class Foo : ISlot
+    {
+        public void Signal(ISignaler signaler, Node input)
+        {
+            input.Value = $"Hi {input.GetEx<string>()}, how may I assist you?";
+        }
+    }
+    """
+
+    # Define the references
+    references = [
+        "netstandard",
+        "System.Runtime",
+        "System.Private.CoreLib",
+        "magic.node",
+        "magic.node.extensions",
+        "magic.signals.contracts"
+    ]
+
+    # Save the C# code to a temporary file
+    source_file = "foo.cs"
+    with open(source_file, 'w') as f:
+        f.write(csharp_code)
+
+    # Compile the C# code to a DLL
+    output_file = "foo.dll"
+    csc_command = [
+        "csc",
+        "-target:library",
+        f"-out:{output_file}",
+        source_file
+    ] + [f"-r:{ref}" for ref in references]
+    subprocess.run(csc_command, check=True)
+
+    # Load the plugin (dummy implementation)
+    load_plugin(output_file)
+
+    # Use the plugin (dummy implementation)
+    name = "John Doe"
+    result = foo(name)
+    print(result)
+
+    # Unload the plugin (dummy implementation)
+    unload_plugin(output_file)
+
+def load_plugin(plugin_name):
+    # Dummy function to load a plugin
+    # Replace with actual implementation
+    print(f"Loading plugin: {plugin_name}")
+
+def foo(name):
+    # Dummy function to simulate plugin usage
+    # Replace with actual implementation
+    return f"Hi {name}, how may I assist you?"
+
+def unload_plugin(plugin_name):
+    # Dummy function to unload a plugin
+    # Replace with actual implementation
+    print(f"Unloading plugin: {plugin_name}")
+
+# Example usage
+compile_and_load_plugin()
+
+*/

@@ -1,6 +1,16 @@
 
 // Example: Embed multiple inline expressions in a single string. - With Python equivalent
-strings.mixin:"Sum {{\nmath.add\n   .:int:1\n   .:int:2\nreturn:x:-\n}} and Product {{\nmath.multiply\n   .:int:3\n   .:int:4\nreturn:x:-\n}}"
+strings.mixin:@"Sum {{
+math.add
+   .:int:1
+   .:int:2
+return:x:-
+}} and Product {{
+math.multiply
+   .:int:3
+   .:int:4
+return:x:-
+}}"
 
 // Result: "Sum 3 and Product 12"
 

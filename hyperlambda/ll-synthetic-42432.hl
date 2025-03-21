@@ -1,6 +1,9 @@
 
 // Example: Mix in a slot that returns a string to be inserted. - With Python equivalent
-strings.mixin:"Hello, {{\nstrings.to-upper:world\nreturn:x:-\n}}!"
+strings.mixin:@"Hello, {{
+strings.to-upper:world
+return:x:-
+}}!"
 
 // Result: "Hello, WORLD!"
 

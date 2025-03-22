@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda endpoint taking age and name, concatenates these, and returns the result with a greeting. - With Python equivalent
+// Create a Hyperlambda endpoint taking age and name, concatenates these, and returns the result with a greeting.
 .arguments
    name:string
    age:int
@@ -11,20 +11,3 @@ strings.concat
    .:" years old"
 yield
    result:x:@strings.concat
-
-
-/*
-
-# Python equivalent
-def create_greeting(name, age):
-    # Concatenate the greeting message
-    result = f"Hello {name}, you are {age} years old"
-    return result
-
-# Example usage
-name = "Alice"
-age = 30
-result = create_greeting(name, age)
-print(result)  # Output: "Hello Alice, you are 30 years old"
-
-*/

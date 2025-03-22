@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that evaluates HTTP response codes using a switch case without a default option. - With Python equivalent
+// Write a Hyperlambda snippet that evaluates HTTP response codes using a switch case without a default option.
 
 // Switch case comparison for HTTP response codes.
 .http_code:int:404
@@ -25,21 +25,3 @@ switch:x:@.http_code
       // If response code is 500.
       set-value:x:@.result
          .:Internal Server Error
-
-
-/*
-
-# Python equivalent
-payment_method = "PayPal"
-result = ""
-
-if payment_method == "CreditCard":
-    result = "Paid with Credit Card"
-elif payment_method == "PayPal":
-    result = "Paid with PayPal"
-elif payment_method == "Crypto":
-    result = "Paid with Cryptocurrency"
-else:
-    result = "Unknown payment method"
-
-*/

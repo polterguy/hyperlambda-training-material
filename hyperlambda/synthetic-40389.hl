@@ -1,18 +1,5 @@
 
-// Converting a string to integer - With Python equivalent
+// Converting a string to integer
 .data:42
 convert:x:@.data
    type:int
-
-
-/*
-
-# Python equivalent
-# Converting a string to integer
-data = "42"
-converted_data = int(data)
-
-# Example usage
-# converted_data will be 42
-
-*/

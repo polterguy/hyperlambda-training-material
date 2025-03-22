@@ -1,28 +1,7 @@
 
-// Evaluate a lambda stored in a data node - With Python equivalent
+// Evaluate a lambda stored in a data node
 .res
 .lambda
    set-value:x:@.res
       .:Hello
 eval:x:@.lambda
-
-
-/*
-
-# Python equivalent
-# Evaluate a lambda stored in a data node
-
-# Define lambda function
-def lambda_function(res):
-    res['value'] = "Hello"
-
-# Initialize result
-res = {}
-
-# Evaluate lambda function
-lambda_function(res)
-
-# Example usage
-# res['value'] will be "Hello"
-
-*/

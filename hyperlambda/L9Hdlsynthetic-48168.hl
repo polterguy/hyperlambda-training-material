@@ -1,5 +1,5 @@
 
-// Executing the following Hyperlambda results in the following - With Python equivalent
+// Executing the following Hyperlambda results in the following
 
 // When executing the following Hyperlambda
 .data
@@ -20,24 +20,3 @@ for-each:x:@.data/*
       .:visited
 
 // Notice how the [.dp] expression iterator above allows us to de-reference the currently iterated pointer and apply change locally within the original hierarchy
-
-
-/*
-
-# Python equivalent
-def mark_items_as_visited(data):
-    # Iterate through the data and mark each item as visited
-    for key in data.keys():
-        data[key] = "visited"
-    return data
-
-# Example usage
-data = {
-    'item1': 'Hello from Item1',
-    'item2': 'Hello from Item2',
-    'item3': 'Hello from Item3'
-}
-updated_data = mark_items_as_visited(data)
-print(updated_data)  # Output: {'item1': 'visited', 'item2': 'visited', 'item3': 'visited'}
-
-*/

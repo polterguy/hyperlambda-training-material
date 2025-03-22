@@ -1,5 +1,5 @@
 
-// Fallback else block when prior if/else-if conditions are false - With Python equivalent
+// Fallback else block when prior if/else-if conditions are false
 .value:int:3
 .result
 if
@@ -19,28 +19,3 @@ else-if
 else
    set-value:x:@.result
       .:Other
-
-
-/*
-
-# Python equivalent
-def evaluate_value(value):
-    # Initialize the result variable
-    result = None
-
-    # If-else logic
-    if value == 1:
-        result = "One"
-    elif value == 2:
-        result = "Two"
-    else:
-        result = "Other"
-
-    return result
-
-# Example usage
-value = 3
-result = evaluate_value(value)
-print(result)  # Output: "Other"
-
-*/

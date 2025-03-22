@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return the greeting for a specified type. - With Python equivalent
+// Write a Hyperlambda script to return the greeting for a specified type.
 .arguments
    type:string
 
@@ -16,53 +16,3 @@ data.connect:[generic|magic]
    // Returning greeting to caller.
    yield
       greeting:x:@data.select/*/*/greeting
-
-
-/*
-
-# Python equivalent
-from flask import Flask, jsonify
-
-app = Flask(__name__)
-
-@app.route('/get-chatbot-js', methods=['GET'])
-def get_chatbot_js():
-    # Get the customization options from request arguments
-    options = {
-        "type": request.args.get('type'),
-        "header": request.args.get('header'),
-        "button": request.args.get('button'),
-        "rtl": request.args.get('rtl', False),
-        "color": request.args.get('color'),
-        "start": request.args.get('start'),
-        "end": request.args.get('end'),
-        "link": request.args.get('link'),
-        "theme": request.args.get('theme'),
-        "references": request.args.get('references', False),
-        "file": request.args.get('file'),
-        "placeholder": request.args.get('placeholder'),
-        "position": request.args.get('position'),
-        "clear_button": request.args.get('clear_button', False),
-        "copyButton": request.args.get('copyButton', False),
-        "follow_up": request.args.get('follow_up', False),
-        "new_tab": request.args.get('new_tab', False),
-        "popup": request.args.get('popup'),
-        "v": request.args.get('v')
-    }
-
-    # Simulate generating the JavaScript for the chatbot
-    chatbot_js = generate_chatbot_js(options)
-
-    # Return the JavaScript
-    return jsonify({"javascript": chatbot_js})
-
-def generate_chatbot_js(options):
-    # Simulate generating JavaScript based on options
-    # This is a placeholder implementation
-    return "console.log('Chatbot JS with options:', options);"
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

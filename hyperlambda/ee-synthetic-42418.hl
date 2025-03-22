@@ -1,23 +1,8 @@
 
-// Example: Replace a substring that exists in the text. - With Python equivalent
+// Example: Replace a substring that exists in the text.
 .original:Hello world
 strings.replace:x:@.original
    .:world
    .:there
 
 // Result: "Hello there"
-
-
-/*
-
-# Python equivalent
-# Input text
-input_text = "ABC123"
-
-# Allowed characters
-allowed_set = set("ABC123")
-
-# Replace characters not in the allowed set with '#'
-modified_text = ''.join(char if char in allowed_set else '#' for char in input_text)
-
-*/

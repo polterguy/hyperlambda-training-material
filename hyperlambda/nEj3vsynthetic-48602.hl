@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to create a new scheduled task according to specified arguments. - With Python equivalent
+// Create a Hyperlambda script to create a new scheduled task according to specified arguments.
 .arguments
    id:string
    description:string
@@ -22,31 +22,3 @@ tasks.create:x:@.arguments/*/id
 // Returning success to caller.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-import hashlib
-
-def hash_input(input_string, algorithm="sha256"):
-    # Validate the algorithm
-    valid_algorithms = ["sha1", "md5", "sha256", "sha384", "sha512"]
-    if algorithm not in valid_algorithms:
-        raise ValueError(f"Invalid algorithm. Choose from {valid_algorithms}")
-
-    # Create a hash object
-    hash_object = hashlib.new(algorithm)
-    hash_object.update(input_string.encode())
-
-    # Return the hash result
-    return hash_object.hexdigest()
-
-# Example usage
-try:
-    hash_result = hash_input("example_input", "sha256")
-    print(f"Hash result: {hash_result}")
-except ValueError as e:
-    print(e)
-
-*/

@@ -1,5 +1,5 @@
 
-// Tracks an order in Shopify. - With Python equivalent
+// Tracks an order in Shopify.
 .arguments
    order:string
 .type:public
@@ -20,51 +20,3 @@ execute:shopify.orders.track
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-import requests
-
-def track_shopify_order(order):
-    """
-    This function tracks an order in Shopify.
-    
-    :param order: The order number to track
-    :return: The response from the Shopify API
-    :raises ValueError: If order is not provided
-    """
-    # Validate mandatory fields
-    if not order:
-        raise ValueError("Order number is mandatory")
-    
-    # Retrieve Shopify secret and shop from configuration
-    secret = get_config("magic:shopify:secret")
-    shop = get_config("magic:shopify:shop")
-    
-    # Track the order using Shopify API
-    response = track_order_in_shopify(secret, shop, order)
-    
-    # Return the response
-    return response
-
-def get_config(key):
-    # Placeholder for configuration retrieval logic
-    config = {
-        "magic:shopify:secret": "your_shopify_secret",
-        "magic:shopify:shop": "your_shopify_shop"
-    }
-    return config[key]
-
-def track_order_in_shopify(secret, shop, order_no):
-    # Placeholder for Shopify API call to track order
-    url = f"https://{shop}.myshopify.com/admin/api/2021-01/orders/{order_no}.json"
-    headers = {"X-Shopify-Access-Token": secret}
-    response = requests.get(url, headers=headers)
-    return response.json()
-
-# Example usage
-# track_shopify_order("123456789")
-
-*/

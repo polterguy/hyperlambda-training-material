@@ -1,5 +1,5 @@
 
-// Iterating through a collection of nodes - With Python equivalent
+// Iterating through a collection of nodes
 .data
    item1:value1
    item2:value2
@@ -11,30 +11,3 @@ for-each:x:@.data/*
          get-value:x:@.result
          get-value:x:@.dp/#
          .:", "
-
-
-/*
-
-# Python equivalent
-def iterate_and_concatenate(data):
-    # Initialize the result variable
-    result = ""
-
-    # Iterate through the data and concatenate values
-    for key, value in data.items():
-        if result:
-            result += ", "
-        result += value
-
-    return result
-
-# Example usage
-data = {
-    'item1': 'value1',
-    'item2': 'value2',
-    'item3': 'value3'
-}
-result = iterate_and_concatenate(data)
-print(result)  # Output: "value1, value2, value3"
-
-*/

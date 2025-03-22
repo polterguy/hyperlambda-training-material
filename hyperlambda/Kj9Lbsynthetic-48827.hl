@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to upload a specified backup file. - With Python equivalent
+// Write a Hyperlambda script to upload a specified backup file.
 .arguments
    file:*
 .type:internal
@@ -28,59 +28,3 @@ io.stream.save-file:x:@.full-path
 sqlite.connections.flush
 return
    result:success
-
-
-/*
-
-# Python equivalent
-import re
-import os
-
-def upload_backup_file(file):
-    """
-    This function uploads a specified backup file.
-    
-    :param file: A dictionary containing 'name' and 'stream' of the file
-    :raises ValueError: If any validation fails
-    :return: A dictionary indicating success
-    """
-    # Verify authentication
-    verify_authentication(["root"])
-    
-    # Validate mandatory fields
-    if not file or 'name' not in file or 'stream' not in file:
-        raise ValueError("File, name, and stream are mandatory")
-    
-    # Validate file name with regex
-    if not re.match(r"\.db$", file['name']):
-        raise ValueError("File name must end with '.db'")
-    
-    # Construct the full path
-    full_path = os.path.join("/data/", file['name'])
-    
-    # Save the file stream to the specified path
-    save_file(full_path, file['stream'])
-    
-    # Flush SQLite connections (placeholder for actual implementation)
-    flush_sqlite_connections()
-    
-    # Return success result
-    return {"result": "success"}
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-def save_file(full_path, stream):
-    # Save the file stream to the specified path
-    with open(full_path, 'wb') as f:
-        f.write(stream)
-
-def flush_sqlite_connections():
-    # Placeholder for flushing SQLite connections
-    pass
-
-# Example usage
-# upload_backup_file({"name": "backup.db", "stream": b"binary data"})
-
-*/

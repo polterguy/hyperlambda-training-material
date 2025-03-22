@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return a specified PDF training data file to the client. - With Python equivalent
+// Write a Hyperlambda script to return a specified PDF training data file to the client.
 .arguments
    file:string
 
@@ -24,32 +24,3 @@ response.headers.set
 // Returning file to caller.
 io.stream.open-file:x:@strings.concat/@strings.concat
 return:x:-
-
-
-/*
-
-# Python equivalent
-from flask import Flask, send_file, Response
-
-app = Flask(__name__)
-
-@app.route('/download-txt', methods=['GET'])
-def download_txt():
-    # Get the file name from request arguments
-    file_name = request.args.get('file')
-
-    # Validate the file name
-    if not file_name:
-        return Response("File name is mandatory", status=400)
-
-    # Construct the file path
-    file_path = f"/etc/system/openai/pdf/{file_name}"
-
-    # Send the file as a response with appropriate headers
-    return send_file(file_path, as_attachment=True, attachment_filename=file_name, mimetype='text/plain')
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

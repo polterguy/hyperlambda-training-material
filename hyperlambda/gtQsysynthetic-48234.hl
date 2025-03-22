@@ -1,5 +1,5 @@
 
-// This snippet uses the '!xxx' iterator to get all descendants except those of a certain name. - With Python equivalent
+// This snippet uses the '!xxx' iterator to get all descendants except those of a certain name.
 .root
    include1:A
    remove:B
@@ -11,34 +11,3 @@ for-each:x:@.root/!remove
       :kept
 
 // The expression @.root/!remove traverses all descendants of .root but skips any node named "remove" (and its subtree). The loop sets the remaining nodes' values to "kept".
-
-
-/*
-
-# Python equivalent
-def mark_included_nodes(root):
-    # Recursive function to mark all nodes except those named 'remove'
-    def visit_nodes(node):
-        for key, value in node.items():
-            if key != 'remove':
-                if isinstance(value, dict):
-                    visit_nodes(value)
-                node[key] = "kept"
-
-    # Start the visiting process
-    visit_nodes(root)
-    return root
-
-# Example usage
-root = {
-    'include1': 'A',
-    'remove': 'B',
-    'include2': {
-        'nested': 'C',
-        'remove': 'D'
-    }
-}
-marked_root = mark_included_nodes(root)
-print(marked_root)  # Output: {'include1': 'kept', 'remove': 'B', 'include2': {'nested': 'kept', 'remove': 'D'}}
-
-*/

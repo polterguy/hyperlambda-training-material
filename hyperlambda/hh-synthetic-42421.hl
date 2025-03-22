@@ -1,5 +1,5 @@
 
-// Example: Use variables for the string, start index, and length. - With Python equivalent
+// Example: Use variables for the string, start index, and length.
 .text:Magic
 .start:int:1
 .len:int:3
@@ -8,17 +8,3 @@ strings.substring:x:@.text
    get-value:x:@.len
 
 // Result: "agi"
-
-
-/*
-
-# Python equivalent
-import re
-
-# Text containing patterns in curly braces
-text = "{match1} and {match2} are here"
-
-# Find all substrings matching the pattern in curly braces
-matches = re.findall(r"\{.+?\}", text)
-
-*/

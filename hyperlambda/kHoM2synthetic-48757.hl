@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return the maximum tokens for a specified completion slot. - With Python equivalent
+// Write a Hyperlambda script to return the maximum tokens for a specified completion slot.
 .arguments
    slot:string
 .type:internal
@@ -17,48 +17,3 @@ strings.concat
 config.get:x:@strings.concat
 yield
    max_tokens:x:@config.get
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def get_conversation_starters(database, type_):
-    # Validate the type
-    if not type_:
-        raise ValueError("Type is mandatory")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Execute the query to get conversation starters
-    query = "SELECT conversation_starters FROM ml_types WHERE type = ?"
-    cursor.execute(query, (type_,))
-    result = cursor.fetchone()
-
-    # Close the connection
-    connection.close()
-
-    # Process the conversation starters if they exist
-    if result and result[0]:
-        conversation_starters = result[0]
-        questions = process_conversation_starters(conversation_starters)
-        return {"questions": questions}
-    else:
-        return {"questions": []}
-
-def process_conversation_starters(conversation_starters):
-    # Simulate converting markdown to HTML and extracting questions
-    # This is a placeholder implementation
-    return conversation_starters.split("\n")
-
-# Example usage
-try:
-    result = get_conversation_starters("magic.db", "example_type")
-    print(result)
-except ValueError as e:
-    print(e)
-
-*/

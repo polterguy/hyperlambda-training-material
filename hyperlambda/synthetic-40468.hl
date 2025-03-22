@@ -1,33 +1,8 @@
 
-// Execute Hyperlambda file with arguments - With Python equivalent
+// Execute Hyperlambda file with arguments
 .args
    foo1:bar1
    foo2:bar2
 execute-file:/whatever-file.hl
    arg1:x:@.args/*/foo1
    arg2:x:@.args/*/foo2
-
-
-/*
-
-# Python equivalent
-# Execute a function with arguments
-
-# Define a function to simulate executing a file
-def execute_file(arg1, arg2):
-    # Placeholder for file execution logic
-    return f"Executed with {arg1} and {arg2}"
-
-# Arguments
-args = {
-    "foo1": "bar1",
-    "foo2": "bar2"
-}
-
-# Execute the function with arguments
-result = execute_file(args["foo1"], args["foo2"])
-
-# Example usage
-# result will be "Executed with bar1 and bar2"
-
-*/

@@ -1,5 +1,5 @@
 
-// Executing the following Hyperlambda results in the following - With Python equivalent
+// Executing the following Hyperlambda results in the following
 
 // When executing the following Hyperlambda
 data.connect:magic
@@ -16,36 +16,3 @@ data.connect
    data.create:long:75152
 
 // Notice how lists are declared with nodes having names of "." or even sometimes ""
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def create_log_entry(database_name, content, log_type):
-    # Connect to the specified database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the insert statement
-        cursor.execute(
-            "INSERT INTO log_entries (content, type) VALUES (?, ?)",
-            (content, log_type)
-        )
-        conn.commit()
-
-        # Return the ID of the newly created record
-        return cursor.lastrowid
-    finally:
-        conn.close()
-
-# Example usage
-database_name = 'magic.db'
-content = "Foo bar log content"
-log_type = "info"
-log_entry_id = create_log_entry(database_name, content, log_type)
-print(log_entry_id)  # Output: ID of the newly created log entry
-
-*/

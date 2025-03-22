@@ -1,25 +1,5 @@
 
-// Example: Capitalize a fully lowercase word. - With Python equivalent - With Python equivalent
+// Example: Capitalize a fully lowercase word.
 
 // Result: "Hyperlambda"
 strings.capitalize:hyperlambda
-
-/*
- * # Python equivalent
- * # Example: Capitalize a fully lowercase word.
- * word = "hyperlambda"
- * capitalized_word = word.capitalize()
- * 
- * # Example usage
- * # capitalized_word will be "Hyperlambda"
- */
-
-
-/*
-
-# Python equivalent
-# Capitalize a fully lowercase word
-word = "hyperlambda"
-capitalized_word = word.capitalize()
-
-*/

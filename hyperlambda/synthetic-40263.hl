@@ -1,23 +1,8 @@
 
-// Example: Perform a case-insensitive replacement. - With Python equivalent
+// Example: Perform a case-insensitive replacement.
 .input:Yes yes YES
 strings.regex-replace:x:@.input
    .:(?i)yes
    .:no
 
 // Result: "no no no"
-
-
-/*
-
-# Python equivalent
-# Example: Perform a case-insensitive replacement.
-import re
-
-input_string = "Yes yes YES"
-modified_string = re.sub(r"(?i)yes", "no", input_string)
-
-# Example usage
-# modified_string will be "no no no"
-
-*/

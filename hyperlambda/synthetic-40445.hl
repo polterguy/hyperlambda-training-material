@@ -1,5 +1,5 @@
 
-// Evaluate all lambda objects under the current node sequentially (result becomes 'Second') - With Python equivalent
+// Evaluate all lambda objects under the current node sequentially (result becomes 'Second')
 .res:
 .lambda
    set-value:x:@.res
@@ -8,28 +8,3 @@
    set-value:x:@.res
       .:Second
 eval:x:../*/.lambda
-
-
-/*
-
-# Python equivalent
-# Evaluate all lambda objects under the current node sequentially (result becomes 'Second')
-
-# Define lambda functions
-def first_lambda(res):
-    res['value'] = "First"
-
-def second_lambda(res):
-    res['value'] = "Second"
-
-# Initialize result
-res = {}
-
-# Evaluate lambda functions sequentially
-first_lambda(res)
-second_lambda(res)
-
-# Example usage
-# res['value'] will be "Second"
-
-*/

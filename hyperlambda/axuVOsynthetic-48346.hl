@@ -1,5 +1,5 @@
 
-// Imports training snippets into the specified [type]. - With Python equivalent
+// Imports training snippets into the specified [type].
 .arguments
    type
       type:string
@@ -33,37 +33,3 @@ data.connect:[generic|magic]
                prompt:x:@.dp/#/*/prompt
                completion:x:@.dp/#/*/completion
                meta:x:@.arguments/*/meta
-
-
-/*
-
-# Python equivalent
-def get_netsuite_access_token():
-    import os
-    import requests
-    
-    # Load private key from file
-    with open('/etc/netsuite/private-key.txt', 'r') as file:
-        private_key = file.read().strip()
-    
-    # Get configuration values
-    account_id = os.getenv('MAGIC_NETSUITE_ACCOUNT_ID')
-    certificate_id = os.getenv('MAGIC_NETSUITE_CERTIFICATE_ID')
-    consumer_key = os.getenv('MAGIC_NETSUITE_CONSUMER_KEY')
-    
-    if not account_id or not certificate_id or not consumer_key:
-        raise ValueError("Account ID, Certificate ID, and Consumer Key are mandatory")
-    
-    # Assuming there is an API endpoint for getting the access token
-    url = "https://api.netsuite.com/get-access-token"
-    payload = {
-        "private_key": private_key,
-        "account_id": account_id,
-        "certificate_id": certificate_id,
-        "consumer_key": consumer_key
-    }
-    
-    response = requests.post(url, json=payload)
-    return response.json().get('access_token', '')
-
-*/

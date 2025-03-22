@@ -1,5 +1,5 @@
 
-// Returns [max_urls] matching specified query by searching DuckDuckGo. - With Python equivalent
+// Returns [max_urls] matching specified query by searching DuckDuckGo.
 .arguments
    query
       type:string
@@ -28,37 +28,3 @@ execute:magic.http.duckduckgo-search
 
 // Returning result to caller.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def get_subscription_plans():
-    # Assuming there is a function or method to get all subscription plan slots
-    subscription_plan_slots = get_subscription_plan_slots()
-    plans = []
-    
-    for slot in subscription_plan_slots:
-        # Execute the slot to retrieve the subscription plan
-        plan = execute_slot(slot)
-        if plan:
-            plans.append(plan)
-    
-    return plans
-
-def get_subscription_plan_slots():
-    # Placeholder function to retrieve subscription plan slots
-    return []
-
-def execute_slot(slot):
-    # Placeholder function to execute a slot and retrieve a subscription plan
-    return {
-        "name": "Example Plan",
-        "description": "An example subscription plan",
-        "price": 9.99,
-        "currency": "USD",
-        "period": "month",
-        "stripe_price_id": "price_12345"
-    }
-
-*/

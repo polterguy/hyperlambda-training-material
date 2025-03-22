@@ -1,5 +1,5 @@
 
-// Hyperlambda endpoint taking arguments. The SQL query selects distinct email, first name, last name, and genre name of customers who listen to rock music from the Chinook database. - With Python equivalent
+// Hyperlambda endpoint taking arguments. The SQL query selects distinct email, first name, last name, and genre name of customers who listen to rock music from the Chinook database.
 .arguments
    filter:string
 
@@ -17,46 +17,3 @@ data.connect:chinook
 
    // Returning a result of above invocation to caller.
    return-nodes:x:@data.select/*
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def get_customers_by_genre(filter_pattern):
-    """
-    This function selects distinct email, first name, last name, and genre name of customers who listen to music from the specified genre in the Chinook database.
-    
-    :param filter_pattern: The pattern to filter genres by name
-    :return: A list of dictionaries containing customer details
-    """
-    # Connect to the SQLite database
-    conn = sqlite3.connect('chinook.db')
-    cursor = conn.cursor()
-    
-    # Execute the query to get customers by genre
-    query = """
-    SELECT DISTINCT c.Email, c.FirstName, c.LastName, g.Name
-    FROM Customer c
-    INNER JOIN Invoice i ON c.CustomerId = i.CustomerId
-    INNER JOIN InvoiceLine ii ON i.InvoiceId = ii.InvoiceId
-    INNER JOIN Track t ON ii.TrackId = t.TrackId
-    INNER JOIN Genre g ON t.GenreId = g.GenreId
-    WHERE g.Name LIKE ?
-    ORDER BY c.Email
-    """
-    cursor.execute(query, (f"%{filter_pattern}%",))
-    customers = [{"Email": row[0], "FirstName": row[1], "LastName": row[2], "Genre": row[3]} for row in cursor.fetchall()]
-    
-    # Close the connection
-    cursor.close()
-    conn.close()
-    
-    # Return the list of customers
-    return customers
-
-# Example usage
-# get_customers_by_genre("Rock")
-
-*/

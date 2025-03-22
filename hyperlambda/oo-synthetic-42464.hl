@@ -1,17 +1,5 @@
 
-// Example: Get the length of a basic string. - With Python equivalent
+// Example: Get the length of a basic string.
 
 // Returns 6
 strings.length:OpenAI
-
-
-/*
-
-# Python equivalent
-# Empty string
-string = ""
-
-# Get the length of the empty string
-length_of_string = len(string)
-
-*/

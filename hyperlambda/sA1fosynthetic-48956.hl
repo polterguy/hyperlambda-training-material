@@ -1,5 +1,5 @@
 
-// Ingests products from Shopify using Shopify API. - With Python equivalent
+// Ingests products from Shopify using Shopify API.
 .arguments
    shop
       type:string
@@ -32,48 +32,3 @@ execute:shopify.products.ingest
    base_url:x:@.arguments/*/base_url
    secret:x:@.arguments/*/
    meta:x:@.arguments/*/meta
-
-
-/*
-
-# Python equivalent
-import requests
-
-def ingest_shopify_products(shop, product_type, base_url, secret, meta=True):
-    """
-    This function ingests products from Shopify using the Shopify API.
-    
-    :param shop: The Shopify shop name
-    :param product_type: The type of products to ingest
-    :param base_url: The base URL for the Shopify API
-    :param secret: The secret key for accessing the Shopify API
-    :param meta: Whether to include metadata (default is True)
-    :return: The response from the Shopify API
-    :raises ValueError: If any mandatory argument is not provided or if base_url is not a valid URL
-    """
-    # Validate mandatory fields
-    if not all([shop, product_type, base_url, secret]):
-        raise ValueError("All arguments are mandatory")
-    
-    # Validate base_url as a URL
-    if not base_url.startswith("http://") and not base_url.startswith("https://"):
-        raise ValueError("base_url must be a valid URL")
-    
-    # Ingest products using Shopify API
-    response = ingest_products_from_shopify(shop, product_type, base_url, secret, meta)
-    
-    # Return the response
-    return response
-
-def ingest_products_from_shopify(shop, product_type, base_url, secret, meta):
-    # Placeholder for Shopify API call to ingest products
-    url = f"{base_url}/admin/api/2021-01/products.json"
-    headers = {"X-Shopify-Access-Token": secret}
-    params = {"product_type": product_type, "meta": meta}
-    response = requests.get(url, headers=headers, params=params)
-    return response.json()
-
-# Example usage
-# ingest_shopify_products("myshop", "t-shirt", "https://myshop.myshopify.com", "secret_key")
-
-*/

@@ -1,5 +1,5 @@
 
-// Example: Concatenate all strings stored as children of a list node. - With Python equivalent
+// Example: Concatenate all strings stored as children of a list node.
 .items
    .:Red
    .:Green
@@ -7,18 +7,3 @@
 strings.concat:x:@.items/*
 
 // Result: "RedGreenBlue"
-
-
-/*
-
-# Python equivalent
-# Prefix string
-prefix = "Value: "
-
-# String to be converted to uppercase
-example = "example".upper()
-
-# Concatenate the prefix and the uppercase string
-concatenated_string = prefix + example
-
-*/

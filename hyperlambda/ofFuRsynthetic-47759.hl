@@ -1,5 +1,5 @@
 
-// Conditional execution using if - With Python equivalent
+// Conditional execution using if
 .value:int:42
 .result
 if
@@ -13,26 +13,3 @@ else
       .:Value is less than or equal to 10
 
 // Notice, [else] does not require a [.lambda] node
-
-
-/*
-
-# Python equivalent
-def evaluate_condition(value):
-    # Initialize the result variable
-    result = None
-
-    # Conditional logic
-    if value > 10:
-        result = "Value is greater than 10"
-    else:
-        result = "Value is less than or equal to 10"
-
-    return result
-
-# Example usage
-value = 42
-result = evaluate_condition(value)
-print(result)  # Output: "Value is greater than 10"
-
-*/

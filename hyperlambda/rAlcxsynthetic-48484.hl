@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that fetches the company name of a user from an API. - With Python equivalent
+// Create a Hyperlambda snippet that fetches the company name of a user from an API.
 
 // Fetches the company name of a user.
 http.get:"https://jsonplaceholder.typicode.com/users/2"
@@ -11,24 +11,3 @@ http.get:"https://jsonplaceholder.typicode.com/users/2"
 .company_name
 set-value:x:@.company_name
    get-value:x:@http.get/*/content/*/company/*/name
-
-
-/*
-
-# Python equivalent
-import requests
-
-def fetch_user_phone_number():
-    # Invoke the HTTP GET endpoint
-    response = requests.get("https://jsonplaceholder.typicode.com/users/3")
-    response_data = response.json()
-    
-    # Extract the user's phone number from the response
-    phone = response_data.get('phone')
-    return phone
-
-# Example usage
-user_phone = fetch_user_phone_number()
-print(user_phone)
-
-*/

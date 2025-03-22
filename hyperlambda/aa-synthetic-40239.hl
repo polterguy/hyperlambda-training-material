@@ -1,20 +1,6 @@
 
-// Example: Check for a special character in a string. - With Python equivalent
+// Example: Check for a special character in a string.
 
 // Returns true
 strings.contains:Hello, world!
    .:!
-
-
-/*
-
-# Python equivalent
-# Example: Check for a special character in a string.
-string = "Hello, world!"
-special_character = "!"
-contains_special_character = special_character in string
-
-# Example usage
-# contains_special_character will be True
-
-*/

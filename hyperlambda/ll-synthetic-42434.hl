@@ -1,17 +1,5 @@
 
-// Example: Capitalize a word that is already capitalized (no change). - With Python equivalent
+// Example: Capitalize a word that is already capitalized (no change).
 
 // Result: "Hello"
 strings.capitalize:Hello
-
-
-/*
-
-# Python equivalent
-# String starting with a digit
-string = "42hello"
-
-# Capitalize the string (no change to alphabetical characters)
-capitalized_string = string.capitalize()
-
-*/

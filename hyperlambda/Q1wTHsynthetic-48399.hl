@@ -1,5 +1,5 @@
 
-// Provide a Hyperlambda example where nodes from [.origin1] and [.origin2] are moved and integrated into [.destination_node]. - With Python equivalent
+// Provide a Hyperlambda example where nodes from [.origin1] and [.origin2] are moved and integrated into [.destination_node].
 
 // Moves nodes from [.origin1] and [.origin2] and integrates them into [.destination_node]
 .origin1
@@ -14,34 +14,3 @@
 add:x:@.destination_node
    get-nodes:x:@.origin1/*
    get-nodes:x:@.origin2/*
-
-
-/*
-
-# Python equivalent
-def extract_and_place_nodes():
-    data_source1 = {
-        "attrOne": "valOne",
-        "attrTwo": "valTwo",
-        "attrThree": "valThree"
-    }
-    
-    data_source2 = {
-        "attrFour": "valFour",
-        "attrFive": "valFive",
-        "attrSix": "valSix"
-    }
-    
-    data_target = {}
-    
-    # Extract nodes from data_source1 and data_source2 and place them into data_target
-    data_target.update(data_source1)
-    data_target.update(data_source2)
-    
-    return data_target
-
-# Example usage
-result = extract_and_place_nodes()
-print(result)
-
-*/

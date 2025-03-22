@@ -1,5 +1,5 @@
 
-// Creates training data and inserts into fine-tuning database such that it can be exported later. - With Python equivalent
+// Creates training data and inserts into fine-tuning database such that it can be exported later.
 .arguments
 
    // Mandatory argument being file number to generate training data for. When listing Hyperlambda files, this will generate training data for the nth file listed, allowing us to loop for as long as have have additional files, incrementing the file-no argument for each iteration.
@@ -43,52 +43,3 @@ io.file.load
 // Returning Hyperlambda file to caller.
 yield
    hyperlambda:x:@io.file.load
-
-
-/*
-
-# Python equivalent
-import os
-
-def create_training_data(file_no):
-    """
-    This function creates training data and inserts it into a fine-tuning database such that it can be exported later.
-    
-    :param file_no: The file number to process
-    :return: A dictionary indicating the result
-    :raises ValueError: If file_no is not provided
-    """
-    # Validate mandatory fields
-    if file_no is None:
-        raise ValueError("file_no is mandatory")
-    
-    # List all files recursively
-    files = list_files_recursively("/")
-    
-    # Filter for .hl files
-    hl_files = [file for file in files if file.endswith(".hl")]
-    
-    # Check if file_no is within bounds
-    if file_no >= len(hl_files):
-        return {"result": "There are no more files, you have handled all files."}
-    
-    # Load the specified .hl file
-    file_path = hl_files[file_no]
-    hyperlambda = load_file(file_path)
-    
-    # Return the hyperlambda content
-    return {"hyperlambda": hyperlambda}
-
-def list_files_recursively(directory):
-    # List all files in the directory recursively
-    return [os.path.join(root, file) for root, _, files in os.walk(directory) for file in files]
-
-def load_file(file_path):
-    # Load the content of the specified file
-    with open(file_path, 'r') as file:
-        return file.read()
-
-# Example usage
-# create_training_data(0)
-
-*/

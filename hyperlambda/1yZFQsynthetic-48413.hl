@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that executes [.lambda] if at least one condition is met. - With Python equivalent
+// Create a Hyperlambda snippet that executes [.lambda] if at least one condition is met.
 
 // Executes [.lambda] if at least one condition is met.
 .output
@@ -25,25 +25,3 @@ else
    // Setting [.output] to false
    set-value:x:@.output
       .:bool:false
-
-
-/*
-
-# Python equivalent
-def run_lambda_if_any_conditions_true():
-    check1 = 2
-    check2 = 8
-    state = False
-    
-    if check1 < 3 or check2 > 7:
-        state = True
-    else:
-        state = False
-    
-    return state
-
-# Example usage
-state = run_lambda_if_any_conditions_true()
-print(state)
-
-*/

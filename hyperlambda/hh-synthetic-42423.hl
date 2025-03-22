@@ -1,5 +1,5 @@
 
-// Example: Find all digit sequences in a string. - With Python equivalent
+// Example: Find all digit sequences in a string.
 strings.matches:abc123xyz45
    .:"\\d+"
 
@@ -8,17 +8,3 @@ strings.matches:abc123xyz45
  * .:123
  * .:45
  */
-
-
-/*
-
-# Python equivalent
-import re
-
-# String containing occurrences of "foo"
-text = "Foo foo FOO"
-
-# Find case-insensitive occurrences of "foo"
-matches = re.findall(r"(?i)foo", text)
-
-*/

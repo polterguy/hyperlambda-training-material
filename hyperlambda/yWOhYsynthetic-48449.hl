@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that counts transactions in the 'finance_db' database from the 'transactions' table. - With Python equivalent
+// Create a Hyperlambda snippet that counts transactions in the 'finance_db' database from the 'transactions' table.
 
 // Counts transactions in the "finance_db" database from the "transactions" table.
 data.connect:finance_db
@@ -13,38 +13,3 @@ data.connect:finance_db
          count(*)
             as:count
       limit:long:1
-
-
-/*
-
-# Python equivalent
-import pyodbc
-
-def count_orders_in_ecommerce_db():
-    # Connect to the ecommerce_db database
-    connection = pyodbc.connect(
-        'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=your_server;'
-        'DATABASE=ecommerce_db;'
-        'UID=your_user;'
-        'PWD=your_password'
-    )
-    
-    cursor = connection.cursor()
-    
-    # Query to count orders in the orders table
-    query = "SELECT COUNT(*) AS count FROM orders"
-    
-    cursor.execute(query)
-    order_count = cursor.fetchone()[0]
-    
-    cursor.close()
-    connection.close()
-    
-    return order_count
-
-# Example usage
-order_count = count_orders_in_ecommerce_db()
-print(order_count)
-
-*/

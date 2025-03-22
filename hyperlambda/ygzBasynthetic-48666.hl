@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles. - With Python equivalent
+// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
    name:string
    description:string
@@ -30,54 +30,3 @@ data.connect:[generic|magic]
    unwrap:x:+/*
    return
       result:success
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def update_role_record(database, name, description):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate the name
-    if not name:
-        raise ValueError("Name is mandatory")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    query = "UPDATE roles SET description = ? WHERE name = ?"
-
-    # Execute the query
-    cursor.execute(query, (description, name))
-    connection.commit()
-
-    # Get the number of affected rows
-    affected_rows = cursor.rowcount
-
-    # Close the connection
-    connection.close()
-
-    # Check if any record was updated
-    if affected_rows == 0:
-        return {"result": "Record not found", "status": 404}
-    else:
-        return {"affected": affected_rows, "status": 202}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-try:
-    result = update_role_record("magic.db", "admin", "Updated Administrator role")
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

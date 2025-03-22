@@ -1,5 +1,5 @@
 
-// Hyperlambda [if] checking multiple conditions - With Python equivalent
+// Hyperlambda [if] checking multiple conditions
 .role:editor
 .content-type:premium
 .permission
@@ -23,25 +23,3 @@ if
  * permission = "granted";
  * }
  */
-
-
-/*
-
-# Python equivalent
-def check_permission(role, content_type):
-    # Initialize the permission variable
-    permission = None
-
-    # Check multiple conditions
-    if role == "editor" and content_type == "premium":
-        permission = "granted"
-
-    return permission
-
-# Example usage
-role = "editor"
-content_type = "premium"
-permission = check_permission(role, content_type)
-print(permission)  # Output: "granted"
-
-*/

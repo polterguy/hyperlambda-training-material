@@ -1,25 +1,5 @@
 
-// Hash password for then to verify it - With Python equivalent
+// Hash password for then to verify it
 crypto.password.hash:SomePasswordHere
 crypto.password.verify:SomePasswordHere
    hash:x:@crypto.password.hash
-
-
-/*
-
-# Python equivalent
-# Hash password and then verify it
-import bcrypt
-
-password = "SomePasswordHere"
-
-# Hash the password
-hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-# Verify the password
-is_verified = bcrypt.checkpw(password.encode('utf-8'), hashed_password)
-
-# Example usage
-# is_verified will be True if the password matches the hash
-
-*/

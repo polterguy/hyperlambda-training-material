@@ -1,5 +1,5 @@
 
-// Delete one record from your post_tags table in your cms database - With Python equivalent
+// Delete one record from your post_tags table in your cms database
 .arguments
 
    // Primary key of record to delete, mandatory argument
@@ -43,57 +43,3 @@ data.connect:[generic|cms]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_post_tag(post_id, tag_id):
-    """
-    This function deletes one record from the post_tags table in the cms database.
-    
-    :param post_id: The ID of the post
-    :param tag_id: The ID of the tag
-    :return: The number of affected rows
-    :raises ValueError: If post_id or tag_id is not provided
-    """
-    # Verify authentication
-    verify_authentication(["guest"])
-    
-    # Validate mandatory fields
-    if post_id is None or tag_id is None:
-        raise ValueError("Post ID and Tag ID are mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('cms.db')
-    cursor = conn.cursor()
-    
-    # Delete the record
-    cursor.execute("DELETE FROM post_tags WHERE post_id = ? AND tag_id = ?", (post_id, tag_id))
-    affected_rows = cursor.rowcount
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Signal the deletion (placeholder for actual implementation)
-    signal_post_tag_deletion(post_id, tag_id)
-    
-    # Return the number of affected rows
-    return affected_rows
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-def signal_post_tag_deletion(post_id, tag_id):
-    # Placeholder for signaling logic
-    print(f"Post tag with Post ID {post_id} and Tag ID {tag_id} deleted.")
-
-# Example usage
-# delete_post_tag(1, 1)
-
-*/

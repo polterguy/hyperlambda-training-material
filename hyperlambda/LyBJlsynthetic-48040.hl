@@ -1,5 +1,5 @@
 
-// Hyperlambda [if] checking for empty value - With Python equivalent
+// Hyperlambda [if] checking for empty value
 .user-input:
 .validation-message
 if
@@ -18,24 +18,3 @@ if
  * validationMessage = "Input required";
  * }
  */
-
-
-/*
-
-# Python equivalent
-def check_user_input(user_input):
-    # Initialize the validation message variable
-    validation_message = None
-
-    # Check for empty value
-    if user_input == "":
-        validation_message = "Input required"
-
-    return validation_message
-
-# Example usage
-user_input = ""
-validation_message = check_user_input(user_input)
-print(validation_message)  # Output: "Input required"
-
-*/

@@ -1,5 +1,5 @@
-// Hyperlambda Example 2: If with variable condition
 
+// Hyperlambda Example 2: If with variable condition
 .status:active
 .message
 if
@@ -8,11 +8,3 @@ if
    .lambda
       set-value:x:@.message
          .:System is running
-
-
-/* Python Equivalent
-status = "active"
-message = None
-if status == "active":
-    message = "System is running"
-*/

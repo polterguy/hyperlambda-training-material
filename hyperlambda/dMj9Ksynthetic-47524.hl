@@ -1,5 +1,5 @@
 
-// Sort children nodes of [.data] by name - With Python equivalent
+// Sort children nodes of [.data] by name
 sort:x:@.data/*
    if
       lt:x:@.lhs/#/*/name
@@ -16,23 +16,3 @@ sort:x:@.data/*
    else
       set-value:x:@.result
          .:int:0
-
-
-/*
-
-# Python equivalent
-def sort_data_by_name(data):
-    # Sort the data by the 'name' key
-    sorted_data = sorted(data, key=lambda x: x.get('name', ''))
-    return sorted_data
-
-# Example usage
-data = [
-    {'name': 'Charlie', 'value': 3},
-    {'name': 'Alice', 'value': 1},
-    {'name': 'Bob', 'value': 2}
-]
-sorted_data = sort_data_by_name(data)
-print(sorted_data)
-
-*/

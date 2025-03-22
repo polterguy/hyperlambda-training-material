@@ -1,5 +1,5 @@
 
-// Create endpoint inserting one record into your products table in your shopping-cart-demo database. - With Python equivalent
+// Create endpoint inserting one record into your products table in your shopping-cart-demo database.
 .arguments
 
    // name column value
@@ -47,53 +47,3 @@ data.connect:[generic|shopping-cart-demo]
    unwrap:x:+/*
    return
       id:x:@data.create
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def create_product(name, description, sku, price, image_url):
-    """
-    This function inserts one record into the products table in the shopping-cart-demo database.
-    
-    :param name: The name of the product
-    :param description: The description of the product
-    :param sku: The SKU of the product
-    :param price: The price of the product
-    :param image_url: The image URL of the product
-    :return: The ID of the created record
-    :raises ValueError: If any of the arguments are not provided
-    """
-    # Verify authentication
-    verify_authentication(["root", "admin"])
-    
-    # Validate mandatory fields
-    if not all([name, description, sku, price, image_url]):
-        raise ValueError("All product fields are mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('shopping-cart-demo.db')
-    cursor = conn.cursor()
-    
-    # Insert the record
-    cursor.execute("INSERT INTO products (name, description, sku, price, image_url) VALUES (?, ?, ?, ?, ?)", (name, description, sku, price, image_url))
-    record_id = cursor.lastrowid
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return the ID of the created record
-    return record_id
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-# Example usage
-# create_product("Product Name", "Product Description", "SKU123", 19.99, "http://example.com/image.jpg")
-
-*/

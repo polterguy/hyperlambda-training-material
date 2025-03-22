@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return all saved SQL files in the system for a specified database type. - With Python equivalent
+// Write a Hyperlambda script to return all saved SQL files in the system for a specified database type.
 .arguments
    databaseType:string
 .type:internal
@@ -14,45 +14,3 @@ strings.concat
    .:/templates/
 io.file.list:x:@strings.concat
 return-nodes:x:-/*
-
-
-/*
-
-# Python equivalent
-import os
-
-def list_sql_files(database_type):
-    """
-    This function returns all saved SQL files in the system for a specified database type.
-    
-    :param database_type: The type of the database
-    :raises PermissionError: If authentication fails
-    :return: A list of SQL file paths
-    """
-    # Verify authentication
-    verify_authentication(["root"])
-    
-    # Construct the directory path
-    directory_path = os.path.join("/etc", database_type, "templates")
-    
-    # List all SQL files in the directory
-    sql_files = list_files_in_directory(directory_path)
-    
-    # Return the list of SQL files
-    return sql_files
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-def list_files_in_directory(directory_path):
-    # List all files in the specified directory
-    try:
-        return [os.path.join(directory_path, file) for file in os.listdir(directory_path) if file.endswith('.sql')]
-    except FileNotFoundError:
-        return []
-
-# Example usage
-# list_sql_files("mysql")
-
-*/

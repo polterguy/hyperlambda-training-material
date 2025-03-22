@@ -1,5 +1,5 @@
 
-// Deletes the training snippet with the specified [id] - With Python equivalent
+// Deletes the training snippet with the specified [id]
 .arguments
 
    // Mandatory and is the ID of the training snippet to delete.
@@ -41,53 +41,3 @@ data.connect:[generic|magic]
             id.eq:x:@.arguments/*/id
 return
    result:success
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_training_snippet(snippet_id):
-    # Validate mandatory fields
-    if snippet_id is None or snippet_id < 0:
-        raise ValueError("id is mandatory and must be a non-negative integer")
-
-    # Connect to the magic database
-    conn = sqlite3.connect('magic.db')
-    cursor = conn.cursor()
-
-    try:
-        # Check if the snippet exists
-        cursor.execute(
-            "SELECT prompt, completion, uri FROM ml_training_snippets WHERE id = ?",
-            (snippet_id,)
-        )
-        snippet = cursor.fetchone()
-
-        if snippet is None:
-            raise Exception("No such snippet")
-
-        # Delete from vss_ml_training_snippets
-        cursor.execute(
-            "DELETE FROM vss_ml_training_snippets WHERE rowid = ?",
-            (snippet_id,)
-        )
-
-        # Delete from ml_training_snippets
-        cursor.execute(
-            "DELETE FROM ml_training_snippets WHERE id = ?",
-            (snippet_id,)
-        )
-        conn.commit()
-
-        return {"result": "success"}
-    finally:
-        conn.close()
-
-# Example usage
-snippet_id = 1
-result = delete_training_snippet(snippet_id)
-print(result)  # Output: {'result': 'success'}
-
-*/

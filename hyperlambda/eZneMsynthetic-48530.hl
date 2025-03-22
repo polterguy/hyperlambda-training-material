@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that executes multiple computational tasks in parallel. - With Python equivalent
+// Generate a Hyperlambda snippet that executes multiple computational tasks in parallel.
 
 // An example of running multiple mathematical operations in parallel.
 join
@@ -15,17 +15,3 @@ join
       math.subtract
          .:int:100
          .:int:40
-
-
-/*
-
-# Python equivalent
-def format_name_and_age(first_name, last_name, age):
-    result = f"{first_name} {last_name}, you are {age} years old."
-    return result
-
-# Example usage
-formatted_string = format_name_and_age("John", "Doe", 30)
-print(formatted_string)
-
-*/

@@ -1,5 +1,5 @@
 
-// Create a slot 'join-strings' that joins all arguments separated by ' ' character. - With Python equivalent
+// Create a slot 'join-strings' that joins all arguments separated by ' ' character.
 slots.create:join-strings
    strings.join:x:@.arguments/*
       .:" "
@@ -16,34 +16,3 @@ execute:join-strings
 // text2 becomes "is cool!",
 
 // and the returned value is "Hyperlambda is cool".
-
-
-/*
-
-# Python equivalent
-class SlotMachine:
-    def __init__(self):
-        self.slots = {}
-
-    def create_slot(self, name, func):
-        self.slots[name] = func
-
-    def execute(self, name, **kwargs):
-        if name in self.slots:
-            return self.slots[name](**kwargs)
-        else:
-            return "Slot not found"
-
-# Define the 'join-strings' slot
-def join_strings(**kwargs):
-    return " ".join(kwargs.values())
-
-# Example usage
-slot_machine = SlotMachine()
-slot_machine.create_slot('join-strings', join_strings)
-
-arg = "is cool!"
-result = slot_machine.execute('join-strings', text1="Hyperlambda", text2=arg)
-print(result)  # Output: "Hyperlambda is cool!"
-
-*/

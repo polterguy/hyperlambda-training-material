@@ -1,5 +1,5 @@
 
-// Delete endpoint deleting one record from your items table in your shopping-cart-demo database. - With Python equivalent
+// Delete endpoint deleting one record from your items table in your shopping-cart-demo database.
 .arguments
 
    // Primary key of record to delete
@@ -35,49 +35,3 @@ data.connect:[generic|shopping-cart-demo]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_item(item_id):
-    """
-    This function deletes one record from the items table in the shopping-cart-demo database.
-    
-    :param item_id: The ID of the item to delete
-    :return: The number of affected rows
-    :raises ValueError: If item_id is not provided
-    """
-    # Verify authentication
-    verify_authentication(["root", "admin"])
-    
-    # Validate mandatory fields
-    if item_id is None:
-        raise ValueError("item_id is mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('shopping-cart-demo.db')
-    cursor = conn.cursor()
-    
-    # Delete the record
-    cursor.execute("DELETE FROM items WHERE item_id = ?", (item_id,))
-    affected_rows = cursor.rowcount
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return the number of affected rows
-    return affected_rows
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-# Example usage
-# delete_item(123)
-
-*/

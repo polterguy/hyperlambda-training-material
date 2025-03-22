@@ -1,5 +1,5 @@
 
-// Hyperlambda [if] with not equal condition - With Python equivalent
+// Hyperlambda [if] with not equal condition
 .status:pending
 .action-required
 if
@@ -18,24 +18,3 @@ if
  * actionRequired = true;
  * }
  */
-
-
-/*
-
-# Python equivalent
-def check_action_required(status):
-    # Initialize the action required variable
-    action_required = None
-
-    # Not equal condition logic
-    if status != "complete":
-        action_required = True
-
-    return action_required
-
-# Example usage
-status = "pending"
-action_required = check_action_required(status)
-print(action_required)  # Output: True
-
-*/

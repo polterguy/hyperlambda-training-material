@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that evaluates [.lambda] when at least one condition evaluates to true. - With Python equivalent
+// Generate a Hyperlambda snippet that evaluates [.lambda] when at least one condition evaluates to true.
 
 // Evaluates [.lambda] when at least one condition evaluates to true.
 .result
@@ -25,25 +25,3 @@ else
    // Assigning false to [.result]
    set-value:x:@.result
       .:bool:false
-
-
-/*
-
-# Python equivalent
-def evaluate_lambda_if_both_conditions_true():
-    value1 = 3
-    value2 = 10
-    result = False
-    
-    if value1 < 4 and value2 > 9:
-        result = True
-    else:
-        result = False
-    
-    return result
-
-# Example usage
-result = evaluate_lambda_if_both_conditions_true()
-print(result)
-
-*/

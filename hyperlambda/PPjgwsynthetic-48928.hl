@@ -1,5 +1,5 @@
 
-// Hyperlambda endpoint taking arguments. This SQL query retrieves and returns the names of artists and the titles of their albums from the Chinook database, ordering the results by artist name and limiting the output to 50 records. - With Python equivalent
+// Hyperlambda endpoint taking arguments. This SQL query retrieves and returns the names of artists and the titles of their albums from the Chinook database, ordering the results by artist name and limiting the output to 50 records.
 .arguments
 
 // Making sure user is authorized to invoke endpoint.
@@ -15,49 +15,3 @@ data.connect:chinook
 
    // Returning a result of above invocation to caller.
    return-nodes:x:@data.select/*
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def get_artists_and_albums():
-    """
-    This function retrieves and returns the names of artists and the titles of their albums from the Chinook database, ordering the results by artist name and limiting the output to 50 records.
-    
-    :return: A list of dictionaries containing artist names and album titles
-    """
-    # Verify authentication
-    verify_authentication(["enterprise"])
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('chinook.db')
-    cursor = conn.cursor()
-    
-    # Execute the query to get artists and their albums
-    query = """
-    SELECT ar.Name, al.Title
-    FROM Album al
-    INNER JOIN Artist ar ON al.ArtistId = ar.ArtistId
-    ORDER BY ar.Name
-    LIMIT 50
-    """
-    cursor.execute(query)
-    artists_and_albums = [{"Artist": row[0], "Album": row[1]} for row in cursor.fetchall()]
-    
-    # Close the connection
-    cursor.close()
-    conn.close()
-    
-    # Return the list of artists and albums
-    return artists_and_albums
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-# Example usage
-# get_artists_and_albums()
-
-*/

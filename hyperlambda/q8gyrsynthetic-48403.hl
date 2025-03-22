@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that executes [.lambda] only if [.status] is true. - With Python equivalent
+// Create a Hyperlambda snippet that executes [.lambda] only if [.status] is true.
 
 // Executes [.lambda] only if [.status] is true.
 .status:bool:true
@@ -14,24 +14,3 @@ else
 
    // Lambda executes when the condition is false.
    log.info:[.status] is inactive
-
-
-/*
-
-# Python equivalent
-import logging
-
-def run_lambda_based_on_flag():
-    logging.basicConfig(level=logging.INFO)
-    
-    flag = True
-    
-    if flag:
-        logging.info("[.flag] is enabled")
-    else:
-        logging.info("[.flag] is disabled")
-
-# Example usage
-run_lambda_based_on_flag()
-
-*/

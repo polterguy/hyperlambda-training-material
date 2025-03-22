@@ -1,5 +1,5 @@
 
-// Create one record in your media table in your cms database - With Python equivalent
+// Create one record in your media table in your cms database
 .arguments
 
    // post_id column value
@@ -50,60 +50,3 @@ data.connect:[generic|cms]
    unwrap:x:+/*
    return
       id:x:@data.create
-
-
-/*
-
-# Python equivalent
-import sqlite3
-from datetime import datetime
-
-def create_media(post_id, file_path, file_type, created_at):
-    """
-    This function creates one record in the media table in the cms database.
-    
-    :param post_id: The ID of the related post
-    :param file_path: The path to the media file
-    :param file_type: The type of the media file
-    :param created_at: The creation date of the media record
-    :return: The ID of the created record
-    :raises ValueError: If any of the arguments are not provided
-    """
-    # Verify authentication
-    verify_authentication(["guest"])
-    
-    # Validate mandatory fields
-    if post_id is None or not file_path or not file_type or not created_at:
-        raise ValueError("All arguments are mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('cms.db')
-    cursor = conn.cursor()
-    
-    # Insert the record
-    cursor.execute("INSERT INTO media (post_id, file_path, file_type, created_at) VALUES (?, ?, ?, ?)", (post_id, file_path, file_type, created_at))
-    record_id = cursor.lastrowid
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Signal the creation (placeholder for actual implementation)
-    signal_media_creation(post_id, file_path, file_type, created_at)
-    
-    # Return the ID of the created record
-    return record_id
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-def signal_media_creation(post_id, file_path, file_type, created_at):
-    # Placeholder for signaling logic
-    print(f"Media created: Post ID={post_id}, File Path={file_path}, File Type={file_type}, Created At={created_at}")
-
-# Example usage
-# create_media(1, "/path/to/file.jpg", "image/jpeg", datetime.now())
-
-*/

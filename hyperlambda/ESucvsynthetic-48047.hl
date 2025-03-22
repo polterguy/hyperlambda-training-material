@@ -1,5 +1,5 @@
 
-// Hyperlambda [if] with else branch - With Python equivalent
+// Hyperlambda [if] with else branch
 .status:inactive
 .display-class
 if
@@ -23,26 +23,3 @@ else
  * displayClass = "red";
  * }
  */
-
-
-/*
-
-# Python equivalent
-def determine_display_class(status):
-    # Initialize the display class variable
-    display_class = None
-
-    # If-else logic
-    if status == "active":
-        display_class = "green"
-    else:
-        display_class = "red"
-
-    return display_class
-
-# Example usage
-status = "inactive"
-display_class = determine_display_class(status)
-print(display_class)  # Output: "red"
-
-*/

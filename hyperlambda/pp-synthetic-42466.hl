@@ -1,17 +1,5 @@
 
-// Example: Spaces and punctuation are counted in the length. - With Python equivalent
+// Example: Spaces and punctuation are counted in the length.
 
 // Returns 12
 strings.length:Hello world!
-
-
-/*
-
-# Python equivalent
-# Numeric string
-string = "12345"
-
-# Get the length of the numeric string
-length_of_string = len(string)
-
-*/

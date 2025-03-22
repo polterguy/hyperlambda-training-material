@@ -1,5 +1,5 @@
 
-// Returns all roles [username] belongs to. - With Python equivalent
+// Returns all roles [username] belongs to.
 .arguments
    username
       type:string
@@ -48,47 +48,3 @@ data.connect:[generic|magic]
 
 // Returning roles to user.
 return
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def get_user_roles(username):
-    """
-    This function returns all roles the specified username belongs to.
-    
-    :param username: The username to retrieve roles for
-    :return: A list of roles
-    :raises ValueError: If username is not provided
-    :raises Exception: If the user does not exist
-    """
-    # Validate mandatory fields
-    if not username:
-        raise ValueError("Username is mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('magic.db')
-    cursor = conn.cursor()
-    
-    # Check if the user exists
-    cursor.execute("SELECT username FROM users WHERE username = ?", (username,))
-    if not cursor.fetchone():
-        raise Exception(f"No such user: {username}")
-    
-    # Retrieve roles for the user
-    cursor.execute("SELECT role FROM users_roles WHERE user = ?", (username,))
-    roles = [row[0] for row in cursor.fetchall()]
-    
-    # Close the connection
-    cursor.close()
-    conn.close()
-    
-    # Return the list of roles
-    return roles
-
-# Example usage
-# get_user_roles("example_user")
-
-*/

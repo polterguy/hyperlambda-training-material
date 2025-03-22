@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that retrieves records from the sales database and its transactions table. - With Python equivalent
+// Generate a Hyperlambda snippet that retrieves records from the sales database and its transactions table.
 
 // Retrieves records from the sales database and its transactions table.
 data.connect:sales_db
@@ -15,37 +15,3 @@ data.connect:sales_db
       sort
          transaction_date
       direction:asc
-
-
-/*
-
-# Python equivalent
-import psycopg2
-
-def fetch_users_from_auth_db():
-    # Connect to the authentication database
-    connection = psycopg2.connect(
-        host='your_host',
-        user='your_user',
-        password='your_password',
-        dbname='auth_db'
-    )
-    
-    cursor = connection.cursor()
-    
-    # Query to fetch users from the user_accounts table
-    query = "SELECT * FROM user_accounts"
-    
-    cursor.execute(query)
-    users = cursor.fetchall()
-    
-    cursor.close()
-    connection.close()
-    
-    return users
-
-# Example usage
-users = fetch_users_from_auth_db()
-print(users)
-
-*/

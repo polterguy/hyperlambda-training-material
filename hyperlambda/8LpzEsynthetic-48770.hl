@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return the JavaScript required to embed a ChatGPT-based chatbot on a website, with options for CSS, file, and various features. - With Python equivalent
+// Write a Hyperlambda script to return the JavaScript required to embed a ChatGPT-based chatbot on a website, with options for CSS, file, and various features.
 .arguments
    css:string
    file:string
@@ -25,41 +25,3 @@ add:x:./*/execute-file
    get-nodes:x:@.arguments/*
 execute-file:/system/openai/include-javascript.js.get.hl
 return:x:-
-
-
-/*
-
-# Python equivalent
-from flask import Flask, send_file, Response
-
-app = Flask(__name__)
-
-@app.route('/get-css', methods=['GET'])
-def get_css():
-    # Get the file name from request arguments
-    file_name = request.args.get('file')
-
-    # Validate the file name
-    if not file_name:
-        return Response("File name is mandatory", status=400)
-
-    # Construct the file paths
-    primary_path = f"/etc/system/openai/css/search/{file_name}.css"
-    fallback_path = f"/system/openai/front.files/search/{file_name}.css"
-
-    # Check if the primary file exists
-    if os.path.exists(primary_path):
-        return send_file(primary_path, mimetype='text/css')
-
-    # Check if the fallback file exists
-    if os.path.exists(fallback_path):
-        return send_file(fallback_path, mimetype='text/css')
-
-    # If neither file exists, return an error
-    return Response("No such AI chat template file exists", status=400)
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

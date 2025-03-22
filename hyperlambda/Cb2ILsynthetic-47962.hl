@@ -1,5 +1,5 @@
 
-// Returns all plans that exists - With Python equivalent
+// Returns all plans that exists
 
 /*
  * Ensures user is authorized to access endpoint.
@@ -23,33 +23,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def get_all_plans():
-    # Dummy function to simulate authorization
-    def authorize_user(roles):
-        # Simulate authorization logic
-        return True
-
-    # Dummy function to simulate fetching plans
-    def hub_plans_get():
-        # Simulate fetching plans logic
-        return [{"plan_id": 1, "name": "Basic"}, {"plan_id": 2, "name": "Premium"}]
-
-    # Authorize the user
-    if not authorize_user(['root', 'gpt']):
-        raise PermissionError("Unauthorized access")
-
-    # Fetch all plans
-    plans = hub_plans_get()
-
-    return plans
-
-# Example usage
-plans = get_all_plans()
-print(plans)  # Output: [{'plan_id': 1, 'name': 'Basic'}, {'plan_id': 2, 'name': 'Premium'}]
-
-*/

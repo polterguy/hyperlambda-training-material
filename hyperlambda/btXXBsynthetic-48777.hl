@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to save an OpenAI API key to the configuration object. - With Python equivalent
+// Write a Hyperlambda script to save an OpenAI API key to the configuration object.
 .arguments
    key:string
 .type:internal
@@ -34,36 +34,3 @@ config.save:x:@lambda2json
 // Returning success to caller.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-from flask import Flask, jsonify, make_response
-
-app = Flask(__name__)
-
-@app.route('/set-headers', methods=['POST'])
-def set_headers():
-    # Get the headers from the request JSON
-    headers = request.json.get('headers')
-
-    # Validate the headers
-    if not headers:
-        return jsonify({"error": "Headers are mandatory"}), 400
-
-    # Create a response object
-    response = make_response(jsonify({"message": "Headers set successfully"}))
-
-    # Set the specified headers in the response
-    for key, value in headers.items():
-        response.headers[key] = value
-
-    # Return the response
-    return response
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

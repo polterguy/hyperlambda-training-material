@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the questions table in the magic database with a question_id matching the argument, ensuring authentication and authorization for root and admin roles. - With Python equivalent
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the questions table in the magic database with a question_id matching the argument, ensuring authentication and authorization for root and admin roles.
 .arguments
    question_id:long
 .type:crud-delete
@@ -29,55 +29,3 @@ data.connect:[generic|magic]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def create_question_record(database, question_data):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    columns = ", ".join(question_data.keys())
-    placeholders = ", ".join(["?" for _ in question_data])
-    query = f"INSERT INTO questions ({columns}) VALUES ({placeholders})"
-
-    # Execute the query
-    cursor.execute(query, tuple(question_data.values()))
-    connection.commit()
-
-    # Get the ID of the newly created record
-    new_id = cursor.lastrowid
-
-    # Close the connection
-    connection.close()
-
-    # Return the ID of the new record
-    return {"id": new_id, "status": 201}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-question_data = {
-    "question": "What is your favorite color?",
-    "questionnaire": "example_questionnaire",
-    "type": "single-choice",
-    "name": "color_question"
-}
-try:
-    result = create_question_record("magic.db", question_data)
-    print(result)
-except PermissionError as e:
-    print(e)
-
-*/

@@ -1,17 +1,5 @@
 
-// Example: Trim whitespace from both ends of a string. - With Python equivalent
+// Example: Trim whitespace from both ends of a string.
 
 // Result: "hello"
 strings.trim:"   hello   "
-
-
-/*
-
-# Python equivalent
-# String with specific characters on both ends
-string = "??hello??"
-
-# Trim '?' characters from both ends of the string
-trimmed_string = string.strip('?')
-
-*/

@@ -1,21 +1,6 @@
 
-// Example: Contains check is case-sensitive. - With Python equivalent
+// Example: Contains check is case-sensitive.
 
 // Returns false
 strings.contains:MagicLambda
    .:lambda
-
-
-/*
-
-# Python equivalent
-# Original string
-string = "Hello, world!"
-
-# Special character to check
-special_character = "!"
-
-# Check if the string contains the special character
-contains_special_character = special_character in string
-
-*/

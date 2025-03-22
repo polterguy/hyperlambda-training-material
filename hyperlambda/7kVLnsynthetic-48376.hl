@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to demonstrate a try/catch/finally block with logging. - With Python equivalent
+// Create a Hyperlambda script to demonstrate a try/catch/finally block with logging.
 try
 
    // Perform your unsafe operation here.
@@ -12,22 +12,3 @@ try
 
    // If an exception is triggered, this lambda will be evaluated.
    log.info:Try finished evaluating
-
-
-/*
-
-# Python equivalent
-import logging
-
-def evaluate_while_loop():
-    logging.basicConfig(level=logging.INFO)
-    
-    no = 0
-    while no < 20:
-        logging.info("Howdy from while")
-        no += 1
-
-# Example usage
-evaluate_while_loop()
-
-*/

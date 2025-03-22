@@ -1,5 +1,5 @@
 
-// I want to update my database and append " - OBSOLETE" for every 'content' column found in my 'system' database and its 'log_records' table. Primary key is 'id'. Do it manually, once for each record. Don't update all rows with one SQL. - With Python equivalent
+// I want to update my database and append " - OBSOLETE" for every 'content' column found in my 'system' database and its 'log_records' table. Primary key is 'id'. Do it manually, once for each record. Don't update all rows with one SQL.
 data.connect:system
    data.read
       table:log_records
@@ -17,36 +17,3 @@ data.connect:system
          where
             and
                id:x:@.dp/#/*/id
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def update_log_records(database_name):
-    # Connect to the system database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Select id and content from log_records
-        cursor.execute("SELECT id, content FROM log_records")
-        records = cursor.fetchall()
-
-        # Update each record individually
-        for record_id, content in records:
-            updated_content = f"{content} - OBSOLETE"
-            cursor.execute(
-                "UPDATE log_records SET content = ? WHERE id = ?",
-                (updated_content, record_id)
-            )
-            conn.commit()
-    finally:
-        conn.close()
-
-# Example usage
-database_name = 'system.db'
-update_log_records(database_name)
-
-*/

@@ -1,20 +1,8 @@
 
-// Example: Concatenate strings when one part is empty. - With Python equivalent
+// Example: Concatenate strings when one part is empty.
 strings.concat
    .:Hello
    .:
    .:World
 
 // Result: "HelloWorld"
-
-
-/*
-
-# Python equivalent
-# List of strings to be concatenated
-items = ["Red", "Green", "Blue"]
-
-# Concatenate all strings in the list
-concatenated_string = "".join(items)
-
-*/

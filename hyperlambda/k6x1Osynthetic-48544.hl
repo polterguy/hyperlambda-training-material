@@ -1,5 +1,5 @@
 
-// How do I traverse Hyperlambda nodes in C#? - With Python equivalent
+// How do I traverse Hyperlambda nodes in C#?
 You can traverse Hyperlambda nodes in C# using the `HyperlambdaParser.Parse` method. Example:
 ```csharp
 var root = HyperlambdaParser.Parse(hyperlambda);
@@ -10,21 +10,3 @@ foreach (var idxChild in root.Children)
 }
 ```
 This loops through all child nodes and retrieves their names and values.
-
-
-/*
-
-# Python equivalent
-# Example of type declarations in Python
-foo = 5  # int
-bar = True  # bool
-baz = "hello"  # string
-
-# Python supports various types including:
-# - str, int, bool, float, complex
-# - datetime (for date and time)
-# - bytes, bytearray
-# - UUID (for guid)
-# If no type is specified, str is often assumed in Python.
-
-*/

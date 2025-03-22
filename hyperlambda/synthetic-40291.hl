@@ -1,21 +1,8 @@
 
-// Example: Trim specific characters from the beginning of a string. - With Python equivalent
+// Example: Trim specific characters from the beginning of a string.
 
 // The leading "xyz" will be removed
 strings.trim-start:xyzabcxyz
    .:xyz
 
 // Result: "abcxyz"
-
-
-/*
-
-# Python equivalent
-# Example: Trim specific characters from the beginning of a string.
-string_with_prefix = "xyzabcxyz"
-trimmed_string = string_with_prefix.lstrip("xyz")
-
-# Example usage
-# trimmed_string will be "abcxyz"
-
-*/

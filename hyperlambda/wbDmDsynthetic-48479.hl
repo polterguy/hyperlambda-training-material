@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that invokes an HTTP GET endpoint to fetch a user's email. - With Python equivalent
+// Generate a Hyperlambda snippet that invokes an HTTP GET endpoint to fetch a user's email.
 
 // Invokes an HTTP GET endpoint to fetch a user's email.
 http.get:"https://jsonplaceholder.typicode.com/users/1"
@@ -11,24 +11,3 @@ http.get:"https://jsonplaceholder.typicode.com/users/1"
 .email
 set-value:x:@.email
    get-value:x:@http.get/*/content/*/email
-
-
-/*
-
-# Python equivalent
-import requests
-
-def fetch_post_title():
-    # Invoke the HTTP GET endpoint
-    response = requests.get("https://jsonplaceholder.typicode.com/posts/1")
-    response_data = response.json()
-    
-    # Extract the post title from the response
-    title = response_data.get('title')
-    return title
-
-# Example usage
-post_title = fetch_post_title()
-print(post_title)
-
-*/

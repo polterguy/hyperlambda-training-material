@@ -1,15 +1,5 @@
 
-// Example: Capitalize an empty string (result is still an empty string). - With Python equivalent
+// Example: Capitalize an empty string (result is still an empty string).
 
 // Result: "" (empty string)
 strings.capitalize:
-
-
-/*
-
-# Python equivalent
-# Capitalize an empty string (result is still an empty string)
-empty_string = ""
-capitalized_empty_string = empty_string.capitalize()
-
-*/

@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda action to return specified HTTP headers from a request. Use 'headers' as an input array to determine which headers to return. - With Python equivalent
+// Create a Hyperlambda action to return specified HTTP headers from a request. Use 'headers' as an input array to determine which headers to return.
 .arguments
    headers
       type:array
@@ -25,50 +25,3 @@ for-each:x:@request.headers.list/*
 
 // Returning result to caller.
 return-nodes
-
-
-/*
-
-# Python equivalent
-from flask import Flask, jsonify
-
-app = Flask(__name__)
-
-@app.route('/get-chatbot-js', methods=['GET'])
-def get_chatbot_js():
-    # Get the customization options from request arguments
-    options = {
-        "css": request.args.get('css'),
-        "file": request.args.get('file'),
-        "type": request.args.get('type'),
-        "header": request.args.get('header'),
-        "button": request.args.get('button'),
-        "render_button": request.args.get('render_button', False),
-        "parent_node": request.args.get('parent_node'),
-        "search": request.args.get('search', False),
-        "chat": request.args.get('chat', False),
-        "markdown": request.args.get('markdown', False),
-        "speech": request.args.get('speech', False),
-        "rtl": request.args.get('rtl', False),
-        "submit_button": request.args.get('submit_button', False),
-        "stream": request.args.get('stream', False),
-        "v": request.args.get('v'),
-        "gpt": request.args.get('gpt', False)
-    }
-
-    # Simulate generating the JavaScript for the chatbot
-    chatbot_js = generate_chatbot_js(options)
-
-    # Return the JavaScript
-    return jsonify({"javascript": chatbot_js})
-
-def generate_chatbot_js(options):
-    # Simulate generating JavaScript based on options
-    # This is a placeholder implementation
-    return "console.log('Chatbot JS with options:', options);"
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

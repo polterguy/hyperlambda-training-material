@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda example with string variables, demonstrating quoting variations, newlines, and multi-line strings. - With Python equivalent
+// Generate a Hyperlambda example with string variables, demonstrating quoting variations, newlines, and multi-line strings.
 
 // No special characters, no quotes needed
 .textAlpha:demo
@@ -15,26 +15,3 @@
 
 // Newline escaping within a string
 .textEpsilon:"split\nline"
-
-
-/*
-
-# Python equivalent
-def execute_workflow(workflow, arguments=None):
-    if not workflow:
-        raise ValueError("Workflow parameter is mandatory")
-
-    # Simulate executing a workflow file with optional arguments
-    execution_result = f"Executing {workflow} with arguments {arguments}"
-    
-    # Return the execution result
-    return execution_result
-
-# Example usage
-try:
-    result = execute_workflow("example_workflow", {"arg1": "value1", "arg2": "value2"})
-    print(result)
-except ValueError as e:
-    print(e)
-
-*/

@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that fetches album details from an API. - With Python equivalent
+// Write a Hyperlambda snippet that fetches album details from an API.
 
 // Fetches album details from an API.
 http.get:"https://jsonplaceholder.typicode.com/albums/1"
@@ -11,24 +11,3 @@ http.get:"https://jsonplaceholder.typicode.com/albums/1"
 .album_title
 set-value:x:@.album_title
    get-value:x:@http.get/*/content/*/title
-
-
-/*
-
-# Python equivalent
-import requests
-
-def fetch_todo_item():
-    # Invoke the HTTP GET endpoint
-    response = requests.get("https://jsonplaceholder.typicode.com/todos/1")
-    response_data = response.json()
-    
-    # Extract the todo item's title from the response
-    task = response_data.get('title')
-    return task
-
-# Example usage
-todo_task = fetch_todo_item()
-print(todo_task)
-
-*/

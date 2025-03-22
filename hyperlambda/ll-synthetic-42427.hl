@@ -1,24 +1,5 @@
 
-// Example: Mix in a simple inline expression (2+2 inside curly braces). - With Python equivalent
-strings.mixin:@"The result is {{
-math.add
-   .:int:2
-   .:int:2
-return:x:-
-}}"
+// Example: Mix in a simple inline expression (2+2 inside curly braces).
+strings.mixin:"The result is {{\nmath.add\n   .:int:2\n   .:int:2\nreturn:x:-\n}}"
 
 // Result: "The result is 4"
-
-
-/*
-
-# Python equivalent
-from datetime import datetime
-
-# Get the current year
-current_year = datetime.now().year
-
-# Mix the current year into a string
-mixed_string = f"Current year is {current_year}"
-
-*/

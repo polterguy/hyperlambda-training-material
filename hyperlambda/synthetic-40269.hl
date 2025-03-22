@@ -1,19 +1,6 @@
 
-// Example: Split on a substring that is not present. - With Python equivalent
+// Example: Split on a substring that is not present.
 strings.split:hello
    .:,
 
 // Result: The string remains "hello" as a single part (no split)
-
-
-/*
-
-# Python equivalent
-# Example: Split on a substring that is not present.
-input_string = "hello"
-split_list = input_string.split(",")
-
-# Example usage
-# split_list will be ['hello'] since the delimiter is not present
-
-*/

@@ -1,5 +1,5 @@
 
-// Provide a Hyperlambda example where [.lambda] runs when all conditions evaluate to true. - With Python equivalent
+// Provide a Hyperlambda example where [.lambda] runs when all conditions evaluate to true.
 
 // Runs [.lambda] when all conditions evaluate to true.
 .state
@@ -25,25 +25,3 @@ else
    // Updating [.state] to false
    set-value:x:@.state
       .:bool:false
-
-
-/*
-
-# Python equivalent
-def determine_and_execute_lambda_if_conditions_satisfied():
-    metricX = 5
-    metricY = 15
-    status = False
-    
-    if metricX < 6 and metricY > 14:
-        status = True
-    else:
-        status = False
-    
-    return status
-
-# Example usage
-status = determine_and_execute_lambda_if_conditions_satisfied()
-print(status)
-
-*/

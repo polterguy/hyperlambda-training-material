@@ -1,5 +1,5 @@
 
-// Provide a Hyperlambda example where 'hr_db' is opened to get employee details. - With Python equivalent
+// Provide a Hyperlambda example where 'hr_db' is opened to get employee details.
 
 // Opens "hr_db" and gets employee details.
 .result
@@ -9,32 +9,3 @@ data.connect:hr_db
       database-type:mssql
    add:x:@.result
       get-nodes:x:@data.select/*
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def query_recent_chat_logs():
-    # Connect to the messaging_db database
-    connection = sqlite3.connect('messaging_db.sqlite')
-    
-    cursor = connection.cursor()
-    
-    # Query to retrieve recent chat logs from the chat_logs table
-    query = "SELECT * FROM chat_logs ORDER BY timestamp DESC LIMIT 100"
-    
-    cursor.execute(query)
-    chat_logs = cursor.fetchall()
-    
-    cursor.close()
-    connection.close()
-    
-    return chat_logs
-
-# Example usage
-chat_logs = query_recent_chat_logs()
-print(chat_logs)
-
-*/

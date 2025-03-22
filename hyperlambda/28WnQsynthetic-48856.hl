@@ -1,5 +1,5 @@
 
-// Lists all SQLite database in your default data folder. - With Python equivalent
+// Lists all SQLite database in your default data folder.
 slots.create:magic.db.sqlite.databases
 
    // Listing files in data folder and returning to caller.
@@ -19,34 +19,3 @@ slots.create:magic.db.sqlite.databases
                   .
                      db:x:@strings.split/0
    return-nodes
-
-
-/*
-
-# Python equivalent
-import os
-
-def list_sqlite_databases():
-    """
-    This function lists all SQLite databases in the default data folder.
-    
-    :return: A list of database names
-    """
-    data_folder = "/data/"
-    databases = []
-    
-    # List all files in the data folder
-    for file_name in os.listdir(data_folder):
-        # Check if the file ends with '.db'
-        if file_name.endswith(".db"):
-            # Extract the database name
-            db_name = os.path.splitext(file_name)[0]
-            databases.append({"db": db_name})
-    
-    # Return the list of database names
-    return databases
-
-# Example usage
-# list_sqlite_databases()
-
-*/

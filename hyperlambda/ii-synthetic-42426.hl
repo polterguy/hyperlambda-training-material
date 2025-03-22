@@ -1,5 +1,5 @@
 
-// Example: Use a variable for the regex pattern. - With Python equivalent
+// Example: Use a variable for the regex pattern.
 .pattern:[A-Z]+
 source:abcDEFghi
 strings.matches:x:@.source
@@ -9,15 +9,3 @@ strings.matches:x:@.source
  * Resulting matches:
  * .:DEF
  */
-
-
-/*
-
-# Python equivalent
-# Calculate the result of 2 + 2
-result = 2 + 2
-
-# Mix the result into a string
-mixed_string = f"The result is {result}"
-
-*/

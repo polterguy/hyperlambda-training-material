@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that fetches active orders from the e-commerce database and orders table. - With Python equivalent
+// Create a Hyperlambda snippet that fetches active orders from the e-commerce database and orders table.
 
 // Fetching active orders from the e-commerce database and orders table.
 data.connect:ecommerce_db
@@ -15,32 +15,3 @@ data.connect:ecommerce_db
       sort
          order_date
       direction:desc
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def query_messages_from_chat_logs():
-    # Connect to the messaging database
-    connection = sqlite3.connect('messaging_db.sqlite')
-    
-    cursor = connection.cursor()
-    
-    # Query to retrieve messages from the chat_logs table
-    query = "SELECT * FROM chat_logs LIMIT 100"
-    
-    cursor.execute(query)
-    messages = cursor.fetchall()
-    
-    cursor.close()
-    connection.close()
-    
-    return messages
-
-# Example usage
-messages = query_messages_from_chat_logs()
-print(messages)
-
-*/

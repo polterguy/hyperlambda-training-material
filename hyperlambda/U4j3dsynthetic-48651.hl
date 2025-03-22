@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for an endpoint that counts items in the questionnaires table in the magic database, ensuring the user is authorized and handling optional filters. - With Python equivalent
+// Create a Hyperlambda script for an endpoint that counts items in the questionnaires table in the magic database, ensuring the user is authorized and handling optional filters.
 .arguments
    questionnaires.name.like:string
    questionnaires.name.eq:string
@@ -29,51 +29,3 @@ data.connect:[generic|magic]
 
    // Returning result of above read invocation to caller.
    return-nodes:x:@data.read/*/*
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_questionnaire_record(database, name):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate the name
-    if not name:
-        raise ValueError("Name is mandatory")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    query = "DELETE FROM questionnaires WHERE name = ?"
-
-    # Execute the query
-    cursor.execute(query, (name,))
-    connection.commit()
-
-    # Get the number of affected rows
-    affected_rows = cursor.rowcount
-
-    # Close the connection
-    connection.close()
-
-    # Return the number of affected rows
-    return {"affected": affected_rows}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-try:
-    result = delete_questionnaire_record("magic.db", "example_name")
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

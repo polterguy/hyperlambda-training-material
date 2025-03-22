@@ -1,5 +1,5 @@
 
-// Returns context for the specified [query] from the specified [type], and returns to caller. - With Python equivalent
+// Returns context for the specified [query] from the specified [type], and returns to caller.
 .arguments
    type
       type:string
@@ -44,23 +44,3 @@ execute:magic.ai.get-context
 // Returning result of invocation to caller.
 yield
    context:x:@execute/*/context
-
-
-/*
-
-# Python equivalent
-def import_training_snippets(type: str, snippets: list, meta: str = "imported"):
-    if not type or not snippets:
-        raise ValueError("Type and snippets are mandatory")
-    
-    connection = connect_to_database("generic|magic")
-    
-    for snippet in snippets:
-        if 'prompt' in snippet:
-            query = """
-            INSERT INTO ml_training_snippets (type, prompt, completion, meta)
-            VALUES (%s, %s, %s, %s)
-            """
-            connection.execute(query, (type, snippet['prompt'], snippet.get('completion', ''), meta))
-
-*/

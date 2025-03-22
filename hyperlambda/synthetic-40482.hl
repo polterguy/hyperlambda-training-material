@@ -1,19 +1,4 @@
 
-// Return specified lambda from Hyperlambda file or endpoint - With Python equivalent
+// Return specified lambda from Hyperlambda file or endpoint
 return
    result:Hello from Magic Backend
-
-
-/*
-
-# Python equivalent
-# Return specified value from a function or endpoint
-
-def get_message():
-    return "Hello from Magic Backend"
-
-# Example usage
-# message will be "Hello from Magic Backend"
-message = get_message()
-
-*/

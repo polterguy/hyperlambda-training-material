@@ -1,21 +1,6 @@
 
-// Example: Check if a string contains a given substring that is not present. - With Python equivalent
+// Example: Check if a string contains a given substring that is not present.
 
 // Returns false
 strings.contains:ChatGPT
    .:OpenAI
-
-
-/*
-
-# Python equivalent
-# Original string
-string = "MagicLambda"
-
-# Substring to check (case-sensitive)
-substring = "lambda"
-
-# Check if the string contains the substring (case-sensitive)
-contains_substring = substring in string
-
-*/

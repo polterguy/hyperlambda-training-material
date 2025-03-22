@@ -1,5 +1,5 @@
 
-// Example: Use variables to supply the string and delimiter. - With Python equivalent
+// Example: Use variables to supply the string and delimiter.
 .text:x|y|z
 .delim:|
 strings.split:x:@.text
@@ -11,15 +11,3 @@ strings.split:x:@.text
  * .:y
  * .:z
  */
-
-
-/*
-
-# Python equivalent
-# Uppercase string
-string = "HELLO"
-
-# Convert the string to lowercase
-lowercase_string = string.lower()
-
-*/

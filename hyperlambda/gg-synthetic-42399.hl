@@ -1,5 +1,5 @@
 
-// Decrement a value by a custom step from another node - With Python equivalent
+// Decrement a value by a custom step from another node
 .value:int:10
 .step:int:4
 math.decrement:x:@.value
@@ -8,22 +8,3 @@ math.decrement:x:@.value
    get-value:x:@.step
 
 // .value should now be 6
-
-
-/*
-
-# Python equivalent
-import matplotlib.pyplot as plt
-
-# Data for the bar chart
-seasons = ['Spring', 'Summer', 'Autumn']
-values = [2, 5, 10]
-
-# Create a bar chart
-plt.figure(figsize=(6, 3))
-plt.bar(seasons, values)
-
-# Save the chart as an image file
-plt.savefig('/chart.png')
-
-*/

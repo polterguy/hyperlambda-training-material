@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that handles database connection failures using a try/catch/finally block. - With Python equivalent
+// Generate a Hyperlambda snippet that handles database connection failures using a try/catch/finally block.
 
 // Handles database connection failures inside a try/catch/finally block
 try
@@ -15,39 +15,3 @@ try
 
    // Logging completion
    log.info:Database connection attempt finished
-
-
-/*
-
-# Python equivalent
-import subprocess
-import logging
-
-logging.basicConfig(level=logging.INFO)
-
-try:
-    # Load the C# file content
-    with open('/etc/math.cs', 'r') as file:
-        code = file.read()
-    
-    # Compile the C# file into a DLL
-    compile_command = [
-        'csc', '/target:library', '/out:math.dll',
-        '/reference:netstandard.dll',
-        '/reference:System.Runtime.dll',
-        '/reference:System.Math.dll',
-        '/reference:System.Private.CoreLib.dll',
-        '/reference:magic.node.dll',
-        '/reference:magic.node.extensions.dll',
-        '/reference:magic.signals.contracts.dll',
-        '/etc/math.cs'
-    ]
-    subprocess.run(compile_command, check=True)
-    
-    # Load the compiled DLL dynamically
-    # Note: Dynamic loading of DLLs in Python would require a library like ctypes or clr (pythonnet)
-    logging.info("DLL compiled and loaded successfully")
-except Exception as e:
-    logging.error(e)
-
-*/

@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to return a Magic CAPTCHA challenge - With Python equivalent
+// Create a Hyperlambda script to return a Magic CAPTCHA challenge
 .arguments
 .type:public
 
@@ -16,26 +16,3 @@ cache.set:x:@strings.concat
 unwrap:x:+/*
 return
    result:x:@strings.concat
-
-
-/*
-
-# Python equivalent
-import secrets
-import string
-
-def generate_secure_random_text(min_length, max_length):
-    # Generate a random length within the specified range
-    length = secrets.choice(range(min_length, max_length + 1))
-    
-    # Generate a cryptographically secure random string
-    random_text = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(length))
-    
-    # Return the random text
-    return random_text
-
-# Example usage
-random_text = generate_secure_random_text(5, 10)
-print(f"Generated secure random text: {random_text}")
-
-*/

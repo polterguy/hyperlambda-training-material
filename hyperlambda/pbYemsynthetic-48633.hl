@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a CRUD create endpoint that inserts one record into the ml_requests table in the magic database, taking type, prompt, completion, and finish_reason, ensuring authentication and authorization for root roles. - With Python equivalent
+// Create a Hyperlambda script for a CRUD create endpoint that inserts one record into the ml_requests table in the magic database, taking type, prompt, completion, and finish_reason, ensuring authentication and authorization for root roles.
 .arguments
    type:string
    prompt:string
@@ -31,62 +31,3 @@ data.connect:[generic|magic]
    unwrap:x:+/*
    return
       id:x:@data.create
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def update_ml_request_record(database, record_id, update_data):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate the record ID
-    if record_id is None:
-        raise ValueError("Record ID is mandatory")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    set_clause = ", ".join([f"{key} = ?" for key in update_data.keys()])
-    query = f"UPDATE ml_requests SET {set_clause} WHERE id = ?"
-
-    # Execute the query
-    cursor.execute(query, tuple(update_data.values()) + (record_id,))
-    connection.commit()
-
-    # Get the number of affected rows
-    affected_rows = cursor.rowcount
-
-    # Close the connection
-    connection.close()
-
-    # Check if any record was updated
-    if affected_rows == 0:
-        return {"result": "Record not found", "status": 404}
-    else:
-        return {"affected": affected_rows, "status": 202}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-update_data = {
-    "type": "updated_type",
-    "prompt": "updated_prompt",
-    "completion": "updated_completion",
-    "finish_reason": "updated_reason",
-    "cached": 0
-}
-try:
-    result = update_ml_request_record("magic.db", 12345, update_data)
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

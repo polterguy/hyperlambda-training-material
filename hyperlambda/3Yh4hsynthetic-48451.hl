@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that counts products in the 'inventory_db' database from the 'products' table. - With Python equivalent
+// Write a Hyperlambda snippet that counts products in the 'inventory_db' database from the 'products' table.
 
 // Counts products in the "inventory_db" database from the "products" table.
 data.connect:inventory_db
@@ -13,37 +13,3 @@ data.connect:inventory_db
          count(*)
             as:count
       limit:long:1
-
-
-/*
-
-# Python equivalent
-import mysql.connector
-
-def count_customers_in_crm_db():
-    # Connect to the crm_db database
-    connection = mysql.connector.connect(
-        host='your_host',
-        user='your_user',
-        password='your_password',
-        database='crm_db'
-    )
-    
-    cursor = connection.cursor()
-    
-    # Query to count customers in the customers table
-    query = "SELECT COUNT(*) AS count FROM customers"
-    
-    cursor.execute(query)
-    customer_count = cursor.fetchone()[0]
-    
-    cursor.close()
-    connection.close()
-    
-    return customer_count
-
-# Example usage
-customer_count = count_customers_in_crm_db()
-print(customer_count)
-
-*/

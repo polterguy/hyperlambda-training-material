@@ -1,5 +1,5 @@
 
-// Delete one record from your Employee table in your chinook database. - With Python equivalent
+// Delete one record from your Employee table in your chinook database.
 .arguments
 
    // Primary key of record to delete, mandatory argument
@@ -37,49 +37,3 @@ data.connect:[generic|chinook]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_employee(employee_id):
-    """
-    This function deletes one record from the Employee table in the chinook database.
-    
-    :param employee_id: The ID of the employee to delete
-    :return: The number of affected rows
-    :raises ValueError: If employee_id is not provided
-    """
-    # Validate mandatory fields
-    if employee_id is None:
-        raise ValueError("EmployeeId is mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('chinook.db')
-    cursor = conn.cursor()
-    
-    # Delete the record
-    cursor.execute("DELETE FROM Employee WHERE EmployeeId = ?", (employee_id,))
-    affected_rows = cursor.rowcount
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Signal the deletion (placeholder for actual implementation)
-    signal_employee_deletion(employee_id)
-    
-    # Return the number of affected rows
-    return affected_rows
-
-def signal_employee_deletion(employee_id):
-    # Placeholder for signaling logic
-    print(f"Employee with ID {employee_id} deleted.")
-
-# Example usage
-# delete_employee(123)
-
-*/

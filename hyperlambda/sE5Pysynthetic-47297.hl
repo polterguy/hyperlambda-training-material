@@ -1,5 +1,5 @@
 
-// Deletes the specified cloudlet - With Python equivalent
+// Deletes the specified cloudlet
 .arguments
    cloudlet_name:string
 
@@ -47,46 +47,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def delete_cloudlet(cloudlet_name):
-    # Validate mandatory arguments
-    if not cloudlet_name:
-        raise ValueError("cloudlet_name is mandatory")
-
-    # Authorize the user
-    if not authorize_user(['root', 'gpt']):
-        raise PermissionError("Unauthorized access")
-
-    # Get the username
-    username = get_username()
-
-    # Delete the cloudlet
-    result = hub_cloudlets_delete(cloudlet_name, username)
-
-    return result
-
-def authorize_user(roles):
-    # Dummy function to authorize user
-    # Replace with actual implementation
-    return True
-
-def get_username():
-    # Dummy function to get username
-    # Replace with actual implementation
-    return "dummy_user"
-
-def hub_cloudlets_delete(cloudlet_name, username):
-    # Dummy function to delete cloudlet
-    # Replace with actual implementation
-    print(f"Cloudlet {cloudlet_name} deleted by {username}")
-    return {"status": "success"}
-
-# Example usage
-result = delete_cloudlet("example_cloudlet")
-print(result)
-
-*/

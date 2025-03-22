@@ -1,18 +1,6 @@
 
-// Example: Check if a string starts with a substring that is not at the beginning. - With Python equivalent
+// Example: Check if a string starts with a substring that is not at the beginning.
 
 // Returns false
 strings.starts-with:HelloWorld
    .:World
-
-
-/*
-
-# Python equivalent
-# Check if a string starts with a substring that is not at the beginning
-string = "HelloWorld"
-substring = "World"
-
-starts_with_substring = string.startswith(substring)
-
-*/

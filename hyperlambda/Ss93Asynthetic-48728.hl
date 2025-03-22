@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to install a specified module by executing all magic.startup Hyperlambda files inside it. - With Python equivalent
+// Write a Hyperlambda script to install a specified module by executing all magic.startup Hyperlambda files inside it.
 slots.create:magic.modules.install-module
 
    // Sanity checking invocation.
@@ -29,42 +29,3 @@ slots.create:magic.modules.install-module
 
             // Executing file.
             io.file.execute:x:@.dp/#
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def count_log_items(database, query):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Execute the query to count log items
-    cursor.execute(query)
-    result = cursor.fetchone()
-
-    # Close the connection
-    connection.close()
-
-    # Return the count
-    return {"count": result[0]}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-try:
-    query = "SELECT COUNT(*) FROM logs WHERE level = 'ERROR'"
-    result = count_log_items("logs.db", query)
-    print(result)
-except PermissionError as e:
-    print(e)
-
-*/

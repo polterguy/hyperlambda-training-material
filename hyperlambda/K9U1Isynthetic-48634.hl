@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the ml_requests table in the magic database, filtering which item to update with ID and updating type, prompt, completion, and finish_reason fields, ensuring authentication and authorization for root roles. - With Python equivalent
+// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the ml_requests table in the magic database, filtering which item to update with ID and updating type, prompt, completion, and finish_reason fields, ensuring authentication and authorization for root roles.
 .arguments
    id:long
    type:string
@@ -48,66 +48,3 @@ data.connect:[generic|magic]
    unwrap:x:+/*
    return
       affected:x:@data.update
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def create_ml_training_snippet(database, snippet_data):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Simulate checking if snippet creation is allowed
-    if not can_create_snippet():
-        raise PermissionError("Not authorized to create snippet")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    columns = ", ".join(snippet_data.keys())
-    placeholders = ", ".join(["?" for _ in snippet_data])
-    query = f"INSERT INTO ml_training_snippets ({columns}) VALUES ({placeholders})"
-
-    # Execute the query
-    cursor.execute(query, tuple(snippet_data.values()))
-    connection.commit()
-
-    # Get the ID of the newly created record
-    new_id = cursor.lastrowid
-
-    # Close the connection
-    connection.close()
-
-    # Return the ID of the new record
-    return {"id": new_id, "status": 201}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-def can_create_snippet():
-    # Simulate checking if snippet creation is allowed
-    return True
-
-# Example usage
-snippet_data = {
-    "pushed": 1627849200,
-    "uri": "example_uri",
-    "prompt": "example_prompt",
-    "completion": "example_completion",
-    "meta": "example_meta",
-    "type": "example_type",
-    "cached": 1
-}
-try:
-    result = create_ml_training_snippet("magic.db", snippet_data)
-    print(result)
-except PermissionError as e:
-    print(e)
-
-*/

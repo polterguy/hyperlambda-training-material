@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that determines if [.toggle] is true and executes [.lambda]. - With Python equivalent
+// Write a Hyperlambda snippet that determines if [.toggle] is true and executes [.lambda].
 
 // Determines if [.toggle] is true and executes [.lambda].
 .toggle:bool:true
@@ -14,24 +14,3 @@ else
 
    // Executes when [.toggle] is false.
    log.info:[.toggle] is off
-
-
-/*
-
-# Python equivalent
-import logging
-
-def trigger_conditional_lambda_execution():
-    logging.basicConfig(level=logging.INFO)
-    
-    switch = True
-    
-    if switch:
-        logging.info("[.switch] is enabled")
-    else:
-        logging.info("[.switch] is disabled")
-
-# Example usage
-trigger_conditional_lambda_execution()
-
-*/

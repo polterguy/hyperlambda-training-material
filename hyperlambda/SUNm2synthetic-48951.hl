@@ -1,5 +1,5 @@
 
-// Inserts training data into database. - With Python equivalent
+// Inserts training data into database.
 .arguments
 
    // Mandatory prompt used to generate specified Hyperlambda
@@ -24,51 +24,3 @@ data.connect:fine-tune
 // Returning success.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def insert_training_data(prompt, file_no):
-    """
-    This function inserts training data into the database.
-    
-    :param prompt: The prompt for the training data
-    :param file_no: The file number to retrieve the hyperlambda code from
-    :return: A dictionary indicating success
-    :raises ValueError: If prompt or file_no is not provided
-    """
-    # Validate mandatory fields
-    if not prompt:
-        raise ValueError("Prompt is mandatory")
-    if file_no is None:
-        raise ValueError("File number is mandatory")
-    
-    # Retrieve hyperlambda code from the specified file
-    hyperlambda_code = create_training_data(file_no)["hyperlambda"]
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('fine-tune.db')
-    cursor = conn.cursor()
-    
-    # Insert the training data
-    cursor.execute("INSERT INTO hyperlambda (prompt, code) VALUES (?, ?)", (prompt, hyperlambda_code))
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return success result
-    return {"result": "success"}
-
-def create_training_data(file_no):
-    # Placeholder for the function that retrieves hyperlambda code
-    return {"hyperlambda": "example_hyperlambda_code"}
-
-# Example usage
-# insert_training_data("Example prompt", 0)
-
-*/

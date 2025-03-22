@@ -1,17 +1,5 @@
 
-// Example: Get the length of a numeric string. - With Python equivalent
+// Example: Get the length of a numeric string.
 
 // Returns 5
 strings.length:12345
-
-
-/*
-
-# Python equivalent
-# String with multi-byte characters
-string = "你好"
-
-# Get the length of the string
-length_of_string = len(string)
-
-*/

@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to import a specified CSV file into a specified database. - With Python equivalent
+// Write a Hyperlambda script to import a specified CSV file into a specified database.
 .arguments
    databaseType:string
    connectionString:string
@@ -34,68 +34,3 @@ data.connect:x:@strings.concat
       Content-Disposition:x:@strings.concat
       Access-Control-Expose-Headers:Content-Disposition
    return:x:@lambda2csv
-
-
-/*
-
-# Python equivalent
-import csv
-import sqlite3
-from io import StringIO
-
-def import_csv_to_database(database_type, connection_string, database_name, table_name):
-    """
-    This function imports a specified CSV file into a specified database.
-    
-    :param database_type: The type of the database
-    :param connection_string: The connection string for the database
-    :param database_name: The name of the database
-    :param table_name: The name of the table to import into
-    :raises ValueError: If any validation fails
-    :return: CSV data as a string
-    """
-    # Validate mandatory fields
-    if not all([database_type, connection_string, database_name, table_name]):
-        raise ValueError("All arguments are mandatory")
-    
-    # Connect to the database
-    conn = connect_to_database(database_type, connection_string, database_name)
-    
-    # Read data from the table
-    data = read_table_data(conn, table_name)
-    
-    # Convert data to CSV
-    csv_data = convert_to_csv(data)
-    
-    # Set response headers
-    set_response_headers(table_name)
-    
-    # Return the CSV data
-    return csv_data
-
-def connect_to_database(database_type, connection_string, database_name):
-    # Placeholder for database connection logic
-    # Assuming SQLite for simplicity
-    return sqlite3.connect(f"{connection_string}/{database_name}.db")
-
-def read_table_data(conn, table_name):
-    # Read data from the table
-    cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM {table_name}")
-    return cursor.fetchall()
-
-def convert_to_csv(data):
-    # Convert data to CSV format
-    output = StringIO()
-    writer = csv.writer(output)
-    writer.writerows(data)
-    return output.getvalue()
-
-def set_response_headers(table_name):
-    # Placeholder for setting response headers
-    print(f"Content-Disposition: attachment; filename=\"{table_name}.csv\"")
-
-# Example usage
-# import_csv_to_database("sqlite", "path/to/connection", "my_database", "my_table")
-
-*/

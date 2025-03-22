@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script that returns the manifests for all installed apps, ensuring the user is authorized. - With Python equivalent
+// Create a Hyperlambda script that returns the manifests for all installed apps, ensuring the user is authorized.
 .type:internal
 
 // Ensures user is authorized to access endpoint.
@@ -32,40 +32,3 @@ for-each:x:@io.folder.list/*
 
 // Returning result to caller.
 return
-
-
-/*
-
-# Python equivalent
-def get_file_arguments(file_path):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Load the specified file
-    with open(file_path, 'r') as file:
-        file_content = file.read()
-
-    # Simulate processing the file content to extract arguments
-    arguments = extract_arguments_from_content(file_content)
-
-    # Return the arguments
-    return arguments
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-def extract_arguments_from_content(content):
-    # Simulate extracting arguments from the file content
-    # This is a placeholder implementation
-    return ["arg1", "arg2", "arg3"]
-
-# Example usage
-try:
-    arguments = get_file_arguments("example_file.hl")
-    print(arguments)
-except PermissionError as e:
-    print(e)
-
-*/

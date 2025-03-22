@@ -1,5 +1,5 @@
 
-// Define slot 'foo' with an initial return value - With Python equivalent
+// Define slot 'foo' with an initial return value
 slots.create:foo
    return-value:First version
 
@@ -12,27 +12,3 @@ slots.create:foo
 
 // Invoke 'foo' again (now yields "Second version")
 signal:foo
-
-
-/*
-
-# Python equivalent
-class SlotMachine:
-    def __init__(self):
-        self.slots = {}
-
-    def create_slot(self, name, return_value):
-        self.slots[name] = return_value
-
-    def signal(self, name):
-        return self.slots.get(name, "Slot not found")
-
-# Example usage
-slot_machine = SlotMachine()
-slot_machine.create_slot('foo', 'First version')
-print(slot_machine.signal('foo'))  # Output: "First version"
-
-slot_machine.create_slot('foo', 'Second version')
-print(slot_machine.signal('foo'))  # Output: "Second version"
-
-*/

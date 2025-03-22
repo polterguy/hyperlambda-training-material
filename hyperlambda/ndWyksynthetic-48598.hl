@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda endpoint to return the arguments required by specified Hyperlambda code. - With Python equivalent
+// Create a Hyperlambda endpoint to return the arguments required by specified Hyperlambda code.
 .arguments
    hyperlambda:string
 .type:internal
@@ -25,36 +25,3 @@ for-each:x:@hyper2lambda/*/.arguments/*
 
 // Returning arguments Hyperlambda requires to caller.
 return-nodes:x:@hyper2lambda/*/.arguments/*
-
-
-/*
-
-# Python equivalent
-def count_tasks(filter=None):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Simulate counting tasks with an optional filter
-    task_count = get_task_count(filter)
-
-    # Return the task count
-    return {"count": task_count}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-def get_task_count(filter):
-    # Simulate counting tasks based on a filter
-    # This is a placeholder implementation
-    return 42 if filter is None else 10
-
-# Example usage
-try:
-    task_count = count_tasks("example_filter")
-    print(f"Task count: {task_count['count']}")
-except PermissionError as e:
-    print(e)
-
-*/

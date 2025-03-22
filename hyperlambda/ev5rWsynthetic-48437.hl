@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that connects to 'auth_db' and fetches user accounts. - With Python equivalent
+// Create a Hyperlambda snippet that connects to 'auth_db' and fetches user accounts.
 
 // Connects to "auth_db" and fetches user accounts.
 .result
@@ -9,38 +9,3 @@ data.connect:auth_db
       database-type:pgsql
    add:x:@.result
       get-nodes:x:@data.select/*
-
-
-/*
-
-# Python equivalent
-import pyodbc
-
-def retrieve_error_logs():
-    # Connect to the logging_db database
-    connection = pyodbc.connect(
-        'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=your_server;'
-        'DATABASE=logging_db;'
-        'UID=your_user;'
-        'PWD=your_password'
-    )
-    
-    cursor = connection.cursor()
-    
-    # Query to retrieve error logs from the error_logs table
-    query = "SELECT TOP 20 * FROM error_logs WHERE severity > 3 ORDER BY created_at DESC"
-    
-    cursor.execute(query)
-    error_logs = cursor.fetchall()
-    
-    cursor.close()
-    connection.close()
-    
-    return error_logs
-
-# Example usage
-error_logs = retrieve_error_logs()
-print(error_logs)
-
-*/

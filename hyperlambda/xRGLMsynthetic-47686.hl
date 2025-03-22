@@ -2,7 +2,7 @@
 /*
  * Gets a company
  * 
- * Will return the company with the specified name. - With Python equivalent
+ * Will return the company with the specified name.
  */
 .arguments
    query:string
@@ -37,51 +37,3 @@ data.connect:[finovo|finovo]
 
    // Returning result to caller.
    return-nodes:x:@data.read/*/*
-
-
-/*
-
-# Python equivalent
-import psycopg2
-
-def get_company(query):
-    # Validate mandatory fields
-    if not query:
-        raise ValueError("query is mandatory")
-
-    # Connect to the finovo database
-    conn = psycopg2.connect(
-        dbname="finovo",
-        user="your_username",
-        password="your_password",
-        host="localhost"
-    )
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the select statement
-        query_string = """
-        SELECT org_number, company_name
-        FROM basic
-        WHERE legalgroup_code = 'AB' AND company_name ILIKE %s
-        LIMIT 1
-        """
-        cursor.execute(query_string, (f"%{query}%",))
-        result = cursor.fetchone()
-
-        # Check if no results were found
-        if result is None:
-            return {"result": "No results were found"}
-
-        # Return the result
-        return {"org_number": result[0], "company_name": result[1]}
-    finally:
-        cursor.close()
-        conn.close()
-
-# Example usage
-query = "example_company"
-company = get_company(query)
-print(company)
-
-*/

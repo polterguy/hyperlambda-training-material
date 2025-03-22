@@ -1,5 +1,5 @@
 
-// Returns all cloudlets in the system. - With Python equivalent
+// Returns all cloudlets in the system.
 .arguments
    name:string
    limit:int
@@ -40,45 +40,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def get_cloudlets(name=None, limit=10, offset=0):
-    """
-    This function returns all cloudlets in the system.
-    
-    :param name: The name of the cloudlet to filter by
-    :param limit: The maximum number of cloudlets to return
-    :param offset: The number of cloudlets to skip
-    :return: A list of cloudlets
-    """
-    # Authorize the user
-    authorize_user(["root", "gpt"])
-    
-    # Get the username
-    username = get_username()
-    
-    # Retrieve cloudlets
-    cloudlets = retrieve_cloudlets(username, name, limit, offset)
-    
-    # Return the cloudlets
-    return cloudlets
-
-def authorize_user(roles):
-    # Placeholder for user authorization logic
-    pass
-
-def get_username():
-    # Placeholder for getting the username
-    return "example_username"
-
-def retrieve_cloudlets(username, name, limit, offset):
-    # Placeholder for retrieving cloudlets
-    return [{"cloudlet": "example_cloudlet"}]
-
-# Example usage
-# get_cloudlets("example_name", 10, 0)
-
-*/

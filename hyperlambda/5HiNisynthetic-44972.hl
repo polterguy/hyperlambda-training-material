@@ -1,5 +1,5 @@
 
-// Handling a signal with arguments - With Python equivalent
+// Handling a signal with arguments
 .data
    first-name:John
    last-name:Doe
@@ -8,21 +8,3 @@ execute:user.full-name
    last-name:x:@.data/*/last-name
 
 // Above the expressions will be evaluated passing in the values of [first-name] and [last-name] to the slot
-
-
-/*
-
-# Python equivalent
-# Handling a signal with arguments
-data = {
-    "first-name": "John",
-    "last-name": "Doe"
-}
-
-def user_full_name(first_name, last_name):
-    return f"{first_name} {last_name}"
-
-# Execute the function with arguments
-full_name = user_full_name(data["first-name"], data["last-name"])
-
-*/

@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to download a folder from the server by packaging it into a zip file. - With Python equivalent
+// Write a Hyperlambda script to download a folder from the server by packaging it into a zip file.
 .arguments
    folder:string
 .type:internal
@@ -42,43 +42,3 @@ add:x:+
    get-nodes:x:@signal/*
 io.content.zip-stream
 return-value:x:-
-
-
-/*
-
-# Python equivalent
-from flask import Flask, send_file, Response
-
-app = Flask(__name__)
-
-@app.route('/download-file', methods=['GET'])
-def download_file():
-    # Get the access token and file path from request arguments
-    access_token = request.args.get('access_token')
-    file_path = request.args.get('file')
-
-    # Validate the access token and file path
-    if not access_token:
-        return Response("Access token is mandatory", status=400)
-    if not file_path:
-        return Response("File path is mandatory", status=400)
-
-    # Simulate verifying the access token
-    if not verify_access_token(access_token):
-        return Response("Invalid access token", status=403)
-
-    # Get the filename from the file path
-    filename = os.path.basename(file_path)
-
-    # Send the file as a response with appropriate headers
-    return send_file(file_path, as_attachment=True, attachment_filename=filename, mimetype='application/octet-stream')
-
-def verify_access_token(token):
-    # Simulate access token verification
-    return token == "valid_token"
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

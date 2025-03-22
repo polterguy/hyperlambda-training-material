@@ -1,21 +1,3 @@
 
-// Example: Invoke a slot - With Python equivalent
+// Example: Invoke a slot
 signal:foo
-
-
-/*
-
-# Python equivalent
-# Example: Invoke a function
-
-# Define a function
-def foo():
-    return 57
-
-# Invoke the function
-result = foo()
-
-# Example usage
-# result will be 57
-
-*/

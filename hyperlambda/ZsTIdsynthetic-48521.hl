@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that evaluates payment methods using a switch case with a default option. - With Python equivalent
+// Generate a Hyperlambda snippet that evaluates payment methods using a switch case with a default option.
 
 // Switch case comparison for payment methods.
 .payment_method:PayPal
@@ -25,34 +25,3 @@ switch:x:@.payment_method
       // If the payment method is unknown.
       set-value:x:@.result
          .:Unknown payment method
-
-
-/*
-
-# Python equivalent
-import logging
-import threading
-import time
-
-logging.basicConfig(level=logging.INFO)
-
-def task1():
-    logging.info("Logging task 1 started")
-    time.sleep(0.5)
-    logging.info("Logging task 1 completed")
-
-def task2():
-    logging.info("Logging task 2 started")
-    time.sleep(1)
-    logging.info("Logging task 2 completed")
-
-thread1 = threading.Thread(target=task1)
-thread2 = threading.Thread(target=task2)
-
-thread1.start()
-thread2.start()
-
-thread1.join()
-thread2.join()
-
-*/

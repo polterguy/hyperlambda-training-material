@@ -1,24 +1,3 @@
 
-// Lists all cookies in current request - With Python equivalent - With Python equivalent
+// Lists all cookies in current request
 request.cookies.list
-
-/*
- * # Python equivalent
- * # Lists all cookies in current request
- * from flask import request
- * 
- * def list_cookies():
- * return request.cookies
- * 
- * # Example usage
- * # cookies = list_cookies()
- */
-
-
-/*
-
-# Python equivalent
-# Lists all cookies in the current request
-cookies_list = request.cookies.items()
-
-*/

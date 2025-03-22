@@ -1,23 +1,8 @@
 
-// Example: Extract a substring given a start index and length. - With Python equivalent
+// Example: Extract a substring given a start index and length.
 .text:HelloWorld
 strings.substring:x:@.text
    .:5
    .:3
 
 // Result: "Wor"
-
-
-/*
-
-# Python equivalent
-# Example: Extract a substring given a start index and length.
-text = "HelloWorld"
-start_index = 5
-length = 3
-substring = text[start_index:start_index + length]
-
-# Example usage
-# substring will be "Wor"
-
-*/

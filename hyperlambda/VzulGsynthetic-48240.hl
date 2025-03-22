@@ -1,5 +1,5 @@
 
-// This snippet uses the '[x|y]' iterator to filter by multiple node names. - With Python equivalent
+// This snippet uses the '[x|y]' iterator to filter by multiple node names.
 .set
    apple:red
    banana:yellow
@@ -10,26 +10,3 @@ for-each:x:@.set/*/[apple|cherry]
       :picked
 
 // The expression @.set/*/[apple|cherry] selects all children of .set whose name is "apple" or "cherry". The loop sets those nodes' values to "picked".
-
-
-/*
-
-# Python equivalent
-def mark_selected_fruits(fruit_set):
-    # Iterate through the set and mark selected fruits as 'picked'
-    for key in fruit_set.keys():
-        if key in ['apple', 'cherry']:
-            fruit_set[key] = 'picked'
-    return fruit_set
-
-# Example usage
-fruit_set = {
-    'apple': 'red',
-    'banana': 'yellow',
-    'cherry': 'red',
-    'date': 'brown'
-}
-marked_fruits = mark_selected_fruits(fruit_set)
-print(marked_fruits)  # Output: {'apple': 'picked', 'banana': 'yellow', 'cherry': 'picked', 'date': 'brown'}
-
-*/

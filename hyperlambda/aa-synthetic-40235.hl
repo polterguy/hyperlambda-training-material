@@ -1,21 +1,8 @@
 
-// Example: Concatenate a string and a number (the number is converted to a string). - With Python equivalent
+// Example: Concatenate a string and a number (the number is converted to a string).
 .number:int:42
 strings.concat
    .:"Answer: "
    get-value:x:@.number
 
 // Result: "Answer: 42"
-
-
-/*
-
-# Python equivalent
-# Example: Concatenate a string and a number (the number is converted to a string).
-number = 42
-concatenated_string = "Answer: " + str(number)
-
-# Example usage
-# concatenated_string will be "Answer: 42"
-
-*/

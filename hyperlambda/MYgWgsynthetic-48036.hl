@@ -1,5 +1,5 @@
 
-// Hyperlambda [if] with numeric comparison - With Python equivalent
+// Hyperlambda [if] with numeric comparison
 .temperature:int:31
 .weather-status
 if
@@ -18,24 +18,3 @@ if
  * weatherStatus = "hot";
  * }
  */
-
-
-/*
-
-# Python equivalent
-def check_weather_status(temperature):
-    # Initialize the weather status variable
-    weather_status = None
-
-    # Numeric comparison logic
-    if temperature > 30:
-        weather_status = "hot"
-
-    return weather_status
-
-# Example usage
-temperature = 31
-weather_status = check_weather_status(temperature)
-print(weather_status)  # Output: "hot"
-
-*/

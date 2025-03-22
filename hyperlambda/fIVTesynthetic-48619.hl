@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to update one record in a specified table in a database with optional filtering arguments. - With Python equivalent
+// Create a Hyperlambda script to update one record in a specified table in a database with optional filtering arguments.
 .arguments
 
 // Meta data description for endpoint
@@ -36,49 +36,3 @@ data.connect:{database}
    unwrap:x:+/*
    return
       affected:x:@data.update
-
-
-/*
-
-# Python equivalent
-def delete_cache_item(cache_id):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate the cache ID
-    if not cache_id:
-        raise ValueError("Cache ID is mandatory")
-
-    # Check if the cache ID ends with '*'
-    if cache_id.endswith('*'):
-        # Handle multiple cache item deletions
-        prefix = cache_id.rstrip('*')
-        clear_cache_with_prefix(prefix)
-    else:
-        # Handle single cache item deletion
-        clear_cache_item(cache_id)
-
-    # Return success result
-    return {"result": "success"}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-def clear_cache_with_prefix(prefix):
-    # Simulate clearing cache items with a specific prefix
-    print(f"Clearing cache items with prefix: {prefix}")
-
-def clear_cache_item(cache_id):
-    # Simulate clearing a single cache item
-    print(f"Clearing cache item with ID: {cache_id}")
-
-# Example usage
-try:
-    result = delete_cache_item("example_cache*")
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

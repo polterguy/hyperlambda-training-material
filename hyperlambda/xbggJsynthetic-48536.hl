@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that formats a full name and age. - With Python equivalent
+// Generate a Hyperlambda snippet that formats a full name and age.
 
 // Hyperlambda file that takes 3 arguments and formats a greeting message.
 .arguments
@@ -15,17 +15,3 @@ strings.concat
    .:" years old."
 yield
    result:x:@strings.concat
-
-
-/*
-
-# Python equivalent
-def format_user_profile(username, role, country):
-    result = f"{username} is a {role} from {country}"
-    return result
-
-# Example usage
-formatted_profile = format_user_profile("Alice", "Developer", "USA")
-print(formatted_profile)
-
-*/

@@ -1,17 +1,5 @@
 
-// Example: Convert a string with letters and numbers to lowercase. - With Python equivalent
+// Example: Convert a string with letters and numbers to lowercase.
 
 // Result: "mixedcase123"
 strings.to-lower:MixedCase123
-
-
-/*
-
-# Python equivalent
-# Variable for the input text
-text = "LOWER ME"
-
-# Convert the text to lowercase
-lowercase_text = text.lower()
-
-*/

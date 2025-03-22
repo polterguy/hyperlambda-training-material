@@ -1,5 +1,5 @@
 
-// Hyperlambda [if] with not operator - With Python equivalent
+// Hyperlambda [if] with not operator
 .is-weekend:bool:false
 .schedule
 if
@@ -19,24 +19,3 @@ if
  * schedule = "Work day";
  * }
  */
-
-
-/*
-
-# Python equivalent
-def determine_schedule(is_weekend):
-    # Initialize the schedule variable
-    schedule = None
-
-    # Not operator logic
-    if not is_weekend:
-        schedule = "Work day"
-
-    return schedule
-
-# Example usage
-is_weekend = False
-schedule = determine_schedule(is_weekend)
-print(schedule)  # Output: "Work day"
-
-*/

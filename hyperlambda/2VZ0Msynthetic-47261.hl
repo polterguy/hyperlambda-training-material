@@ -1,5 +1,5 @@
 
-// Delete one record from your category table in your sakila database without authorization. Log invocation. - With Python equivalent
+// Delete one record from your category table in your sakila database without authorization. Log invocation.
 .arguments
 
    // Primary key of record to delete, mandatory argument
@@ -43,52 +43,3 @@ data.connect:[generic|sakila]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_category_record(category_id):
-    # Log the invocation
-    username = get_auth_ticket()
-    log_info("sakila.category entry deleted", username=username, arguments={"category_id": category_id})
-
-    # Validate mandatory fields
-    if category_id is None:
-        raise ValueError("category_id is mandatory")
-
-    # Connect to the sakila database
-    conn = sqlite3.connect('sakila.db')
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the delete statement
-        cursor.execute("DELETE FROM category WHERE category_id = ?", (category_id,))
-        conn.commit()
-
-        # Signal the deletion
-        signal_category_deletion(category_id)
-
-        # Return the number of affected rows
-        return cursor.rowcount
-    finally:
-        conn.close()
-
-def get_auth_ticket():
-    # Dummy function to get auth ticket
-    # Replace with actual implementation
-    return "dummy_user"
-
-def log_info(message, **kwargs):
-    # Dummy function to log information
-    # Replace with actual implementation
-    print(message, kwargs)
-
-def signal_category_deletion(category_id):
-    # Dummy function to signal category deletion
-    # Replace with actual implementation
-    print(f"Signal: sakila.category.delete for category_id {category_id}")
-
-*/

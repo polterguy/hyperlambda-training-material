@@ -1,5 +1,5 @@
 
-// This snippet uses the '=xxx' iterator to filter nodes by their value. - With Python equivalent
+// This snippet uses the '=xxx' iterator to filter nodes by their value.
 .list
    item1:match
    item2:no
@@ -9,25 +9,3 @@ for-each:x:@.list/*/=match
       :found
 
 // The expression @.list/*/=match finds all children of .list whose value equals "match" (item1 and item3). The loop sets those nodes' values to "found".
-
-
-/*
-
-# Python equivalent
-def mark_matching_items(item_list):
-    # Iterate through the list and mark items with value 'match' as 'found'
-    for key, value in item_list.items():
-        if value == 'match':
-            item_list[key] = 'found'
-    return item_list
-
-# Example usage
-item_list = {
-    'item1': 'match',
-    'item2': 'no',
-    'item3': 'match'
-}
-marked_items = mark_matching_items(item_list)
-print(marked_items)  # Output: {'item1': 'found', 'item2': 'no', 'item3': 'found'}
-
-*/

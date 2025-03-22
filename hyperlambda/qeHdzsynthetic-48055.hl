@@ -1,5 +1,5 @@
 
-// Hyperlambda [set-value] and [if] - With Python equivalent
+// Hyperlambda [set-value] and [if]
 .condition:yes
 .result
 if
@@ -18,24 +18,3 @@ if:bool:true
    .lambda
       set-value:x:@.result
          .:Condition Met
-
-
-/*
-
-# Python equivalent
-def check_condition(condition):
-    # Initialize the result variable
-    result = None
-
-    # If condition is met, set the result
-    if condition == "yes":
-        result = "Condition Met"
-
-    return result
-
-# Example usage
-condition = "yes"
-result = check_condition(condition)
-print(result)  # Output: "Condition Met"
-
-*/

@@ -1,5 +1,5 @@
 
-// Provide a Hyperlambda example where employees are counted in the 'hr_db' database from the 'employees' table. - With Python equivalent
+// Provide a Hyperlambda example where employees are counted in the 'hr_db' database from the 'employees' table.
 
 // Counts employees in the "hr_db" database from the "employees" table.
 data.connect:hr_db
@@ -13,32 +13,3 @@ data.connect:hr_db
          count(*)
             as:count
       limit:long:1
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def count_messages_in_messaging_db():
-    # Connect to the messaging_db database
-    connection = sqlite3.connect('messaging_db.sqlite')
-    
-    cursor = connection.cursor()
-    
-    # Query to count messages in the chat_logs table
-    query = "SELECT COUNT(*) AS count FROM chat_logs"
-    
-    cursor.execute(query)
-    message_count = cursor.fetchone()[0]
-    
-    cursor.close()
-    connection.close()
-    
-    return message_count
-
-# Example usage
-message_count = count_messages_in_messaging_db()
-print(message_count)
-
-*/

@@ -1,26 +1,6 @@
 
-// Example: Pass arguments to the inline Hyperlambda code. - With Python equivalent
-strings.mixin:@"2 + val equals {{
-math.add
-   .:int:2
-   get-value:x:@.arguments/*/val
-return:x:-
-}}"
+// Example: Pass arguments to the inline Hyperlambda code.
+strings.mixin:"2 + val equals {{\nmath.add\n   .:int:2\n   get-value:x:@.arguments/*/val\nreturn:x:-\n}}"
    val:int:5
 
 // Result: "2 + val equals 7"
-
-
-/*
-
-# Python equivalent
-# Phrase with punctuation
-phrase = "Hello, World!"
-
-# Allowed characters (letters and spaces)
-allowed_characters = set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ")
-
-# Remove characters not in the allowed set
-cleaned_phrase = ''.join(char for char in phrase if char in allowed_characters)
-
-*/

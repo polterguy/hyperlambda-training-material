@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that summarizes odd numbers from 1 to 19. - With Python equivalent
+// Create a Hyperlambda snippet that summarizes odd numbers from 1 to 19.
 
 // Summarizing odd numbers from 1 to 19
 .no:int:1
@@ -18,21 +18,3 @@ while
       // Incrementing by 2 to keep it odd.
       math.increment:x:@.no
       math.increment:x:@.no
-
-
-/*
-
-# Python equivalent
-def sum_numbers_while_below_100():
-    no = 0
-    total_sum = 0
-    while total_sum < 100:
-        total_sum += no
-        no += 1
-    return total_sum
-
-# Example usage
-sum_below_100 = sum_numbers_while_below_100()
-print(sum_below_100)
-
-*/

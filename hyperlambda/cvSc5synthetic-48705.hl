@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda action to replace occurrences of 'what' in a 'source' string with 'with'. Return the result. - With Python equivalent
+// Create a Hyperlambda action to replace occurrences of 'what' in a 'source' string with 'with'. Return the result.
 .arguments
    source
       type:string
@@ -20,52 +20,3 @@ strings.replace:x:@.arguments/*/source
 // Returning result to caller.
 yield
    result:x:@strings.replace
-
-
-/*
-
-# Python equivalent
-import os
-
-def get_installed_app_manifests():
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # List all directories in the /modules/ folder
-    modules_path = "/modules/"
-    manifests = []
-
-    for module in os.listdir(modules_path):
-        manifest_path = os.path.join(modules_path, module, "manifest.hl")
-        
-        # Check if the manifest file exists
-        if os.path.exists(manifest_path):
-            # Load and process the manifest file
-            with open(manifest_path, 'r') as file:
-                manifest_content = file.read()
-                # Simulate processing the manifest content
-                manifest_data = process_manifest_content(manifest_content)
-                manifests.append(manifest_data)
-
-    # Return the list of manifests
-    return manifests
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-def process_manifest_content(content):
-    # Simulate processing the manifest content
-    # This is a placeholder implementation
-    return {"manifest": content}
-
-# Example usage
-try:
-    manifests = get_installed_app_manifests()
-    for manifest in manifests:
-        print(manifest)
-except PermissionError as e:
-    print(e)
-
-*/

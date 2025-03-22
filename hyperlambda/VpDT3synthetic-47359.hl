@@ -1,5 +1,5 @@
 
-// Mark a specific order as shipped - With Python equivalent
+// Mark a specific order as shipped
 data.connect:shopDB
    data.update
       table:orders
@@ -12,37 +12,3 @@ data.connect:shopDB
             order_id.eq:12345
 
    // Without a WHERE clause, all orders would be updated!
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def mark_order_as_shipped(database_name, order_id):
-    # Connect to the specified database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the update statement
-        query = """
-        UPDATE orders
-        SET status = 'shipped'
-        WHERE order_id = ?
-        """
-        cursor.execute(query, (order_id,))
-        conn.commit()
-
-        # Return the number of affected rows
-        return cursor.rowcount
-    finally:
-        conn.close()
-
-# Example usage
-database_name = 'shopDB.db'
-order_id = 12345
-affected_rows = mark_order_as_shipped(database_name, order_id)
-print(f"Number of orders marked as shipped: {affected_rows}")
-
-*/

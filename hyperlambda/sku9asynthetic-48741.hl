@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to delete a specified folder on the server, including uninstalling a module if necessary. - With Python equivalent
+// Write a Hyperlambda script to delete a specified folder on the server, including uninstalling a module if necessary.
 .arguments
    folder:string
 .type:internal
@@ -42,47 +42,3 @@ io.folder.delete:x:@.arguments/*/folder
 // Returning success to caller.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-import os
-
-def list_files_recursively(folder_path, display_hidden=True, display_system=False):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # List all files recursively from the specified folder
-    files_list = []
-    for root, dirs, files in os.walk(folder_path):
-        for file in files:
-            if not display_hidden and file.startswith('.'):  
-                continue
-            if not display_system and is_system_file(file):
-                continue
-            file_path = os.path.join(root, file)
-            files_list.append(file_path)
-
-    # Return the list of files
-    return files_list
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-def is_system_file(file_name):
-    # Simulate checking if a file is a system file
-    # This is a placeholder implementation
-    return file_name.startswith('sys_')
-
-# Example usage
-try:
-    files = list_files_recursively("/path/to/folder", display_hidden=True, display_system=False)
-    for file in files:
-        print(file)
-except PermissionError as e:
-    print(e)
-
-*/

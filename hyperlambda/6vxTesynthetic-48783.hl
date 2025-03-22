@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return the initial questionnaire for a specified type. - With Python equivalent
+// Write a Hyperlambda script to return the initial questionnaire for a specified type.
 .arguments
    type:string
 
@@ -28,47 +28,3 @@ data.connect:[generic|magic]
          remove-nodes:x:@data.connect/*/return/*/questions
    return
       questions
-
-
-/*
-
-# Python equivalent
-def get_initial_questionnaire(questionnaire_type):
-    """
-    This function returns the initial questionnaire for a specified type.
-    
-    :param questionnaire_type: The type of the questionnaire
-    :return: A list of questions for the specified type
-    """
-    # Ensure type is provided
-    if not questionnaire_type:
-        raise ValueError("Type is mandatory")
-    
-    # Connect to the database and execute queries
-    questions = execute_query_1(questionnaire_type)
-    questionnaire_details = execute_query_2(questionnaire_type)
-    
-    # Combine results
-    combined_results = combine_results(questions, questionnaire_details)
-    
-    # Return questions if they exist
-    if not combined_results.get('questions'):
-        combined_results.pop('questions', None)
-    
-    return combined_results
-
-def execute_query_1(questionnaire_type):
-    # Placeholder for executing the first SQL query
-    # This would return a list of questions
-    return []
-
-def execute_query_2(questionnaire_type):
-    # Placeholder for executing the second SQL query
-    # This would return questionnaire details
-    return []
-
-def combine_results(questions, questionnaire_details):
-    # Combine the results of the two queries
-    return {"questions": questions + questionnaire_details}
-
-*/

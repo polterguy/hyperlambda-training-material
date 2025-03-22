@@ -1,5 +1,5 @@
 
-// Creates a scatter chart. - With Python equivalent
+// Creates a scatter chart.
 image.chart:scatter
    filename:/scatter.png
    width:400
@@ -19,27 +19,3 @@ image.chart:scatter
    line-width:5
    marker-size:15
    color:#55aa5555
-
-
-/*
-
-# Python equivalent
-import matplotlib.pyplot as plt
-
-def create_scatter_chart(filename):
-    # Data for the scatter chart
-    data_x = [1, 2, 3, 4, 5]
-    data_y = [1, 4, 9, 16, 25]
-
-    # Create a scatter chart
-    plt.figure(figsize=(4, 3))
-    plt.scatter(data_x, data_y, s=15**2, c='#55aa55', alpha=0.33, linewidths=5)
-
-    # Save the chart as an image file
-    plt.savefig(filename)
-    plt.close()
-
-# Example usage
-create_scatter_chart('/scatter.png')
-
-*/

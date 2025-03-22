@@ -1,18 +1,3 @@
 
-// Load file - With Python equivalent
+// Load file
 io.file.load:/misc/README.md
-
-
-/*
-
-# Python equivalent
-# Load file
-file_path = "/misc/README.md"
-
-with open(file_path, 'r') as file:
-    file_content = file.read()
-
-# Example usage
-# file_content will contain the contents of the file "/misc/README.md"
-
-*/

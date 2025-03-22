@@ -1,5 +1,5 @@
 
-// Loops for 5 iterations, adding a static node each iteration - With Python equivalent
+// Loops for 5 iterations, adding a static node each iteration
 .no:int:0
 .res
 while
@@ -11,28 +11,3 @@ while
          .
             foo
       math.increment:x:@.no
-
-
-/*
-
-# Python equivalent
-def loop_iterations():
-    # Initialize the counter and result list
-    no = 0
-    res = []
-
-    # Loop for 5 iterations
-    while no < 5:
-        # Add a static node to the result list
-        res.append({'foo': None})
-
-        # Increment the counter
-        no += 1
-
-    return res
-
-# Example usage
-result = loop_iterations()
-print(result)  # Output: [{'foo': None}, {'foo': None}, {'foo': None}, {'foo': None}, {'foo': None}]
-
-*/

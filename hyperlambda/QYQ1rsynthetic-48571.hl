@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to return cryptographically secure random text based on specified arguments. - With Python equivalent
+// Create a Hyperlambda script to return cryptographically secure random text based on specified arguments.
 .arguments
    min:long
    max:long
@@ -14,40 +14,3 @@ crypto.random
 unwrap:x:+/*
 return
    result:x:@crypto.random
-
-
-/*
-
-# Python equivalent
-import hashlib
-import os
-
-def get_magic_captcha_js(version):
-    # Simulate getting a secret from config
-    secret = "magic:auth:secret"
-    
-    # Generate SHA256 hash of the secret
-    hash_object = hashlib.sha256(secret.encode())
-    public_key_hash = hash_object.hexdigest()
-    
-    # Determine which file to load
-    file_path = "/system/misc/magic-captcha.min.js" if os.path.exists("/system/misc/magic-captcha.min.js") else "/system/misc/magic-captcha.js"
-    
-    # Load the file content
-    with open(file_path, 'r') as file:
-        file_content = file.read()
-    
-    # Replace the placeholder with the public key hash
-    file_content = file_content.replace("[[public-key]]", public_key_hash)
-    
-    # Simulate setting the response header
-    response_headers = {"Content-Type": "text/javascript"}
-    
-    # Return the modified JavaScript content
-    return file_content
-
-# Example usage
-captcha_js = get_magic_captcha_js("v1")
-print(captcha_js)
-
-*/

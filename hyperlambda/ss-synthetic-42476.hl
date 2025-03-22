@@ -1,5 +1,5 @@
 
-// Example: Split a string by spaces. - With Python equivalent
+// Example: Split a string by spaces.
 strings.split:one two three
    .:" "
 
@@ -9,15 +9,3 @@ strings.split:one two three
  * .:two
  * .:three
  */
-
-
-/*
-
-# Python equivalent
-# Comma-separated string
-string = "a,b,c"
-
-# Split the string by commas
-split_string = string.split(",")
-
-*/

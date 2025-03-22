@@ -1,5 +1,5 @@
 
-// Demonstrate Hyperlambda string assignments, including special character handling, multi-line strings, and escape sequences. - With Python equivalent
+// Demonstrate Hyperlambda string assignments, including special character handling, multi-line strings, and escape sequences.
 
 // Simple string without special characters
 .keyA:simple
@@ -15,17 +15,3 @@
 
 // Escape newline inside string
 .keyE:"Hello\nHyperlambda"
-
-
-/*
-
-# Python equivalent
-# String variables in Python demonstrating quoting variations, newlines, and multi-line strings
-text_alpha = "demo"
-text_beta = "value:pair"
-text_gamma = """first line
-second line"""
-text_delta = 'quotedText'
-text_epsilon = "split\nline"
-
-*/

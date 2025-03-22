@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that keeps checking until [.tries] reaches 5. - With Python equivalent
+// Create a Hyperlambda snippet that keeps checking until [.tries] reaches 5.
 
 // Keeps checking until [.tries] reaches 5.
 .tries:int:0
@@ -14,22 +14,3 @@ while
 
       // Incrementing tries counter.
       math.increment:x:@.tries
-
-
-/*
-
-# Python equivalent
-import logging
-
-def countdown_from_10():
-    logging.basicConfig(level=logging.INFO)
-    
-    counter = 10
-    while counter > 0:
-        logging.info("Counting down")
-        counter -= 1
-
-# Example usage
-countdown_from_10()
-
-*/

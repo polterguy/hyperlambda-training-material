@@ -1,5 +1,5 @@
 
-// Vectorizing the specified [type]. - With Python equivalent
+// Vectorizing the specified [type].
 .arguments
    type
       type:string
@@ -14,25 +14,3 @@ unwrap:x:+/*/*
 fork
    signal:magic.ai.vectorise
       type:x:@.arguments/*/type
-
-
-/*
-
-# Python equivalent
-def search_duckduckgo(query: str, max_urls: int = 10):
-    import requests
-    
-    if not query:
-        raise ValueError("Query is mandatory")
-    
-    # Assuming there is an API endpoint for DuckDuckGo search
-    url = "https://api.duckduckgo.com/search"
-    params = {
-        "query": query,
-        "max": max_urls
-    }
-    
-    response = requests.get(url, params=params)
-    return response.json()
-
-*/

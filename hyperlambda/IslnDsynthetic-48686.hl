@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda endpoint that saves the specified configuration object to appsettings.json, ensuring the user is authorized. - With Python equivalent
+// Create a Hyperlambda endpoint that saves the specified configuration object to appsettings.json, ensuring the user is authorized.
 .arguments:*
 .type:internal
 
@@ -16,39 +16,3 @@ config.save:x:@lambda2json
 // Returning success to caller.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-def get_setup_status():
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Simulate getting a secret from config
-    secret = get_config_value("magic:auth:secret")
-
-    # Check the setup status
-    if secret is None or len(secret) < 50:
-        return {"result": False}
-    else:
-        return {"result": True}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-def get_config_value(key):
-    # Simulate getting a configuration value
-    # This is a placeholder implementation
-    return "a" * 50  # Example of a valid secret
-
-# Example usage
-try:
-    setup_status = get_setup_status()
-    print(setup_status)
-except PermissionError as e:
-    print(e)
-
-*/

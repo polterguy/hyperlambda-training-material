@@ -1,24 +1,5 @@
 
-// [exists] returns true if the expression finds any node - With Python equivalent
+// [exists] returns true if the expression finds any node
 .present
    node
 exists:x:@.present/*
-
-
-/*
-
-# Python equivalent
-# [exists] returns true if the expression finds any node
-
-# Define data structure
-present = {
-    "node": {}
-}
-
-# Check if any node exists
-exists = bool(present)
-
-# Example usage
-# exists will be True because "node" is present
-
-*/

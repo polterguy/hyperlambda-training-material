@@ -1,5 +1,5 @@
 
-// Create endpoint inserting one record into your items table in your shopping-cart-demo database. - With Python equivalent
+// Create endpoint inserting one record into your items table in your shopping-cart-demo database.
 .arguments
 
    // product_id column value
@@ -41,51 +41,3 @@ data.connect:[generic|shopping-cart-demo]
    unwrap:x:+/*
    return
       id:x:@data.create
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def create_item(product_id, quantity, session_id):
-    """
-    This function inserts one record into the items table in the shopping-cart-demo database.
-    
-    :param product_id: The ID of the product
-    :param quantity: The quantity of the product
-    :param session_id: The session ID
-    :return: The ID of the created record
-    :raises ValueError: If any of the arguments are not provided
-    """
-    # Verify authentication
-    verify_authentication(["root", "admin"])
-    
-    # Validate mandatory fields
-    if product_id is None or quantity is None or not session_id:
-        raise ValueError("product_id, quantity, and session_id are mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('shopping-cart-demo.db')
-    cursor = conn.cursor()
-    
-    # Insert the record
-    cursor.execute("INSERT INTO items (product_id, quantity, session_id) VALUES (?, ?, ?)", (product_id, quantity, session_id))
-    record_id = cursor.lastrowid
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return the ID of the created record
-    return record_id
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-# Example usage
-# create_item(1, 2, "session123")
-
-*/

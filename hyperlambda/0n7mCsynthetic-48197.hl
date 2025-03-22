@@ -1,5 +1,5 @@
 
-// Create Hyperlambda file that returns true if a file specified as an argument exists on the server. - With Python equivalent
+// Create Hyperlambda file that returns true if a file specified as an argument exists on the server.
 .arguments
    file:string
    query:string
@@ -12,32 +12,3 @@ if
          result:bool:true
 return
    result:bool:false
-
-
-/*
-
-# Python equivalent
-import os
-
-def file_contains_query(file_path, query):
-    # Check if the file exists
-    if not os.path.exists(file_path):
-        return False
-
-    # Load the file content
-    with open(file_path, 'r') as file:
-        content = file.read()
-
-    # Check if the query is in the file content
-    if query in content:
-        return True
-    else:
-        return False
-
-# Example usage
-file_path = "example.txt"
-query = "search_term"
-result = file_contains_query(file_path, query)
-print(result)  # Output: True or False depending on the file content
-
-*/

@@ -1,17 +1,5 @@
 
-// Example: Get the length of a string with multi-byte characters. - With Python equivalent
+// Example: Get the length of a string with multi-byte characters.
 
 // Returns 2
 strings.length:你好
-
-
-/*
-
-# Python equivalent
-# Variable for the input string
-text = "Test"
-
-# Get the length of the input string
-length_of_text = len(text)
-
-*/

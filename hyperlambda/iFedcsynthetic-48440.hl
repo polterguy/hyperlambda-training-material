@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that retrieves all customers from 'crm_db'. - With Python equivalent
+// Generate a Hyperlambda snippet that retrieves all customers from 'crm_db'.
 
 // Retrieves all customers from "crm_db".
 .result
@@ -9,42 +9,3 @@ data.connect:crm_db
       database-type:mysql
    add:x:@.result
       get-nodes:x:@data.select/*
-
-
-/*
-
-# Python equivalent
-import psycopg2
-
-def fetch_recent_orders():
-    # Connect to the ecommerce_db database
-    connection = psycopg2.connect(
-        host='your_host',
-        user='your_user',
-        password='your_password',
-        dbname='ecommerce_db'
-    )
-    
-    cursor = connection.cursor()
-    
-    # Query to fetch recent orders from the orders table
-    query = """
-    SELECT order_id, user_id, total FROM orders
-    WHERE order_status='shipped'
-    ORDER BY order_date DESC
-    LIMIT 30
-    """
-    
-    cursor.execute(query)
-    recent_orders = cursor.fetchall()
-    
-    cursor.close()
-    connection.close()
-    
-    return recent_orders
-
-# Example usage
-recent_orders = fetch_recent_orders()
-print(recent_orders)
-
-*/

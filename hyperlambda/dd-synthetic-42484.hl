@@ -1,17 +1,5 @@
 
-// Example: Convert an already lowercase string (no change). - With Python equivalent
+// Example: Convert an already lowercase string (no change).
 
 // Result: "hello"
 strings.to-lower:hello
-
-
-/*
-
-# Python equivalent
-# Mixed-case sentence
-sentence = "Hello World!"
-
-# Convert the sentence to lowercase
-lowercase_sentence = sentence.lower()
-
-*/

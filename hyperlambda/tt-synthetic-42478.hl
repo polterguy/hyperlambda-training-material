@@ -1,5 +1,5 @@
 
-// Example: Split using a multi-character delimiter. - With Python equivalent
+// Example: Split using a multi-character delimiter.
 strings.split:foo||bar||baz
    .:||
 
@@ -9,15 +9,3 @@ strings.split:foo||bar||baz
  * .:bar
  * .:baz
  */
-
-
-/*
-
-# Python equivalent
-# String to be split
-string = "hello"
-
-# Split the string on a comma (not present in the string)
-split_string = string.split(",")
-
-*/

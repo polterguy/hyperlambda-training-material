@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to override the exception handler and return information to root users. - With Python equivalent
+// Create a Hyperlambda script to override the exception handler and return information to root users.
 log.error:x:@.arguments/*/message
    url:x:@.arguments/*/path
    exception:x:@.arguments/*/stack
@@ -8,22 +8,3 @@ add:x:+
    get-nodes:x:@.arguments/*/message
    get-nodes:x:@.arguments/*/field
 return
-
-
-/*
-
-# Python equivalent
-import html
-
-def html_encode(input_html):
-    # HTML encode the specified string
-    encoded_content = html.escape(input_html)
-
-    # Return the encoded content
-    return {"content": encoded_content}
-
-# Example usage
-encoded_result = html_encode("<div>Hello & Welcome!</div>")
-print(encoded_result)
-
-*/

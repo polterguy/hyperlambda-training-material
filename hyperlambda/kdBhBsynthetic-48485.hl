@@ -1,5 +1,5 @@
 
-// Provide a Hyperlambda example where a user's phone number is fetched from an API. - With Python equivalent
+// Provide a Hyperlambda example where a user's phone number is fetched from an API.
 
 // Fetches a user's phone number.
 http.get:"https://jsonplaceholder.typicode.com/users/3"
@@ -11,24 +11,3 @@ http.get:"https://jsonplaceholder.typicode.com/users/3"
 .phone
 set-value:x:@.phone
    get-value:x:@http.get/*/content/*/phone
-
-
-/*
-
-# Python equivalent
-import requests
-
-def fetch_post_body_content():
-    # Invoke the HTTP GET endpoint
-    response = requests.get("https://jsonplaceholder.typicode.com/posts/2")
-    response_data = response.json()
-    
-    # Extract the post's body content from the response
-    post_body = response_data.get('body')
-    return post_body
-
-# Example usage
-post_body_content = fetch_post_body_content()
-print(post_body_content)
-
-*/

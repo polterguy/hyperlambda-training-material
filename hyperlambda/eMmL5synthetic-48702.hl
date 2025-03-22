@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script that changes the password of the currently authenticated user, ensuring the user is authenticated. - With Python equivalent
+// Create a Hyperlambda script that changes the password of the currently authenticated user, ensuring the user is authenticated.
 slots.create:magic.auth.change-password
 
    // Ensuring a password was actually provided.
@@ -39,31 +39,3 @@ slots.create:magic.auth.change-password
          where
             and
                username.eq:x:@auth.ticket.get
-
-
-/*
-
-# Python equivalent
-def replace_in_string(source, what, with_):
-    # Validate the inputs
-    if not source:
-        raise ValueError("Source is mandatory")
-    if not what:
-        raise ValueError("What is mandatory")
-    if not with_:
-        raise ValueError("With is mandatory")
-
-    # Replace occurrences of 'what' in 'source' with 'with'
-    result = source.replace(what, with_)
-
-    # Return the result
-    return {"result": result}
-
-# Example usage
-try:
-    result = replace_in_string("Hello, world!", "world", "there")
-    print(result)
-except ValueError as e:
-    print(e)
-
-*/

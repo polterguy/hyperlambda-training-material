@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the ml_types table in the magic database with a type matching the argument, ensuring authentication and authorization for root roles. - With Python equivalent
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the ml_types table in the magic database with a type matching the argument, ensuring authentication and authorization for root roles.
 .arguments
    type:string
 .type:crud-delete
@@ -31,63 +31,3 @@ data.connect:[generic|magic]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def count_questionnaires(database, filters=None):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    query = "SELECT COUNT(*) as count FROM questionnaires"
-    conditions = []
-    parameters = []
-
-    # Add filters to the query
-    if filters:
-        for key, value in filters.items():
-            if key.endswith(".like"):
-                conditions.append(f"{key.split('.')[1]} LIKE ?")
-                parameters.append(f"%{value}%")
-            elif key.endswith(".eq"):
-                conditions.append(f"{key.split('.')[1]} = ?")
-                parameters.append(value)
-
-    if conditions:
-        query += " WHERE " + " AND ".join(conditions)
-
-    # Execute the query
-    cursor.execute(query, parameters)
-    result = cursor.fetchone()
-
-    # Close the connection
-    connection.close()
-
-    # Return the count
-    return {"count": result[0]}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-filters = {
-    "questionnaires.name.like": "example",
-    "questionnaires.type.eq": "survey"
-}
-try:
-    result = count_questionnaires("magic.db", filters)
-    print(result)
-except PermissionError as e:
-    print(e)
-
-*/

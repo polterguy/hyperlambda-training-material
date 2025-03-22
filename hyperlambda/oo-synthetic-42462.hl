@@ -1,7 +1,7 @@
 
 /*
  * Example: Use a dynamic value from another slot as the replacement.
- * Here, replace a substring with its uppercase version using strings.to-upper. - With Python equivalent
+ * Here, replace a substring with its uppercase version using strings.to-upper.
  */
 .data:Make it lowercase
 strings.replace:x:@.data
@@ -12,15 +12,3 @@ strings.replace:x:@.data
  * After execution, "lowercase" in the original string is replaced with "LOWERCASE".
  * Result: "Make it LOWERCASE"
  */
-
-
-/*
-
-# Python equivalent
-# List of words to be joined
-words = ["one", "two", "three"]
-
-# Join the words with a pipe separator
-joined_string = "|".join(words)
-
-*/

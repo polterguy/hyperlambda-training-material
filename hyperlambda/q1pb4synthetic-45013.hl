@@ -1,33 +1,6 @@
 
-// Publish a socket message for user1, 2, and 3 - With Python equivalent
+// Publish a socket message for user1, 2, and 3
 sockets.signal:foo.bar
    users:user1, user2, user3
    args
       howdy:world
-
-
-/*
-
-# Python equivalent
-# Publish a socket message for user1, 2, and 3
-import socketio
-
-# Create a Socket.IO client
-sio = socketio.Client()
-
-# Connect to the server
-sio.connect('http://localhost:5000')
-
-# Define the message and users
-event = 'foo.bar'
-users = ['user1', 'user2', 'user3']
-args = {'howdy': 'world'}
-
-# Emit the message to each user
-for user in users:
-    sio.emit(event, args, room=user)
-
-# Disconnect from the server
-sio.disconnect()
-
-*/

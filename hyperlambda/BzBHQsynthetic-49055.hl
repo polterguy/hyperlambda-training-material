@@ -1,5 +1,5 @@
 
-// Delete one record from your InvoiceLine table in your chinook database. - With Python equivalent
+// Delete one record from your InvoiceLine table in your chinook database.
 .arguments
 
    // Primary key of record to delete, mandatory argument
@@ -33,49 +33,3 @@ data.connect:[generic|chinook]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_invoice_line(invoice_line_id):
-    """
-    This function deletes one record from the InvoiceLine table in the chinook database.
-    
-    :param invoice_line_id: The ID of the invoice line to delete
-    :return: The number of affected rows
-    :raises ValueError: If invoice_line_id is not provided
-    """
-    # Verify authentication
-    verify_authentication(["root", "admin"])
-    
-    # Validate mandatory fields
-    if invoice_line_id is None:
-        raise ValueError("InvoiceLineId is mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('chinook.db')
-    cursor = conn.cursor()
-    
-    # Delete the record
-    cursor.execute("DELETE FROM InvoiceLine WHERE InvoiceLineId = ?", (invoice_line_id,))
-    affected_rows = cursor.rowcount
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return the number of affected rows
-    return affected_rows
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-# Example usage
-# delete_invoice_line(1)
-
-*/

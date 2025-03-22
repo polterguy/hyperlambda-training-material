@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that triggers a conditional lambda execution based on [.switch]. - With Python equivalent
+// Generate a Hyperlambda snippet that triggers a conditional lambda execution based on [.switch].
 
 // Triggers a conditional lambda execution based on [.switch].
 .switch:bool:true
@@ -14,24 +14,3 @@ else
 
    // Executes when [.switch] is false.
    log.info:[.switch] is disabled
-
-
-/*
-
-# Python equivalent
-import logging
-
-def evaluate_lambda_if_not_hello_universe():
-    logging.basicConfig(level=logging.INFO)
-    
-    foo = "Hello Universe"
-    
-    if foo != "Hello Universe":
-        logging.info("[.foo] is NOT Hello Universe")
-    else:
-        logging.info("[.foo] is Hello Universe")
-
-# Example usage
-evaluate_lambda_if_not_hello_universe()
-
-*/

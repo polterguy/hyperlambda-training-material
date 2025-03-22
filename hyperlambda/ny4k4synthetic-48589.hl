@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to return the Magic CAPTCHA JavaScript library, substituting the public key dynamically. - With Python equivalent
+// Create a Hyperlambda script to return the Magic CAPTCHA JavaScript library, substituting the public key dynamically.
 .arguments
    v:string
 .type:public
@@ -40,26 +40,3 @@ response.headers.set
 
 // Returning result to caller.
 return:x:@strings.replace
-
-
-/*
-
-# Python equivalent
-def execute_slot(slot, args=None):
-    if not slot:
-        raise ValueError("Slot parameter is mandatory")
-
-    # Simulate executing a slot with optional arguments
-    execution_result = f"Executing slot '{slot}' with arguments {args}"
-    
-    # Return the execution result
-    return execution_result
-
-# Example usage
-try:
-    result = execute_slot("example_slot", {"arg1": "value1", "arg2": "value2"})
-    print(result)
-except ValueError as e:
-    print(e)
-
-*/

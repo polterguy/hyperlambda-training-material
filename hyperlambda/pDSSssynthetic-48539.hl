@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that formats an address. - With Python equivalent
+// Write a Hyperlambda snippet that formats an address.
 
 // Hyperlambda file that concatenates an address string.
 .arguments
@@ -14,42 +14,3 @@ strings.concat
    get-value:x:@.arguments/*/zip
 yield
    address:x:@strings.concat
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def get_rock_genre_customers():
-    # Connect to the Chinook database
-    connection = sqlite3.connect('chinook.db')
-    cursor = connection.cursor()
-
-    # SQL query to select distinct customer details who have purchased tracks from the "Rock" genre
-    query = """
-    SELECT DISTINCT c.Email, c.FirstName, c.LastName, g.Name
-    FROM Customer c
-    INNER JOIN Invoice i ON c.CustomerId = i.CustomerId
-    INNER JOIN InvoiceLine ii ON i.InvoiceId = ii.InvoiceId
-    INNER JOIN Track t ON ii.TrackId = t.TrackId
-    INNER JOIN Genre g ON t.GenreId = g.GenreId
-    WHERE g.Name = 'Rock'
-    ORDER BY c.Email
-    """
-
-    # Execute the query and fetch results
-    cursor.execute(query)
-    results = cursor.fetchall()
-
-    # Close the connection
-    connection.close()
-
-    return results
-
-# Example usage
-rock_customers = get_rock_genre_customers()
-for customer in rock_customers:
-    print(customer)
-
-*/

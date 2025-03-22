@@ -1,5 +1,5 @@
 
-// How to use [data.select] - With Python equivalent
+// How to use [data.select]
 
 /*
  * To execute SQL towards some database, we first must open a database connection.
@@ -31,32 +31,3 @@ data.connect:warehouse
  * first_name:JOHNNY
  * last_name:LOLLOBRIGIDA
  */
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def select_admin_names(database_name):
-    # Connect to the warehouse database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the select statement
-        query = "SELECT first_name, last_name FROM admins LIMIT 5"
-        cursor.execute(query)
-        results = cursor.fetchall()
-
-        return results
-    finally:
-        conn.close()
-
-# Example usage
-database_name = 'warehouse.db'
-admin_names = select_admin_names(database_name)
-for name in admin_names:
-    print(name)
-
-*/

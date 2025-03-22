@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to log lines of code (LOC) generated, including the type and name of the code. - With Python equivalent
+// Write a Hyperlambda script to log lines of code (LOC) generated, including the type and name of the code.
 .arguments
    loc:int
    type:string
@@ -26,53 +26,3 @@ log.info:LOC generated
 // Returning success to caller.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-import logging
-
-def create_log_item(log_type, content, meta=None):
-    # Validate mandatory fields
-    if not log_type:
-        raise ValueError("Type is mandatory")
-    if not content:
-        raise ValueError("Content is mandatory")
-
-    # Validate the log type
-    if log_type not in ["info", "error", "debug", "fatal"]:
-        raise ValueError("Invalid type. Choose 'info', 'error', 'debug', or 'fatal'")
-
-    # Simulate verifying user authentication
-    if not verify_user_authentication():
-        raise PermissionError("User not authenticated")
-
-    # Create the log message
-    log_message = f"{content} | Meta: {meta}" if meta else content
-
-    # Log the message based on the type
-    if log_type == "info":
-        logging.info(log_message)
-    elif log_type == "error":
-        logging.error(log_message)
-    elif log_type == "debug":
-        logging.debug(log_message)
-    elif log_type == "fatal":
-        logging.fatal(log_message)
-
-    # Return success result
-    return {"result": "success"}
-
-def verify_user_authentication():
-    # Simulate user authentication verification
-    return True
-
-# Example usage
-try:
-    result = create_log_item("info", "This is an info message", {"key": "value"})
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

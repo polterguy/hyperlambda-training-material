@@ -1,27 +1,6 @@
 
-// Invokes some dynamic slot and sets the value of [.res] to the result of the invocation - With Python equivalent
+// Invokes some dynamic slot and sets the value of [.res] to the result of the invocation
 signal:SOME_DYNAMIC_SLOT
 .res
 set-value:x:@.res
    get-value:x:@signal
-
-
-/*
-
-# Python equivalent
-# Invokes some dynamic function and sets the value of [.res] to the result of the invocation
-
-def some_dynamic_function():
-    # Placeholder for dynamic function logic
-    return "result from dynamic function"
-
-# Simulating signal invocation
-signal_result = some_dynamic_function()
-
-# Setting the value of .res to the result of the invocation
-res = signal_result
-
-# Example usage
-# res will be "result from dynamic function"
-
-*/

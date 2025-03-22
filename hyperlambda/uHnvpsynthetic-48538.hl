@@ -1,5 +1,5 @@
 
-// Provide a Hyperlambda example where an email address is created from a username and domain. - With Python equivalent
+// Provide a Hyperlambda example where an email address is created from a username and domain.
 
 // Hyperlambda file that creates an email address from a username and domain.
 .arguments
@@ -11,17 +11,3 @@ strings.concat
    get-value:x:@.arguments/*/domain
 yield
    email:x:@strings.concat
-
-
-/*
-
-# Python equivalent
-def format_address(street, city, zip_code):
-    address = f"{street}, {city} - {zip_code}"
-    return address
-
-# Example usage
-formatted_address = format_address("123 Main St", "Springfield", 12345)
-print(formatted_address)
-
-*/

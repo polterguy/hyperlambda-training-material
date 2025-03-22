@@ -1,5 +1,5 @@
 
-// Scrape the specified URL and returns the raw HTML - With Python equivalent
+// Scrape the specified URL and returns the raw HTML
 .arguments
 
    // Mandatory argument and the actual URL to scrape.
@@ -15,22 +15,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def store_user_fact(session: str, user_id: str, fact_type: str, name: str, value: str):
-    if not name or not value:
-        raise ValueError("Name and value are mandatory")
-    
-    connection = connect_to_database("generic|magic")
-    query = """
-    INSERT INTO ml_requests (type, prompt, completion, finish_reason, questionnaire, user_id, session, context)
-    VALUES (%s, %s, %s, 'questionnaire', 1, %s, %s, 1)
-    """
-    connection.execute(query, (fact_type, name, value, user_id, session))
-    
-    return {"result": "success"}
-
-*/

@@ -1,5 +1,5 @@
 
-// Create a new RSA key pair and encrypt a message using its public key before finally decrypting it - With Python equivalent
+// Create a new RSA key pair and encrypt a message using its public key before finally decrypting it
 crypto.rsa.create-key
    key-size:int:2048
 
@@ -12,34 +12,3 @@ crypto.rsa.encrypt:x:@.message/*/content
 // Decrypting message we encrypted above
 crypto.rsa.decrypt:x:-
    private-key:x:@crypto.rsa.create-key/*/private
-
-
-/*
-
-# Python equivalent
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
-
-def rsa_encrypt_decrypt(message):
-    # Generate RSA key pair
-    key = RSA.generate(2048)
-    public_key = key.publickey()
-    private_key = key
-
-    # Encrypt the message using the public key
-    cipher = PKCS1_OAEP.new(public_key)
-    encrypted_message = cipher.encrypt(message.encode())
-
-    # Decrypt the message using the private key
-    cipher = PKCS1_OAEP.new(private_key)
-    decrypted_message = cipher.decrypt(encrypted_message).decode()
-
-    return encrypted_message, decrypted_message
-
-# Example usage
-message = "Secret Message"
-encrypted_message, decrypted_message = rsa_encrypt_decrypt(message)
-print(f"Encrypted: {encrypted_message}")
-print(f"Decrypted: {decrypted_message}")  # Output: "Secret Message"
-
-*/

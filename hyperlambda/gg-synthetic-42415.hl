@@ -1,18 +1,7 @@
 
-// Return the URL of the current request - With Python equivalent
+// Return the URL of the current request
 request.url
 
 // Example result ==> magic/system/evaluator/evaluate
 
 // Notice, URL will always be returned as relative URL
-
-
-/*
-
-# Python equivalent
-from flask import request
-
-# Retrieve the HTTP verb of the current request
-http_verb = request.method
-
-*/

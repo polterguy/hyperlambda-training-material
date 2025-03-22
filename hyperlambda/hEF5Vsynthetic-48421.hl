@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that evaluates [.lambda] when all conditions evaluate to true. - With Python equivalent
+// Generate a Hyperlambda snippet that evaluates [.lambda] when all conditions evaluate to true.
 
 // Evaluates [.lambda] when all conditions evaluate to true.
 .result
@@ -25,41 +25,3 @@ else
    // Assigning false to [.result]
    set-value:x:@.result
       .:bool:false
-
-
-/*
-
-# Python equivalent
-import mysql.connector
-
-def retrieve_sales_transactions():
-    # Connect to the sales database
-    connection = mysql.connector.connect(
-        host='your_host',
-        user='your_user',
-        password='your_password',
-        database='sales_db'
-    )
-    
-    cursor = connection.cursor(dictionary=True)
-    
-    # Query to retrieve records from the transactions table
-    query = """
-    SELECT * FROM transactions
-    ORDER BY transaction_date ASC
-    LIMIT 20
-    """
-    
-    cursor.execute(query)
-    records = cursor.fetchall()
-    
-    cursor.close()
-    connection.close()
-    
-    return records
-
-# Example usage
-transactions = retrieve_sales_transactions()
-print(transactions)
-
-*/

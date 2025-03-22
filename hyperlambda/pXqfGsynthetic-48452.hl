@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that counts customers in the 'crm_db' database from the 'customers' table. - With Python equivalent
+// Generate a Hyperlambda snippet that counts customers in the 'crm_db' database from the 'customers' table.
 
 // Counts customers in the "crm_db" database from the "customers" table.
 data.connect:crm_db
@@ -13,37 +13,3 @@ data.connect:crm_db
          count(*)
             as:count
       limit:long:1
-
-
-/*
-
-# Python equivalent
-import psycopg2
-
-def count_tickets_in_support_db():
-    # Connect to the support_db database
-    connection = psycopg2.connect(
-        host='your_host',
-        user='your_user',
-        password='your_password',
-        dbname='support_db'
-    )
-    
-    cursor = connection.cursor()
-    
-    # Query to count tickets in the tickets table
-    query = "SELECT COUNT(*) AS count FROM tickets"
-    
-    cursor.execute(query)
-    ticket_count = cursor.fetchone()[0]
-    
-    cursor.close()
-    connection.close()
-    
-    return ticket_count
-
-# Example usage
-ticket_count = count_tickets_in_support_db()
-print(ticket_count)
-
-*/

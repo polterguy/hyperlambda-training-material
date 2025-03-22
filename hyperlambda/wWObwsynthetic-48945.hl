@@ -1,5 +1,5 @@
 
-// Retrieves all shopping cart items for the current [session]. - With Python equivalent
+// Retrieves all shopping cart items for the current [session].
 .arguments
    _session:string
 .type:public
@@ -11,47 +11,3 @@ data.connect:[generic|shopping-cart-demo]
    data.select:"\nselect i.item_id, i.quantity, p.name, p.description, p.image_url, p.price\n   from items i inner join products p on i.product_id = p.product_id\n   where i.session_id = @session"
       @session:x:@.arguments/*/_session
    return:x:@data.select/*
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def get_cart_items(session_id):
-    """
-    This function retrieves all shopping cart items for the current session.
-    
-    :param session_id: The session ID to retrieve cart items for
-    :return: A list of dictionaries containing cart item details
-    :raises ValueError: If session_id is not provided
-    """
-    # Validate mandatory fields
-    if not session_id:
-        raise ValueError("Session ID is mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('shopping-cart-demo.db')
-    cursor = conn.cursor()
-    
-    # Execute the query to get cart items for the session
-    query = """
-    SELECT i.item_id, i.quantity, p.name, p.description, p.image_url, p.price
-    FROM items i
-    INNER JOIN products p ON i.product_id = p.product_id
-    WHERE i.session_id = ?
-    """
-    cursor.execute(query, (session_id,))
-    cart_items = [{"item_id": row[0], "quantity": row[1], "name": row[2], "description": row[3], "image_url": row[4], "price": row[5]} for row in cursor.fetchall()]
-    
-    # Close the connection
-    cursor.close()
-    conn.close()
-    
-    # Return the list of cart items
-    return cart_items
-
-# Example usage
-# get_cart_items("session123")
-
-*/

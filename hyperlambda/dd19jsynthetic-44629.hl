@@ -1,25 +1,5 @@
 
-// Example: Get the length of an empty string. - With Python equivalent - With Python equivalent
+// Example: Get the length of an empty string.
 
 // Returns 0
 strings.length:
-
-/*
- * # Python equivalent
- * # Example: Get the length of an empty string.
- * empty_string = ""
- * length_of_empty_string = len(empty_string)
- * 
- * # Example usage
- * # length_of_empty_string will be 0
- */
-
-
-/*
-
-# Python equivalent
-# Get the length of an empty string
-empty_string = ""
-length_of_empty_string = len(empty_string)
-
-*/

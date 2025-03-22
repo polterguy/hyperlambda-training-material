@@ -1,18 +1,6 @@
 
-// Example: Trim a string consisting only of trim characters (result is empty). - With Python equivalent
+// Example: Trim a string consisting only of trim characters (result is empty).
 
 // Result: "" (empty string)
 strings.trim:!!!
    .:!
-
-
-/*
-
-# Python equivalent
-# String with multiple characters on both ends
-string = "!#Hello#!"
-
-# Trim '!' and '#' characters from both ends of the string
-trimmed_string = string.strip('!#')
-
-*/

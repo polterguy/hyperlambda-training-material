@@ -1,5 +1,5 @@
 
-// Delete one record from your address table in your sakila database without authorization. Log invocation - With Python equivalent
+// Delete one record from your address table in your sakila database without authorization. Log invocation
 .arguments
 
    // Primary key of record to delete, mandatory argument
@@ -37,44 +37,3 @@ data.connect:[generic|sakila]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_address_record(address_id):
-    # Log the invocation
-    username = get_auth_ticket()
-    log_info("sakila.address entry deleted", username=username, arguments={"address_id": address_id})
-
-    # Validate mandatory fields
-    if address_id is None:
-        raise ValueError("address_id is mandatory")
-
-    # Connect to the sakila database
-    conn = sqlite3.connect('sakila.db')
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the delete statement
-        cursor.execute("DELETE FROM address WHERE address_id = ?", (address_id,))
-        conn.commit()
-
-        # Return the number of affected rows
-        return cursor.rowcount
-    finally:
-        conn.close()
-
-def get_auth_ticket():
-    # Dummy function to get auth ticket
-    # Replace with actual implementation
-    return "dummy_user"
-
-def log_info(message, **kwargs):
-    # Dummy function to log information
-    # Replace with actual implementation
-    print(message, kwargs)
-
-*/

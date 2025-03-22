@@ -2,7 +2,7 @@
 /*
  * Returns subsidiary companies from specified org number.
  * 
- * Returns all companies the specified org number company owns, either partially or completely. - With Python equivalent
+ * Returns all companies the specified org number company owns, either partially or completely.
  */
 .arguments
    org_number:string
@@ -42,54 +42,3 @@ data.connect:[finovo|finovo]
 
    // Returning result to caller.
    return-nodes:x:@data.read/*
-
-
-/*
-
-# Python equivalent
-import psycopg2
-import re
-
-def get_subsidiary_companies(org_number):
-    # Validate mandatory fields
-    if not org_number:
-        raise ValueError("org_number is mandatory")
-
-    # Remove non-numeric characters from org_number
-    org_number = re.sub(r'\D', '', org_number)
-
-    # Connect to the finovo database
-    conn = psycopg2.connect(
-        dbname="finovo",
-        user="your_username",
-        password="your_password",
-        host="localhost"
-    )
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the select statement
-        query = """
-        SELECT org_number, company_name, company_country_name, owned_percent
-        FROM group_structure
-        WHERE group_mother_orgnumber = %s AND org_number != %s
-        """
-        cursor.execute(query, (org_number, org_number))
-        results = cursor.fetchall()
-
-        # Check if no results were found
-        if not results:
-            return {"result": "This company doesn't have any subsidiaries"}
-
-        # Return the results
-        return results
-    finally:
-        cursor.close()
-        conn.close()
-
-# Example usage
-org_number = "123456789"
-subsidiaries = get_subsidiary_companies(org_number)
-print(subsidiaries)
-
-*/

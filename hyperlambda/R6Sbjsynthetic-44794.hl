@@ -1,23 +1,8 @@
 
-// Example: Trim specific characters from the end of a string. - With Python equivalent
+// Example: Trim specific characters from the end of a string.
 
 // The trailing "xyz" will be removed
 strings.trim-end:abcxyzxyz
    .:xyz
 
 // Result: "abc"
-
-
-/*
-
-# Python equivalent
-# Trim specific characters from the end of a string
-string = "abcxyzxyz"
-chars_to_trim = "xyz"
-
-# Custom implementation to mimic trim-end
-trimmed_string = string
-while trimmed_string.endswith(chars_to_trim):
-    trimmed_string = trimmed_string[:-len(chars_to_trim)]
-
-*/

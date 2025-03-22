@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to get an access token for NetSuite using a private key, account ID, certificate ID, and consumer key. - With Python equivalent
+// Create a Hyperlambda script to get an access token for NetSuite using a private key, account ID, certificate ID, and consumer key.
 .key
 set-value:x:@.key
    io.file.load:/etc/netsuite/private-key.txt
@@ -28,22 +28,3 @@ netsuite.get-access-token
    account-id:x:@.account-id
    certificate-id:x:@.certificate-id
    consumer-key:x:@.consumer-key
-
-
-/*
-
-# Python equivalent
-def vectorize_type(type: str):
-    if not type:
-        raise ValueError("Type is mandatory")
-    
-    # Assuming there is an API endpoint for vectorizing
-    url = "https://api.example.com/vectorize"
-    payload = {
-        "type": type
-    }
-    
-    response = requests.post(url, json=payload)
-    return response.json()
-
-*/

@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the questionnaires table in the magic database with a name matching the argument, ensuring authentication and authorization for root and admin roles. - With Python equivalent
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the questionnaires table in the magic database with a name matching the argument, ensuring authentication and authorization for root and admin roles.
 .arguments
    name:string
 .type:crud-delete
@@ -29,49 +29,3 @@ data.connect:[generic|magic]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-import re
-
-def create_questionnaire_record(database, name, record_type, action):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate the name using regex
-    if not re.match(r"^[a-z0-9_-]{2,20}$", name):
-        raise ValueError("Name does not match the required pattern")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    query = "INSERT INTO questionnaires (name, type, action) VALUES (?, ?, ?)"
-
-    # Execute the query
-    cursor.execute(query, (name, record_type, action))
-    connection.commit()
-
-    # Close the connection
-    connection.close()
-
-    # Return success result
-    return {"result": "success", "status": 201}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-try:
-    result = create_questionnaire_record("magic.db", "example_name", "example_type", "example_action")
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

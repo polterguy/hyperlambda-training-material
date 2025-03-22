@@ -1,5 +1,5 @@
 
-// Returns a bar chart image to caller. Values is a mandatory comma separated list of values. - With Python equivalent
+// Returns a bar chart image to caller. Values is a mandatory comma separated list of values.
 .arguments:*
 .type:public
 
@@ -29,47 +29,3 @@ response.headers.set
 
 // Returning chart to caller.
 return:x:@image.chart
-
-
-/*
-
-# Python equivalent
-import matplotlib.pyplot as plt
-import io
-import base64
-
-def generate_bar_chart_image(values):
-    """
-    This function returns a bar chart image to the caller. Values is a mandatory comma-separated list of values.
-    
-    :param values: A comma-separated list of values
-    :return: A base64-encoded PNG image of the bar chart
-    :raises ValueError: If values are not provided
-    """
-    # Validate mandatory fields
-    if not values:
-        raise ValueError("Values are mandatory")
-    
-    # Parse the values
-    values_list = [float(value) for value in values.split(",")]
-    
-    # Generate the bar chart
-    fig, ax = plt.subplots(figsize=(8, 5))
-    ax.bar(range(len(values_list)), values_list)
-    
-    # Save the chart to a bytes buffer
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    plt.close(fig)
-    buf.seek(0)
-    
-    # Encode the image as base64
-    image_base64 = base64.b64encode(buf.read()).decode('utf-8')
-    
-    # Return the base64-encoded image
-    return image_base64
-
-# Example usage
-# generate_bar_chart_image("10,20,30,40,50")
-
-*/

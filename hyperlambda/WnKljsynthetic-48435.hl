@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that adds a new employee in 'hr_db' database and its 'employees' table. - With Python equivalent
+// Write a Hyperlambda snippet that adds a new employee in 'hr_db' database and its 'employees' table.
 
 // Adds a new employee in "hr_db" database and its "employees" table.
 data.connect:hr_db
@@ -15,37 +15,3 @@ data.connect:hr_db
          department:Finance
          salary:decimal:55000.00
          hire_date:date:"2020-07-15T00:00:00.000"
-
-
-/*
-
-# Python equivalent
-import mysql.connector
-
-def retrieve_transactions():
-    # Connect to the sales_db database
-    connection = mysql.connector.connect(
-        host='your_host',
-        user='your_user',
-        password='your_password',
-        database='sales_db'
-    )
-    
-    cursor = connection.cursor(dictionary=True)
-    
-    # Query to retrieve records from the transactions table
-    query = "SELECT * FROM transactions ORDER BY transaction_date DESC LIMIT 10"
-    
-    cursor.execute(query)
-    transactions = cursor.fetchall()
-    
-    cursor.close()
-    connection.close()
-    
-    return transactions
-
-# Example usage
-transactions = retrieve_transactions()
-print(transactions)
-
-*/

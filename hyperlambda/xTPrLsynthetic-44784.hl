@@ -1,16 +1,6 @@
 
-// Example: Trim a string consisting only of trim characters (result is empty). - With Python equivalent
+// Example: Trim a string consisting only of trim characters (result is empty).
 
 // Result: "" (empty string)
 strings.trim:!!!
    .:!
-
-
-/*
-
-# Python equivalent
-# Trim a string consisting only of trim characters (result is empty)
-string = "!!!"
-trimmed_string = string.strip("!")
-
-*/

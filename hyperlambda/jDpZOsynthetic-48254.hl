@@ -1,5 +1,5 @@
 
-// Hyperlambda endpoint that returns true if the specified text contains 'xyz' - With Python equivalent
+// Hyperlambda endpoint that returns true if the specified text contains 'xyz'
 .arguments
    arg:string
 
@@ -13,23 +13,3 @@ strings.contains:x:@.arguments/*/arg
 // Returning result to caller
 yield
    result:x:@strings.contains
-
-
-/*
-
-# Python equivalent
-def contains_xyz(arg):
-    # Validate mandatory fields
-    if arg is None:
-        raise ValueError("arg is mandatory")
-
-    # Check if the text contains 'xyz'
-    result = 'xyz' in arg
-    return result
-
-# Example usage
-arg = "example xyz text"
-result = contains_xyz(arg)
-print(result)  # Output: True
-
-*/

@@ -1,17 +1,4 @@
 
-// Move folder - With Python equivalent
+// Move folder
 io.folder.move:/misc/source-folder/
    .:/misc/destination-folder/
-
-
-/*
-
-# Python equivalent
-# Move folder
-import shutil
-
-source_folder = "/misc/source-folder/"
-destination_folder = "/misc/destination-folder/"
-shutil.move(source_folder, destination_folder)
-
-*/

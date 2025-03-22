@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda action to join specified 'values' into a single string with an optional 'separator'. Return the joined result. - With Python equivalent
+// Create a Hyperlambda action to join specified 'values' into a single string with an optional 'separator'. Return the joined result.
 .arguments
    values
       type:array
@@ -16,37 +16,3 @@ strings.join:x:@.arguments/*/values/*
 // Returning result to caller.
 yield
    result:x:@strings.join
-
-
-/*
-
-# Python equivalent
-def get_recaptcha_credentials():
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Simulate getting reCAPTCHA secret and key from config
-    secret = get_config_value("magic:auth:recaptcha:secret")
-    key = get_config_value("magic:auth:recaptcha:key")
-
-    # Return the secret and key
-    return {"key": key, "secret": secret}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-def get_config_value(key):
-    # Simulate getting a configuration value
-    # This is a placeholder implementation
-    return "example_value"
-
-# Example usage
-try:
-    recaptcha_credentials = get_recaptcha_credentials()
-    print(recaptcha_credentials)
-except PermissionError as e:
-    print(e)
-
-*/

@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return log items from the database based on optional arguments like 'from', 'max', and 'query'. - With Python equivalent
+// Write a Hyperlambda script to return log items from the database based on optional arguments like 'from', 'max', and 'query'.
 .arguments
    from:string
    max:long
@@ -17,45 +17,3 @@ log.query:x:@.arguments/*/query
 
 // Returning result of above invocation to caller.
 return-nodes:x:-/*
-
-
-/*
-
-# Python equivalent
-import logging
-
-def log_loc_generated(loc, code_type, name):
-    # Validate mandatory fields
-    if loc is None:
-        raise ValueError("LOC is mandatory")
-    if not code_type:
-        raise ValueError("Type is mandatory")
-    if not name:
-        raise ValueError("Name is mandatory")
-
-    # Validate the code type
-    if code_type not in ["backend", "frontend"]:
-        raise ValueError("Invalid type. Choose 'backend' or 'frontend'")
-
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Log the LOC generated
-    logging.info(f"LOC generated: {loc}, Type: {code_type}, Name: {name}")
-
-    # Return success result
-    return {"result": "success"}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-try:
-    result = log_loc_generated(100, "backend", "example_code")
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

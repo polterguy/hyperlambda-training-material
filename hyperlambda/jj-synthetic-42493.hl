@@ -1,18 +1,6 @@
 
-// Example: Use a variable as the input to uppercase. - With Python equivalent
+// Example: Use a variable as the input to uppercase.
 .text:make me upper
 
 // Result: "MAKE ME UPPER"
 strings.to-upper:x:@.text
-
-
-/*
-
-# Python equivalent
-# String with whitespace on both ends
-string = "   hello   "
-
-# Trim whitespace from both ends of the string
-trimmed_string = string.strip()
-
-*/

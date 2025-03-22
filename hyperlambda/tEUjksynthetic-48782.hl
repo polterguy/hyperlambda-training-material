@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to invoke a specified action with given values. - With Python equivalent
+// Write a Hyperlambda script to invoke a specified action with given values.
 .arguments
    action:string
    values:*
@@ -24,38 +24,3 @@ signal:x:@.slot
 // Returning success to caller.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-def invoke_action(action, values):
-    """
-    This function invokes a specified action with given values.
-    
-    :param action: The action to be invoked
-    :param values: The values to be used with the action
-    :return: A dictionary indicating success
-    """
-    # Ensure action is provided
-    if not action:
-        raise ValueError("Action is mandatory")
-    
-    # Construct the slot name
-    slot = f"magic.questionnaires.action.{action}"
-    
-    # Add values to the signal
-    signal = values
-    
-    # Simulate signaling the slot
-    execute_slot(slot, signal)
-    
-    # Return success result
-    return {"result": "success"}
-
-def execute_slot(slot, signal):
-    # This function would execute the slot with the signal
-    # Placeholder for actual implementation
-    pass
-
-*/

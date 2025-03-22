@@ -1,5 +1,5 @@
 
-// Partially update an item's price using HTTP PATCH with a custom header - With Python equivalent
+// Partially update an item's price using HTTP PATCH with a custom header
 http.patch:"https://api.example.com/items/123"
    headers
 
@@ -15,32 +15,3 @@ http.patch:"https://api.example.com/items/123"
 
    // JSON snippet with the fields to update
    payload:"{\"price\": 25.00}"
-
-
-/*
-
-# Python equivalent
-import requests
-
-def update_item_price():
-    # Define the URL and headers
-    url = "https://api.example.com/items/123"
-    headers = {
-        "Content-Type": "application/json",
-        "X-API-Key": "MY_API_KEY_ABC123"
-    }
-    params = {
-        "ID": 5
-    }
-    payload = {"price": 25.00}
-
-    # Send the HTTP PATCH request
-    response = requests.patch(url, headers=headers, params=params, json=payload)
-
-    return response.status_code, response.text
-
-# Example usage
-status_code, response_text = update_item_price()
-print(f"Status Code: {status_code}, Response: {response_text}")
-
-*/

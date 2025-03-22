@@ -1,5 +1,5 @@
 
-// CRUD / Create Hyperlambda that creates one record in your media table in your cms database - With Python equivalent
+// CRUD / Create Hyperlambda that creates one record in your media table in your cms database
 .arguments
 
    // post_id column value
@@ -44,39 +44,3 @@ data.connect:[generic|cms]
    unwrap:x:+/*
    return
       id:x:@data.create
-
-
-/*
-
-# Python equivalent
-import sqlite3
-from datetime import datetime
-
-def create_media_record(post_id, file_path, file_type, created_at):
-    # Verify authorization
-    if not verify_auth_ticket(['root', 'admin']):
-        raise PermissionError("Unauthorized access")
-
-    # Connect to the cms database
-    conn = sqlite3.connect('cms.db')
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the insert statement
-        cursor.execute(
-            "INSERT INTO media (post_id, file_path, file_type, created_at) VALUES (?, ?, ?, ?)",
-            (post_id, file_path, file_type, created_at)
-        )
-        conn.commit()
-
-        # Return the ID of the newly created record
-        return cursor.lastrowid
-    finally:
-        conn.close()
-
-def verify_auth_ticket(roles):
-    # Dummy function for authorization check
-    # Replace with actual implementation
-    return True
-
-*/

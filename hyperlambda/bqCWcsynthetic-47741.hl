@@ -1,5 +1,5 @@
 
-// How to use the [data.read] CRUD slot and have it join with another table - With Python equivalent
+// How to use the [data.read] CRUD slot and have it join with another table
 sql.read
    table:people
       join:salary
@@ -15,36 +15,3 @@ sql.read
       salary.monthly
       people.first_name
       people.last_name
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def read_people_with_salary(database_name):
-    # Connect to the specified database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the join query
-        query = """
-        SELECT salary.monthly, people.first_name, people.last_name
-        FROM people
-        INNER JOIN salary ON people.id = salary.people_id
-        """
-        cursor.execute(query)
-        results = cursor.fetchall()
-
-        return results
-    finally:
-        conn.close()
-
-# Example usage
-database_name = 'your_database.db'
-people_with_salary = read_people_with_salary(database_name)
-for person in people_with_salary:
-    print(person)
-
-*/

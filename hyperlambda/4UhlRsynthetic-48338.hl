@@ -1,5 +1,5 @@
 
-// Search the web - With Python equivalent
+// Search the web
 .arguments
 
    // Mandatory argument being the actual query to submit to DuckDuckGo.
@@ -19,26 +19,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def get_context(type: str, query: str, threshold: float = 0.3, max_tokens: int = 4000):
-    import requests
-    
-    if not type or not query:
-        raise ValueError("Type and query are mandatory")
-    
-    url = "https://api.example.com/get-context"
-    params = {
-        "type": type,
-        "prompt": query,
-        "threshold": float(threshold),
-        "max_tokens": int(max_tokens)
-    }
-    
-    response = requests.get(url, params=params)
-    return response.json().get('context', '')
-
-*/

@@ -1,5 +1,5 @@
 
-// Multiply an inline base by a static factor and the result of an addition - With Python equivalent
+// Multiply an inline base by a static factor and the result of an addition
 math.multiply:int:4
 
    // multiplies base 4 by 3 -> intermediate result 12
@@ -15,22 +15,3 @@ math.multiply:int:4
       .:int:1
 
    // The intermediate result 12 is then multiplied by 2 (from nested add) -> 24
-
-
-/*
-
-# Python equivalent
-def calculate_multiplication():
-    # Perform addition
-    addition_result = 1 + 1
-
-    # Multiply the base by the static factor and the result of the addition
-    result = 4 * 3 * addition_result
-
-    return result
-
-# Example usage
-result = calculate_multiplication()
-print(result)  # Output will be 24
-
-*/

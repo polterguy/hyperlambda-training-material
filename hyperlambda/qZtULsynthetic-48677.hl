@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the users_roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles. - With Python equivalent
+// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the users_roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
    role:string
    user:string
@@ -26,51 +26,3 @@ data.connect:[generic|magic]
    unwrap:x:+/*
    return
       result:success
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_user_record(database, username):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate the username
-    if not username:
-        raise ValueError("Username is mandatory")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    query = "DELETE FROM users WHERE username = ?"
-
-    # Execute the query
-    cursor.execute(query, (username,))
-    connection.commit()
-
-    # Get the number of affected rows
-    affected_rows = cursor.rowcount
-
-    # Close the connection
-    connection.close()
-
-    # Return the number of affected rows
-    return {"affected": affected_rows}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-try:
-    result = delete_user_record("magic.db", "example_user")
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

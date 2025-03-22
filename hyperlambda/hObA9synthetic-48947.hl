@@ -1,5 +1,5 @@
 
-// Removes the specified [item_id] from your shopping cart. - With Python equivalent
+// Removes the specified [item_id] from your shopping cart.
 .arguments
    item_id:int
    _session:string
@@ -19,44 +19,3 @@ data.connect:[generic|shopping-cart-demo]
 // Returning success to caller.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def remove_item_from_cart(item_id, session_id):
-    """
-    This function removes the specified item_id from the shopping cart for the given session.
-    
-    :param item_id: The ID of the item to remove
-    :param session_id: The session ID associated with the cart
-    :return: A dictionary indicating success
-    :raises ValueError: If item_id or session_id is not provided
-    """
-    # Validate mandatory fields
-    if item_id is None:
-        raise ValueError("item_id is mandatory")
-    if not session_id:
-        raise ValueError("session_id is mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('shopping-cart-demo.db')
-    cursor = conn.cursor()
-    
-    # Delete the item from the cart
-    cursor.execute("DELETE FROM items WHERE item_id = ? AND session_id = ?", (item_id, session_id))
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return success result
-    return {"result": "success"}
-
-# Example usage
-# remove_item_from_cart(123, "session123")
-
-*/

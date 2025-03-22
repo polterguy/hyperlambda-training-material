@@ -1,5 +1,5 @@
 
-// Calculate the dot product of [.list1] x [.list2] - With Python equivalent
+// Calculate the dot product of [.list1] x [.list2]
 .list1
    .:double:0.5
    .:double:0.7
@@ -11,20 +11,3 @@
 math.dot
    get-nodes:x:@.list1/*
    get-nodes:x:@.list2/*
-
-
-/*
-
-# Python equivalent
-def calculate_dot_product(list1, list2):
-    # Calculate the dot product of two lists
-    dot_product = sum(x * y for x, y in zip(list1, list2))
-    return dot_product
-
-# Example usage
-list1 = [0.5, 0.7, 0.1]
-list2 = [0.56, 0.89, 0.33]
-result = calculate_dot_product(list1, list2)
-print(result)  # Output: 0.8602
-
-*/

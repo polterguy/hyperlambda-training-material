@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return the default database type the system is using and options for alternative database types. - With Python equivalent
+// Write a Hyperlambda script to return the default database type the system is using and options for alternative database types.
 .type:internal
 
 // Ensures user is authorized to access endpoint.
@@ -28,47 +28,3 @@ for-each:x:@config.section/*
 // Returning result of above to caller.
 return
    options
-
-
-/*
-
-# Python equivalent
-def get_database_type_options():
-    """
-    This function returns the default database type the system is using and options for alternative database types.
-    
-    :raises PermissionError: If authentication fails
-    :return: A dictionary with the default database type and options for alternative database types
-    """
-    # Verify authentication
-    verify_authentication(["root"])
-    
-    # Load configuration
-    config = load_config()
-    
-    # Get the default database type
-    default_db_type = config['magic']['databases'].get('default', None)
-    
-    # Get options for alternative database types
-    options = list(config['magic']['databases'].keys())
-    if 'default' in options:
-        options.remove('default')
-    
-    # Return the default database type and options
-    return {
-        "default": default_db_type,
-        "options": options
-    }
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-def load_config():
-    # Placeholder for loading configuration
-    return {"magic": {"databases": {"default": "mysql", "mysql": {}, "pgsql": {}, "mssql": {}, "sqlite": {}}}}
-
-# Example usage
-# get_database_type_options()
-
-*/

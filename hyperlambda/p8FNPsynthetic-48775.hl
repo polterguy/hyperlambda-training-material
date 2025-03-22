@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return true if OpenAI is configured and can be used. - With Python equivalent
+// Write a Hyperlambda script to return true if OpenAI is configured and can be used.
 .arguments
 .type:internal
 
@@ -20,47 +20,3 @@ if
 // OpenAI API key exists.
 return
    result:bool:true
-
-
-/*
-
-# Python equivalent
-import json
-
-def save_openai_key_to_config(key, file_path="appsettings.json"):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate the key
-    if not key:
-        raise ValueError("Key is mandatory")
-    if len(key) < 20 or len(key) > 500:
-        raise ValueError("Key length must be between 20 and 500 characters")
-
-    # Load the existing configuration
-    with open(file_path, 'r') as file:
-        config = json.load(file)
-
-    # Update the OpenAI key in the configuration
-    config["magic"]["openai"] = {"key": key}
-
-    # Save the updated configuration
-    with open(file_path, 'w') as file:
-        json.dump(config, file, indent=4)
-
-    # Return success result
-    return {"result": "success"}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-try:
-    result = save_openai_key_to_config("your_openai_key")
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

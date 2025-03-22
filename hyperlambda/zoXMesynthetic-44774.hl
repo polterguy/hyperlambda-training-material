@@ -1,16 +1,6 @@
 
-// Example: Use a variable as the input to lowercase. - With Python equivalent
+// Example: Use a variable as the input to lowercase.
 .text:LOWER ME
 
 // Result: "lower me"
 strings.to-lower:x:@.text
-
-
-/*
-
-# Python equivalent
-# Use a variable as the input to lowercase
-text = "LOWER ME"
-lowercase_text = text.lower()
-
-*/

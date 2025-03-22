@@ -1,20 +1,3 @@
 
-// Example: Try signaling a slot without throwing exception if it doesn't exist - With Python equivalent
+// Example: Try signaling a slot without throwing exception if it doesn't exist
 try-signal:foo
-
-
-/*
-
-# Python equivalent
-# Example: Try invoking a function without throwing an exception if it doesn't exist
-
-# Define a function dictionary to simulate slots
-slots = {
-    "foo": lambda: "Slot foo invoked"
-}
-
-# Try to invoke a slot
-slot_name = "foo"
-result = slots.get(slot_name, lambda: "Slot does not exist")()
-
-*/

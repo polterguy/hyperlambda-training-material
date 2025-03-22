@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script that generates a long-lasting JWT token with the specified username and role, expiring on the specified date, ensuring the user is authorized. - With Python equivalent
+// Create a Hyperlambda script that generates a long-lasting JWT token with the specified username and role, expiring on the specified date, ensuring the user is authorized.
 .arguments
 
    // Mandatory username for token we should generate. Does not need to be an existing user from the database.
@@ -34,27 +34,3 @@ auth.ticket.create
 unwrap:x:+/*
 return
    ticket:x:@auth.ticket.create
-
-
-/*
-
-# Python equivalent
-def join_values(values, separator=""):
-    # Validate the values
-    if not values:
-        raise ValueError("Values are mandatory")
-
-    # Join the values with the specified separator
-    joined_result = separator.join(values)
-
-    # Return the joined result
-    return {"result": joined_result}
-
-# Example usage
-try:
-    result = join_values(["apple", "banana", "cherry"], ", ")
-    print(result)
-except ValueError as e:
-    print(e)
-
-*/

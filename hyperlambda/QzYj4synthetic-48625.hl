@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda endpoint that deletes a specified cache item, ensuring the user is authorized, and handles both single and multiple cache item deletions. - With Python equivalent
+// Create a Hyperlambda endpoint that deletes a specified cache item, ensuring the user is authorized, and handles both single and multiple cache item deletions.
 .arguments
    id:string
 .type:internal
@@ -29,38 +29,3 @@ else
 // Returning success to caller.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-import logging
-
-def create_log_entry(log_type, message, args=None):
-    # Validate the log type
-    valid_types = ["info", "error", "fatal", "debug"]
-    if log_type not in valid_types:
-        raise ValueError(f"Invalid log type. Choose from {valid_types}")
-
-    # Configure logging
-    logging.basicConfig(level=logging.DEBUG)
-    logger = logging.getLogger()
-
-    # Create the log entry
-    log_message = f"{message} | Args: {args}" if args else message
-    if log_type == "info":
-        logger.info(log_message)
-    elif log_type == "error":
-        logger.error(log_message)
-    elif log_type == "fatal":
-        logger.fatal(log_message)
-    elif log_type == "debug":
-        logger.debug(log_message)
-
-# Example usage
-try:
-    create_log_entry("info", "This is an info message", {"user": "Alice", "action": "login"})
-except ValueError as e:
-    print(e)
-
-*/

@@ -1,21 +1,4 @@
 
-// Retrieve a node's value using expressions - With Python equivalent
+// Retrieve a node's value using expressions
 .foo:hello world
 get-value:x:@.foo
-
-
-/*
-
-# Python equivalent
-# Retrieve a value from a dictionary using a key
-data = {
-    "foo": "hello world"
-}
-
-# Get the value associated with the key "foo"
-value = data.get("foo")
-
-# Example usage
-# value will be "hello world"
-
-*/

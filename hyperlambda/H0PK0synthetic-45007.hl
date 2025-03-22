@@ -1,21 +1,6 @@
 
-// Create an argument collection with 3 args being arg1 (string), arg2 (date) and arg3 being any type (unknown) - With Python equivalent
+// Create an argument collection with 3 args being arg1 (string), arg2 (date) and arg3 being any type (unknown)
 .arguments
    arg1:string
    arg2:date
    arg3:*
-
-
-/*
-
-# Python equivalent
-# Create an argument collection with 3 args being arg1 (string), arg2 (date) and arg3 being any type (unknown)
-from datetime import datetime
-
-arguments = {
-    "arg1": "some string",
-    "arg2": datetime.now(),
-    "arg3": None  # Placeholder for any type
-}
-
-*/

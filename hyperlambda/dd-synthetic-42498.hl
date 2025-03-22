@@ -1,21 +1,8 @@
 
-// Example: Trim any of multiple characters from both ends. - With Python equivalent
+// Example: Trim any of multiple characters from both ends.
 
 // Remove both "!" and "#" characters from the ends
 strings.trim:!#Hello#!
    .:!#
 
 // Result: "Hello"
-
-
-/*
-
-# Python equivalent
-# Variables for the string and characters to trim
-text = "xyzyx"
-chars = "xy"
-
-# Trim 'x' and 'y' characters from both ends of the string
-trimmed_text = text.strip(chars)
-
-*/

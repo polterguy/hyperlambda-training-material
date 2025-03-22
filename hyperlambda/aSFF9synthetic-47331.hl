@@ -1,5 +1,5 @@
 
-// This script generates training data from Markdown files. - With Python equivalent
+// This script generates training data from Markdown files.
 execute:magic.io.file.load-recursively
    .:/etc/slett/
 for-each:x:@execute/*
@@ -23,49 +23,3 @@ for-each:x:@execute/*
 
 // House cleanups.
 remove-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-import os
-
-def generate_training_data_from_markdown(folder_path):
-    # Walk through the directory recursively
-    for root, dirs, files in os.walk(folder_path):
-        for file in files:
-            if file.endswith('.md'):
-                file_path = os.path.join(root, file)
-
-                # Convert Markdown to HTML
-                with open(file_path, 'r') as f:
-                    markdown_content = f.read()
-                    html_content = markdown_to_html(markdown_content)
-
-                # Convert HTML to Lambda
-                lambda_code_blocks = html_to_lambda(html_content)
-
-                # Process each code block
-                for code_block in lambda_code_blocks:
-                    trimmed_code = code_block.strip()
-                    save_to_database(trimmed_code)
-
-def markdown_to_html(markdown_content):
-    # Dummy function to convert Markdown to HTML
-    # Replace with actual implementation
-    return "<html><body><pre><code>" + markdown_content + "</code></pre></body></html>"
-
-def html_to_lambda(html_content):
-    # Dummy function to extract code blocks from HTML
-    # Replace with actual implementation
-    return [html_content]
-
-def save_to_database(code):
-    # Dummy function to save code to the database
-    # Replace with actual implementation
-    print(f"Saving code to database: {code}")
-
-# Example usage
-generate_training_data_from_markdown('/etc/slett/')
-
-*/

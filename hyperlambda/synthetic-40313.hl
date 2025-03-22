@@ -1,22 +1,7 @@
 
-// Example: Extract with length exceeding string bounds (returns till end). - With Python equivalent
+// Example: Extract with length exceeding string bounds (returns till end).
 strings.substring:Hello
    .:2
    .:10
 
 // Result: "llo"
-
-
-/*
-
-# Python equivalent
-# Example: Extract with length exceeding string bounds (returns till end).
-text = "Hello"
-start_index = 2
-length = 10
-substring = text[start_index:start_index + length]
-
-# Example usage
-# substring will be "llo"
-
-*/

@@ -1,5 +1,5 @@
 
-// CRUD Hyperlambda file that deletes one record from your menus table in your cms database - With Python equivalent
+// CRUD Hyperlambda file that deletes one record from your menus table in your cms database
 .arguments
 
    // Primary key of record to delete, mandatory argument
@@ -31,39 +31,3 @@ data.connect:[generic|cms]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_menu_record(menu_id):
-    # Verify authorization
-    if not verify_auth_ticket(['root', 'admin']):
-        raise PermissionError("Unauthorized access")
-
-    # Validate mandatory fields
-    if menu_id is None:
-        raise ValueError("id is mandatory")
-
-    # Connect to the cms database
-    conn = sqlite3.connect('cms.db')
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the delete statement
-        cursor.execute("DELETE FROM menus WHERE id = ?", (menu_id,))
-        conn.commit()
-
-        # Return the number of affected rows
-        return cursor.rowcount
-    finally:
-        conn.close()
-
-def verify_auth_ticket(roles):
-    # Dummy function for authorization check
-    # Replace with actual implementation
-    return True
-
-*/

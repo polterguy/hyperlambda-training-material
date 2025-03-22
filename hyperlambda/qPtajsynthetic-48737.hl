@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda action to retrieve a specified cookie by 'name'. Validate the mandatory field and return the cookie's value. - With Python equivalent
+// Create a Hyperlambda action to retrieve a specified cookie by 'name'. Validate the mandatory field and return the cookie's value.
 .arguments
    name
       type:string
@@ -15,40 +15,3 @@ request.cookies.get:x:@.arguments/*/name
 // Returning cookie's value to caller.
 yield
    result:x:@request.cookies.get
-
-
-/*
-
-# Python equivalent
-from flask import Flask, send_file, Response
-
-app = Flask(__name__)
-
-@app.route('/download-file', methods=['GET'])
-def download_file():
-    # Get the file path from request arguments
-    file_path = request.args.get('file')
-
-    # Validate the file path
-    if not file_path:
-        return Response("File path is mandatory", status=400)
-
-    # Simulate verifying root access
-    if not verify_root_access():
-        return Response("Access denied", status=403)
-
-    # Get the filename from the file path
-    filename = os.path.basename(file_path)
-
-    # Send the file as a response with appropriate headers
-    return send_file(file_path, as_attachment=True, attachment_filename=filename, mimetype='application/octet-stream')
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

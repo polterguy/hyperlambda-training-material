@@ -1,5 +1,5 @@
 
-// Hyperlambda [if] with string comparison - With Python equivalent
+// Hyperlambda [if] with string comparison
 .user-type:admin
 .access-level
 if
@@ -18,24 +18,3 @@ if
  * accessLevel = "full";
  * }
  */
-
-
-/*
-
-# Python equivalent
-def determine_access_level(user_type):
-    # Initialize the access level variable
-    access_level = None
-
-    # String comparison logic
-    if user_type == "admin":
-        access_level = "full"
-
-    return access_level
-
-# Example usage
-user_type = "admin"
-access_level = determine_access_level(user_type)
-print(access_level)  # Output: "full"
-
-*/

@@ -1,5 +1,5 @@
 
-// Store a single fact about the user into long term memory - With Python equivalent
+// Store a single fact about the user into long term memory
 .arguments
    _session:string
    _user-id:string
@@ -35,39 +35,3 @@ data.connect:[generic|magic]
 // Returning success to caller.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-import requests
-import json
-
-def post_request_and_process():
-    url = "https://huggingface.co/api/inference-proxy/together/v1/chat/completions"
-    headers = {
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
-        "max_tokens": 500,
-        "stream": False,
-        "messages": [
-            {
-                "role": "user",
-                "content": "Was Julian Assange guilty of sexual assault? Answer in one sentence!"
-            }
-        ]
-    }
-    
-    response = requests.post(url, headers=headers, json=payload)
-    response_content = response.json()
-    
-    result = ""
-    for message in response_content.get('content', '').split("\n"):
-        result += message
-    
-    result = result.replace("\n", "\n")
-    return result
-
-*/

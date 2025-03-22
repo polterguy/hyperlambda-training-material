@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to create a BlowFish hash of the first argument with an individual salt and return the hashed value. - With Python equivalent
+// Create a Hyperlambda script to create a BlowFish hash of the first argument with an individual salt and return the hashed value.
 slots.create:transformers.hash-password
    get-value:x:@.arguments/0/#
    crypto.password.hash:x:-
@@ -11,40 +11,3 @@ slots.create:transformers.hash-password
       .lambda
          set-value:x:@.arguments/0/#
             get-value:x:@crypto.password.hash
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def read_records_from_table(database, table, limit=None, offset=None, order=None, direction=None):
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    query = f"SELECT * FROM {table}"
-    if order and direction:
-        query += f" ORDER BY {order} {direction}"
-    if limit is not None:
-        query += f" LIMIT {limit}"
-    if offset is not None:
-        query += f" OFFSET {offset}"
-
-    # Execute the query and fetch results
-    cursor.execute(query)
-    results = cursor.fetchall()
-
-    # Close the connection
-    connection.close()
-
-    # Return the results
-    return results
-
-# Example usage
-records = read_records_from_table("example.db", "example_table", limit=10, offset=0, order="id", direction="ASC")
-for record in records:
-    print(record)
-
-*/

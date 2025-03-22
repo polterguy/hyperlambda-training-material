@@ -1,20 +1,6 @@
 
-// Example: Check if a string ends with a substring that is not at the end. - With Python equivalent
+// Example: Check if a string ends with a substring that is not at the end.
 
 // Returns false
 strings.ends-with:HelloWorld
    .:Universe
-
-
-/*
-
-# Python equivalent
-# Example: Check if a string ends with a substring that is not at the end.
-string = "HelloWorld"
-substring = "Universe"
-ends_with_substring = string.endswith(substring)
-
-# Example usage
-# ends_with_substring will be False
-
-*/

@@ -1,5 +1,5 @@
 
-// Execute Hyperlambda action - With Python equivalent
+// Execute Hyperlambda action
 .arguments
    filter:string
 
@@ -16,26 +16,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def execute_chinook_albums_count(filter_value):
-    # Dummy function to simulate the execution of a Hyperlambda action
-    # Replace with actual implementation
-    def chinook_albums_count(filter_value):
-        # Simulate counting albums with a filter
-        return {"count": 42}  # Dummy count
-
-    # Execute the action
-    result = chinook_albums_count(filter_value)
-
-    return result
-
-# Example usage
-filter_value = "Rock"
-result = execute_chinook_albums_count(filter_value)
-print(result)  # Output: {'count': 42}
-
-*/

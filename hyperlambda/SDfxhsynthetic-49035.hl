@@ -1,5 +1,5 @@
 
-// Create one record in your Genre table in your chinook database. - With Python equivalent
+// Create one record in your Genre table in your chinook database.
 .arguments
 
    // GenreId column value
@@ -45,56 +45,3 @@ data.connect:[generic|chinook]
    unwrap:x:+/*
    return
       result:success
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def create_genre(genre_id, name):
-    """
-    This function creates one record in the Genre table in the chinook database.
-    
-    :param genre_id: The ID of the genre to create
-    :param name: The name of the genre
-    :return: A dictionary indicating success
-    :raises ValueError: If genre_id or name is not provided
-    """
-    # Verify authentication
-    verify_authentication(["partner"])
-    
-    # Validate mandatory fields
-    if genre_id is None or not name:
-        raise ValueError("GenreId and Name are mandatory")
-    
-    # Log the creation
-    log_genre_creation(genre_id, name)
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('chinook.db')
-    cursor = conn.cursor()
-    
-    # Insert the record
-    cursor.execute("INSERT INTO Genre (GenreId, Name) VALUES (?, ?)", (genre_id, name))
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return success result
-    return {"result": "success"}
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-def log_genre_creation(genre_id, name):
-    # Placeholder for logging logic
-    print(f"Genre entry created: ID={genre_id}, Name={name}")
-
-# Example usage
-# create_genre(1, "Rock")
-
-*/

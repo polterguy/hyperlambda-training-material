@@ -1,23 +1,8 @@
 
-// Example: Allow letters and spaces only (remove punctuation by replacing with empty). - With Python equivalent
+// Example: Allow letters and spaces only (remove punctuation by replacing with empty).
 .phrase:Hello, World!
 strings.replace-not-of:x:@.phrase
    .:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
    .:
 
 // Result: "Hello World" (comma and '!' removed)
-
-
-/*
-
-# Python equivalent
-# Calculate the sum of 1 and 2
-sum_result = 1 + 2
-
-# Calculate the product of 3 and 4
-product_result = 3 * 4
-
-# Mix the results into a string
-mixed_string = f"Sum {sum_result} and Product {product_result}"
-
-*/

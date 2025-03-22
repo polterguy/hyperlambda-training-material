@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to delete an item from a specified database and table using SQLite, with a specific ID. - With Python equivalent
+// Create a Hyperlambda script to delete an item from a specified database and table using SQLite, with a specific ID.
 data.connect:DATABASE_NAME
    database-type:sqlite
 
@@ -10,44 +10,3 @@ data.connect:DATABASE_NAME
       where
          and
             id.eq:x:@WHATEVER_ID_HERE
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_item_from_table(database_name, table_name, item_id):
-    """
-    This function deletes an item from a specified database and table using SQLite, with a specific ID.
-    
-    :param database_name: The name of the database
-    :param table_name: The name of the table
-    :param item_id: The ID of the item to delete
-    :return: The number of affected rows
-    :raises ValueError: If any of the arguments are not provided
-    """
-    # Validate mandatory fields
-    if not all([database_name, table_name, item_id]):
-        raise ValueError("Database name, table name, and item ID are mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect(f'{database_name}.db')
-    cursor = conn.cursor()
-    
-    # Delete the item
-    cursor.execute(f"DELETE FROM {table_name} WHERE id = ?", (item_id,))
-    affected_rows = cursor.rowcount
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return the number of affected rows
-    return affected_rows
-
-# Example usage
-# delete_item_from_table("chinook", "Album", 1)
-
-*/

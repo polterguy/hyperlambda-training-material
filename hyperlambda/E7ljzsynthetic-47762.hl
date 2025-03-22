@@ -1,5 +1,5 @@
 
-// Evaluates specified [.lambda] if condition evaluates to true. - With Python equivalent
+// Evaluates specified [.lambda] if condition evaluates to true.
 if
    and
       eq:x:@SOME_EXPRESSION
@@ -12,29 +12,3 @@ if
 else
 
    // Lambda evaluated if condition is NOT true.
-
-
-/*
-
-# Python equivalent
-def evaluate_conditions(some_expression, some_other_expression):
-    # Initialize the result variable
-    result = None
-
-    # Conditional logic
-    if some_expression == "SOME_VALUE" and some_other_expression == "SOME_OTHER_VALUE":
-        # Execute some logic if conditions are true
-        result = "Conditions are true"
-    else:
-        # Execute some other logic if conditions are false
-        result = "Conditions are false"
-
-    return result
-
-# Example usage
-some_expression = "SOME_VALUE"
-some_other_expression = "SOME_OTHER_VALUE"
-result = evaluate_conditions(some_expression, some_other_expression)
-print(result)  # Output: "Conditions are true"
-
-*/

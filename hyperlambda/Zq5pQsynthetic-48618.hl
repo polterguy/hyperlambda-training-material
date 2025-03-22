@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to create one record in a specified table in a database with optional filtering arguments. - With Python equivalent
+// Create a Hyperlambda script to create one record in a specified table in a database with optional filtering arguments.
 .arguments
 
 // Meta data description for endpoint
@@ -29,43 +29,3 @@ data.connect:{database}
    unwrap:x:+/*
    return
       id:x:@data.create
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def update_record_in_table(database, table, values, conditions):
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    set_clause = ", ".join([f"{key} = ?" for key in values.keys()])
-    where_clause = " AND ".join([f"{key} = ?" for key in conditions.keys()])
-    query = f"UPDATE {table} SET {set_clause} WHERE {where_clause}"
-
-    # Execute the query
-    cursor.execute(query, tuple(values.values()) + tuple(conditions.values()))
-    connection.commit()
-
-    # Get the number of affected rows
-    affected_rows = cursor.rowcount
-
-    # Close the connection
-    connection.close()
-
-    # Check if any record was updated
-    if affected_rows == 0:
-        return {"result": "Record not found", "status": 404}
-    else:
-        return {"affected": affected_rows, "status": 202}
-
-# Example usage
-values = {"name": "Jane Doe"}
-conditions = {"id": 1}
-result = update_record_in_table("example.db", "example_table", values, conditions)
-print(result)
-
-*/

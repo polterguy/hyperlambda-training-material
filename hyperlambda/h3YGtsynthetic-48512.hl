@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that handles HTTP request failures using a try/catch/finally block. - With Python equivalent
+// Create a Hyperlambda snippet that handles HTTP request failures using a try/catch/finally block.
 
 // Handles HTTP request failures inside a try/catch/finally block
 try
@@ -15,21 +15,3 @@ try
 
    // Logging completion
    log.info:HTTP request attempt finished
-
-
-/*
-
-# Python equivalent
-import logging
-
-logging.basicConfig(level=logging.INFO)
-
-try:
-    with open("/invalid/path/to/file.txt", "r") as file:
-        content = file.read()
-except FileNotFoundError as e:
-    logging.error(e)
-finally:
-    logging.info("File read attempt finished")
-
-*/

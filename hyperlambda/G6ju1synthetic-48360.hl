@@ -1,5 +1,5 @@
 
-// Develop a helper action for a Stripe webhook to extract essential information from charge events. The function should accept a mandatory node reference argument, which is forwarded by Stripe. It should convert the amount to a decimal by dividing by 100 and return the customer ID, amount, currency, receipt URL, event type, and metadata. The event type could be one of several charge-related statuses, such as 'charge.succeeded', 'charge.failed', etc. This setup allows efficient handling of Stripe webhook events. - With Python equivalent
+// Develop a helper action for a Stripe webhook to extract essential information from charge events. The function should accept a mandatory node reference argument, which is forwarded by Stripe. It should convert the amount to a decimal by dividing by 100 and return the customer ID, amount, currency, receipt URL, event type, and metadata. The event type could be one of several charge-related statuses, such as 'charge.succeeded', 'charge.failed', etc. This setup allows efficient handling of Stripe webhook events.
 .arguments
    node_reference
       type:string
@@ -21,49 +21,3 @@ yield
    receipt_url:x:@.arguments/*/node_reference/#/*/data/*/object/*/receipt_url
    type:x:@.arguments/*/node_reference/#/*/type
    metadata:x:@.arguments/*/node_reference/#/*/data/*/object/*/metadata/*
-
-
-/*
-
-# Python equivalent
-import requests
-import base64
-
-def invoke_openai_and_save_audio():
-    url = "https://api.openai.com/v1/chat/completions"
-    headers = {
-        "Authorization": "Bearer TOKEN_HERE",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "model": "gpt-4o-audio-preview",
-        "max_tokens": 4000,
-        "temperature": 0.3,
-        "messages": [
-            {
-                "role": "system",
-                "content": "You are a helpful assistant and you can answer questions related to the context."
-            },
-            {
-                "role": "user",
-                "content": "Hi there, how's it going?"
-            }
-        ],
-        "audio": {
-            "voice": "alloy",
-            "format": "mp3"
-        },
-        "modalities": ["text", "audio"]
-    }
-    
-    response = requests.post(url, headers=headers, json=payload)
-    audio_data_base64 = response.json().get('choices')[0]['message']['audio']['data']
-    
-    # Convert from base64 and save as MP3
-    audio_data = base64.b64decode(audio_data_base64)
-    with open('/foo.mp3', 'wb') as f:
-        f.write(audio_data)
-
-invoke_openai_and_save_audio()
-
-*/

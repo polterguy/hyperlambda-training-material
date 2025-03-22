@@ -1,25 +1,8 @@
 
-// Example: Allowed set includes all characters in the input (no replacements occur). - With Python equivalent
+// Example: Allowed set includes all characters in the input (no replacements occur).
 .input:ABC123
 strings.replace-not-of:x:@.input
    .:ABC123
    .:#
 
 // Result: "ABC123" (unchanged, since all characters were allowed)
-
-
-/*
-
-# Python equivalent
-# Example: Allowed set includes all characters in the input (no replacements occur).
-input_string = "ABC123"
-allowed_set = "ABC123"
-replacement_char = "#"
-
-def replace_not_of(input_string, allowed_set, replacement_char):
-    return ''.join([char if char in allowed_set else replacement_char for char in input_string])
-
-# Example usage
-result = replace_not_of(input_string, allowed_set, replacement_char)
-
-*/

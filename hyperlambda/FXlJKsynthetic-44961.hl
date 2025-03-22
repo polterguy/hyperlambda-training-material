@@ -1,5 +1,5 @@
 
-// Else-if using an expression shorthand for its condition - With Python equivalent
+// Else-if using an expression shorthand for its condition
 .flag:bool:true
 .result
 if
@@ -10,18 +10,3 @@ if
 else-if:x:@.flag
    set-value:x:@.result
       .:Second
-
-
-/*
-
-# Python equivalent
-# Else-if using an expression shorthand for its condition
-flag = True
-result = None
-
-if False:
-    result = "First"
-elif flag:
-    result = "Second"
-
-*/

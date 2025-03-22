@@ -1,5 +1,5 @@
 
-// Create a while loop for 20 iterations that creates a log entry - With Python equivalent
+// Create a while loop for 20 iterations that creates a log entry
 .no:int:0
 while
    lt
@@ -10,19 +10,3 @@ while
       // Your lambda goes here.
       log.info:Howdy from while
       math.increment:x:@.no
-
-
-/*
-
-# Python equivalent
-# Create a while loop for 20 iterations that creates a log entry
-import logging
-
-logging.basicConfig(level=logging.INFO)
-no = 0
-
-while no < 20:
-    logging.info("Howdy from while")
-    no += 1
-
-*/

@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to override the exception handler to return information to root users. - With Python equivalent
+// Write a Hyperlambda script to override the exception handler to return information to root users.
 log.error:x:@.arguments/*/message
    url:x:@.arguments/*/path
    exception:x:@.arguments/*/stack
@@ -8,35 +8,3 @@ add:x:+
    get-nodes:x:@.arguments/*/field
    get-nodes:x:@.arguments/*/message
 return
-
-
-/*
-
-# Python equivalent
-import logging
-
-def override_exception_handler(exception_info):
-    """
-    This function overrides the exception handler to return information to root users.
-    
-    :param exception_info: A dictionary containing 'message', 'path', 'stack', 'status', and 'field'
-    :return: A dictionary with status, field, and message
-    """
-    # Log the error with details
-    logging.error(f"Error: {exception_info.get('message')}, URL: {exception_info.get('path')}, Exception: {exception_info.get('stack')}")
-    
-    # Prepare the return information
-    return_info = {
-        "status": exception_info.get("status"),
-        "field": exception_info.get("field"),
-        "message": exception_info.get("message")
-    }
-    
-    # Return the information
-    return return_info
-
-# Example usage
-# exception_info = {"message": "An error occurred", "path": "/some/path", "stack": "Stack trace", "status": 500, "field": "some_field"}
-# override_exception_handler(exception_info)
-
-*/

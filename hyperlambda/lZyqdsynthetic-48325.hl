@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to compile a snippet of C# code into a library, load it as a plugin, and invoke a slot. - With Python equivalent
+// Create a Hyperlambda script to compile a snippet of C# code into a library, load it as a plugin, and invoke a slot.
 system.compile
    references
       .:netstandard
@@ -15,66 +15,3 @@ system.plugin.execute:x:@system.compile
 
    // Invoking dynamically created C# slot.
    bar
-
-
-/*
-
-# Python equivalent
-import subprocess
-
-def compile_and_execute_bar():
-    # Define the C# code
-    csharp_code = """
-    // Example C# code creating a Hyperlambda slot.
-    using System;
-    using magic.node;
-    using magic.signals.contracts;
-
-    // Our slot class.
-    [Slot(Name = "bar")]
-    public class Bar : ISlot
-    {
-        public void Signal(ISignaler signaler, Node input)
-        {
-            input.Value = "Hello from C#";
-        }
-    }
-    """
-
-    # Define the references
-    references = [
-        "netstandard",
-        "System.Runtime",
-        "System.Private.CoreLib",
-        "magic.node",
-        "magic.signals.contracts"
-    ]
-
-    # Save the C# code to a temporary file
-    source_file = "bar.cs"
-    with open(source_file, 'w') as f:
-        f.write(csharp_code)
-
-    # Compile the C# code to a DLL
-    output_file = "bar.dll"
-    csc_command = [
-        "csc",
-        "-target:library",
-        f"-out:{output_file}",
-        source_file
-    ] + [f"-r:{ref}" for ref in references]
-    subprocess.run(csc_command, check=True)
-
-    # Execute the plugin (dummy implementation)
-    result = execute_plugin(output_file)
-    print(result)
-
-def execute_plugin(plugin_name):
-    # Dummy function to execute a plugin
-    # Replace with actual implementation
-    return "Hello from C#"
-
-# Example usage
-compile_and_execute_bar()
-
-*/

@@ -1,17 +1,5 @@
 
-// Example: Capitalize only the very first character of a multi-word string. - With Python equivalent
+// Example: Capitalize only the very first character of a multi-word string.
 
 // Result: "Hello world"
 strings.capitalize:hello world
-
-
-/*
-
-# Python equivalent
-# Strings to be concatenated
-strings = ["I", "love", "Hyperlambda"]
-
-# Concatenate the strings without separators
-concatenated_string = "".join(strings)
-
-*/

@@ -1,5 +1,5 @@
 
-// Scrapes the specified URL and returns all hyperlinks found - With Python equivalent
+// Scrapes the specified URL and returns all hyperlinks found
 .arguments
 
    // Mandatory argument and becomes the URL the function will scrape for hyperlinks to return.
@@ -22,15 +22,3 @@ signal:magic.http.html2markdown-links
 // Returning result to caller.
 yield
    result:x:@signal
-
-
-/*
-
-# Python equivalent
-def get_raw_html(url: str):
-    import requests
-    
-    response = requests.get(url)
-    return response.text
-
-*/

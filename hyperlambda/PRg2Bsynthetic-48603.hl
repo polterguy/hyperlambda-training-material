@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda action to hash a specified input using an optional algorithm (default is SHA 256). Validate the algorithm and return the hash result. - With Python equivalent
+// Create a Hyperlambda action to hash a specified input using an optional algorithm (default is SHA 256). Validate the algorithm and return the hash result.
 .arguments
 
    // Notice, this is action syntax
@@ -46,37 +46,3 @@ crypto.hash:x:@.arguments/*/input
 // Returning result to caller.
 yield
    result:x:./-
-
-
-/*
-
-# Python equivalent
-def handle_exception(message, path, stack, status=None, field=None):
-    # Log the error details
-    log_error(message, path, stack)
-
-    # Collect additional information
-    additional_info = {
-        "status": status,
-        "field": field,
-        "message": message
-    }
-
-    # Return the additional information
-    return additional_info
-
-def log_error(message, path, stack):
-    # Simulate logging the error details
-    print(f"Error: {message}, URL: {path}, Exception: {stack}")
-
-# Example usage
-exception_info = handle_exception(
-    message="An error occurred",
-    path="/example/path",
-    stack="Stack trace here",
-    status="500",
-    field="example_field"
-)
-print(exception_info)
-
-*/

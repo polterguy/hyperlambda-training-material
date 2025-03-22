@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that evaluates specified [.lambda] if condition does not evaluate to Hello Universe. - With Python equivalent
+// Generate a Hyperlambda snippet that evaluates specified [.lambda] if condition does not evaluate to Hello Universe.
 
 // Evaluates specified [.lambda] if condition does not evaluate to Hello Universe.
 .foo:Hello Universe
@@ -16,24 +16,3 @@ else
 
    // Lambda evaluated if condition is NOT true.
    log.info:[.foo] is Hello Universe
-
-
-/*
-
-# Python equivalent
-import logging
-
-def execute_lambda_if_status_not_ready():
-    logging.basicConfig(level=logging.INFO)
-    
-    status = "Ready"
-    
-    if status != "Ready":
-        logging.info("[.status] is NOT Ready")
-    else:
-        logging.info("[.status] is Ready")
-
-# Example usage
-execute_lambda_if_status_not_ready()
-
-*/

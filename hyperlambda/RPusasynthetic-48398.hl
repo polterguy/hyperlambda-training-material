@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target]. - With Python equivalent
+// Create a Hyperlambda snippet that retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target].
 
 // Retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target]
 .sourceA
@@ -14,34 +14,3 @@
 add:x:@.target
    get-nodes:x:@.sourceA/*
    get-nodes:x:@.sourceB/*
-
-
-/*
-
-# Python equivalent
-def integrate_nodes():
-    origin1 = {
-        "field1": "content1",
-        "field2": "content2",
-        "field3": "content3"
-    }
-    
-    origin2 = {
-        "field4": "content4",
-        "field5": "content5",
-        "field6": "content6"
-    }
-    
-    destination_node = {}
-    
-    # Move and integrate nodes from origin1 and origin2 into destination_node
-    destination_node.update(origin1)
-    destination_node.update(origin2)
-    
-    return destination_node
-
-# Example usage
-result = integrate_nodes()
-print(result)
-
-*/

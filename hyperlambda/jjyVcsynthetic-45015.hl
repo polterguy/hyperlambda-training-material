@@ -1,25 +1,4 @@
 
-// Convert from YAML to lambda and back again - With Python equivalent
+// Convert from YAML to lambda and back again
 yaml2lambda:x:@.yaml
 lambda2yaml:x:-/*
-
-
-/*
-
-# Python equivalent
-# Convert from YAML to lambda and back again
-import yaml
-
-# Sample YAML data
-yaml_data = """
-key1: value1
-key2: value2
-"""
-
-# Convert YAML to Python dictionary (lambda equivalent)
-lambda_data = yaml.safe_load(yaml_data)
-
-# Convert Python dictionary back to YAML
-yaml_output = yaml.dump(lambda_data)
-
-*/

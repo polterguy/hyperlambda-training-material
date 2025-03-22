@@ -1,5 +1,5 @@
 
-// Hyperlambda endpoint taking arguments. The SQL query retrieves distinct customer details who have purchased tracks from the "Rock" genre.\n\nThe SQL code connects to the Chinook database and executes a query that selects distinct email addresses, first names, last names, and genre names of customers who have purchased tracks classified under the "Rock" genre. It achieves this by joining the Customer, Invoice, InvoiceLine, Track, and Genre tables on their respective keys, filtering the results to include only those where the genre name is "Rock". The results are ordered by the customer's email address. This query is useful for identifying and analyzing the customer base interested in rock music, which can be leveraged for targeted marketing or customer relationship management initiatives. - With Python equivalent
+// Hyperlambda endpoint taking arguments. The SQL query retrieves distinct customer details who have purchased tracks from the "Rock" genre.\n\nThe SQL code connects to the Chinook database and executes a query that selects distinct email addresses, first names, last names, and genre names of customers who have purchased tracks classified under the "Rock" genre. It achieves this by joining the Customer, Invoice, InvoiceLine, Track, and Genre tables on their respective keys, filtering the results to include only those where the genre name is "Rock". The results are ordered by the customer's email address. This query is useful for identifying and analyzing the customer base interested in rock music, which can be leveraged for targeted marketing or customer relationship management initiatives.
 .arguments
 
 // Connecting to database.
@@ -12,42 +12,3 @@ data.connect:chinook
 
    // Returning a result of above invocation to caller.
    return-nodes:x:@data.select/*
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def get_customers_by_genre(filter_genre):
-    # Connect to the Chinook database
-    connection = sqlite3.connect('chinook.db')
-    cursor = connection.cursor()
-
-    # SQL query to select distinct customer details who have purchased tracks from the specified genre
-    query = """
-    SELECT DISTINCT c.Email, c.FirstName, c.LastName, g.Name
-    FROM Customer c
-    INNER JOIN Invoice i ON c.CustomerId = i.CustomerId
-    INNER JOIN InvoiceLine ii ON i.InvoiceId = ii.InvoiceId
-    INNER JOIN Track t ON ii.TrackId = t.TrackId
-    INNER JOIN Genre g ON t.GenreId = g.GenreId
-    WHERE g.Name LIKE ?
-    ORDER BY c.Email
-    """
-
-    # Execute the query with the filter parameter
-    cursor.execute(query, (filter_genre,))
-    results = cursor.fetchall()
-
-    # Close the connection
-    connection.close()
-
-    return results
-
-# Example usage
-rock_customers = get_customers_by_genre('Rock')
-for customer in rock_customers:
-    print(customer)
-
-*/

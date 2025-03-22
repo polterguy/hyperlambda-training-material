@@ -1,5 +1,5 @@
 
-// Returns items from your DATABASE_NAME and TABLE_NAME. - With Python equivalent
+// Returns items from your DATABASE_NAME and TABLE_NAME.
 data.connect:DATABASE_NAME
    database-type:sqlite
 
@@ -7,27 +7,3 @@ data.connect:DATABASE_NAME
    data.read
       database-type:sqlite
       table:TABLE_NAME
-
-
-/*
-
-# Python equivalent
-# Returns items from your DATABASE_NAME and TABLE_NAME
-import sqlite3
-
-# Connect to the SQLite database
-connection = sqlite3.connect('DATABASE_NAME.db')
-cursor = connection.cursor()
-
-# Read items from the TABLE_NAME table
-table_name = 'TABLE_NAME'
-sql = f"SELECT * FROM {table_name}"
-cursor.execute(sql)
-
-# Fetch all results
-results = cursor.fetchall()
-
-# Close the connection
-connection.close()
-
-*/

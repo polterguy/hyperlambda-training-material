@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that determines if conditions are satisfied and executes [.lambda]. - With Python equivalent
+// Write a Hyperlambda snippet that determines if conditions are satisfied and executes [.lambda].
 
 // Determines if conditions are satisfied and executes [.lambda].
 .status
@@ -25,25 +25,3 @@ else
    // Setting [.status] to false
    set-value:x:@.status
       .:bool:false
-
-
-/*
-
-# Python equivalent
-def evaluate_lambda_if_all_conditions_true():
-    factor1 = 1
-    factor2 = 20
-    result = False
-    
-    if factor1 < 2 and factor2 > 19:
-        result = True
-    else:
-        result = False
-    
-    return result
-
-# Example usage
-result = evaluate_lambda_if_all_conditions_true()
-print(result)
-
-*/

@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script for an OpenAI AI search endpoint returning only references to matching training snippets. - With Python equivalent
+// Write a Hyperlambda script for an OpenAI AI search endpoint returning only references to matching training snippets.
 .arguments
    prompt:string
    type:string
@@ -39,46 +39,3 @@ response.headers.set
 
 // Returning result of worker slot to caller.
 return-nodes:x:@signal/*
-
-
-/*
-
-# Python equivalent
-def ai_search_endpoint(prompt, search_type, recaptcha_response, max_results):
-    """
-    This function serves as an AI search endpoint returning only references to matching training snippets.
-    
-    :param prompt: The search prompt
-    :param search_type: The type of search
-    :param recaptcha_response: The recaptcha response string
-    :param max_results: Maximum number of results to return
-    :return: References to matching training snippets
-    """
-    # Collect arguments
-    arguments = {
-        "prompt": prompt,
-        "type": search_type,
-        "recaptcha_response": recaptcha_response,
-        "max": max_results
-    }
-    
-    # Simulate signaling the common AI endpoint
-    response = signal_magic_ai_endpoint_common(arguments)
-    
-    # Set cache control header
-    set_cache_control_header(300)
-    
-    # Return the response
-    return response
-
-def signal_magic_ai_endpoint_common(arguments):
-    # This function would interact with the AI search logic
-    # Placeholder for actual implementation
-    return {"snippets": [], "db_time": 0}
-
-def set_cache_control_header(max_age):
-    # This function sets the cache control header
-    # Placeholder for actual implementation
-    pass
-
-*/

@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that evaluates a user role using a switch case with a default option. - With Python equivalent
+// Generate a Hyperlambda snippet that evaluates a user role using a switch case with a default option.
 
 // Switch case comparison for user roles.
 .user_role:admin
@@ -25,19 +25,3 @@ switch:x:@.user_role
       // If none of the above roles match.
       set-value:x:@.result
          .:Unknown role
-
-
-/*
-
-# Python equivalent
-value = 10
-result = ""
-
-if value == 5:
-    result = "Value is five"
-elif value == 10:
-    result = "Value is ten"
-elif value == 20:
-    result = "Value is twenty"
-
-*/

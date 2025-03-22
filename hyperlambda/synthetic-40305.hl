@@ -1,21 +1,6 @@
 
-// Example: Use a variable for the string to encode. - With Python equivalent
+// Example: Use a variable for the string to encode.
 .text:key=value&flag=true
 
 // Result: "key%3Dvalue%26flag%3Dtrue"
 strings.url-encode:x:@.text
-
-
-/*
-
-# Python equivalent
-# Example: Use a variable for the string to encode.
-import urllib.parse
-
-text = "key=value&flag=true"
-url_encoded_text = urllib.parse.quote(text)
-
-# Example usage
-# url_encoded_text will be "key%3Dvalue%26flag%3Dtrue"
-
-*/

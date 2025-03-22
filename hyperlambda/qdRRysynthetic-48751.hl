@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to unzip a specified file in its current folder, with an option to create a new folder. - With Python equivalent
+// Write a Hyperlambda script to unzip a specified file in its current folder, with an option to create a new folder.
 .arguments
    file:string
    create_folder:bool
@@ -41,40 +41,3 @@ io.file.unzip:x:@.arguments/*/file
 // Returning success to caller.
 return-nodes
    result:success
-
-
-/*
-
-# Python equivalent
-from flask import Flask, request, jsonify
-import openai
-
-app = Flask(__name__)
-
-@app.route('/openai-chat', methods=['POST'])
-def openai_chat():
-    # Get the arguments from the request
-    prompt = request.json.get('prompt')
-    model_type = request.json.get('type', 'gpt-3.5-turbo')
-    stream = request.json.get('stream', False)
-
-    # Validate the prompt
-    if not prompt:
-        return jsonify({"error": "Prompt is mandatory"}), 400
-
-    # Call the OpenAI API
-    response = openai.Completion.create(
-        engine=model_type,
-        prompt=prompt,
-        max_tokens=150,
-        stream=stream
-    )
-
-    # Return the response
-    return jsonify(response)
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

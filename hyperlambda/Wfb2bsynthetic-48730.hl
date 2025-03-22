@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return the number of log items in the database based on a query. - With Python equivalent
+// Write a Hyperlambda script to return the number of log items in the database based on a query.
 .arguments
    query:string
 .type:internal
@@ -14,46 +14,3 @@ log.count:x:@.arguments/*/query
 unwrap:x:+/*
 return
    count:x:@log.count
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def get_log_item_by_id(database, log_id):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate the log ID
-    if not log_id:
-        raise ValueError("Log ID is mandatory")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Execute the query to get the log item by ID
-    query = "SELECT * FROM logs WHERE id = ?"
-    cursor.execute(query, (log_id,))
-    result = cursor.fetchone()
-
-    # Close the connection
-    connection.close()
-
-    # Return the log item
-    return result
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-try:
-    log_item = get_log_item_by_id("logs.db", "123")
-    print(log_item)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

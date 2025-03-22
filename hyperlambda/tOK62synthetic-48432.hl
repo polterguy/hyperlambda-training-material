@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that creates a new user in the 'auth_db' database and its 'users' table. - With Python equivalent
+// Generate a Hyperlambda snippet that creates a new user in the 'auth_db' database and its 'users' table.
 
 // Creates a new user in "auth_db" database and its "users" table.
 data.connect:auth_db
@@ -14,42 +14,3 @@ data.connect:auth_db
          username:JohnDoe
          email:johndoe@example.com
          created_at:date:"2025-03-15T00:00:00.000"
-
-
-/*
-
-# Python equivalent
-import psycopg2
-
-def add_new_product():
-    # Connect to the inventory_db database
-    connection = psycopg2.connect(
-        host='your_host',
-        user='your_user',
-        password='your_password',
-        dbname='inventory_db'
-    )
-    
-    cursor = connection.cursor()
-    
-    # Query to add a new product to the products table
-    query = """
-    INSERT INTO products (product_id, name, price, stock)
-    VALUES (%s, %s, %s, %s)
-    """
-    
-    product_id = 2005
-    name = "Laptop"
-    price = 999.99
-    stock = 50
-    
-    cursor.execute(query, (product_id, name, price, stock))
-    connection.commit()
-    
-    cursor.close()
-    connection.close()
-
-# Example usage
-add_new_product()
-
-*/

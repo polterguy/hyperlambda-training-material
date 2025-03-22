@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the questionnaires table in the magic database, filtering which item to update with name and updating type fields, ensuring authentication and authorization for root roles. - With Python equivalent
+// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the questionnaires table in the magic database, filtering which item to update with name and updating type fields, ensuring authentication and authorization for root roles.
 .arguments
    name:string
    type:string
@@ -47,64 +47,3 @@ data.connect:[generic|magic]
    unwrap:x:+/*
    return
       affected:x:@data.update
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def count_questions(database, filters=None):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    query = "SELECT COUNT(*) as count FROM questions"
-    conditions = []
-    parameters = []
-
-    # Add filters to the query
-    if filters:
-        for key, value in filters.items():
-            if key.endswith(".like"):
-                conditions.append(f"{key.split('.')[1]} LIKE ?")
-                parameters.append(f"%{value}%")
-            elif key.endswith(".eq"):
-                conditions.append(f"{key.split('.')[1]} = ?")
-                parameters.append(value)
-
-    if conditions:
-        query += " WHERE " + " AND ".join(conditions)
-
-    # Execute the query
-    cursor.execute(query, parameters)
-    result = cursor.fetchone()
-
-    # Close the connection
-    connection.close()
-
-    # Return the count
-    return {"count": result[0]}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-filters = {
-    "questions.question_id.eq": 1,
-    "questions.question.like": "example",
-    "questions.questionnaire.eq": "survey"
-}
-try:
-    result = count_questions("magic.db", filters)
-    print(result)
-except PermissionError as e:
-    print(e)
-
-*/

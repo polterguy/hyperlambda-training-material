@@ -1,5 +1,5 @@
 
-// Loop while a condition is true (increment counter and add items) - With Python equivalent
+// Loop while a condition is true (increment counter and add items)
 .i:int:0
 .list
 while
@@ -11,28 +11,3 @@ while
          .
             item
       math.increment:x:@.i
-
-
-/*
-
-# Python equivalent
-def loop_and_add_items():
-    # Initialize the counter and list
-    i = 0
-    item_list = []
-
-    # Loop while the condition is true
-    while i < 3:
-        # Add an item to the list
-        item_list.append({'item': None})
-
-        # Increment the counter
-        i += 1
-
-    return item_list
-
-# Example usage
-result = loop_and_add_items()
-print(result)  # Output: [{'item': None}, {'item': None}, {'item': None}]
-
-*/

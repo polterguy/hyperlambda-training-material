@@ -1,5 +1,5 @@
 
-// Example: Split a comma-separated string. - With Python equivalent
+// Example: Split a comma-separated string.
 strings.split:a,b,c
    .:,
 
@@ -9,15 +9,3 @@ strings.split:a,b,c
  * .:b
  * .:c
  */
-
-
-/*
-
-# Python equivalent
-# Split a comma-separated string
-string = "a,b,c"
-separator = ","
-
-split_list = string.split(separator)
-
-*/

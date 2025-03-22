@@ -1,5 +1,5 @@
 
-// Example: Create two slots, then execute a [whitelist] lambda object only allowing for 'foo1', to illustrate how an exception will be raise if we execute non-whitelisted slots - With Python equivalent
+// Example: Create two slots, then execute a [whitelist] lambda object only allowing for 'foo1', to illustrate how an exception will be raise if we execute non-whitelisted slots
 slots.create:foo1
    return-value:Safe
 slots.create:foo2
@@ -15,39 +15,3 @@ whitelist
 
       // This will throw, since [foo2] is not whitelisted
       signal:foo2
-
-
-/*
-
-# Python equivalent
-class SlotExecutionError(Exception):
-    pass
-
-class SlotMachine:
-    def __init__(self):
-        self.slots = {
-            'foo1': self.foo1,
-            'foo2': self.foo2
-        }
-        self.whitelist = {'foo1'}
-
-    def foo1(self):
-        return "Safe"
-
-    def foo2(self):
-        return "Unsafe"
-
-    def execute(self, slot_name):
-        if slot_name not in self.whitelist:
-            raise SlotExecutionError(f"Slot '{slot_name}' is not whitelisted")
-        return self.slots[slot_name]()
-
-# Example usage
-slot_machine = SlotMachine()
-try:
-    print(slot_machine.execute('foo1'))  # Should print "Safe"
-    print(slot_machine.execute('foo2'))  # Should raise SlotExecutionError
-except SlotExecutionError as e:
-    print(e)
-
-*/

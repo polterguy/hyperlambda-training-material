@@ -1,21 +1,8 @@
 
-// Example: Remove a substring by replacing it with an empty string. - With Python equivalent
+// Example: Remove a substring by replacing it with an empty string.
 .sentence:Apples and oranges
 strings.replace:x:@.sentence
    .:"and "
    .:
 
 // Result: "Apples oranges" (removed "and ")
-
-
-/*
-
-# Python equivalent
-# Example: Remove a substring by replacing it with an empty string.
-sentence = "Apples and oranges"
-modified_sentence = sentence.replace("and ", "")
-
-# Example usage
-# modified_sentence will be "Apples oranges"
-
-*/

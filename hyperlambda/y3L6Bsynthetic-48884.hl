@@ -1,5 +1,5 @@
 
-// Scrapes the specified [url] and returns as context data to caller. - With Python equivalent
+// Scrapes the specified [url] and returns as context data to caller.
 .arguments
    url:string
 
@@ -27,39 +27,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-import requests
-
-def scrape_url_context(url):
-    """
-    This function scrapes the specified URL and returns it as context data to the caller.
-    
-    :param url: The URL to scrape
-    :return: The context data from the URL
-    """
-    # Authorize the user
-    authorize_user(["root", "gpt"])
-    
-    # Retrieve context data from the URL
-    context_data = get_context_from_url(url, max_tokens=2000)
-    
-    # Return the context data
-    return context_data
-
-def authorize_user(roles):
-    # Placeholder for user authorization logic
-    pass
-
-def get_context_from_url(url, max_tokens):
-    # Placeholder for scraping logic
-    response = requests.get(url)
-    return response.text[:max_tokens]
-
-# Example usage
-# scrape_url_context("https://example.com")
-
-*/

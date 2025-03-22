@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that loops until [.requests] reach 10. - With Python equivalent
+// Generate a Hyperlambda snippet that loops until [.requests] reach 10.
 
 // Loops until [.requests] reach 10.
 .requests:int:1
@@ -14,22 +14,3 @@ while
 
       // Incrementing request counter.
       math.increment:x:@.requests
-
-
-/*
-
-# Python equivalent
-import logging
-
-def loop_while_stock_above_0():
-    logging.basicConfig(level=logging.INFO)
-    
-    stock = 5
-    while stock > 0:
-        logging.info("Stock available")
-        stock -= 1
-
-# Example usage
-loop_while_stock_above_0()
-
-*/

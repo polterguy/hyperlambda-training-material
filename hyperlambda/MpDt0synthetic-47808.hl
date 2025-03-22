@@ -1,5 +1,5 @@
 
-// What are lambda expressions? - With Python equivalent
+// What are lambda expressions?
 
 /*
  * Lambda expressions in Hyperlambda are used to reference any node within the currently executing graph object.
@@ -13,22 +13,3 @@ set-value:x:@.person
    .:Jane
 
 // In this case, @.person is a lambda expression that points to the .person node, and the [set-value] slot changes its value.
-
-
-/*
-
-# Python equivalent
-def update_person_name():
-    # Initialize the person variable
-    person = "John"
-
-    # Update the person's name
-    person = "Jane"
-
-    return person
-
-# Example usage
-result = update_person_name()
-print(result)  # Output: "Jane"
-
-*/

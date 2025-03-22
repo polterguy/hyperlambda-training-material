@@ -1,5 +1,5 @@
 
-// Example: Find case-insensitive "foo" occurrences. - With Python equivalent
+// Example: Find case-insensitive "foo" occurrences.
 strings.matches:Foo foo FOO
    .:(?i)foo
 
@@ -9,17 +9,3 @@ strings.matches:Foo foo FOO
  * .:foo
  * .:FOO
  */
-
-
-/*
-
-# Python equivalent
-import re
-
-# String without digit sequences
-text = "no digits here"
-
-# Attempt to find digit sequences in the string
-digit_sequences = re.findall(r"\d+", text)
-
-*/

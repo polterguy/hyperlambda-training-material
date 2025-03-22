@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda snippet that fetches recent orders from 'ecommerce_db'. - With Python equivalent
+// Create a Hyperlambda snippet that fetches recent orders from 'ecommerce_db'.
 
 // Fetches recent orders from "ecommerce_db".
 .result
@@ -9,41 +9,3 @@ data.connect:ecommerce_db
       database-type:pgsql
    add:x:@.result
       get-nodes:x:@data.select/*
-
-
-/*
-
-# Python equivalent
-import pyodbc
-
-def get_active_employee_details():
-    # Connect to the hr_db database
-    connection = pyodbc.connect(
-        'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=your_server;'
-        'DATABASE=hr_db;'
-        'UID=your_user;'
-        'PWD=your_password'
-    )
-    
-    cursor = connection.cursor()
-    
-    # Query to get active employee details from the employees table
-    query = """
-    SELECT employee_id, name, department, hire_date FROM employees
-    WHERE status='active'
-    """
-    
-    cursor.execute(query)
-    employee_details = cursor.fetchall()
-    
-    cursor.close()
-    connection.close()
-    
-    return employee_details
-
-# Example usage
-employee_details = get_active_employee_details()
-print(employee_details)
-
-*/

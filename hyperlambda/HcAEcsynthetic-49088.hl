@@ -1,5 +1,5 @@
 
-// Create one record in your PlaylistTrack table in your chinook database - With Python equivalent
+// Create one record in your PlaylistTrack table in your chinook database
 .arguments
 
    // PlaylistId column value
@@ -38,49 +38,3 @@ data.connect:[generic|chinook]
    unwrap:x:+/*
    return
       result:success
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def create_playlist_track(playlist_id, track_id):
-    """
-    This function creates one record in the PlaylistTrack table in the chinook database.
-    
-    :param playlist_id: The ID of the playlist
-    :param track_id: The ID of the track
-    :return: A dictionary indicating success
-    :raises ValueError: If playlist_id or track_id is not provided
-    """
-    # Verify authentication
-    verify_authentication(["root", "admin"])
-    
-    # Validate mandatory fields
-    if playlist_id is None or track_id is None:
-        raise ValueError("PlaylistId and TrackId are mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('chinook.db')
-    cursor = conn.cursor()
-    
-    # Insert the record
-    cursor.execute("INSERT INTO PlaylistTrack (PlaylistId, TrackId) VALUES (?, ?)", (playlist_id, track_id))
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return success result
-    return {"result": "success"}
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-# Example usage
-# create_playlist_track(1, 1)
-
-*/

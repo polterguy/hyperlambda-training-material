@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that queries inventory data from the warehouse database and items table. - With Python equivalent
+// Write a Hyperlambda snippet that queries inventory data from the warehouse database and items table.
 
 // Queries inventory data from the warehouse database and items table.
 data.connect:warehouse_db
@@ -14,37 +14,3 @@ data.connect:warehouse_db
       sort
          updated_at
       direction:desc
-
-
-/*
-
-# Python equivalent
-import psycopg2
-
-def fetch_active_orders():
-    # Connect to the e-commerce database
-    connection = psycopg2.connect(
-        host='your_host',
-        user='your_user',
-        password='your_password',
-        dbname='ecommerce_db'
-    )
-    
-    cursor = connection.cursor()
-    
-    # Query to fetch active orders from the orders table
-    query = "SELECT * FROM orders ORDER BY order_date DESC LIMIT 30"
-    
-    cursor.execute(query)
-    active_orders = cursor.fetchall()
-    
-    cursor.close()
-    connection.close()
-    
-    return active_orders
-
-# Example usage
-active_orders = fetch_active_orders()
-print(active_orders)
-
-*/

@@ -2,7 +2,7 @@
 /*
  * This file returns all companies that the specified director is associated with
  * 
- * director_id is an integer and a mandatory object - With Python equivalent
+ * director_id is an integer and a mandatory object
  */
 .arguments
    director_id:long
@@ -31,48 +31,3 @@ data.connect:[finovo|finovo]
                notice:The director is probably associated with more companies
    yield
       companies:x:@data.select/*
-
-
-/*
-
-# Python equivalent
-import psycopg2
-
-def get_director_companies(director_id, limit, offset):
-    # Connect to the finovo database
-    conn = psycopg2.connect(
-        dbname="finovo",
-        user="your_username",
-        password="your_password",
-        host="localhost"
-    )
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the select statement
-        query = """
-        SELECT d1.org_number, b.company_name, d1.role_name
-        FROM directors d1
-        INNER JOIN basic b ON b.org_number = d1.org_number
-        INNER JOIN directors d2 ON d1.director_nbr = d2.director_nbr
-        WHERE d2.director_id = %s AND d1.org_number != d2.org_number
-        LIMIT %s OFFSET %s
-        """
-        cursor.execute(query, (director_id, limit, offset))
-        companies = cursor.fetchall()
-
-        # Check if there might be more companies
-        if len(companies) >= 10:
-            print("Notice: The director is probably associated with more companies")
-
-        return companies
-    finally:
-        cursor.close()
-        conn.close()
-
-# Example usage
-companies = get_director_companies(1, 10, 0)
-for company in companies:
-    print(company)
-
-*/

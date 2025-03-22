@@ -1,5 +1,5 @@
 
-// Connects to sakila with database transactions - With Python equivalent
+// Connects to sakila with database transactions
 data.connect:sakila
    data.transaction.create
       data.execute:delete from film_actor
@@ -19,43 +19,3 @@ data.connect:sakila
     * transaction was implicitly rolled back above.
     */
    data.scalar:select count(*) from film_actor
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def manage_film_actor_transactions(database_name):
-    # Connect to the sakila database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Begin a transaction
-        conn.execute('BEGIN')
-
-        # Execute delete statement
-        cursor.execute("DELETE FROM film_actor")
-
-        # Commit the transaction
-        conn.commit()
-
-        # Execute scalar query to count remaining records
-        cursor.execute("SELECT COUNT(*) FROM film_actor")
-        count = cursor.fetchone()[0]
-
-        return count
-    except Exception as e:
-        # Rollback the transaction in case of error
-        conn.rollback()
-        raise e
-    finally:
-        conn.close()
-
-# Example usage
-database_name = 'sakila.db'
-remaining_count = manage_film_actor_transactions(database_name)
-print(f"Remaining records in film_actor: {remaining_count}")
-
-*/

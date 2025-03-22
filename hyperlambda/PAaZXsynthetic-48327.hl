@@ -1,5 +1,5 @@
 
-// Searches through your training snippets using RAG / VSS search for the specified query - With Python equivalent
+// Searches through your training snippets using RAG / VSS search for the specified query
 .arguments
    _type:string
 
@@ -41,31 +41,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def search_training_snippets(_type, query, max_tokens=4000, threshold=0.3):
-    # Validate mandatory fields
-    if not _type or not query:
-        raise ValueError("_type and query are mandatory")
-
-    # Execute the search using RAG / VSS
-    result = openai_context_from_database(_type, query, max_tokens, threshold)
-
-    return result
-
-def openai_context_from_database(_type, query, max_tokens, threshold):
-    # Dummy function to simulate RAG / VSS search
-    # Replace with actual implementation
-    print(f"Searching with type: {_type}, query: {query}, max_tokens: {max_tokens}, threshold: {threshold}")
-    return {"result": "Search results"}
-
-# Example usage
-_type = "example_type"
-query = "example query"
-result = search_training_snippets(_type, query)
-print(result)  # Output: {'result': 'Search results'}
-
-*/

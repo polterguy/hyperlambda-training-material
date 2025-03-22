@@ -1,20 +1,4 @@
 
-// Example: Create a slot - With Python equivalent
+// Example: Create a slot
 slots.create:foo
    return-value:int:57
-
-
-/*
-
-# Python equivalent
-# Example: Create a function
-
-# Define a function
-def foo():
-    return 57
-
-# Example usage
-# result will be 57
-result = foo()
-
-*/

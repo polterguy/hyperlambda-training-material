@@ -1,15 +1,3 @@
 
-// This example shows a file-level multi-line comment above code - With Python equivalent
+// This example shows a file-level multi-line comment above code
 foo:bar
-
-
-/*
-
-# Python equivalent
-# This example shows a file-level multi-line comment above code
-foo = "bar"
-
-# Example usage
-# foo will be "bar"
-
-*/

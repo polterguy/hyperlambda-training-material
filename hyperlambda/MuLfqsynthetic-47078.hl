@@ -1,5 +1,5 @@
 
-// Create one record in your address table in your sakila database without authorization. Log invocation - With Python equivalent
+// Create one record in your address table in your sakila database without authorization. Log invocation
 .arguments
 
    // address column value
@@ -57,52 +57,3 @@ data.connect:[generic|sakila]
    unwrap:x:+/*
    return
       id:x:@data.create
-
-
-/*
-
-# Python equivalent
-import sqlite3
-from datetime import datetime
-
-def create_address_record(address, address2, district, city_id, postal_code, phone, last_update):
-    # Log the invocation
-    username = get_auth_ticket()
-    log_info("sakila.address entry created", username=username, arguments={
-        "address": address,
-        "address2": address2,
-        "district": district,
-        "city_id": city_id,
-        "postal_code": postal_code,
-        "phone": phone,
-        "last_update": last_update
-    })
-
-    # Connect to the sakila database
-    conn = sqlite3.connect('sakila.db')
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the insert statement
-        cursor.execute(
-            "INSERT INTO address (address, address2, district, city_id, postal_code, phone, last_update) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (address, address2, district, city_id, postal_code, phone, last_update)
-        )
-        conn.commit()
-
-        # Return the ID of the newly created record
-        return cursor.lastrowid
-    finally:
-        conn.close()
-
-def get_auth_ticket():
-    # Dummy function to get auth ticket
-    # Replace with actual implementation
-    return "dummy_user"
-
-def log_info(message, **kwargs):
-    # Dummy function to log information
-    # Replace with actual implementation
-    print(message, kwargs)
-
-*/

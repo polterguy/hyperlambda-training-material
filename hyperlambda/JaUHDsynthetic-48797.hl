@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to delete all existing vectors for a specified model. - With Python equivalent
+// Write a Hyperlambda script to delete all existing vectors for a specified model.
 .arguments
    type:string
 .type:internal
@@ -24,42 +24,3 @@ data.connect:[generic|magic]
 // Returning success to caller.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-def delete_vectors_for_model(model_type):
-    """
-    This function deletes all existing vectors for a specified model.
-    
-    :param model_type: The type of the model for which vectors are to be deleted
-    :return: A dictionary indicating success
-    """
-    # Verify authentication
-    verify_authentication(["root"])
-    
-    # Ensure type is provided
-    if not model_type:
-        raise ValueError("Type is mandatory")
-    
-    # Connect to the database and execute deletion
-    delete_vectors_from_db(model_type)
-    update_embeddings_to_null(model_type)
-    
-    # Return success result
-    return {"result": "success"}
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-def delete_vectors_from_db(model_type):
-    # Placeholder for database execution logic to delete vectors
-    pass
-
-def update_embeddings_to_null(model_type):
-    # Placeholder for database execution logic to update embeddings to null
-    pass
-
-*/

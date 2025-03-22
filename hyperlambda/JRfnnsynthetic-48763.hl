@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return a specified TXT training data file to the client. - With Python equivalent
+// Write a Hyperlambda script to return a specified TXT training data file to the client.
 .arguments
    file:string
 
@@ -24,38 +24,3 @@ response.headers.set
 // Returning file to caller.
 io.stream.open-file:x:@strings.concat/@strings.concat
 return:x:-
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def get_greeting_for_type(database, type_):
-    # Validate the type
-    if not type_:
-        raise ValueError("Type is mandatory")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Execute the query to get the greeting
-    query = "SELECT greeting FROM ml_types WHERE type = ?"
-    cursor.execute(query, (type_,))
-    result = cursor.fetchone()
-
-    # Close the connection
-    connection.close()
-
-    # Return the greeting
-    return {"greeting": result[0] if result else None}
-
-# Example usage
-try:
-    result = get_greeting_for_type("magic.db", "example_type")
-    print(result)
-except ValueError as e:
-    print(e)
-
-*/

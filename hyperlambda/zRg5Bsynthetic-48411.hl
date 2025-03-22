@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that triggers [.lambda] when [.input] does not contain Go Go Go. - With Python equivalent
+// Generate a Hyperlambda snippet that triggers [.lambda] when [.input] does not contain Go Go Go.
 
 // Triggers [.lambda] when [.input] does not contain Go Go Go.
 .input:Go Go Go
@@ -16,25 +16,3 @@ else
 
    // Executes when [.input] is exactly "Go Go Go".
    log.info:[.input] is Go Go Go
-
-
-/*
-
-# Python equivalent
-def evaluate_lambda_if_any_condition_true():
-    value1 = 3
-    value2 = 10
-    result = False
-    
-    if value1 < 4 or value2 > 9:
-        result = True
-    else:
-        result = False
-    
-    return result
-
-# Example usage
-result = evaluate_lambda_if_any_condition_true()
-print(result)
-
-*/

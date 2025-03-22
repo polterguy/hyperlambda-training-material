@@ -1,5 +1,5 @@
 
-// Decrement a value by a custom step from another node - With Python equivalent
+// Decrement a value by a custom step from another node
 .value:int:10
 .step:int:4
 math.decrement:x:@.value
@@ -8,14 +8,3 @@ math.decrement:x:@.value
    get-value:x:@.step
 
 // .value should now be 6
-
-
-/*
-
-# Python equivalent
-# Decrement a value by a custom step from another node
-value = 10
-step = 4
-value -= step
-
-*/

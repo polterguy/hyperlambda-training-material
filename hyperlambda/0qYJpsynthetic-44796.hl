@@ -1,21 +1,6 @@
 
-// Example: String consisting entirely of trim characters (result is empty). - With Python equivalent
+// Example: String consisting entirely of trim characters (result is empty).
 
 // Result: "" (empty string)
 strings.trim-end:xxx
    .:x
-
-
-/*
-
-# Python equivalent
-# String consisting entirely of trim characters (result is empty)
-string = "xxx"
-chars_to_trim = "x"
-
-# Custom implementation to mimic trim-end
-trimmed_string = string
-while trimmed_string.endswith(chars_to_trim):
-    trimmed_string = trimmed_string[:-len(chars_to_trim)]
-
-*/

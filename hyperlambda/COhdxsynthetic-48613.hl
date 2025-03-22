@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda action to HTML encode a specified string and return the encoded content. - With Python equivalent
+// Create a Hyperlambda action to HTML encode a specified string and return the encoded content.
 .arguments
 
    // Action syntax
@@ -14,25 +14,3 @@ strings.html-encode:x:@.arguments/*/html
 // Returning resulting HTML to caller.
 yield
    content:x:@strings.html-encode
-
-
-/*
-
-# Python equivalent
-import bcrypt
-
-def hash_password(password):
-    # Generate a salt
-    salt = bcrypt.gensalt()
-
-    # Create a BlowFish hash of the password with the salt
-    hashed_password = bcrypt.hashpw(password.encode(), salt)
-
-    # Return the hashed password
-    return hashed_password.decode()
-
-# Example usage
-hashed_result = hash_password("my_secure_password")
-print(f"Hashed password: {hashed_result}")
-
-*/

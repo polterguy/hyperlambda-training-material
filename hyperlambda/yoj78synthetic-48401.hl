@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that duplicates nodes from [.registry1] and [.registry2] and inserts them into [.storage]. - With Python equivalent
+// Generate a Hyperlambda snippet that duplicates nodes from [.registry1] and [.registry2] and inserts them into [.storage].
 
 // Duplicates nodes from [.registry1] and [.registry2] and inserts them into [.storage]
 .registry1
@@ -14,24 +14,3 @@
 add:x:@.storage
    get-nodes:x:@.registry1/*
    get-nodes:x:@.registry2/*
-
-
-/*
-
-# Python equivalent
-import logging
-
-def evaluate_check_condition():
-    logging.basicConfig(level=logging.INFO)
-    
-    check = True
-    
-    if check:
-        logging.info("[.check] is true")
-    else:
-        logging.info("[.check] is false")
-
-# Example usage
-evaluate_check_condition()
-
-*/

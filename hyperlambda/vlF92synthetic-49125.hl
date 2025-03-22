@@ -1,5 +1,5 @@
 
-// Delete one record from your menu_items table in your cms database - With Python equivalent
+// Delete one record from your menu_items table in your cms database
 .arguments
 
    // Primary key of record to delete, mandatory argument
@@ -39,56 +39,3 @@ data.connect:[generic|cms]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_menu_item(menu_item_id):
-    """
-    This function deletes one record from the menu_items table in the cms database.
-    
-    :param menu_item_id: The ID of the menu item to delete
-    :return: The number of affected rows
-    :raises ValueError: If menu_item_id is not provided
-    """
-    # Verify authentication
-    verify_authentication(["guest"])
-    
-    # Validate mandatory fields
-    if menu_item_id is None:
-        raise ValueError("Menu item ID is mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('cms.db')
-    cursor = conn.cursor()
-    
-    # Delete the record
-    cursor.execute("DELETE FROM menu_items WHERE id = ?", (menu_item_id,))
-    affected_rows = cursor.rowcount
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Signal the deletion (placeholder for actual implementation)
-    signal_menu_item_deletion(menu_item_id)
-    
-    # Return the number of affected rows
-    return affected_rows
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-def signal_menu_item_deletion(menu_item_id):
-    # Placeholder for signaling logic
-    print(f"Menu item with ID {menu_item_id} deleted.")
-
-# Example usage
-# delete_menu_item(1)
-
-*/

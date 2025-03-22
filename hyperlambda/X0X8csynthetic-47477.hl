@@ -1,5 +1,5 @@
 
-// Switch lambda - With Python equivalent
+// Switch lambda
 .val:fooXX
 .result
 switch:x:@.val
@@ -12,28 +12,3 @@ switch:x:@.val
    default
       set-value:x:@.result
          .:Success!
-
-
-/*
-
-# Python equivalent
-def switch_logic(val):
-    # Initialize the result variable
-    result = None
-
-    # Switch logic using if-elif-else
-    if val == "bar":
-        result = "Oops"
-    elif val == "foo":
-        result = "Oops2.0"
-    else:
-        result = "Success!"
-
-    return result
-
-# Example usage
-val = "fooXX"
-result = switch_logic(val)
-print(result)  # Output: "Success!"
-
-*/

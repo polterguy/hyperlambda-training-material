@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that handles file read errors using a try/catch/finally block. - With Python equivalent
+// Write a Hyperlambda snippet that handles file read errors using a try/catch/finally block.
 
 // Handles file read errors inside a try/catch/finally block
 try
@@ -14,27 +14,3 @@ try
 
    // Logging completion
    log.info:File read attempt finished
-
-
-/*
-
-# Python equivalent
-import logging
-import mysql.connector
-from mysql.connector import Error
-
-logging.basicConfig(level=logging.INFO)
-
-try:
-    connection = mysql.connector.connect(
-        host="invalid_host",
-        user="invalid_user",
-        password="invalid_password",
-        database="invalid_database"
-    )
-except Error as e:
-    logging.error(e)
-finally:
-    logging.info("Database connection attempt finished")
-
-*/

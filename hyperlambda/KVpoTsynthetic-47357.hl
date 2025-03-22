@@ -1,5 +1,5 @@
 
-// Retrieve orders that are either pending OR processing - With Python equivalent
+// Retrieve orders that are either pending OR processing
 data.connect:shopDB
    data.read
       table:orders
@@ -10,35 +10,3 @@ data.connect:shopDB
          or
             status.eq:pending
             department.neq:hr
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def retrieve_orders(database_name):
-    # Connect to the specified database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the select statement
-        query = """
-        SELECT * FROM orders
-        WHERE status = 'pending' OR department != 'hr'
-        """
-        cursor.execute(query)
-        orders = cursor.fetchall()
-
-        return orders
-    finally:
-        conn.close()
-
-# Example usage
-database_name = 'shopDB.db'
-orders = retrieve_orders(database_name)
-for order in orders:
-    print(order)
-
-*/

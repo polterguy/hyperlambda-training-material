@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to format all Hyperlambda files recursively within a specified module's folder. - With Python equivalent
+// Create a Hyperlambda script to format all Hyperlambda files recursively within a specified module's folder.
 .folder:/modules/YOUR-MODULE-FOLDER-HERE/
 io.file.list-recursively:x:-
 for-each:x:-/*
@@ -18,49 +18,3 @@ for-each:x:-/*
          // Saving formatted file.
          io.file.save:x:@.dp/#
             get-value:x:@lambda2hyper
-
-
-/*
-
-# Python equivalent
-import os
-
-def format_hyperlambda_files(folder_path):
-    """
-    This function formats all Hyperlambda files recursively within a specified module's folder.
-    
-    :param folder_path: The path to the module's folder
-    """
-    # List all files recursively in the specified folder
-    files = list_files_recursively(folder_path)
-    
-    # Process each file
-    for file_path in files:
-        if file_path.endswith(".hl"):
-            # Load and format the Hyperlambda file
-            hyperlambda_content = load_file(file_path)
-            formatted_content = format_hyperlambda(hyperlambda_content)
-            save_file(file_path, formatted_content)
-
-def list_files_recursively(directory):
-    # List all files in the directory recursively
-    return [os.path.join(root, file) for root, _, files in os.walk(directory) for file in files]
-
-def load_file(file_path):
-    # Load the content of the specified file
-    with open(file_path, 'r') as file:
-        return file.read()
-
-def format_hyperlambda(content):
-    # Format the Hyperlambda content (placeholder for actual implementation)
-    return content  # Assuming the content is already formatted
-
-def save_file(file_path, content):
-    # Save the content to the specified file path
-    with open(file_path, 'w') as file:
-        file.write(content)
-
-# Example usage
-# format_hyperlambda_files("/modules/YOUR-MODULE-FOLDER-HERE/")
-
-*/

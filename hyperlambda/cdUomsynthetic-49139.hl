@@ -1,5 +1,5 @@
 
-// Create one record in your pages table in your cms database - With Python equivalent
+// Create one record in your pages table in your cms database
 .arguments
 
    // title column value
@@ -47,59 +47,3 @@ data.connect:[generic|cms]
    unwrap:x:+/*
    return
       id:x:@data.create
-
-
-/*
-
-# Python equivalent
-import sqlite3
-from datetime import datetime
-
-def create_page(title, content, created_at):
-    """
-    This function creates one record in the pages table in the cms database.
-    
-    :param title: The title of the page
-    :param content: The content of the page
-    :param created_at: The creation date of the page
-    :return: The ID of the created record
-    :raises ValueError: If title, content, or created_at is not provided
-    """
-    # Verify authentication
-    verify_authentication(["guest"])
-    
-    # Validate mandatory fields
-    if not title or not content or not created_at:
-        raise ValueError("Title, content, and created_at are mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('cms.db')
-    cursor = conn.cursor()
-    
-    # Insert the record
-    cursor.execute("INSERT INTO pages (title, content, created_at) VALUES (?, ?, ?)", (title, content, created_at))
-    record_id = cursor.lastrowid
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Signal the creation (placeholder for actual implementation)
-    signal_page_creation(title, content, created_at)
-    
-    # Return the ID of the created record
-    return record_id
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-def signal_page_creation(title, content, created_at):
-    # Placeholder for signaling logic
-    print(f"Page created: Title={title}, Content={content}, Created At={created_at}")
-
-# Example usage
-# create_page("New Page", "This is the content of the new page.", datetime.now())
-
-*/

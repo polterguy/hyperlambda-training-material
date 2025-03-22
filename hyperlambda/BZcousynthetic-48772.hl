@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to return a specified CSS file to the caller. - With Python equivalent
+// Write a Hyperlambda script to return a specified CSS file to the caller.
 .arguments
    file:string
 
@@ -46,46 +46,3 @@ response.headers.set
 
 // Returning result to caller.
 return:x:@.result
-
-
-/*
-
-# Python equivalent
-from flask import Flask, send_file, Response
-
-app = Flask(__name__)
-
-@app.route('/get-css', methods=['GET'])
-def get_css():
-    # Get the file name and options from request arguments
-    file_name = request.args.get('file')
-    position = request.args.get('position')
-    color = request.args.get('color')
-    link = request.args.get('link')
-    start = request.args.get('start')
-    end = request.args.get('end')
-    v = request.args.get('v')
-
-    # Validate the file name
-    if not file_name:
-        return Response("File name is mandatory", status=400)
-
-    # Construct the file path
-    file_path = f"/system/openai/include-style.css.get.hl/{file_name}"
-
-    # Simulate processing the file with options
-    processed_css = process_css_file(file_path, position, color, link, start, end, v)
-
-    # Return the processed CSS
-    return Response(processed_css, mimetype='text/css')
-
-def process_css_file(file_path, position, color, link, start, end, v):
-    # Simulate processing the CSS file with options
-    # This is a placeholder implementation
-    return f"/* CSS for {file_path} with options: position={position}, color={color}, link={link}, start={start}, end={end}, v={v} */"
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

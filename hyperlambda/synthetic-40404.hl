@@ -1,30 +1,6 @@
 
-// Sets the value of [.res] to the number of records we've got in our table1 table in our foo database - With Python equivalent
+// Sets the value of [.res] to the number of records we've got in our table1 table in our foo database
 .res
 data.connect:foo
    set-value:x:@.res
       data.scalar:select count(*) from table1
-
-
-/*
-
-# Python equivalent
-# Sets the value of [.res] to the number of records we've got in our table1 table in our foo database
-import sqlite3
-
-def count_records_in_table(database_name, table_name):
-    connection = sqlite3.connect(database_name)
-    cursor = connection.cursor()
-    
-    sql = f"SELECT COUNT(*) FROM {table_name}"
-    cursor.execute(sql)
-    
-    count = cursor.fetchone()[0]
-    connection.close()
-    return count
-
-# Example usage
-res = count_records_in_table('foo.db', 'table1')
-# res will be the number of records in table1
-
-*/

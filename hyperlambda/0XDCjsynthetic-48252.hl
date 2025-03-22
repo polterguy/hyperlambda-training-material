@@ -1,5 +1,5 @@
 
-// Hyperlambda file that takes a lambda objects as an argument, and exceutes the lambda object from within the file, once for each role that exists in the system. - With Python equivalent
+// Hyperlambda file that takes a lambda objects as an argument, and exceutes the lambda object from within the file, once for each role that exists in the system.
 .arguments
    .execute:*
 
@@ -23,36 +23,3 @@ data.connect:magic
  * // You will be getting the role in as an argument from the above Hyperlambda file here.
  * log.info:x:@.arguments/*/role
  */
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def execute_for_each_role(database_name, execute_lambda):
-    # Connect to the magic database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Read roles from the roles table
-        cursor.execute("SELECT name FROM roles")
-        roles = cursor.fetchall()
-
-        # Execute the lambda for each role
-        for role in roles:
-            role_name = role[0]
-            execute_lambda(role_name)
-    finally:
-        conn.close()
-
-# Example lambda function to execute
-def example_lambda(role):
-    print(f"Executing for role: {role}")
-
-# Example usage
-database_name = 'magic.db'
-execute_for_each_role(database_name, example_lambda)
-
-*/

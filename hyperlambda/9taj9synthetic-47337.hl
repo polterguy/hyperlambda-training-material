@@ -1,5 +1,5 @@
 
-// How does CRUD slots in Hyperlambda - With Python equivalent
+// How does CRUD slots in Hyperlambda
 
 // Hyperlambda has 4 basic CRUD slots, you can examples of these below.
 
@@ -44,79 +44,3 @@ data.delete
    where
       and
          id.eq:PRIMARY-KEY-OF-RECORD-TO-UPDATE
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def create_record(database_name):
-    # Connect to the specified database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the insert statement
-        cursor.execute(
-            "INSERT INTO table1 (column1, column2, column3) VALUES (?, ?, ?)",
-            ('value1', 'value2', 'value3')
-        )
-        conn.commit()
-    finally:
-        conn.close()
-
-def read_records(database_name):
-    # Connect to the specified database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the select statement
-        cursor.execute(
-            "SELECT * FROM table1 ORDER BY column1, column2 DESC LIMIT 5 OFFSET 5"
-        )
-        records = cursor.fetchall()
-        return records
-    finally:
-        conn.close()
-
-def update_record(database_name, record_id):
-    # Connect to the specified database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the update statement
-        cursor.execute(
-            "UPDATE table1 SET column1 = ? WHERE id = ?",
-            ('new-value', record_id)
-        )
-        conn.commit()
-    finally:
-        conn.close()
-
-def delete_record(database_name, record_id):
-    # Connect to the specified database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the delete statement
-        cursor.execute(
-            "DELETE FROM table1 WHERE id = ?",
-            (record_id,)
-        )
-        conn.commit()
-    finally:
-        conn.close()
-
-# Example usage
-database_name = 'your_database.db'
-create_record(database_name)
-records = read_records(database_name)
-print(records)
-update_record(database_name, 'PRIMARY-KEY-OF-RECORD-TO-UPDATE')
-delete_record(database_name, 'PRIMARY-KEY-OF-RECORD-TO-UPDATE')
-
-*/

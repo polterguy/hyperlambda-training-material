@@ -1,5 +1,5 @@
 
-// Example: Concatenate multiple strings with spaces included as separate parts. - With Python equivalent
+// Example: Concatenate multiple strings with spaces included as separate parts.
 strings.concat
    .:I
    .:" "
@@ -8,15 +8,3 @@ strings.concat
    .:Hyperlambda
 
 // Result: "I love Hyperlambda"
-
-
-/*
-
-# Python equivalent
-# Original text
-text = "abababab"
-
-# Replace all occurrences of 'ab' with 'AB'
-modified_text = text.replace("ab", "AB")
-
-*/

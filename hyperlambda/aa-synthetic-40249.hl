@@ -1,22 +1,8 @@
 
-// Example: Use variables to supply the string and prefix to check. - With Python equivalent
+// Example: Use variables to supply the string and prefix to check.
 .text:Sample
 .prefix:Sam
 
 // Returns true
 strings.starts-with:x:@.text
    get-value:x:@.prefix
-
-
-/*
-
-# Python equivalent
-# Example: Use variables to supply the string and prefix to check.
-text = "Sample"
-prefix = "Sam"
-starts_with_prefix = text.startswith(prefix)
-
-# Example usage
-# starts_with_prefix will be True
-
-*/

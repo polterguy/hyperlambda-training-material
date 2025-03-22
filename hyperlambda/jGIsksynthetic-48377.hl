@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to evaluate a lambda for as long as a condition is true, with a counter and logging. - With Python equivalent
+// Create a Hyperlambda script to evaluate a lambda for as long as a condition is true, with a counter and logging.
 .no:int:0
 while
    lt
@@ -12,19 +12,3 @@ while
 
       // Incrementing counter.
       math.increment:x:@.no
-
-
-/*
-
-# Python equivalent
-def throw_exception(message: str, status: int = 500, public: bool = False):
-    if not message:
-        raise ValueError("Message is mandatory")
-    
-    # Raise an exception with the provided message, status, and public flag
-    raise Exception(f"Message: {message}, Status: {status}, Public: {public}")
-
-# Example usage
-# throw_exception("An error occurred", 404, True)
-
-*/

@@ -1,5 +1,5 @@
 
-// Delete endpoint deleting one record from your spice_urls table in your scraper database. - With Python equivalent
+// Delete endpoint deleting one record from your spice_urls table in your scraper database.
 .arguments
 
    // Primary key of record to delete
@@ -35,48 +35,3 @@ data.connect:[generic|scraper]
    unwrap:x:+/*
    return
       affected:x:@data.delete
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_spice_url(spice_url_id):
-    """
-    This function deletes one record from the spice_urls table in the scraper database.
-    
-    :param spice_url_id: The ID of the spice URL to delete
-    :return: The number of affected rows
-    """
-    # Verify authentication
-    verify_authentication(["root", "admin"])
-    
-    # Validate mandatory fields
-    if spice_url_id is None:
-        raise ValueError("spice_url_id is mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('scraper.db')
-    cursor = conn.cursor()
-    
-    # Delete the record
-    cursor.execute("DELETE FROM spice_urls WHERE spice_url_id = ?", (spice_url_id,))
-    affected_rows = cursor.rowcount
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return the number of affected rows
-    return affected_rows
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-# Example usage
-# delete_spice_url(123)
-
-*/

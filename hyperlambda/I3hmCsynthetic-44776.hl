@@ -1,15 +1,5 @@
 
-// Example: Convert an already uppercase string (no change). - With Python equivalent
+// Example: Convert an already uppercase string (no change).
 
 // Result: "HELLO"
 strings.to-upper:HELLO
-
-
-/*
-
-# Python equivalent
-# Convert an already uppercase string (no change)
-uppercase_string = "HELLO"
-uppercased_string = uppercase_string.upper()
-
-*/

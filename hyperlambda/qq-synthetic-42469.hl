@@ -1,22 +1,6 @@
 
-// Example: Use a variable to provide the input string. - With Python equivalent
+// Example: Use a variable to provide the input string.
 .text:Test
 
 // Returns 4
 strings.length:x:@.text
-
-
-/*
-
-# Python equivalent
-# Variables for the target substring and replacement
-target = "world"
-replacement = "WORLD!"
-
-# Original phrase
-phrase = "Hello world"
-
-# Replace the target substring with the replacement
-modified_phrase = phrase.replace(target, replacement)
-
-*/

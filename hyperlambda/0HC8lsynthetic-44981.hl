@@ -1,15 +1,3 @@
 
-// Create a folder - With Python equivalent
+// Create a folder
 io.folder.create:/misc/foo/
-
-
-/*
-
-# Python equivalent
-# Create a folder
-import os
-
-folder_path = "/misc/foo/"
-os.makedirs(folder_path, exist_ok=True)
-
-*/

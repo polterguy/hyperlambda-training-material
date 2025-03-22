@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda action to ensure a specified 'arg' matches a specified 'regex'. Validate mandatory fields. - With Python equivalent
+// Create a Hyperlambda action to ensure a specified 'arg' matches a specified 'regex'. Validate mandatory fields.
 .arguments
    arg
       type:string
@@ -12,30 +12,3 @@
 // Invoking validator.
 validators.regex:x:@.arguments/*/arg
    regex:x:@.arguments/*/regex
-
-
-/*
-
-# Python equivalent
-import re
-
-def validate_argument_with_regex(arg, regex):
-    """
-    This function ensures a specified 'arg' matches a specified 'regex'.
-    
-    :param arg: The argument to be validated
-    :param regex: The regex pattern to match against
-    :raises ValueError: If any validation fails
-    """
-    # Validate mandatory fields
-    if not arg or not regex:
-        raise ValueError("Both 'arg' and 'regex' are mandatory")
-    
-    # Validate that 'arg' matches the specified 'regex'
-    if not re.match(regex, arg):
-        raise ValueError(f"Argument '{arg}' does not match the regex '{regex}'")
-
-# Example usage
-# validate_argument_with_regex("example", r"^ex.*$")
-
-*/

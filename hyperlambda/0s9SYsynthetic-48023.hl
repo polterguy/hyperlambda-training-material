@@ -1,5 +1,5 @@
 
-// Define a slot that returns multiple values by evaluating expressions before the slot returns - With Python equivalent
+// Define a slot that returns multiple values by evaluating expressions before the slot returns
 slots.create:giveData
    .tmp1:Value 1
    .tmp2:int:2025
@@ -11,21 +11,3 @@ slots.create:giveData
 signal:giveData
 
 // Result: message = "Value 1", year = 2023
-
-
-/*
-
-# Python equivalent
-def give_data():
-    # Define temporary values
-    tmp1 = "Value 1"
-    tmp2 = 2025
-
-    # Return the values as a dictionary
-    return {"message": tmp1, "year": tmp2}
-
-# Example usage
-result = give_data()
-print(result)  # Output: {'message': 'Value 1', 'year': 2025}
-
-*/

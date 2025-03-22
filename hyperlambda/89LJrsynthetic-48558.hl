@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda action to execute a specified workflow file with optional arguments. Validate the workflow parameter and return the execution result. - With Python equivalent
+// Create a Hyperlambda action to execute a specified workflow file with optional arguments. Validate the workflow parameter and return the execution result.
 .arguments
    workflow
       type:workflow
@@ -25,29 +25,3 @@ add:x:./*/return
 
 // Returning result of execution to caller.
 return
-
-
-/*
-
-# Python equivalent
-import random
-import string
-
-def generate_captcha():
-    # Generate a random string
-    random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-    
-    # Concatenate with 'c_' prefix
-    captcha_code = f"c_{random_string}"
-    
-    # Simulate setting cache with expiration and value
-    cache = {captcha_code: {"expiration": 30, "value": "valid"}}
-    
-    # Return the CAPTCHA code
-    return captcha_code
-
-# Example usage
-captcha = generate_captcha()
-print(f"Generated CAPTCHA: {captcha}")
-
-*/

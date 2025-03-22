@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to load all files recursively from a specified folder. - With Python equivalent
+// Write a Hyperlambda script to load all files recursively from a specified folder.
 slots.create:magic.io.file.load-recursively
 
    // In case we've got a "slot" type of argument.
@@ -22,44 +22,3 @@ slots.create:magic.io.file.load-recursively
 
    // Returning to caller all files in folder, and sub folder(s).
    return-nodes:x:@io.file.list-recursively/*
-
-
-/*
-
-# Python equivalent
-def execute_slots_with_namespace(namespace, arguments):
-    # Validate the namespace
-    if not namespace:
-        raise ValueError("Namespace is mandatory")
-
-    # Simulate getting all slots starting with the specified namespace
-    slots = get_slots_with_namespace(namespace)
-
-    # Execute each slot with the provided arguments
-    results = []
-    for slot in slots:
-        result = execute_slot(slot, arguments)
-        results.append(result)
-
-    # Return the results of all executions
-    return results
-
-def get_slots_with_namespace(namespace):
-    # Simulate getting all slots with the specified namespace
-    # This is a placeholder implementation
-    return ["slot1", "slot2", "slot3"]
-
-def execute_slot(slot, arguments):
-    # Simulate executing a slot with the provided arguments
-    # This is a placeholder implementation
-    return f"Executed {slot} with arguments {arguments}"
-
-# Example usage
-try:
-    results = execute_slots_with_namespace("example_namespace", {"arg1": "value1", "arg2": "value2"})
-    for result in results:
-        print(result)
-except ValueError as e:
-    print(e)
-
-*/

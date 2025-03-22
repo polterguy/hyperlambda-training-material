@@ -1,5 +1,5 @@
 
-// Counts items from your DATABASE_NAME and TABLE_NAME. - With Python equivalent
+// Counts items from your DATABASE_NAME and TABLE_NAME.
 data.connect:DATABASE_NAME
    database-type:sqlite
 
@@ -11,33 +11,3 @@ data.connect:DATABASE_NAME
          count(*)
             as:count
       limit:long:1
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def count_items(database_name, table_name):
-    # Connect to the specified database
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the count query
-        query = f"SELECT COUNT(*) as count FROM {table_name} LIMIT 1"
-        cursor.execute(query)
-        result = cursor.fetchone()
-
-        # Return the count
-        return result[0]
-    finally:
-        conn.close()
-
-# Example usage
-database_name = 'your_database.db'
-table_name = 'your_table'
-count = count_items(database_name, table_name)
-print(f"Number of items in {table_name}: {count}")
-
-*/

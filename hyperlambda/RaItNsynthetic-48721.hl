@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script that returns the specified URL to the caller with a 5-minute server-side cache to avoid re-fetching the URL too frequently. - With Python equivalent
+// Create a Hyperlambda script that returns the specified URL to the caller with a 5-minute server-side cache to avoid re-fetching the URL too frequently.
 slots.create:magic.http.get-with-cache
 
    // Sanity checking invocation.
@@ -23,31 +23,3 @@ slots.create:magic.http.get-with-cache
 
    // Returning result of above invocation to caller.
    return:x:@cache.try-get
-
-
-/*
-
-# Python equivalent
-import os
-
-def load_files_recursively(folder_path, show_hidden=False):
-    # List all files recursively from the specified folder
-    files_content = []
-    for root, dirs, files in os.walk(folder_path):
-        for file in files:
-            if not show_hidden and file.startswith('.'):  
-                continue
-            file_path = os.path.join(root, file)
-            with open(file_path, 'r') as f:
-                content = f.read()
-                files_content.append({"path": file_path, "content": content})
-
-    # Return the list of file contents
-    return files_content
-
-# Example usage
-files = load_files_recursively("/path/to/folder", show_hidden=False)
-for file in files:
-    print(f"Path: {file['path']}, Content: {file['content']}")
-
-*/

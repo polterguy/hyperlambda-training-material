@@ -1,5 +1,5 @@
 
-// What types does Hyperlambda support? - With Python equivalent
+// What types does Hyperlambda support?
 Hyperlambda supports various types including:
 - `string`, `int`, `bool`, `decimal`, `double`, `float`
 - `date` (serialized as UTC time)
@@ -11,17 +11,3 @@ Example of type declarations:
 .baz:hello
 ```
 If no type is specified, `string` is assumed.
-
-
-/*
-
-# Python equivalent
-# String variables in Python demonstrating special character handling and multi-line strings
-simple_text = "hello"
-colon_text = "hello:world"
-multi_line_text = """line1
-line2"""
-alt_quote_text = 'example'
-escaped_newline_text = "hello\nworld"
-
-*/

@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that checks if [.state] does not match Open and executes [.lambda]. - With Python equivalent
+// Write a Hyperlambda snippet that checks if [.state] does not match Open and executes [.lambda].
 
 // Checks if [.state] does not match Open and executes [.lambda].
 .state:Open
@@ -16,24 +16,3 @@ else
 
    // Runs if [.state] is exactly Open.
    log.info:[.state] is Open
-
-
-/*
-
-# Python equivalent
-import logging
-
-def trigger_lambda_if_input_not_go_go_go():
-    logging.basicConfig(level=logging.INFO)
-    
-    input_value = "Go Go Go"
-    
-    if input_value != "Go Go Go":
-        logging.info("[.input] is NOT Go Go Go")
-    else:
-        logging.info("[.input] is Go Go Go")
-
-# Example usage
-trigger_lambda_if_input_not_go_go_go()
-
-*/

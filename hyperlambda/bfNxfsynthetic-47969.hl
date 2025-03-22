@@ -1,5 +1,5 @@
 
-// Hyperlambda Example 4: If-else if-else chain - With Python equivalent
+// Hyperlambda Example 4: If-else if-else chain
 .score:75
 .grade
 if
@@ -23,44 +23,3 @@ else-if
 else
    set-value:x:@.grade
       .:D
-
-/*
- * Python Equivalent
- * score = 75
- * grade = None
- * if score > 90:
- * grade = "A"
- * elif score > 80:
- * grade = "B"
- * elif score > 70:
- * grade = "C"
- * else:
- * grade = "D"
- */
-
-
-/*
-
-# Python equivalent
-def determine_grade(score):
-    # Initialize the grade variable
-    grade = None
-
-    # If-else if-else chain logic
-    if score > 90:
-        grade = "A"
-    elif score > 80:
-        grade = "B"
-    elif score > 70:
-        grade = "C"
-    else:
-        grade = "D"
-
-    return grade
-
-# Example usage
-score = 75
-grade = determine_grade(score)
-print(grade)  # Output: "C"
-
-*/

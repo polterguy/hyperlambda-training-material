@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a CRUD create endpoint that inserts one record into the questions table in the magic database, taking question and questionnaire, ensuring authentication and authorization for root and admin roles. - With Python equivalent
+// Create a Hyperlambda script for a CRUD create endpoint that inserts one record into the questions table in the magic database, taking question and questionnaire, ensuring authentication and authorization for root and admin roles.
 .arguments
    question:string
    questionnaire:string
@@ -32,67 +32,3 @@ data.connect:[generic|magic]
    unwrap:x:+/*
    return
       id:x:@data.create
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def count_roles(database, filters=None, operator="and"):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate the operator
-    if operator not in ["or", "and"]:
-        raise ValueError("Invalid operator. Choose 'or' or 'and'")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Build the SQL query
-    query = "SELECT COUNT(*) as count FROM roles"
-    conditions = []
-    parameters = []
-
-    # Add filters to the query
-    if filters:
-        for key, value in filters.items():
-            if key.endswith(".like"):
-                conditions.append(f"{key.split('.')[0]} LIKE ?")
-                parameters.append(f"%{value}%")
-            elif key.endswith(".eq"):
-                conditions.append(f"{key.split('.')[0]} = ?")
-                parameters.append(value)
-
-    if conditions:
-        query += " WHERE " + f" {operator} ".join(conditions)
-
-    # Execute the query
-    cursor.execute(query, parameters)
-    result = cursor.fetchone()
-
-    # Close the connection
-    connection.close()
-
-    # Return the count
-    return {"count": result[0]}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-filters = {
-    "name.eq": "admin",
-    "description.like": "role"
-}
-try:
-    result = count_roles("magic.db", filters, operator="or")
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script that creates a slot executing all slots starting with a specified namespace, passing in all arguments to all invocations. - With Python equivalent
+// Write a Hyperlambda script that creates a slot executing all slots starting with a specified namespace, passing in all arguments to all invocations.
 slots.create:magic.misc.execute-slots
 
    // Sanity checking invocation.
@@ -21,27 +21,3 @@ slots.create:magic.misc.execute-slots
 
       // Executing slot now parametrised with [arguments].
       execute
-
-
-/*
-
-# Python equivalent
-def save_content_to_file(file_path, content):
-    # Validate the file path and content
-    if not file_path:
-        raise ValueError("File path is mandatory")
-    if not content:
-        raise ValueError("Content is mandatory")
-
-    # Save the content to the specified file
-    with open(file_path, 'w') as file:
-        file.write(content)
-
-# Example usage
-try:
-    save_content_to_file("example.txt", "This is the content to save.")
-    print("Content saved successfully")
-except ValueError as e:
-    print(e)
-
-*/

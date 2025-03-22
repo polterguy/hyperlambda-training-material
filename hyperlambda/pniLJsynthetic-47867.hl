@@ -1,5 +1,5 @@
 
-// Divide a number by a dynamic value and then by a static value - With Python equivalent
+// Divide a number by a dynamic value and then by a static value
 .dividend:int:24
 .divisor:int:4
 math.divide
@@ -12,21 +12,3 @@ math.divide
 
    // divides 6 by 2 -> result 3
    .:int:2
-
-
-/*
-
-# Python equivalent
-def divide_numbers(dividend, divisor, static_value):
-    # Perform division by dynamic and static values
-    result = dividend / divisor / static_value
-    return result
-
-# Example usage
-dividend = 24
-divisor = 4
-static_value = 2
-result = divide_numbers(dividend, divisor, static_value)
-print(result)  # Output: 3.0
-
-*/

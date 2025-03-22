@@ -1,5 +1,5 @@
 
-// Example: Join multiple strings with a comma separator. - With Python equivalent
+// Example: Join multiple strings with a comma separator.
 .input
    .:A
    .:B
@@ -8,19 +8,3 @@ strings.join:x:@.input/*
    .:,
 
 // Result: "A,B,C"
-
-
-/*
-
-# Python equivalent
-# Original data
-data = "Make it lowercase"
-
-# Substring to replace and its uppercase version
-old_substring = "lowercase"
-new_substring = old_substring.upper()
-
-# Replace the substring with its uppercase version
-modified_data = data.replace(old_substring, new_substring)
-
-*/

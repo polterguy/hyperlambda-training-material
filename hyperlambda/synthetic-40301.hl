@@ -1,20 +1,5 @@
 
-// Example: URL-encode a simple string (space and special characters become % codes). - With Python equivalent
+// Example: URL-encode a simple string (space and special characters become % codes).
 strings.url-encode:hello world
 
 // Result: "hello%20world"
-
-
-/*
-
-# Python equivalent
-# Example: URL-encode a simple string (space and special characters become % codes).
-import urllib.parse
-
-simple_string = "hello world"
-url_encoded_string = urllib.parse.quote(simple_string)
-
-# Example usage
-# url_encoded_string will be "hello%20world"
-
-*/

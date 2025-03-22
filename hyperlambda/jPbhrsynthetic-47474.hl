@@ -1,5 +1,5 @@
 
-// If with else-if - With Python equivalent
+// If with else-if
 .dest
 if
    .:bool:false
@@ -11,25 +11,3 @@ else-if
    .lambda
       set-value:x:@.dest
          .:yup2.0!
-
-
-/*
-
-# Python equivalent
-def conditional_logic():
-    # Initialize the destination variable
-    dest = None
-
-    # If-else logic
-    if False:
-        dest = "yup!"
-    elif True:
-        dest = "yup2.0!"
-
-    return dest
-
-# Example usage
-result = conditional_logic()
-print(result)  # Output: "yup2.0!"
-
-*/

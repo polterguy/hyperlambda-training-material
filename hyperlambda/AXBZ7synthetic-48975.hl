@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to count the number of Hyperlambda files and nodes in a specified folder, and generate a Hyperlambda with authorization for 'guest' roles. - With Python equivalent
+// Create a Hyperlambda script to count the number of Hyperlambda files and nodes in a specified folder, and generate a Hyperlambda with authorization for 'guest' roles.
 .folder:/modules/cms/
 unwrap:x:+/*
 signal:magic.io.file.load-recursively
@@ -20,49 +20,3 @@ for-each:x:@signal/*
          io.file.save:x:@.dp/#
             get-value:x:@lambda2hyper
 remove-nodes:x:@signal/*
-
-
-/*
-
-# Python equivalent
-import os
-
-def process_hyperlambda_files(folder_path):
-    """
-    This function counts the number of Hyperlambda files and nodes in a specified folder, and generates a Hyperlambda with authorization for 'guest' roles.
-    
-    :param folder_path: The path to the folder containing Hyperlambda files
-    """
-    # List all files recursively in the specified folder
-    files = list_files_recursively(folder_path)
-    
-    # Process each file
-    for file_path in files:
-        if file_path.endswith(".hl"):
-            # Load and process the Hyperlambda file
-            hyperlambda_content = load_file(file_path)
-            processed_content = generate_guest_authorization_hyperlambda(hyperlambda_content)
-            save_file(file_path, processed_content)
-
-def list_files_recursively(directory):
-    # List all files in the directory recursively
-    return [os.path.join(root, file) for root, _, files in os.walk(directory) for file in files]
-
-def load_file(file_path):
-    # Load the content of the specified file
-    with open(file_path, 'r') as file:
-        return file.read()
-
-def generate_guest_authorization_hyperlambda(content):
-    # Generate a Hyperlambda with authorization for 'guest' roles
-    return f"Generate a Hyperlambda with authorization for 'guest' roles files that {content}"
-
-def save_file(file_path, content):
-    # Save the content to the specified file path
-    with open(file_path, 'w') as file:
-        file.write(content)
-
-# Example usage
-# process_hyperlambda_files("/modules/cms/")
-
-*/

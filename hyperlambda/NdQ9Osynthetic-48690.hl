@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script that changes the password of the currently authenticated user, ensuring the user is authorized. - With Python equivalent
+// Create a Hyperlambda script that changes the password of the currently authenticated user, ensuring the user is authorized.
 .arguments
    password:string
 .type:public
@@ -24,49 +24,3 @@ signal:magic.auth.change-password
 // Returns success to caller.
 return-nodes
    result:success
-
-
-/*
-
-# Python equivalent
-import jwt
-from datetime import datetime
-
-def generate_jwt_token(username, role, expires):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate mandatory fields
-    if not username:
-        raise ValueError("Username is mandatory")
-    if not role:
-        raise ValueError("Role is mandatory")
-    if not expires:
-        raise ValueError("Expiration date is mandatory")
-
-    # Create the JWT token
-    payload = {
-        "username": username,
-        "role": role,
-        "exp": expires.timestamp()
-    }
-    secret = "your_secret_key"  # Replace with your actual secret key
-    token = jwt.encode(payload, secret, algorithm="HS256")
-
-    # Return the token
-    return {"ticket": token}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-try:
-    expiration_date = datetime(2023, 12, 31)
-    result = generate_jwt_token("example_user", "admin", expiration_date)
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

@@ -1,5 +1,5 @@
 
-// Lists all available products. - With Python equivalent
+// Lists all available products.
 .arguments
 .type:public
 
@@ -27,39 +27,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def list_all_products():
-    """
-    This function lists all available products.
-    
-    :return: A list of dictionaries containing product details
-    """
-    # Connect to the SQLite database
-    conn = sqlite3.connect('shopping-cart-demo.db')
-    cursor = conn.cursor()
-    
-    # Execute the query to get all products
-    query = """
-    SELECT name, description, sku, image_url, price
-    FROM products
-    """
-    cursor.execute(query)
-    products = [{"name": row[0], "description": row[1], "sku": row[2], "image_url": row[3], "price": row[4]} for row in cursor.fetchall()]
-    
-    # Close the connection
-    cursor.close()
-    conn.close()
-    
-    # Return the list of products
-    return products
-
-# Example usage
-# list_all_products()
-
-*/

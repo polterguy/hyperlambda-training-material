@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to create a scheduled task that resets no_requests at the first day of the month, with conditions for SQLite. - With Python equivalent
+// Write a Hyperlambda script to create a scheduled task that resets no_requests at the first day of the month, with conditions for SQLite.
 if
    eq
       config.get:"magic:databases:default"
@@ -28,66 +28,3 @@ if
 
          // Task already exists.
          console.log:Task to reset no_requests already exists
-
-
-/*
-
-# Python equivalent
-import sqlite3
-import logging
-from crontab import CronTab
-
-def create_reset_no_requests_task():
-    """
-    This function creates a scheduled task that resets no_requests at the first day of the month, with conditions for SQLite.
-    """
-    # Check if the default database is SQLite
-    if get_default_database() == "sqlite":
-        try:
-            # List tasks to check if the reset task already exists
-            task_exists = list_tasks("reset-no_requests")
-            
-            # If the task exists, delete it
-            if task_exists:
-                delete_task("reset-no_requests")
-            
-            # Create the reset task
-            create_task("reset-no_requests", "Resets no_requests at the first day of the month", "**.01.01.01.01", reset_no_requests)
-            
-            # Log the creation of the task
-            logging.info("All machine learning models had their no_requests values reset")
-        except Exception as e:
-            # Log if the task already exists
-            logging.error("Task to reset no_requests already exists")
-
-def get_default_database():
-    # Placeholder for getting the default database configuration
-    return "sqlite"
-
-def list_tasks(task_name):
-    # Placeholder for listing tasks
-    return False
-
-def delete_task(task_name):
-    # Placeholder for deleting a task
-    pass
-
-def create_task(task_name, description, schedule, task_function):
-    # Placeholder for creating a scheduled task
-    cron = CronTab(user=True)
-    job = cron.new(command=f'python -c "import {__name__}; {__name__}.{task_function.__name__}()"', comment=description)
-    job.setall(schedule)
-    cron.write()
-
-def reset_no_requests():
-    # Connect to SQLite and reset no_requests
-    conn = sqlite3.connect('magic.db')
-    cursor = conn.cursor()
-    cursor.execute("UPDATE ml_types SET no_requests = 0")
-    conn.commit()
-    conn.close()
-
-# Call the function to create the scheduled task
-create_reset_no_requests_task()
-
-*/

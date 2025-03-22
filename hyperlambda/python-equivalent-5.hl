@@ -1,34 +1,17 @@
+
 // Hyperlambda Example 5: Basic switch
 .day:monday
 .activity
 switch:x:@.day
-   
    case:monday
       set-value:x:@.activity
          .:Meeting
-   
    case:wednesday
       set-value:x:@.activity
          .:Coding
-   
    case:friday
       set-value:x:@.activity
          .:Planning
-   
    default
       set-value:x:@.activity
          .:Regular work
-
-/* Python Equivalent
-day = "monday"
-activity = None
-
-if day == "monday":
-    activity = "Meeting"
-elif day == "wednesday":
-    activity = "Coding"
-elif day == "friday":
-    activity = "Planning"
-else:
-    activity = "Regular work"
-*/

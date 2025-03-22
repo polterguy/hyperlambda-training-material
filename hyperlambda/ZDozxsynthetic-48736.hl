@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to load a specified file and return it as 'application/octet-stream' with appropriate headers. - With Python equivalent
+// Write a Hyperlambda script to load a specified file and return it as 'application/octet-stream' with appropriate headers.
 .arguments
    access_token:string
    file:string
@@ -25,32 +25,3 @@ response.headers.set
    Access-Control-Expose-Headers:Content-Disposition
 io.stream.open-file:x:@.arguments/*/file
 return:x:-
-
-
-/*
-
-# Python equivalent
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-@app.route('/get-cookie', methods=['GET'])
-def get_cookie():
-    # Get the cookie name from request arguments
-    cookie_name = request.args.get('name')
-
-    # Validate the cookie name
-    if not cookie_name:
-        return jsonify({"error": "Cookie name is mandatory"}), 400
-
-    # Retrieve the cookie value
-    cookie_value = request.cookies.get(cookie_name)
-
-    # Return the cookie value
-    return jsonify({"result": cookie_value})
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

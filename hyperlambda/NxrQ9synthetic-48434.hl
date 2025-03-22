@@ -1,5 +1,5 @@
 
-// Provide a Hyperlambda example where a new order is inserted into the 'ecommerce_db' database and its 'orders' table. - With Python equivalent
+// Provide a Hyperlambda example where a new order is inserted into the 'ecommerce_db' database and its 'orders' table.
 
 // Inserts a new order into the "ecommerce_db" database and its "orders" table.
 data.connect:ecommerce_db
@@ -14,39 +14,3 @@ data.connect:ecommerce_db
          user_id:int:1001
          total:decimal:199.99
          order_date:date:"2025-04-01T00:00:00.000"
-
-
-/*
-
-# Python equivalent
-import sqlite3
-from datetime import datetime
-
-def add_new_employee():
-    # Connect to the hr_db database
-    connection = sqlite3.connect('hr_db.sqlite')
-    
-    cursor = connection.cursor()
-    
-    # Query to add a new employee to the employees table
-    query = """
-    INSERT INTO employees (employee_id, name, department, salary, hire_date)
-    VALUES (?, ?, ?, ?, ?)
-    """
-    
-    employee_id = 301
-    name = "Alice Smith"
-    department = "Finance"
-    salary = 55000.00
-    hire_date = datetime.strptime("2020-07-15T00:00:00.000", "%Y-%m-%dT%H:%M:%S.%f")
-    
-    cursor.execute(query, (employee_id, name, department, salary, hire_date))
-    connection.commit()
-    
-    cursor.close()
-    connection.close()
-
-# Example usage
-add_new_employee()
-
-*/

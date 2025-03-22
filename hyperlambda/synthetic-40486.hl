@@ -1,24 +1,4 @@
 
-// Change HTTP headers - With Python equivalent
+// Change HTTP headers
 response.headers.set
    Content-Type:text/plain
-
-
-/*
-
-# Python equivalent
-# Change HTTP headers using Flask
-from flask import Flask, Response
-
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    response = Response("Hello, World!")
-    response.headers['Content-Type'] = 'text/plain'
-    return response
-
-# Example usage
-# Run the Flask app and access the root endpoint to see the headers changed
-
-*/

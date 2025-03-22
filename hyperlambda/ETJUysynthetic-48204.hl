@@ -2,7 +2,7 @@
 /*
  * Counts usage of slots in our training material
  * 
- * Returns all slots, and how many times each slot is mentioned in training material - With Python equivalent
+ * Returns all slots, and how many times each slot is mentioned in training material
  */
 .arguments
 .type:public
@@ -48,33 +48,3 @@ sort:x:@.result/*
 
 // Returning result to caller.
 return-nodes:x:@sort/*
-
-
-/*
-
-# Python equivalent
-def count_slot_usage(vocabulary):
-    # Initialize the result list
-    result = []
-
-    # Count the usage of each slot
-    for slot in vocabulary:
-        count = search_count(slot)
-        result.append((slot, count))
-
-    # Sort the result by count
-    result.sort(key=lambda x: x[1], reverse=True)
-
-    return result
-
-def search_count(slot):
-    # Dummy function to simulate search count
-    # Replace with actual implementation
-    return len(slot)  # Example: return the length of the slot name as the count
-
-# Example usage
-vocabulary = ["slot1", "slot2", "slot3"]
-slot_usage = count_slot_usage(vocabulary)
-print(slot_usage)
-
-*/

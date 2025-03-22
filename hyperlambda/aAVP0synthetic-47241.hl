@@ -1,5 +1,5 @@
 
-// CRUD endpoint that counts items from your Categories table in your northwind database - With Python equivalent
+// CRUD endpoint that counts items from your Categories table in your northwind database
 .arguments
    Categories.CategoryID.eq:long
    Categories.CategoryName.like:string
@@ -33,52 +33,3 @@ data.connect:[generic|northwind]
 
    // Returning result of above read invocation to caller.
    return-nodes:x:@data.read/*/*
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def count_categories(filters):
-    # Connect to the northwind database
-    conn = sqlite3.connect('northwind.db')
-    cursor = conn.cursor()
-
-    try:
-        # Construct the SQL query with filters
-        query = "SELECT COUNT(*) as count FROM Categories WHERE 1=1"
-        params = []
-
-        for key, value in filters.items():
-            if value is not None:
-                if "like" in key:
-                    query += f" AND {key.split('.')[1]} LIKE ?"
-                    params.append(f"%{value}%")
-                else:
-                    query += f" AND {key.split('.')[1]} = ?"
-                    params.append(value)
-
-        # Execute the query
-        cursor.execute(query, params)
-        result = cursor.fetchone()
-
-        # Return the count
-        return result[0]
-    finally:
-        conn.close()
-
-# Example usage
-filters = {
-    "Categories.CategoryID.eq": None,
-    "Categories.CategoryName.like": "Beverages",
-    "Categories.CategoryName.eq": None,
-    "Categories.Description.like": None,
-    "Categories.Description.eq": None,
-    "Categories.Picture.like": None,
-    "Categories.Picture.eq": None
-}
-count = count_categories(filters)
-print(count)
-
-*/

@@ -1,21 +1,6 @@
 
-// Example: Check if a string contains a given substring (present case). - With Python equivalent
+// Example: Check if a string contains a given substring (present case).
 
 // Returns true
 strings.contains:MagicLambda
    .:Lambda
-
-
-/*
-
-# Python equivalent
-# Original string
-string = "ChatGPT"
-
-# Substring to check
-substring = "OpenAI"
-
-# Check if the string contains the substring
-contains_substring = substring in string
-
-*/

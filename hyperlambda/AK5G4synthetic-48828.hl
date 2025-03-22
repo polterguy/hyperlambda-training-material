@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda script to delete a specified connection string. - With Python equivalent
+// Write a Hyperlambda script to delete a specified connection string.
 .arguments
    databaseType:string
    name:string
@@ -28,61 +28,3 @@ config.save:x:-
 // Success, connetion string deleted.
 return
    result:success
-
-
-/*
-
-# Python equivalent
-import json
-
-def delete_connection_string(database_type, name):
-    """
-    This function deletes a specified connection string.
-    
-    :param database_type: The type of the database (mysql, pgsql, mssql)
-    :param name: The name of the connection string
-    :raises ValueError: If any validation fails
-    :return: A dictionary indicating success
-    """
-    # Verify authentication
-    verify_authentication(["root"])
-    
-    # Validate mandatory fields
-    if not database_type or not name:
-        raise ValueError("Database type and name are mandatory")
-    
-    # Validate database type
-    if database_type not in ["mysql", "pgsql", "mssql"]:
-        raise ValueError("Invalid database type")
-    
-    # Load configuration
-    config = load_config()
-    
-    # Remove the specified connection string
-    if database_type in config['magic']['databases'] and name in config['magic']['databases'][database_type]:
-        del config['magic']['databases'][database_type][name]
-    else:
-        raise ValueError("Connection string not found")
-    
-    # Save the updated configuration
-    save_config(config)
-    
-    # Return success result
-    return {"result": "success"}
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-def load_config():
-    # Placeholder for loading configuration
-    return {"magic": {"databases": {"mysql": {}, "pgsql": {}, "mssql": {}}}}
-
-def save_config(config):
-    # Placeholder for saving configuration
-    pass
-
-# Example usage
-# delete_connection_string("mysql", "my_connection")
-
-*/

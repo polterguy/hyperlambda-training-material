@@ -1,5 +1,5 @@
 
-// Searches through your training snippets using RAG / VSS search for the specified query - With Python equivalent
+// Searches through your training snippets using RAG / VSS search for the specified query
 .arguments
    _type:string
 
@@ -41,22 +41,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def get_training_snippet(id: int):
-    if id is None or not isinstance(id, int) or id < 0:
-        raise ValueError("Invalid ID")
-    
-    connection = connect_to_database("generic|magic")
-    query = """
-    SELECT prompt, completion, uri 
-    FROM ml_training_snippets 
-    WHERE id = %s
-    """
-    result = connection.execute(query, (id,))
-    return result.fetchall()
-
-*/

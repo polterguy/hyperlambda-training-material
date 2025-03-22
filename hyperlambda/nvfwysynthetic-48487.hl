@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that fetches a photo title from an API. - With Python equivalent
+// Generate a Hyperlambda snippet that fetches a photo title from an API.
 
 // Fetches a photo title.
 http.get:"https://jsonplaceholder.typicode.com/photos/1"
@@ -11,24 +11,3 @@ http.get:"https://jsonplaceholder.typicode.com/photos/1"
 .photo_title
 set-value:x:@.photo_title
    get-value:x:@http.get/*/content/*/title
-
-
-/*
-
-# Python equivalent
-import logging
-
-def handle_division_by_zero():
-    logging.basicConfig(level=logging.INFO)
-    
-    try:
-        result = 10 / 0
-    except ZeroDivisionError as e:
-        logging.error(f"Error: {str(e)}")
-    finally:
-        logging.info("Completed division attempt")
-
-# Example usage
-handle_division_by_zero()
-
-*/

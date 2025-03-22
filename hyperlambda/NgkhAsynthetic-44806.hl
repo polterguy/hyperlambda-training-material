@@ -1,17 +1,5 @@
 
-// Example: URL-decode a string with reserved characters. - With Python equivalent
+// Example: URL-decode a string with reserved characters.
 strings.url-decode:100%2525%2520free%2520%2526%2520easy
 
 // Result: "100% free & easy"
-
-
-/*
-
-# Python equivalent
-# URL-decode a string with reserved characters
-import urllib.parse
-
-encoded_string = "100%2525%2520free%2520%2526%2520easy"
-decoded_string = urllib.parse.unquote(encoded_string)
-
-*/

@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the ml_training_snippets table in the magic database, filtering which item to update with ID and updating uri, prompt, and completion fields, ensuring authentication and authorization for root roles. - With Python equivalent
+// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the ml_training_snippets table in the magic database, filtering which item to update with ID and updating uri, prompt, and completion fields, ensuring authentication and authorization for root roles.
 .arguments
    id:long
    uri:string
@@ -50,57 +50,3 @@ data.connect:[generic|magic]
    unwrap:x:+/*
    return
       affected:x:@data.update
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def delete_ml_type_record(database, record_type):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Validate the record type
-    if not record_type:
-        raise ValueError("Record type is mandatory")
-
-    # Connect to the specified database
-    connection = sqlite3.connect(database)
-    cursor = connection.cursor()
-
-    # Execute the delete query for vss_ml_training_snippets
-    delete_query_snippets = """
-    DELETE FROM vss_ml_training_snippets WHERE rowid IN
-    (SELECT id AS rowid FROM ml_training_snippets WHERE type = ?)
-    """
-    cursor.execute(delete_query_snippets, (record_type,))
-    connection.commit()
-
-    # Execute the delete query for ml_types
-    delete_query_types = "DELETE FROM ml_types WHERE type = ?"
-    cursor.execute(delete_query_types, (record_type,))
-    connection.commit()
-
-    # Get the number of affected rows
-    affected_rows = cursor.rowcount
-
-    # Close the connection
-    connection.close()
-
-    # Return the number of affected rows
-    return {"affected": affected_rows}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-# Example usage
-try:
-    result = delete_ml_type_record("magic.db", "example_type")
-    print(result)
-except (ValueError, PermissionError) as e:
-    print(e)
-
-*/

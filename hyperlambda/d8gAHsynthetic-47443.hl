@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda file concatenating two strings - With Python equivalent
+// Create a Hyperlambda file concatenating two strings
 .arguments
    arg1:string
    arg2:int
@@ -12,20 +12,3 @@ strings.concat
 unwrap:x:+/*
 return
    result:x:@strings.concat
-
-
-/*
-
-# Python equivalent
-def concatenate_strings(arg1, arg2):
-    # Concatenate the string and integer with a separator
-    result = f"{arg1} - {arg2}"
-    return result
-
-# Example usage
-arg1 = "Hello"
-arg2 = 42
-result = concatenate_strings(arg1, arg2)
-print(result)  # Output: "Hello - 42"
-
-*/

@@ -1,5 +1,5 @@
 
-// Hyperlambda [if] with regex match - With Python equivalent
+// Hyperlambda [if] with regex match
 .email:user@example.com
 .is-valid
 strings.matches:x:@.email
@@ -19,29 +19,3 @@ if
  * isValid = true;
  * }
  */
-
-
-/*
-
-# Python equivalent
-import re
-
-def validate_email(email):
-    # Initialize the is_valid variable
-    is_valid = None
-
-    # Regex pattern for email validation
-    pattern = r"^[\w\.-]+@([\w-]+\.)+[\w-]{2,4}$"
-
-    # Check if the email matches the regex pattern
-    if re.match(pattern, email):
-        is_valid = True
-
-    return is_valid
-
-# Example usage
-email = "user@example.com"
-is_valid = validate_email(email)
-print(is_valid)  # Output: True
-
-*/

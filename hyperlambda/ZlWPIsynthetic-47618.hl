@@ -1,5 +1,5 @@
 
-// Converts lambda object to CSV string, preserving types - With Python equivalent
+// Converts lambda object to CSV string, preserving types
 .data
    .
       name:Thomas Hansen
@@ -12,37 +12,3 @@ add:x:+/*/types
    get-nodes:x:@lambda2csv/*
 csv2lambda:x:@lambda2csv
    types
-
-
-/*
-
-# Python equivalent
-import csv
-import io
-
-def lambda_to_csv(data):
-    # Convert lambda object to CSV string
-    output = io.StringIO()
-    writer = csv.DictWriter(output, fieldnames=data[0].keys())
-    writer.writeheader()
-    writer.writerows(data)
-    return output.getvalue()
-
-def csv_to_lambda(csv_string):
-    # Convert CSV string back to lambda object (list of dictionaries)
-    input = io.StringIO(csv_string)
-    reader = csv.DictReader(input)
-    return [row for row in reader]
-
-# Example usage
-data = [
-    {'name': 'Thomas Hansen', 'age': 47},
-    {'name': 'John Doe', 'age': 67}
-]
-csv_string = lambda_to_csv(data)
-print(csv_string)
-
-lambda_data = csv_to_lambda(csv_string)
-print(lambda_data)
-
-*/

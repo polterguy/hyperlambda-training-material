@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table. - With Python equivalent
+// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table.
 
 // Queries messages from the messaging database and chat_logs table.
 data.connect:messaging_db
@@ -12,37 +12,3 @@ data.connect:messaging_db
       database-type:sqlite
       table:chat_logs
       limit:100
-
-
-/*
-
-# Python equivalent
-import mysql.connector
-
-def fetch_product_details():
-    # Connect to the inventory database
-    connection = mysql.connector.connect(
-        host='your_host',
-        user='your_user',
-        password='your_password',
-        database='inventory_db'
-    )
-    
-    cursor = connection.cursor(dictionary=True)
-    
-    # Query to fetch product details from the products table
-    query = "SELECT * FROM products ORDER BY created_at ASC"
-    
-    cursor.execute(query)
-    product_details = cursor.fetchall()
-    
-    cursor.close()
-    connection.close()
-    
-    return product_details
-
-# Example usage
-product_details = fetch_product_details()
-print(product_details)
-
-*/

@@ -1,18 +1,3 @@
 
-// Create a Blowfish hashed password - With Python equivalent
+// Create a Blowfish hashed password
 crypto.password.hash:YourPasswordHere
-
-
-/*
-
-# Python equivalent
-# Create a Blowfish hashed password
-import bcrypt
-
-password = "YourPasswordHere"
-hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-# Example usage
-# hashed_password will be a Blowfish hashed version of "YourPasswordHere"
-
-*/

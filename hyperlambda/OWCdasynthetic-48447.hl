@@ -1,5 +1,5 @@
 
-// Provide a Hyperlambda example where an order status is updated in the 'ecommerce_db' database within the 'orders' table. - With Python equivalent
+// Provide a Hyperlambda example where an order status is updated in the 'ecommerce_db' database within the 'orders' table.
 
 // Updates an order status in the "ecommerce_db" database within the "orders" table.
 .arguments
@@ -18,37 +18,3 @@ data.connect:ecommerce_db
          and
             order_id.eq:x:@.arguments/*/order_id
    return:x:@data.update
-
-
-/*
-
-# Python equivalent
-import mysql.connector
-
-def count_users_in_auth_db():
-    # Connect to the auth_db database
-    connection = mysql.connector.connect(
-        host='your_host',
-        user='your_user',
-        password='your_password',
-        database='auth_db'
-    )
-    
-    cursor = connection.cursor()
-    
-    # Query to count users in the users table
-    query = "SELECT COUNT(*) AS count FROM users"
-    
-    cursor.execute(query)
-    user_count = cursor.fetchone()[0]
-    
-    cursor.close()
-    connection.close()
-    
-    return user_count
-
-# Example usage
-user_count = count_users_in_auth_db()
-print(user_count)
-
-*/

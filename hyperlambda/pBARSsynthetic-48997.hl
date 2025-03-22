@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to retrieve all URLs from the sitemap of a specified website. - With Python equivalent
+// Create a Hyperlambda script to retrieve all URLs from the sitemap of a specified website.
 .url:"https://ainiro.io"
 
 // will contain all URLs from website
@@ -20,38 +20,3 @@ for-each:x:"@xml2lambda/*/urlset/*/url/*/loc/*/\\#text"
    add:x:@.urls
       .
          .:x:@.dp/#
-
-
-/*
-
-# Python equivalent
-import requests
-import xml.etree.ElementTree as ET
-
-def retrieve_sitemap_urls(website_url):
-    """
-    This function retrieves all URLs from the sitemap of a specified website.
-    
-    :param website_url: The base URL of the website
-    :return: A list of URLs from the sitemap
-    """
-    # Construct the sitemap URL
-    sitemap_url = f"{website_url}/sitemap.xml"
-    
-    # Retrieve the sitemap content
-    response = requests.get(sitemap_url)
-    sitemap_content = response.content
-    
-    # Parse the XML content
-    root = ET.fromstring(sitemap_content)
-    
-    # Extract URLs from the sitemap
-    urls = [loc.text for loc in root.findall(".//{http://www.sitemaps.org/schemas/sitemap/0.9}loc")]
-    
-    # Return the list of URLs
-    return urls
-
-# Example usage
-# retrieve_sitemap_urls("https://ainiro.io")
-
-*/

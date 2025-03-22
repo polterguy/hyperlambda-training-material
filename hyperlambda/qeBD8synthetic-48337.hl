@@ -1,5 +1,5 @@
 
-// Search the web and returns only the URLs found - With Python equivalent
+// Search the web and returns only the URLs found
 .arguments
 
    // Mandatory argument being the actual query to submit to DuckDuckGo.
@@ -19,22 +19,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def search_web(query: str, max_tokens: int):
-    import requests
-    
-    # Assuming there is an API endpoint for the search
-    url = "https://api.example.com/context-search"
-    params = {
-        "query": query,
-        "max_tokens": max_tokens
-    }
-    
-    response = requests.get(url, params=params)
-    return response.json()
-
-*/

@@ -1,5 +1,5 @@
 
-// Example of creating a MIME HTTP POST request. - With Python equivalent
+// Example of creating a MIME HTTP POST request.
 http.post:"http://localhost:5000/magic/modules/foo/foo"
    headers
       Content-Type:multipart/form-data
@@ -12,30 +12,3 @@ http.post:"http://localhost:5000/magic/modules/foo/foo"
          headers
             Content-Disposition:"form-data; filename=\"README.md\""
          filename:/README.md
-
-
-/*
-
-# Python equivalent
-import requests
-
-def post_mime_data(url, foo_content, readme_path):
-    # Prepare the multipart form-data
-    files = {
-        'foo': (None, foo_content, 'text/plain'),
-        'README.md': (readme_path, open(readme_path, 'rb'), 'text/plain')
-    }
-
-    # Send the HTTP POST request
-    response = requests.post(url, files=files)
-
-    return response
-
-# Example usage
-url = "http://localhost:5000/magic/modules/foo/foo"
-foo_content = "Foo bar"
-readme_path = "/README.md"
-response = post_mime_data(url, foo_content, readme_path)
-print(response.status_code, response.text)
-
-*/

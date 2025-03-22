@@ -1,5 +1,5 @@
 
-// Sends a multipart email with file attachment - With Python equivalent
+// Sends a multipart email with file attachment
 mail.smtp.send
    message
       to
@@ -10,57 +10,3 @@ mail.smtp.send
             content:Body content
          entity:text/plain
             filename:/files/foo.txt
-
-
-/*
-
-# Python equivalent
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
-
-def send_email_with_attachment():
-    # SMTP server configuration
-    smtp_server = "your_smtp_server"
-    smtp_port = 587
-    smtp_username = "your_username"
-    smtp_password = "your_password"
-    use_tls = True
-
-    # Email message configuration
-    from_email = "your_email@example.com"
-    to_email = "jane@doe.com"
-    subject = "Subject line"
-    body_content = "Body content"
-    attachment_path = "/files/foo.txt"
-
-    # Create the email message
-    msg = MIMEMultipart()
-    msg['From'] = from_email
-    msg['To'] = to_email
-    msg['Subject'] = subject
-
-    # Attach the body content
-    msg.attach(MIMEText(body_content, 'plain'))
-
-    # Attach the file
-    with open(attachment_path, 'rb') as attachment:
-        part = MIMEBase('application', 'octet-stream')
-        part.set_payload(attachment.read())
-        encoders.encode_base64(part)
-        part.add_header('Content-Disposition', f'attachment; filename={attachment_path.split("/")[-1]}')
-        msg.attach(part)
-
-    # Send the email
-    with smtplib.SMTP(smtp_server, smtp_port) as server:
-        if use_tls:
-            server.starttls()
-        server.login(smtp_username, smtp_password)
-        server.sendmail(from_email, to_email, msg.as_string())
-
-# Example usage
-send_email_with_attachment()
-
-*/

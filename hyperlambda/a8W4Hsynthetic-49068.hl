@@ -1,5 +1,5 @@
 
-// Create one record in your MediaType table in your chinook database. - With Python equivalent
+// Create one record in your MediaType table in your chinook database.
 .arguments
 
    // MediaTypeId column value
@@ -38,49 +38,3 @@ data.connect:[generic|chinook]
    unwrap:x:+/*
    return
       result:success
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def create_media_type(media_type_id, name):
-    """
-    This function creates one record in the MediaType table in the chinook database.
-    
-    :param media_type_id: The ID of the media type to create
-    :param name: The name of the media type
-    :return: A dictionary indicating success
-    :raises ValueError: If media_type_id or name is not provided
-    """
-    # Verify authentication
-    verify_authentication(["root", "admin"])
-    
-    # Validate mandatory fields
-    if media_type_id is None or not name:
-        raise ValueError("MediaTypeId and Name are mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('chinook.db')
-    cursor = conn.cursor()
-    
-    # Insert the record
-    cursor.execute("INSERT INTO MediaType (MediaTypeId, Name) VALUES (?, ?)", (media_type_id, name))
-    
-    # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return success result
-    return {"result": "success"}
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-# Example usage
-# create_media_type(1, "MP3")
-
-*/

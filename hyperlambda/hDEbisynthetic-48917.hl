@@ -1,5 +1,5 @@
 
-// Returns true if the specified username is available. - With Python equivalent
+// Returns true if the specified username is available.
 .arguments
    username
       type:string
@@ -44,48 +44,3 @@ data.connect:[generic|magic]
       // User does not exist, returning true to caller.
       return
          available:bool:true
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def is_username_available(username, throw=False):
-    """
-    This function returns true if the specified username is available.
-    
-    :param username: The username to check availability for
-    :param throw: Whether to throw an exception if the username is not available
-    :return: A dictionary indicating if the username is available
-    :raises ValueError: If username is not provided
-    :raises Exception: If the username already exists and throw is True
-    """
-    # Validate mandatory fields
-    if not username:
-        raise ValueError("Username is mandatory")
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('magic.db')
-    cursor = conn.cursor()
-    
-    # Check if the username exists
-    cursor.execute("SELECT username FROM users WHERE username = ?", (username,))
-    user_exists = cursor.fetchone() is not None
-    
-    # Close the connection
-    cursor.close()
-    conn.close()
-    
-    # Handle the result
-    if user_exists:
-        if throw:
-            raise Exception("User already exists")
-        return {"available": False}
-    else:
-        return {"available": True}
-
-# Example usage
-# is_username_available("example_user", throw=True)
-
-*/

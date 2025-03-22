@@ -1,5 +1,5 @@
 
-// Counts items from your plugins table in your cms database - With Python equivalent
+// Counts items from your plugins table in your cms database
 .arguments
 
    // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
@@ -43,58 +43,3 @@ data.connect:[generic|cms]
 
    // Returning result of above read invocation to caller.
    return-nodes:x:@data.read/*/*
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def count_plugins(filters=None):
-    """
-    This function counts items from the plugins table in the cms database.
-    
-    :param filters: A dictionary containing filter conditions
-    :return: The count of items matching the criteria
-    """
-    # Verify authentication
-    verify_authentication(["guest"])
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('cms.db')
-    cursor = conn.cursor()
-    
-    # Build the query
-    query = "SELECT COUNT(*) AS count FROM plugins WHERE 1=1"
-    params = []
-    
-    if filters:
-        for key, value in filters.items():
-            if key.endswith(".eq"):
-                column = key.split(".")[1]
-                query += f" AND {column} = ?"
-                params.append(value)
-            elif key.endswith(".like"):
-                column = key.split(".")[1]
-                query += f" AND {column} LIKE ?"
-                params.append(f"%{value}%")
-    
-    # Execute the query
-    cursor.execute(query, params)
-    count = cursor.fetchone()[0]
-    
-    # Close the connection
-    cursor.close()
-    conn.close()
-    
-    # Return the count
-    return count
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-# Example usage
-# count_plugins({"plugins.name.like": "example"})
-
-*/

@@ -1,5 +1,5 @@
 
-// Create one record in your Album table in your chinook database - With Python equivalent
+// Create one record in your Album table in your chinook database
 .arguments
 
    // AlbumId column value
@@ -41,38 +41,3 @@ data.connect:[generic|chinook]
    unwrap:x:+/*
    return
       result:success
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def create_album_record(album_id, title, artist_id):
-    # Verify authorization
-    if not verify_auth_ticket(['root', 'admin']):
-        raise PermissionError("Unauthorized access")
-
-    # Connect to the chinook database
-    conn = sqlite3.connect('chinook.db')
-    cursor = conn.cursor()
-
-    try:
-        # Prepare and execute the insert statement
-        cursor.execute(
-            "INSERT INTO Album (AlbumId, Title, ArtistId) VALUES (?, ?, ?)",
-            (album_id, title, artist_id)
-        )
-        conn.commit()
-
-        # Return success message
-        return "success"
-    finally:
-        conn.close()
-
-def verify_auth_ticket(roles):
-    # Dummy function for authorization check
-    # Replace with actual implementation
-    return True
-
-*/

@@ -1,5 +1,5 @@
 
-// Read or list records from your pages table in your cms database - With Python equivalent
+// Read or list records from your pages table in your cms database
 .arguments
 
    // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
@@ -46,58 +46,3 @@ data.connect:[generic|cms]
 
    // Returning result of above read invocation to caller.
    return-nodes:x:@data.read/*
-
-
-/*
-
-# Python equivalent
-import sqlite3
-
-def read_pages(filters=None):
-    """
-    This function reads or lists records from the pages table in the cms database.
-    
-    :param filters: A dictionary containing filter conditions
-    :return: A list of dictionaries containing page details
-    """
-    # Verify authentication
-    verify_authentication(["guest"])
-    
-    # Connect to the SQLite database
-    conn = sqlite3.connect('cms.db')
-    cursor = conn.cursor()
-    
-    # Build the query
-    query = "SELECT id, title, content, created_at FROM pages WHERE 1=1"
-    params = []
-    
-    if filters:
-        for key, value in filters.items():
-            if key.endswith(".eq"):
-                column = key.split(".")[1]
-                query += f" AND {column} = ?"
-                params.append(value)
-            elif key.endswith(".like"):
-                column = key.split(".")[1]
-                query += f" AND {column} LIKE ?"
-                params.append(f"%{value}%")
-    
-    # Execute the query
-    cursor.execute(query, params)
-    pages = [{"id": row[0], "title": row[1], "content": row[2], "created_at": row[3]} for row in cursor.fetchall()]
-    
-    # Close the connection
-    cursor.close()
-    conn.close()
-    
-    # Return the list of pages
-    return pages
-
-def verify_authentication(roles):
-    # Placeholder for authentication verification logic
-    pass
-
-# Example usage
-# read_pages({"pages.title.like": "example"})
-
-*/

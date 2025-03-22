@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda action to set specified HTTP headers in a response. Use 'headers' as a key-value input to determine which headers to set. - With Python equivalent
+// Create a Hyperlambda action to set specified HTTP headers in a response. Use 'headers' as a key-value input to determine which headers to set.
 .arguments
    headers
       type:key-value
@@ -18,38 +18,3 @@ for-each:x:@.arguments/*/headers/*
 
 // Invoking slot responsible for setting response HTTP headers.
 response.headers.set
-
-
-/*
-
-# Python equivalent
-from flask import Flask, request, jsonify
-import openai
-
-app = Flask(__name__)
-
-@app.route('/ask-openai', methods=['POST'])
-def ask_openai():
-    # Get the arguments from the request JSON
-    prompt = request.json.get('prompt')
-    model_type = request.json.get('type', 'gpt-3.5-turbo')
-
-    # Validate the prompt
-    if not prompt:
-        return jsonify({"error": "Prompt is mandatory"}), 400
-
-    # Call the OpenAI API
-    response = openai.Completion.create(
-        engine=model_type,
-        prompt=prompt,
-        max_tokens=150
-    )
-
-    # Return the response
-    return jsonify(response)
-
-# Example usage: Run the Flask app
-if __name__ == '__main__':
-    app.run(debug=True)
-
-*/

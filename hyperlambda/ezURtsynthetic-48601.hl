@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda endpoint to count the number of tasks in the system given an optional filter. - With Python equivalent
+// Create a Hyperlambda endpoint to count the number of tasks in the system given an optional filter.
 .arguments
    filter:string
 .type:internal
@@ -14,43 +14,3 @@ tasks.count:x:@.arguments/*/filter
 unwrap:x:+/*
 return-nodes
    count:x:@tasks.count
-
-
-/*
-
-# Python equivalent
-def create_scheduled_task(task_id, description, hyperlambda_code):
-    # Simulate verifying root access
-    if not verify_root_access():
-        raise PermissionError("Root access required")
-
-    # Simulate converting Hyperlambda to a task
-    task_lambda = convert_hyperlambda_to_task(hyperlambda_code)
-
-    # Simulate creating a scheduled task
-    create_task(task_id, description, task_lambda)
-
-    # Return success result
-    return {"result": "success"}
-
-def verify_root_access():
-    # Simulate root access verification
-    return True
-
-def convert_hyperlambda_to_task(hyperlambda_code):
-    # Simulate converting Hyperlambda code to a task
-    # This is a placeholder implementation
-    return f"Task based on {hyperlambda_code}"
-
-def create_task(task_id, description, task_lambda):
-    # Simulate creating a task
-    print(f"Creating task with ID: {task_id}, Description: {description}, Lambda: {task_lambda}")
-
-# Example usage
-try:
-    result = create_scheduled_task("task1", "Sample Task", "example_hyperlambda_code")
-    print(result)
-except PermissionError as e:
-    print(e)
-
-*/

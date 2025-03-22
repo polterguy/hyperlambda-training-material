@@ -1,5 +1,5 @@
 
-// Returns Stripe customers. - With Python equivalent
+// Returns Stripe customers.
 .arguments
    limit:int
    starting_after:string
@@ -35,43 +35,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-import stripe
-
-def get_stripe_customers(limit, starting_after=None, email=None):
-    """
-    This function returns Stripe customers.
-    
-    :param limit: The maximum number of customers to return
-    :param starting_after: The ID of the customer to start after
-    :param email: The email of the customer to filter by
-    :return: A list of Stripe customers
-    """
-    # Authorize the user
-    authorize_user(["root", "gpt"])
-    
-    # Set your secret key: remember to switch to your live secret key in production
-    stripe.api_key = "your_secret_key"
-    
-    # Retrieve Stripe customers
-    customers = stripe.Customer.list(
-        limit=limit,
-        starting_after=starting_after,
-        email=email
-    )
-    
-    # Return the customers
-    return customers
-
-def authorize_user(roles):
-    # Placeholder for user authorization logic
-    pass
-
-# Example usage
-# get_stripe_customers(10, "cus_J5OeG0s2eZvKYlo2C", "example@example.com")
-
-*/

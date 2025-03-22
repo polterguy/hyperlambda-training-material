@@ -1,5 +1,5 @@
 
-// Create a Hyperlambda script to invoke the OpenAI API with a Bearer token, process audio data, and save it as an MP3 file. - With Python equivalent
+// Create a Hyperlambda script to invoke the OpenAI API with a Bearer token, process audio data, and save it as an MP3 file.
 http.post:"https://api.openai.com/v1/chat/completions"
    convert:bool:true
    headers
@@ -27,41 +27,3 @@ convert:x:@http.post/*/content/*/choices/0/*/message/*/audio/*/data
    type:from-base64
 io.file.save.binary:/foo.mp3
    get-value:x:@convert
-
-
-/*
-
-# Python equivalent
-import requests
-import os
-
-def delete_stripe_subscription(subscription_id: str):
-    if not subscription_id:
-        raise ValueError("Subscription ID is mandatory")
-    
-    # Retrieve the Stripe API token
-    token = os.getenv('MAGIC_STRIPE_TOKEN')
-    if not token:
-        raise ValueError("Stripe API token is missing")
-    
-    # Construct the URL
-    url = f"https://api.stripe.com/v1/subscriptions/{subscription_id}"
-    
-    # Make the DELETE request
-    headers = {
-        "Authorization": f"Bearer {token}"
-    }
-    response = requests.delete(url, headers=headers)
-    
-    # Handle errors
-    if response.status_code >= 400:
-        error_message = f"Something went wrong while invoking Stripe API to delete subscription: {response.text}"
-        print(error_message)  # Log the error
-        raise Exception(error_message)
-    
-    return response.json()
-
-# Example usage
-# delete_stripe_subscription("sub_123456789")
-
-*/

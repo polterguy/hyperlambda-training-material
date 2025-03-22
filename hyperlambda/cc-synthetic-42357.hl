@@ -1,5 +1,5 @@
 
-// Append multiple new child nodes to a destination node - With Python equivalent
+// Append multiple new child nodes to a destination node
 .dest
 add:x:@.dest
    .
@@ -8,20 +8,3 @@ add:x:@.dest
    .
       bar1:hi
       bar2:planet
-
-
-/*
-
-# Python equivalent
-# Append multiple new child nodes to a destination node
-dest = {}
-dest.update({
-    "foo1": "hello",
-    "foo2": "world"
-})
-dest.update({
-    "bar1": "hi",
-    "bar2": "planet"
-})
-
-*/

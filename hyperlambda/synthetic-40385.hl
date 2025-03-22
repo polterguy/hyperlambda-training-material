@@ -1,20 +1,7 @@
 
-// Composing a dynamic node expression from parts - With Python equivalent
+// Composing a dynamic node expression from parts
 compose
    .:..
    .:*
    .:.data
    .:*
-
-
-/*
-
-# Python equivalent
-# Composing a dynamic node expression from parts
-parts = ["..", "*", ".data", "*"]
-composed_expression = "".join(parts)
-
-# Example usage
-# composed_expression will be "..*.data*"
-
-*/

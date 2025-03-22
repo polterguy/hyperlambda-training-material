@@ -1,5 +1,5 @@
 
-// Write a Hyperlambda snippet that counts messages in the 'messaging_db' database from the 'chat_logs' table. - With Python equivalent
+// Write a Hyperlambda snippet that counts messages in the 'messaging_db' database from the 'chat_logs' table.
 
 // Counts messages in the "messaging_db" database from the "chat_logs" table.
 data.connect:messaging_db
@@ -13,26 +13,3 @@ data.connect:messaging_db
          count(*)
             as:count
       limit:long:1
-
-
-/*
-
-# Python equivalent
-import logging
-
-def log_timestamps():
-    logging.basicConfig(level=logging.INFO)
-    
-    timestamps = {
-        "time1": "2025-03-15T14:30:00.000Z",
-        "time2": "2025-03-16T09:00:00.000Z",
-        "time3": "2025-03-17T18:45:00.000Z"
-    }
-    
-    for time_key, timestamp in timestamps.items():
-        logging.info(timestamp)
-
-# Example usage
-log_timestamps()
-
-*/

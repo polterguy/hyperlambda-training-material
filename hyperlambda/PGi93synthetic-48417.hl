@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet that evaluates specified [.lambda] if both conditions are true. - With Python equivalent
+// Generate a Hyperlambda snippet that evaluates specified [.lambda] if both conditions are true.
 
 // Evaluates specified [.lambda] if both conditions are true.
 .result
@@ -25,25 +25,3 @@ else
    // Changing the value of [.result] to false
    set-value:x:@.result
       .:bool:false
-
-
-/*
-
-# Python equivalent
-def execute_lambda_if_both_conditions_met():
-    numA = 6
-    numB = 12
-    output = False
-    
-    if numA < 7 and numB > 11:
-        output = True
-    else:
-        output = False
-    
-    return output
-
-# Example usage
-output = execute_lambda_if_both_conditions_met()
-print(output)
-
-*/

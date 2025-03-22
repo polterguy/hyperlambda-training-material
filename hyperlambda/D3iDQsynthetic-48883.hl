@@ -1,5 +1,5 @@
 
-// Returns all plans that exist. - With Python equivalent
+// Returns all plans that exist.
 execute:magic.workflows.actions.execute
    name:authorize
    filename:/misc/workflows/actions/security/authorize.hl
@@ -16,35 +16,3 @@ execute:magic.workflows.actions.execute
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*
-
-
-/*
-
-# Python equivalent
-def get_all_plans():
-    """
-    This function returns all plans that exist.
-    
-    :return: A list of plans
-    """
-    # Authorize the user
-    authorize_user(["root", "gpt"])
-    
-    # Retrieve plans
-    plans = retrieve_plans()
-    
-    # Return the plans
-    return plans
-
-def authorize_user(roles):
-    # Placeholder for user authorization logic
-    pass
-
-def retrieve_plans():
-    # Placeholder for retrieving plans
-    return [{"plan": "example_plan"}]
-
-# Example usage
-# get_all_plans()
-
-*/

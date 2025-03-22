@@ -1,5 +1,5 @@
 
-// Generate a Hyperlambda snippet with string variables, demonstrating special character handling, multi-line strings, and alternative quoting. - With Python equivalent
+// Generate a Hyperlambda snippet with string variables, demonstrating special character handling, multi-line strings, and alternative quoting.
 
 // String without special characters, no need for quotes
 .simpleText:hello
@@ -15,17 +15,3 @@
 
 // Escaping a newline character
 .escapedNewlineText:"hello\nworld"
-
-
-/*
-
-# Python equivalent
-# String variables in Python covering cases of colons, multi-line strings, and escaped characters
-text1 = "sample"
-text2 = "sample:value"
-text3 = """lineA
-lineB"""
-text4 = 'test'
-text5 = "first\nsecond"
-
-*/

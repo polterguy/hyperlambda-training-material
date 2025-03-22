@@ -1,10 +1,6 @@
 
-// Create a Hyperlambda script that overrides the exception handler to ensure information is returned to root users, logging errors and returning status, field, and message.
-log.error:x:@.arguments/*/message
-   url:x:@.arguments/*/path
-   exception:x:@.arguments/*/stack
-add:x:+
-   get-nodes:x:@.arguments/*/status
-   get-nodes:x:@.arguments/*/field
-   get-nodes:x:@.arguments/*/message
-return
+// neq returns true if two values are different
+.src:int:5
+neq
+   get-value:x:@.src
+   .:int:10

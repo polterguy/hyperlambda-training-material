@@ -1,33 +1,43 @@
 
-// Write a Hyperlambda script to return the conversation starters for a specified type.
+// Associates the specified [username] with the specified [roles] roles.
 .arguments
-   type:string
+   username
+      type:string
+      mandatory:bool:true
+   roles
+      type:array
+      mandatory:bool:true
+.icon:supervisor_account
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/roles
 
-// Opening up database connection.
+// Connecting to database.
 data.connect:[generic|magic]
 
-   // Retrieving all questions from database.
-   data.select:"\nselect conversation_starters\n\tfrom ml_types\n\twhere type = @type"
-      type:x:@.arguments/*/type
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
 
-   // Transforming to markdown and splitting into individual questions, but only if we have conversation starters.
+   // Verifying above invocation returned something.
    if
-      and
-         not-null:x:@data.select/*/*/conversation_starters
-         neq:x:@data.select/*/*/conversation_starters
-            .:
+      not-exists:x:@data.read/*
       .lambda
-         markdown2html:x:@data.select/*/*/conversation_starters
-         html2lambda:x:@markdown2html
-         for-each:x:"@html2lambda/**/li/**/\\#text"
-            unwrap:x:+/*/*
-            add:x:../*/return/*/questions
-               .
-                  .:x:@.dp/#
 
-// Returning result to caller.
-return
-   questions
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Associating user with specified [roles].
+   for-each:x:@.arguments/*/roles/*
+      data.create
+         table:users_roles
+         values
+            user:x:@.arguments/*/username
+            role:x:@.dp/#

@@ -1,20 +1,8 @@
+// Create a task, then schedule it
+tasks.create:task-id
+   .lambda
 
-// Create a Hyperlambda snippet that updates a user's email in the 'auth_db' database within the 'users' table.
+      log.info:It is the 5th or the 15th of January or February, and the time is 5AM at night.
 
-// Updates a user's email in the "auth_db" database within the "users" table.
-.arguments
-   user_id:int
-data.connect:auth_db
-   database-type:pgsql
-
-   // Updating the user's email and status.
-   data.update
-      database-type:pgsql
-      table:users
-      values
-         email:newuser@example.com
-         status:active
-      where
-         and
-            user_id.eq:x:@.arguments/*/user_id
-   return:x:@data.update
+tasks.schedule:task-id
+   repeats:01|02.5|15.05.00.00

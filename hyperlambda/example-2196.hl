@@ -1,94 +1,48 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes multiple records from the ml_training_snippets table in the magic database, matching a filter and ensuring authentication and authorization for root roles.
+// Create a Hyperlambda file for a CRUD update endpoint that updates an existing item in the users table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
-   ml_training_snippets.prompt.like:string
-   ml_training_snippets.completion.like:string
-   ml_training_snippets.uri.like:string
-   ml_training_snippets.type.eq:string
-.type:crud-delete
+   username:string
+   password:string
+.type:crud-update
 
 // Verifying user is authorized to access endpoint.
+validators.mandatory:x:@.arguments/*/username
 auth.ticket.verify:root
+
+// Sanity checking invocation
+validators.mandatory:x:@.arguments/*/username
+eval:x:+
+signal:transformers.hash-password
+   reference:x:@.arguments/*/password
 
 // Opening up our database connection.
 data.connect:[generic|magic]
 
-   // Parametrising our delete and read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*/*/or
-      get-nodes:x:@.arguments/*/ml_training_snippets.prompt.like
-      get-nodes:x:@.arguments/*/ml_training_snippets.completion.like
-      get-nodes:x:@.arguments/*/ml_training_snippets.uri.like
-   add:x:./*/data.delete/*/where/*/*/or
-      get-nodes:x:@.arguments/*/ml_training_snippets.prompt.like
-      get-nodes:x:@.arguments/*/ml_training_snippets.completion.like
-      get-nodes:x:@.arguments/*/ml_training_snippets.uri.like
-   remove-nodes:x:@.arguments/*/ml_training_snippets.prompt.like
-   remove-nodes:x:@.arguments/*/ml_training_snippets.completion.like
-   remove-nodes:x:@.arguments/*/ml_training_snippets.uri.like
-   add:x:./*/data.read/*/where/*
-      get-nodes:x:@.arguments/*
-   add:x:./*/data.delete/*/where/*
-      get-nodes:x:@.arguments/*
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
 
-   // Removing [or] parts unless we've got something to actually or.
+   // Invoking our update slot.
+   data.update
+      table:users
+      values
+      where
+         and
+
+   // Verifying record exists.
    if
-      not-exists:x:@data.connect/*/data.read/*/where/*/and/*/or/*
+      eq
+         get-value:x:@data.update
+         .:int:0
       .lambda
-         remove-nodes:x:@data.connect/*/data.read/*/where/*/and/*/or
-         remove-nodes:x:@data.connect/*/data.delete/*/where/*/and/*/or
+         response.status.set:404
+         return
+            result:Record not found
 
-   // Reading items from database such that we can delete files associated with items.
-   data.read
-      table:ml_training_snippets
-      columns
-         filename
-      where
-         and
-            filename.neq
-            or
-      limit:-1
-   for-each:x:@data.read/*
-      if
-         and
-            not-null:x:@.dp/#/*/filename
-            io.file.exists:x:@.dp/#/*/filename
-         .lambda
-            io.file.delete:x:@.dp/#/*/filename
-
-   /*
-    * Generating select statement for records we're deleting since we need
-    * to use it as input to deletion from vss shadow table.
-    */
-   data.read
-      generate:true
-      table:ml_training_snippets
-      columns
-         id
-            as:rowid
-      where
-         and
-            or
-      limit:-1
-   .sql
-
-   // Deleting records from vss shadow table.
-   set-value:x:@.sql
-      strings.concat
-         .:delete from vss_ml_training_snippets where rowid in(
-         get-value:x:@data.read
-         .:)
-   add:x:./*/data.execute
-      get-nodes:x:@data.read/*
-   data.execute:x:@.sql
-
-   // Finally, deleting ml_training_snippets item from database.
-   data.delete
-      table:ml_training_snippets
-      where
-         and
-            or
-
-   // Returning result of above invocation to caller.
+   // Returning success to caller.
+   response.status.set:202
    unwrap:x:+/*
    return
-      affected:x:@data.delete
+      affected:x:@data.update

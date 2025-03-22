@@ -1,49 +1,27 @@
 
-// Create one record in your pages table in your cms database
-.arguments
+// Provide a Hyperlambda example where [.lambda] runs when all conditions evaluate to true.
 
-   // title column value
-   title:string
+// Runs [.lambda] when all conditions evaluate to true.
+.state
+.check1:int:2
+.check2:int:8
+if
+   and
 
-   // content column value
-   content:string
+      // First condition: Less than
+      lt:x:@.check1
+         .:int:3
 
-   // created_at column value
-   created_at:date
+      // Second condition: More than
+      mt:x:@.check2
+         .:int:7
+   .lambda
 
-// Meta data description for endpoint
+      // Updating [.state] to true
+      set-value:x:@.state
+         .:bool:true
+else
 
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:guest
-
-// Opening up database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:pages
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Publishing socket message.
-   add:x:./*/sockets.signal/*/args
-      get-nodes:x:@.arguments/*
-   sockets.signal:cms.pages.post
-      args
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+   // Updating [.state] to false
+   set-value:x:@.state
+      .:bool:false

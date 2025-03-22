@@ -1,13 +1,15 @@
 
-// Define a slot that returns multiple values by evaluating expressions before the slot returns
-slots.create:giveData
-   .tmp1:Value 1
-   .tmp2:int:2025
+// Write a Hyperlambda snippet that counts products in the 'inventory_db' database from the 'products' table.
 
-   // Return two nodes, evaluating any expressions in them
-   yield
-      message:x:@.tmp1
-      year:x:@.tmp2
-signal:giveData
+// Counts products in the "inventory_db" database from the "products" table.
+data.connect:inventory_db
+   database-type:sqlite
 
-// Result: message = "Value 1", year = 2023
+   // Counting total products.
+   data.read
+      database-type:sqlite
+      table:products
+      columns
+         count(*)
+            as:count
+      limit:long:1

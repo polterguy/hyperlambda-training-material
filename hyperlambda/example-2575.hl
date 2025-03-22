@@ -1,8 +1,4 @@
 
-// Example: Remove all digits from a string using a regex.
-.original:abc123xyz
-strings.regex-replace:x:@.original
-   .:"\\d+"
-   .:
-
-// Result: "abcxyz"
+// WordPress module version and name.
+version:v1.0.0
+module_name:wordpress

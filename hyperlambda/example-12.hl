@@ -1,3 +1,2 @@
-// Decrement a value by 1 (default behavior)
-.value:int:5
-math.decrement:x:@.value
+// Execute a Hyperlambda file
+io.file.execute:/misc/some-hyperlambda-file.hl

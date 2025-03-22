@@ -1,4 +1,11 @@
-// Getting configuration setting and assigning the value to [.result]
-.result
-set-value:x:@.result
-   config.get:"magic:smtp:host"
+// HTTP endpoint that selects users from database and returns as YAML
+.arguments
+
+// Connect to the database and retrieve contacts
+data.connect:crm
+   data.read
+      table:contacts
+   response.headers.set
+      Content-Type:application/yaml
+   lambda2yaml:x:@data.read/*
+   return:x:@lambda2yaml

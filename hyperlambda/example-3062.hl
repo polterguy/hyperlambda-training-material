@@ -1,26 +1,14 @@
 
-// Inserts training data into database.
-.arguments
-
-   // Mandatory prompt used to generate specified Hyperlambda
-   prompt:string
-
-   // Mandatory reference to Hyperlambda file.
-   file-no:int
-.type:public
-
-// Getting Hyperlambda.
-execute-file:/modules/fine-tune/workflows/create-training-data.hl
-   file-no:x:@.arguments/*/file-no
-
-// Inserting item.
-data.connect:fine-tune
-   data.create
-      table:hyperlambda
-      values
-         prompt:x:@.arguments/*/prompt
-         code:x:@execute-file/*/hyperlambda
-
-// Returning success.
-return
-   result:success
+// Switch lambda
+.val:fooXX
+.result
+switch:x:@.val
+   case:bar
+      set-value:x:@.result
+         .:Oops
+   case:foo
+      set-value:x:@.result
+         .:Oops2.0
+   default
+      set-value:x:@.result
+         .:Success!

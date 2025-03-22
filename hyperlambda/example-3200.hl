@@ -1,5 +1,6 @@
-// Purging all cache entries.
-
-cache.clear
-
-// All cache items will be removed.
+/*
+ * Example: Use a variable for the string to encode.
+ */
+.text:"key=value&flag=true"
+// Result: "key%3Dvalue%26flag%3Dtrue"
+strings.url-encode:x:@.text

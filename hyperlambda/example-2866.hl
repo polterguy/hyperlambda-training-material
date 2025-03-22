@@ -1,3 +1,3 @@
+// Verifies if the authenticated user has any of the roles: admin, editor, or user.
 
-// Returns the IP address of the cloudlet
-server.ip
+auth.ticket.verify:admin,editor,user

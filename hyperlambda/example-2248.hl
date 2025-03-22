@@ -1,13 +1,16 @@
 
-// Calculate the dot product of [.list1] x [.list2]
-.list1
-   .:double:0.5
-   .:double:0.7
-   .:double:0.1
-.list2
-   .:double:0.56
-   .:double:0.89
-   .:double:0.33
-math.dot
-   get-nodes:x:@.list1/*
-   get-nodes:x:@.list2/*
+// Create a Hyperlambda snippet that formats user profile details.
+
+// Hyperlambda file that formats user profile details.
+.arguments
+   username:string
+   role:string
+   country:string
+strings.concat
+   get-value:x:@.arguments/*/username
+   .:" is a "
+   get-value:x:@.arguments/*/role
+   .:" from "
+   get-value:x:@.arguments/*/country
+yield
+   result:x:@strings.concat

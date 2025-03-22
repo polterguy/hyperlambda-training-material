@@ -1,5 +1,14 @@
 
-// Example: Capitalize an empty string (result is still an empty string).
+// Create a Hyperlambda action to load a specified file and return its content.
+.arguments
+   file
+      type:string
+      mandatory:bool:true
+.icon:insert_drive_file
 
-// Result: "" (empty string)
-strings.capitalize:
+// Loads the specified file.
+load-file:x:@.arguments/*/file
+
+// Returning result of above invocation to caller.
+yield
+   content:x:@load-file

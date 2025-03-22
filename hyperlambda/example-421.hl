@@ -1,8 +1,12 @@
 
-// Generate a Hyperlambda snippet that embeds structured data into a specific node's subtree.
+// Example: Split a string with consecutive delimiters (empty segments).
+strings.split:one,,two
+   .:,
 
-// Embeds structured data into a specific node's subtree.
-.storage
-add:x:@.storage
-   .
-      item:detail
+/*
+ * Resulting parts:
+ * .:one
+ * .:two
+ * 
+ * Notice, empty strings are ignored
+ */

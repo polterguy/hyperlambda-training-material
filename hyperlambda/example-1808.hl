@@ -1,6 +1,29 @@
-/*
- * Retrieves the `title` node from a referenced article object.
- * Each `.results/*/ref` node contains a reference (value) to another node structure.
- * The `#` dereferences that value, and `/*/title` navigates to its child node named `title`.
- */
-.article-title:x:@.results/*/ref/#/*/title
+
+// Create a Hyperlambda endpoint for a CRUD delete endpoint that deletes one record from the ml_requests table in the magic database with an ID matching the argument, ensuring authentication and authorization for root roles.
+.arguments
+   id:long
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/id
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      table:ml_requests
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

@@ -1,14 +1,5 @@
 
-// Create a Hyperlambda action to transform specified markdown into HTML and return the HTML content.
-.arguments
-   markdown
-      type:string
-      mandatory:bool:true
-.icon:pageview
+// Example: Embed multiple inline expressions in a single string.
+strings.mixin:"Sum {{\nmath.add\n   .:int:1\n   .:int:2\nreturn:x:-\n}} and Product {{\nmath.multiply\n   .:int:3\n   .:int:4\nreturn:x:-\n}}"
 
-// Transforming Markdown to HTML.
-markdown2html:x:@.arguments/*/markdown
-
-// Returning resulting HTML to caller.
-yield
-   html:x:@markdown2html
+// Result: "Sum 3 and Product 12"

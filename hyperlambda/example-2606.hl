@@ -1,28 +1,46 @@
-// Attempts to fetch a random cat fact, throws on 500, fallback message otherwise
 
-// Buffer node to store our fact
-.cat-fact
+// Returns true if the specified username is available.
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   throw
+      type:bool
+      mandatory:bool:false
+.icon:supervisor_account
 
-// Retrieving a random cat fact
-http.get:"https://meowfacts.herokuapp.com/"
-   convert:true
+// Applying defaults.
+validators.default:x:@.arguments
+   throw:bool:false
 
-// Making sure it's a success
-if
-   and
-      mte:x:@http.get
-         .:int:200
-      lt:x:@http.get
-         .:int:300
-   .lambda
-      set-value:x:@.cat-fact
-         get-value:x:@http.get/*/content/*/data/0
-else-if
-   eq:x:@http.get
-      .:int:500
-   .lambda
-      throw
-         .:Server error while fetching cat fact (500)
-else
-   set-value:x:@.cat-fact
-      .:Failed to fetch cat fact
+// Opens up database connection.
+data.connect:[generic|magic]
+
+   // Selecting user from database such that we can check if it exists or not.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
+
+   // Checks if above invocation returned anything.
+   if
+      exists:x:@data.read/*
+      .lambda
+
+         // Checking if we should throw an exception instead of returning false.
+         if:x:@.arguments/*/throw
+            throw:User already exists
+               status:int:400
+               public:bool:true
+
+         // User exists, returning false to caller.
+         return
+            available:bool:false
+   else
+
+      // User does not exist, returning true to caller.
+      return
+         available:bool:true

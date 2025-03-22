@@ -1,9 +1,7 @@
-// Getting the second customer's name
-.customers
-   .
-      name:John Doe
-      email:john@doe.com
-   .
-      name:Peter Jensen
-      email:peter@jensen.com
-get-value:x:@.customers/1/*/name
+// Define a slot that returns a single string
+slots.create:giveAnswer  
+   return-value:Forty Two
+
+// Invoke 'giveAnswer'
+signal:giveAnswer  
+// The result is "Forty Two"

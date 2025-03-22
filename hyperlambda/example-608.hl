@@ -1,12 +1,11 @@
-// Adds all bonus point sources into a final .rewards/total
-.rewards
-   sources
-      purchases:int:120
-      referrals:int:45
-      promotions:int:35
-   total
-set-value:x:@.rewards/*/total
-   math.add
-      get-value:x:@.rewards/*/sources/*/purchases
-      get-value:x:@.rewards/*/sources/*/referrals
-      get-value:x:@.rewards/*/sources/*/promotions
+/*
+ * This Hyperlambda snippet groups records by `column1`.
+ */
+
+data.read
+   table:table1
+   columns
+      column1
+      count(*)
+   group
+      column1

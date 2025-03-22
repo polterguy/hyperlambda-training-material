@@ -1,25 +1,10 @@
-// Hyperlambda [if] and [else] with exists check
-.data
-   item1:value1
-   item2:value2
-.has-item
-if
-   exists:x:@.data/*/item3
-   .lambda
-      set-value:x:@.has-item
-         .:bool:true
-else
-   set-value:x:@.has-item
-      .:bool:false
 
-/* JavaScript equivalent of Hyperlambda [if] with exists check
-const data = {
-  item1: "value1",
-  item2: "value2"
-};
-let hasItem;
-
-if (data.hasOwnProperty("item3")) {
-  hasItem = true;
-}
-*/
+// Write a Hyperlambda script to override the exception handler to return information to root users.
+log.error:x:@.arguments/*/message
+   url:x:@.arguments/*/path
+   exception:x:@.arguments/*/stack
+add:x:+
+   get-nodes:x:@.arguments/*/status
+   get-nodes:x:@.arguments/*/field
+   get-nodes:x:@.arguments/*/message
+return

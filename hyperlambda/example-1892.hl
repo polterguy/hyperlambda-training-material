@@ -1,11 +1,8 @@
-// Execute a fallback action if the if condition is false
 
+// Create a Hyperlambda snippet that appends child nodes into a given destination.
+
+// Appends child nodes into a given destination.
 .result
-if
-   .:bool:false
-   .lambda
-      set-value:x:../*/.result
-         .:failure
-else
-   set-value:x:../*/.result
-      .:OK
+add:x:@.result
+   .
+      data:info

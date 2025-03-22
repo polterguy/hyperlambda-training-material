@@ -1,2 +1,6 @@
-// Example: Try signaling a slot without throwing exception if it doesn't exist
-try-signal:foo
+/*
+ * Example snippet scraping some web page.
+ */
+signal:magic.http.scrape-url
+   url:"https://www.cnn.com/2023/06/18/golf/wyndham-clark-2023-us-open-winner-spt-intl/index.html"
+   semantics:bool:true

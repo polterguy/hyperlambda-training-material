@@ -1,16 +1,13 @@
 
-// Hyperlambda endpoint taking two decimal numbers, then multiplying these and returning the result
-.arguments
-   no1:decimal
-   no2:decimal
+// Create a Hyperlambda snippet that retrieves access logs from the security database and access_logs table.
 
-// Making sure argument was given
-validators.mandatory:x:@.arguments/*/no1
-validators.mandatory:x:@.arguments/*/no2
+// Retrieves access logs from the security database and access_logs table.
+data.connect:security_db
 
-// Multiplying.
-math.multiply
-   get-value:x:@.arguments/*/no1
-   get-value:x:@.arguments/*/no2
-yield
-   result:x:@math.multiply
+   // PostgreSQL database used.
+   database-type:pgsql
+
+   // Querying access logs without sorting or limiting.
+   data.read
+      database-type:pgsql
+      table:access_logs

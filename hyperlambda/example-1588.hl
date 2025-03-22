@@ -1,8 +1,6 @@
-/*
- * Example: Concatenate a string and a number (the number is converted to a string).
- */
-.number:int:42
-strings.concat
-   .:"Answer: "
-   get-value:x:@.number
-// Result: "Answer: 42"
+
+// Example: Trim a string consisting only of trim characters (result is empty).
+
+// Result: "" (empty string)
+strings.trim:!!!
+   .:!

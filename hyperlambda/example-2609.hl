@@ -1,25 +1,25 @@
-// Fetches a random dog image from Dog CEO API and handles basic HTTP status codes
 
+// Hyperlambda file that takes a lambda objects as an argument, and exceutes the lambda object from within the file, once for each role that exists in the system.
 .arguments
+   .execute:*
 
-// Where we store the result of the request
-.dog.result
+// Retrieving roles from magic database
+data.connect:magic
+   data.read
+      table:roles
 
-http.get:"https://dog.ceo/api/breeds/image/random"
-   convert:true
+   // Iterating through each role, executing [.execute] lambda object once for each role.
+   for-each:x:@data.read/*
+      unwrap:x:+/*
+      invoke:x:@.arguments/*/.execute
+         role:x:@.dp/#/*/name
 
-switch:x:@http.get
-
-   case:int:200
-      set-value:x:@.dog.result
-         get-value:x:@http.get/*/content/*/message
-
-   case:int:404
-      throw:404 Not Found – Dog image endpoint is unavailable
-
-   default
-      set-value:x:@.dog.result
-         .:Failed to fetch dog image
-
-yield
-   result:x:@.dog.result
+/*
+ * To execute the file, you can use something such as follows:
+ * 
+ * io.file.execute:/modules/slett/foo.get.hl
+ * .execute
+ * 
+ * // You will be getting the role in as an argument from the above Hyperlambda file here.
+ * log.info:x:@.arguments/*/role
+ */

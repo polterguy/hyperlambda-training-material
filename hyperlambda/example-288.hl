@@ -1,7 +1,4 @@
-
-// Create a Hyperlambda script to create a new slot and invoke it.
-slots.create:meaning-of-life
-   return-value:int:57
-
-// Invoking slot we created above.
-signal:meaning-of-life
+// Increment [.arg]'s value by 2
+.arg:int:5
+math.increment:x:@.arg
+   .:int:2

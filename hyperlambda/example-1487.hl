@@ -1,5 +1,4 @@
-// Inside an API endpoint, ensures only 'admin' can update user data.
-
-auth.ticket.verify:admin
-
-// Continue with update logic...
+/*
+ * Demonstrates use of escaped quotes in a string literal.
+ */
+.message:"He said: \"Hello, world!\""

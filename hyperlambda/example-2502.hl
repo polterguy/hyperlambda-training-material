@@ -1,35 +1,17 @@
 
-// Delete one record from your Invoice table in your chinook database.
+// Executes the specified SuiteQL towards your NetSuite account
 .arguments
 
-   // Primary key of record to delete, mandatory argument
-   InvoiceId:long
+   // Mandatory SuiteQL query you want to execute.
+   q:string
 
-// Meta data description for endpoint
+// Ensuring user is authorized to invoking endpoint.
+auth.ticket.verify:netsuite
 
-// Type of endpoint
-.type:crud-delete
+// Forwarding heavy lifting to workflow file.
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/modules/netsuite/workflows/workflows/netsuite-query.hl
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/InvoiceId
-
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:Invoice
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Returning result to caller.
+return-nodes:x:@execute-file/*

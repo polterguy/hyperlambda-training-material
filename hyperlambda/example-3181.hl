@@ -1,8 +1,7 @@
-
-// Example: Trim specific characters from both ends.
-
-// The character "?" at both ends will be removed
-strings.trim:??hello??
-   .:?
-
-// Result: "hello"
+/*
+ * Example: Trim specific characters from the end of a string.
+ */
+// The trailing "xyz" will be removed
+strings.trim-end:"abcxyzxyz"
+   .:"xyz"
+// Result: "abc"

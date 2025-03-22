@@ -1,3 +1,6 @@
-
-// Logs a fatal error
-log.fatal:Fatal error we cannot recover from
+// HTTP endpoint that ensures specified age parameter is valid and person is at least 18 years of age
+.arguments
+   age:int
+validators.integer:x:@.arguments/*/age
+   min:18
+   max:130

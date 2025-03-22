@@ -1,33 +1,45 @@
 
-// Delete one record from your CustomerDemographics table in your northwind database
+// Creates an item in your types table in your [generic|onboarding] database according to the specified arguments.
 .arguments
+   name:string
+   description:string
+   cpu:decimal
+   memory:int
+   storage:int
+   price:decimal
+   max_upload:int
+   max_timeout:int
+   enabled:bool
+   price_reference:string
+   bandwidth:string
 
-   // Primary key of record to delete, mandatory argument
-   CustomerTypeID:string
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Meta data description for endpoint
-.description:Delete one record from your CustomerDemographics table in your northwind database
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/name
+validators.mandatory:x:@.arguments/*/description
+validators.mandatory:x:@.arguments/*/cpu
+validators.mandatory:x:@.arguments/*/memory
+validators.mandatory:x:@.arguments/*/storage
+validators.mandatory:x:@.arguments/*/price
+validators.mandatory:x:@.arguments/*/enabled
 
-// Type of endpoint
-.type:crud-delete
-validators.mandatory:x:@.arguments/*/CustomerTypeID
+// Opening up database connection.
+data.connect:[generic|hub]
 
-// Opening up our database connection.
-data.connect:[generic|northwind]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
       get-nodes:x:@.arguments/*
 
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:CustomerDemographics
-      where
-         and
+   // Creating our record.
+   data.create
+      table:plans
+      return-id:bool:false
+      values
 
-   // Returning result of above invocation to caller.
+   // Returning result of above invoction to caller.
+   response.status.set:201
    unwrap:x:+/*
    return
-      affected:x:@data.delete
+      result:success

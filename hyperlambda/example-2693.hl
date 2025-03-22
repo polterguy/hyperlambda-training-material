@@ -1,40 +1,8 @@
-
-// Create one record in your Artist table in your chinook database
-.arguments
-
-   // ArtistId column value
-   ArtistId:long
-
-   // Name column value
-   Name:string
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:Artist
-      return-id:bool:false
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      result:success
+/*
+ * Example: Pattern not found yields an empty result set.
+ */
+strings.matches:"no digits here"
+   .:"\\d+"
+/*
+ * Result: No child nodes (no matches found)
+ */

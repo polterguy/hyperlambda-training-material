@@ -1,41 +1,93 @@
 
-/*
- * Returns parent company from specified org number.
- * 
- * Returns the company the specified org number is owned by.
- */
+// Create a Hyperlambda script that returns the Hyperlambda required to execute an action or snippet, ensuring the user is authorized.
 .arguments
-   org_number:string
-.type:public
+   filename:string
+   args:*
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/org_number
-set-value:x:@.arguments/*/org_number
-   strings.replace-not-of:x:@.arguments/*/org_number
-      .:0123456789
-      .:
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Connecting to database.
-data.connect:[finovo|finovo]
-   database-type:pgsql
+// Loading action/snippet Hyperlambda file and transforming to lambda object.
+load-file:x:@.arguments/*/filename
 
-   // Retrieving items.
-   data.read
-      database-type:pgsql
-      table:group_structure
-      columns
-         group_mother_orgnumber
-      where
-         and
-            org_number.eq:x:@.arguments/*/org_number
-      limit:-1
+// Checking if this is a action template.
+if
+   strings.contains:x:@.arguments/*/filename
+      .:/workflows/actions/
+   .lambda
 
-   // Verifying the company has a parent company.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         return
-            result:"This company doesn't have any parent company"
+      /*
+       * This is an action template type of snippet.
+       * Parametrizing accordingly.
+       */
+      .action
+      add:x:@.action
+         hyper2lambda:x:@load-file
+            comments:true
 
-   // Returning result to caller.
-   return-nodes:x:@data.read/*
+      // Creating our action invocation.
+      .invocation
+         execute:magic.workflows.actions.execute
+            name
+            filename
+            arguments
+      set-value:x:@.invocation/*/execute/*/name
+         get-value:x:@.arguments/*/args/*/action_name
+      remove-nodes:x:@.arguments/*/args/*/action_name
+      set-value:x:@.invocation/*/execute/*/filename
+         get-value:x:@.arguments/*/filename
+
+      // Creating our action comment.
+      if
+         eq
+            get-name:x:@.action/0
+            .:..
+         .lambda
+            unwrap:x:+/*/*
+            insert-before:x:@.invocation/0
+               .
+                  ..:x:@.action/0
+
+      // Making sure we correctly convert arguments according to type declaration.
+      for-each:x:@.arguments/*/args/**
+         if
+            strings.starts-with:x:@.dp/#
+               .:":x:"
+            .lambda
+               strings.substring:x:@.dp/#
+                  .:int:3
+               set-x:x:@.dp/#
+                  convert:x:@strings.substring
+                     type:x
+         else
+            get-name:x:@.dp/#
+            switch:x:@.action/*/.arguments/*/{@get-name}/*/type
+               case:long
+               case:decimal
+               case:int
+               case:float
+               case:double
+                  set-value:x:@.dp/#
+                     convert:x:@.dp/#
+                        type:x:@.action/*/.arguments/*/{@get-name}/*/type
+               case:hyperlambda
+                  add:x:@.dp/#
+                     hyper2lambda:x:@.dp/#
+                        comments:true
+                  set-value:x:@.dp/#
+
+      // Decorating action arguments according to [.arguments]/[args].
+      add:x:@.invocation/*/execute/*/arguments
+         get-nodes:x:@.arguments/*/args/*
+
+      // Returning result to caller as Hyperlambda.
+      lambda2hyper:x:@.invocation/*
+         comments:true
+      yield
+         result:x:@lambda2hyper
+else
+
+   // This is a template snippet, returning as is.
+   unwrap:x:+/*
+   return
+      result:x:@load-file

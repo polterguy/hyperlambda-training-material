@@ -1,9 +1,16 @@
-// If with a condition based on another node's value
-.args
-   flag:bool:true
-.result
-if
-   get-value:x:@.args/*/flag
-   .lambda
-      set-value:x:@.result
-         .:Yes
+
+// Vectorizing the specified [type].
+.arguments
+   type
+      type:string
+      mandatory:bool:true
+.icon:chat_bubble
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+
+// Vectorizing model.
+unwrap:x:+/*/*
+fork
+   signal:magic.ai.vectorise
+      type:x:@.arguments/*/type

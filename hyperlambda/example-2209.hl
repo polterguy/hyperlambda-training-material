@@ -1,4 +1,11 @@
-/**
- * This example loads the content of "/data/report.txt" into a node.
+
+// Generate a Hyperlambda snippet demonstrating delayed execution using [fork].
+
+/*
+ * Demonstrates delayed execution using [fork].
+ * The inner log runs after the outer log due to sleep.
  */
-io.file.load:/data/report.txt
+fork
+   sleep:2000
+   log.info:Delayed message
+log.info:Immediate message

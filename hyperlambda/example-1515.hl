@@ -1,27 +1,20 @@
-// Executing the following Hyperlambda results in the following
+/*
+ * Save this file as `/modules/web-cleaner/endpoints/update-branding.hl`
+ * This exposes an HTTP POST endpoint at `/web-cleaner/update-branding`
+ *
+ * The endpoint loads a file defined in `.arguments/*/filename`, replaces branding strings
+ * using `what` and `with` keys provided in `.arguments`, and returns the result.
+ */
 
-// When executing the following Hyperlambda
-.static:JO
-.data
-   foo1:bar1
-   foo2:bar2
-   foo3:bar3
-include:x:@.data/*
-   strings.concat
-      get-value:x:@.dp/#
-      .:" howdy "
-      get-value:x:@.static
-   unwrap:x:+/*
-   return
-      howdy:x:@strings.concat
+.arguments
 
-// We end up with this result
-.static:JO
-.data
-   foo1:bar1
-      howdy:bar1 howdy JO
-   foo2:bar2
-      howdy:bar2 howdy JO
-   foo3:bar3
-      howdy:bar3 howdy JO
-include:x:@.data/*
+.result
+set-value:x:-
+   io.file.load:x:@.arguments/*/filename
+for-each:x:@.arguments/*
+   set-value:x:@.result
+      strings.replace:x:@.result
+         get-value:x:@.dp/#/*/what
+         get-value:x:@.dp/#/*/with
+yield
+   result:x:@.result

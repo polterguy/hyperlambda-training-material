@@ -1,10 +1,27 @@
-/*
- * Stores a raw JSON string without escaping quotes or braces.
- * Useful for transmitting or logging raw data.
- */
-.raw-json:@"
-{
-  ""user"": ""john_doe"",
-  ""age"": 30,
-  ""active"": true
-}"
+
+// Create a Hyperlambda snippet that executes [.lambda] if at least one condition is met.
+
+// Executes [.lambda] if at least one condition is met.
+.output
+.numA:int:6
+.numB:int:12
+if
+   or
+
+      // Less than check
+      lt:x:@.numA
+         .:int:7
+
+      // Greater than check
+      mt:x:@.numB
+         .:int:11
+   .lambda
+
+      // Setting [.output] to true
+      set-value:x:@.output
+         .:bool:true
+else
+
+   // Setting [.output] to false
+   set-value:x:@.output
+      .:bool:false

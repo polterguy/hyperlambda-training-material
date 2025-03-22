@@ -1,10 +1,20 @@
 
-// Create a Hyperlambda script to generate a bar chart image with specified dimensions and bar values.
-image.chart:bars
-   filename:/chart.png
-   width:600
-   height:300
-   bars
-      Spring:int:2
-      Summer:int:5
-      Autumn:int:10
+// Hyperlambda [set-value] and [if]
+.condition:yes
+.result
+if
+   eq:x:@.condition
+      .:yes
+   .lambda
+      set-value:x:@.result
+         .:Condition Met
+
+// Results in:
+.condition:yes
+.result:Condition Met
+if:bool:true
+   eq:bool:true
+      .:yes
+   .lambda
+      set-value:x:@.result
+         .:Condition Met

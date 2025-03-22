@@ -1,15 +1,15 @@
+// How can I create a loop that increments a value until it's 5?
+.no:int:0
 
-// Generate a Hyperlambda snippet that counts users in the 'auth_db' database from the 'users' table.
+// will contain 5 nodes afterwards
+.results
 
-// Counts users in the "auth_db" database from the "users" table.
-data.connect:auth_db
-   database-type:mysql
-
-   // Counting total users.
-   data.read
-      database-type:mysql
-      table:users
-      columns
-         count(*)
-            as:count
-      limit:long:1
+while
+   lt
+      get-value:x:@.no
+      .:int:5
+   .lambda
+      add:x:@.results
+         .
+            .:Iteration
+      math.increment:x:@.no

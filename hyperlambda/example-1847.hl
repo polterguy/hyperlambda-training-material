@@ -1,33 +1,17 @@
-/*
- * Hyperlambda file that can be executed with arguments.
- * Prepares a password reset email by replacing the {{user}} and {{reset_link}} placeholders.
- */
-.arguments
-   user:string
-   reset_link:string
-.email-template:@"
-Hi {{user}},
+// Multiply a number by the result of a nested addition
 
-We received a request to reset your password.
+// outer multiplication
+math.multiply
 
-Click the link below to proceed:
-{{reset_link}}
+   // first factor (base) is 5
+   .:int:5
 
-If you didn't request this, please ignore this message.
+   // nested addition (executes before multiplication)
+   math.add
 
-Thanks,
-Support Team"
+      // first addend
+      .:int:1
 
-.reset-email
-set-value:x:@.reset-email
-   strings.replace:x:@.email-template
-      .:{{user}}
-      get-value:x:@.arguments/*/user
-
-set-value:x:@.reset-email
-   strings.replace:x:@.reset-email
-      .:{{reset_link}}
-      get-value:x:@.arguments/*/reset_link
-
-yield
-   email:x:@.reset-email
+      // second addend (1 + 2 = 3)
+      .:int:2
+   // After the inner addition yields 3, we have 5 * 3 = 15 as the final result

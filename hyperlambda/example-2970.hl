@@ -1,89 +1,98 @@
 
-// Write a Hyperlambda script to vectorize a specified training snippet.
+// Returns minimum, maximum, average or sum from your Artist table in your chinook database
 .arguments
-   id:long
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg
+   aggregate_function:string
+
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME.
+   aggregate_column:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   Artist.ArtistId.mt:long
+   Artist.ArtistId.lt:long
+   Artist.ArtistId.mteq:long
+   Artist.ArtistId.lteq:long
+   Artist.ArtistId.neq:long
+   Artist.ArtistId.eq:long
+   Artist.Name.like:string
+   Artist.Name.mt:string
+   Artist.Name.lt:string
+   Artist.Name.mteq:string
+   Artist.Name.lteq:string
+   Artist.Name.neq:string
+   Artist.Name.eq:string
+
+// Type of endpoint
+.type:crud-aggregate
+
+// Sanity checking mandatory arguments.
+validators.mandatory:x:@.arguments/*/aggregate_function
+validators.mandatory:x:@.arguments/*/aggregate_column
+
+// Sanity checking name of aggregate function.
+validators.enum:x:@.arguments/*/aggregate_function
+   .:min
+   .:max
+   .:sum
+   .:avg
+
+// Sanity checking agggregate column name.
+validators.enum:x:@.arguments/*/aggregate_column
+   .:Artist.ArtistId
+   .:Artist.Name
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/id
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
-// Getting OpenAI API token from configuration.
-.token
-set-value:x:@.token
-   strings.concat
-      .:"Bearer "
-      config.get:"magic:openai:key"
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
 
-// Connecting to database.
-data.connect:[generic|magic]
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
 
-   // Selecting snippet from database.
-   data.read
-      table:ml_training_snippets
-         join:ml_types
-            on
-               and
-                  ml_training_snippets.type.eq:ml_types.type
-      columns
-         prompt
-         completion
-         vector_model
-      where
-         and
-            id.eq:x:@.arguments/*/id
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
 
-   // Buffer for what we're creating embeddings from.
-   .embedding
-   set-value:x:@.embedding
+   // Making sure we're using correct aggregate function.
+   set-name:x:./*/data.read/*/columns/*/aggregate_functor
       strings.concat
-         get-value:x:@data.read/*/*/prompt
-         .:"\n\n"
-         get-value:x:@data.read/*/*/completion
+         get-value:x:@.arguments/*/aggregate_function
+         .:(
+         get-value:x:@.arguments/*/aggregate_column
+         .:)
 
-   // Creating an HTTP POST request towards OpenAI, now decorated.
-   http.post:"https://api.openai.com/v1/embeddings"
-      headers
-         Authorization:x:@.token
-         Content-Type:application/json
-      payload
-         model:x:@data.read/*/*/vector_model
-         input:x:@.embedding
-      convert:true
+   // Removing aggregate arguments to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/[0,2]
 
-   // Sanity checking above invocation.
-   if
-      not
-         and
-            mte:x:@http.post
-               .:int:200
-            lt:x:@http.post
-               .:int:300
-      .lambda
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
 
-         // Oops, error - Logging error and returning status 500 to caller.
-         lambda2hyper:x:@http.post
-         log.error:Something went wrong while invoking OpenAI
-            message:x:@http.post/*/content/*/error/*/message
-            error:x:@lambda2hyper
-         throw:Could not create embeddings for model
-
-   // Deleting old vector with same ID.
-   data.delete
-      table:vss_ml_training_snippets
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Artist
+      columns
+         aggregate_functor
+            as:result
       where
          and
-            rowid.eq:x:@.arguments/*/id
+      limit:long:1
 
-   // Inserting embeddings for training snippet.
-   floatArray2bytes:x:@http.post/*/content/*/data/0/*/embedding/*
-   data.create
-      table:vss_ml_training_snippets
-      values
-         embedding_vss:x:@floatArray2bytes
-         rowid:x:@.arguments/*/id
-
-// Returning success to caller.
-return
-   result:success
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

@@ -1,27 +1,5 @@
-
-// Write a Hyperlambda script to return the JavaScript required to embed a ChatGPT-based chatbot on a website, with options for CSS, file, and various features.
-.arguments
-   css:string
-   file:string
-   type:string
-   header:string
-   button:string
-   render_button:bool
-   parent_node:string
-   search:bool
-   chat:bool
-   markdown:bool
-   speech:bool
-   rtl:bool
-   submit_button:bool
-   stream:bool
-
-   // Not used, but allows embedders to do a hard refresh to reload JavaScript.
-   v:string
-
-   // Legacy parameter, ignore, no longer in use.
-   gpt:bool
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/include-javascript.js.get.hl
-return:x:-
+// mte returns false if the left value is less than the right
+.x:int:4
+mte
+   get-value:x:@.x
+   .:int:5

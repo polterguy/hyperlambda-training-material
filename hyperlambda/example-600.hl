@@ -1,13 +1,15 @@
 
-// Write a Hyperlambda snippet that fetches album details from an API.
+// Hyperlambda endpoint that returns true if the specified text contains 'xyz'
+.arguments
+   arg:string
 
-// Fetches album details from an API.
-http.get:"https://jsonplaceholder.typicode.com/albums/1"
+// Making sure argument was given
+validators.mandatory:x:@.arguments/*/arg
 
-   // Converts JSON response.
-   convert:true
+// Checking if 'xyz' exists in string
+strings.contains:x:@.arguments/*/arg
+   .:xyz
 
-// Sets [.album_title] to the album title
-.album_title
-set-value:x:@.album_title
-   get-value:x:@http.get/*/content/*/title
+// Returning result to caller
+yield
+   result:x:@strings.contains

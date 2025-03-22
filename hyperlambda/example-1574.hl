@@ -1,9 +1,24 @@
 
-// Example: Concatenate all strings stored as children of a list node.
-.items
-   .:Red
-   .:Green
-   .:Blue
-strings.concat:x:@.items/*
+// Scrapes the specified URL and returns all hyperlinks found
+.arguments
 
-// Result: "RedGreenBlue"
+   // Mandatory argument and becomes the URL the function will scrape for hyperlinks to return.
+   url:string
+
+   // Optional argument that filters out any URLs not starting with the specified string.
+   starts_with:string
+
+   // Optional argument for how many URLs to return. If not specified the function will return all hyperlinks found.
+   max:int
+.type:public
+
+// Parametrising our slot invocation.
+add:x:./*/signal
+   get-nodes:x:@.arguments/*
+
+// Invoking slot doing the heavy lifting for us.
+signal:magic.http.html2markdown-links
+
+// Returning result to caller.
+yield
+   result:x:@signal

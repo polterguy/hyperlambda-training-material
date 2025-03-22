@@ -1,10 +1,9 @@
-/*
- * Example: Mix in a simple inline expression (2+2 inside curly braces).
- */
-strings.mixin:@"The result is {{
-math.add
-   .:int:2
-   .:int:2
-return:x:-
-}}"
-// Result: "The result is 4"
+// Hyperlambda [get-value]
+.data:Hello World
+
+// Returns the value of the previous node
+get-value:x:-
+
+// Results in:
+.data:Hello World
+get-value:Hello World

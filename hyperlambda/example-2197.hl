@@ -1,20 +1,14 @@
-// Return a list of all registered MIME types cloudlet can serve by default, and their filename extensions
-mime.list
 
-/*
-Result:
-mime.list
-   json:application/json
-   css:text/css
-   txt:text/plain
-   js:application/javascript
-   jpeg:image/jpeg
-   jpg:image/jpeg
-   webp:image/webp
-   png:image/png
-   gif:image/gif
-   svg:image/svg+xml
-   md:text/markdown
-   html:text/html
+// Create a Hyperlambda action to ensure a specified 'arg' matches a specified 'regex'. Validate mandatory fields.
+.arguments
+   arg
+      type:string
+      mandatory:bool:true
+   regex
+      type:string
+      mandatory:bool:true
+.icon:shield
 
- */
+// Invoking validator.
+validators.regex:x:@.arguments/*/arg
+   regex:x:@.arguments/*/regex

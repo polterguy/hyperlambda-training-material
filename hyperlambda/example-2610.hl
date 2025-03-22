@@ -1,25 +1,39 @@
-// Gets a random activity from the Bored API and handles common statuses
+/*
+ * Sends a welcome email to all new employees.
+ * Includes HR Manager in CC and logs all messages via BCC to an internal archive.
+ */
 
-.arguments
-
-// Final output from the activity API
-.activity.result
-
-http.get:"https://www.boredapi.com/api/activity"
-   convert:true
-
-switch:x:@http.get
-
-   case:int:200
-      set-value:x:@.activity.result
-         get-value:x:@http.get/*/content/*/activity
-
-   case:int:500
-      throw:500 Internal Server Error – Failed to retrieve activity
-
-   default
-      set-value:x:@.activity.result
-         .:Unexpected error occurred
-
-yield
-   result:x:@.activity.result
+.company
+   new_hires
+      .
+         name:Emily Zhang
+         email:emily@acme.com
+      .
+         name:Noah Clarke
+         email:noah@acme.com
+      .
+         name:Liam Davis
+         email:liam@acme.com
+for-each:x:@.company/*/new_hires/*
+   unwrap:x:+/**
+   mail.smtp.send
+      message
+         to
+            .
+               name:x:@.dp/#/*/name
+               email:x:@.dp/#/*/email
+         cc
+            .
+               name:HR Manager
+               email:manager.hr@acme.com
+         bcc
+            .
+               name:System Archive
+               email:archive@acme.com
+         from
+            .
+               name:HR Team
+               email:hr@acme.com
+         subject:Welcome to the Company!
+         entity:text/plain
+            content:We're excited to have you on the team! Please check your onboarding tasks in the portal.

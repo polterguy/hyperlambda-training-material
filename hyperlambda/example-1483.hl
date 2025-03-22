@@ -1,16 +1,12 @@
+// A slot that adds a score and a bonus value
+slots.create:game.add-score
+   math.add
+      get-value:x:@.arguments/*/score
+      get-value:x:@.arguments/*/bonus
+   yield
+      result:x:@math.add
 
-// Hyperlambda [set-value]
-.data
-   item1
-   item2
-set-value:x:@.data/*
-   .:Updated Value
-
-// Results in:
-.data
-   item1:Updated Value
-   item2:Updated Value
-set-value:x:@.data/*
-   .:Updated Value
-
-// Notice how [set-value] can change multiple nodes at the same time
+// Invoke the slot with score=100 and bonus=20
+signal:game.add-score
+   score:int:100
+   bonus:int:20

@@ -1,6 +1,17 @@
-// Execute Hyperlambda from a string that creates a log item
-.hl:@"log.info:""This was logged from a piece of text"""
 
-hyper2lambda:x:-
+// Generate a Hyperlambda snippet covering string assignments, multi-line text, and escape sequences.
 
-eval:x:-
+// Basic assignment without quotes
+.field1:dataItem
+
+// Requires quotes for colon
+.field2:"log:entry"
+
+// Multi-line notation
+.field3:"Header\nFooter"
+
+// Alternative quote usage
+.field4:line-segment
+
+// Escape sequence example
+.field5:"next\nstep"

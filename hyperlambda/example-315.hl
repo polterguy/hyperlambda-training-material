@@ -1,27 +1,54 @@
 
-// Returns the training snippet with the specified [id] to the caller.
+// Create one record in your comments table in your cms database
 .arguments
 
-   // Mandatory argument and the primary key and ID of the training snippet to return
-   id:int
-.type:public
+   // post_id column value
+   post_id:long
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/id
-validators.integer:x:@.arguments/*/id
-   min:int:0
+   // user_id column value
+   user_id:long
 
-// Opening up our database connection.
-data.connect:[generic|magic]
+   // content column value
+   content:string
 
-   // Finding our snippet from the database.
-   data.read
-      table:ml_training_snippets
-      columns
-         prompt
-         completion
-         uri
-      where
-         and
-            id.eq:x:@.arguments/*/id
-   return-nodes:x:@data.read/*
+   // created_at column value
+   created_at:date
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:enterprise,root
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:comments
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   add:x:./*/sockets.signal
+      get-nodes:x:@auth.ticket.verify
+   set-name:x:./*/sockets.signal/*/auth.ticket.verify
+      .:roles
+   sockets.signal:cms.comments.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

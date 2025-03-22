@@ -1,8 +1,3 @@
-
-// Example: Extract a substring given a start index and length.
-.text:HelloWorld
-strings.substring:x:@.text
-   .:5
-   .:3
-
-// Result: "Wor"
+// Create HTTP POST invocation with payload being file
+http.post:"https://some-url.com"
+   filename:/README.md

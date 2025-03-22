@@ -1,63 +1,59 @@
 
-// Create a Hyperlambda script that returns all filtered training snippets as a CSV file, ensuring the user is authorized.
+// Create a Hyperlambda script for a CRUD read endpoint that returns items from the users_roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
-   ml_training_snippets.completion.like:string
-   ml_training_snippets.prompt.like:string
-   ml_training_snippets.uri.like:string
-   ml_training_snippets.type.eq:string
+   limit:long
+   offset:long
+   order:string
+   direction:string
+   operator:string
+   role.eq:string
+   user.eq:string
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root
 
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+
 // Opening up our database connection.
 data.connect:[generic|magic]
 
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*/*/or
-      get-nodes:x:@.arguments/*/ml_training_snippets.completion.like
-      get-nodes:x:@.arguments/*/ml_training_snippets.prompt.like
-      get-nodes:x:@.arguments/*/ml_training_snippets.uri.like
-   remove-nodes:x:@.arguments/*/ml_training_snippets.completion.like
-   remove-nodes:x:@.arguments/*/ml_training_snippets.prompt.like
-   remove-nodes:x:@.arguments/*/ml_training_snippets.uri.like
+   // Parametrising our read invocation.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/operator
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
    add:x:./*/data.read/*/where/*
       get-nodes:x:@.arguments/*
 
-   // Removing [or] parts unless we've got something to actually or.
-   if
-      not-exists:x:@data.connect/*/data.read/*/where/*/and/*/or/*
-      .lambda
-         remove-nodes:x:@data.connect/*/data.read/*/where/*/and/*/or
-
-   // Invoking our read slot.
+   // Reading data from database.
    data.read
-      table:ml_training_snippets
+      table:users_roles
       columns
-         type
-         uri
-         prompt
-         completion
+         users_roles.role
+         users_roles.user
       where
          and
-            or
-      limit:-1
 
-   // Verifying records exists.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         response.status.set:404
-         return
-            result:No records found
-
-   // Converting result to CSV.
-   lambda2csv:x:@data.read/*
-
-   // Applying correct HTTP header.
-   response.headers.set
-      Content-Type:text/csv
-      Access-Control-Expose-Headers:Content-Disposition
-      Content-Disposition:"attachment; filename=\"training-snippets.csv\""
-
-   // Returning content to caller.
-   return:x:@lambda2csv
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

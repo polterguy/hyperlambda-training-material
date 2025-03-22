@@ -1,16 +1,18 @@
+// Executing the following Hyperlambda results in the following
 
-// Create a Hyperlambda snippet that adds a new product to the 'inventory_db' database and its 'products' table.
+// When executing the following Hyperlambda
+data.connect:magic
+   data.read
+      table:log_entries
+      columns
+         count(*)
+            as:count
+      limit:long:1
 
-// Adds a new product to the "inventory_db" database and its "products" table.
-data.connect:inventory_db
-   database-type:pgsql
+// We end up with this result
+data.connect
+   data.read
+      .
+         count:long:58354
 
-   // Creating a product entry.
-   data.create
-      database-type:pgsql
-      table:products
-      values
-         product_id:int:2005
-         name:Laptop
-         price:decimal:999.99
-         stock:int:50
+// Notice how lists are declared with nodes having names of "." or even sometimes ""

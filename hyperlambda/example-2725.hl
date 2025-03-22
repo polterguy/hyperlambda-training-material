@@ -1,31 +1,35 @@
-// Helper file to vectorize xplain training data.
+
+// Deletes the user's account entirely on server.
 .arguments
-   vectorize:bool
 
-// Applying defaults.
-validators.default:x:@.arguments
-   vectorize:bool:true
+// Ensuring user is authenticated to invoke endpoint.
+auth.ticket.verify:guest
 
-// Logging invocation.
-log.info:Started vectorizing training snippets from xplain-kennisbank-plus-caos model
+// Retrieving currently authenticated user.
+auth.ticket.get
 
-// Buffer for type name.
-.type:xplain-kennisbank-plus-caos 
+// Verifying user doesn't have any cloudlets.
+data.connect:[generic|hub]
+   data.read
+      table:cloudlets
+      where
+         and
+            user.eq:x:@auth.ticket.get
+   if
+      exists:x:@data.read/*/*
+      .lambda
+         throw:You have to delete all cloudlets before you delete your account
+            public:true
+            status:400
 
-// Making sure we can handle exceptions.
-try
+// Deleting user from magic database.
+data.connect:[generic|magic]
+   data.delete
+      table:users
+      where
+         and
+            username.eq:x:@auth.ticket.get
 
-   // Vectorising
-   if:x:@.arguments/*/vectorize
-      execute:magic.ai.vectorise
-         type:x:@.type
-
-      // Logging.
-      log.info:Finished vectorizing training snippets from xplain-kennisbank-plus-caos model
-
-.catch
-
-   // Oops ...!!
-   log.error:Something went wrong as we tried to vectorize training snippets from xplain-kennisbank-plus-caos model
-      error:x:@.arguments/*/message
-      type:x:@.type
+// Returning success to caller.
+return
+   result:success

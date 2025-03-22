@@ -1,9 +1,11 @@
-/*
- * This Hyperlambda snippet sorts results in descending order.
- */
 
-data.read
-   table:table1
-   order
-      column1
-   direction:desc
+// Create Hyperlambda endpoint to return all dynamic slots in the system.
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Retrieving all system slots.
+slots.vocabulary
+
+// Returning results of the above to caller.
+return-nodes:x:@slots.vocabulary/*

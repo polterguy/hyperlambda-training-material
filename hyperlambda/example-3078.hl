@@ -1,5 +1,6 @@
-// Add a bonus to .user-score
-.user-score:int:100
-math.add
-   get-value:x:@.user-score
-   .:int:25
+
+// Example: Use a variable as the input to lowercase.
+.text:LOWER ME
+
+// Result: "lower me"
+strings.to-lower:x:@.text

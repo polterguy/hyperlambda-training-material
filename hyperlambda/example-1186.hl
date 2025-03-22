@@ -1,2 +1,10 @@
-// Give me Hyperlambda that makes sure ONLY admin, marketing_manager, and c_exec users are able to execute HTTP endpoint
-auth.ticket.verify:admin, marketing_manager, c_exec
+// Returns true if we're running on the specified operating system
+system.is-os:OSX
+
+/*
+ * Values you can query for;
+ * - FreeBSD
+ * - Linux
+ * - OSX
+ * - Windows
+ */

@@ -1,11 +1,18 @@
-// Sends a multipart email with file attachment
-mail.smtp.send
-   message
-      to
-         Jane Doe:jane@doe.com
-      subject:Subject line
-      entity:multipart/mixed
-         entity:text/plain
-            content:Body content
-         entity:text/plain
-            filename:/files/foo.txt
+/**
+ * This example creates a custom slot `my.slot` that returns multiple nodes using `return-nodes`.
+ * When the slot is invoked, it returns an integer and a string node.
+ */
+slots.create:my.slot
+   return-nodes
+      user-id:int:12345
+      username:JohnDoe
+      status:Active
+
+// Invoking the slot
+signal:my.slot
+
+
+// Result below
+user-id:int:12345
+username:JohnDoe
+status:Active

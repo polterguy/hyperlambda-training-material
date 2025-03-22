@@ -1,10 +1,8 @@
+// Composing a dynamic node expression from parts
+compose
+   .:..
+   .:*
+   .:.data
+   .:*
 
-// Generate a Hyperlambda snippet that adds multiple nodes into the specified target's children collection.
-
-// Adds multiple nodes into the specified target's children collection.
-.target
-add:x:@.target
-   .
-      entry1:data1
-      entry2:data2
-      entry3:data3
+// The above will construct an expression resembling the following :x:../*/.data/*

@@ -1,22 +1,17 @@
-// Create stacked chart
-image.chart:stacked
-   filename:/stacked-chart.png
-   width:600
-   height:300
-   bars
-      Spring
-         .:int:2
-         .:int:5
-         .:int:10
-      Summer
-         .:int:4
-         .:int:7
-         .:int:10
-      Autumn
-         .:int:2
-         .:int:5
-         .:int:4
-   legend
-      .:Phones
-      .:Computers
-      .:Tablets
+
+// Write a Hyperlambda script to return a specified log item based on its ID.
+.arguments
+   id:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+
+// Invoking slot responsible for returning item.
+log.get:x:@.arguments/*/id
+
+// Returning result of above invocation to caller.
+return-nodes:x:-/*

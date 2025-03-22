@@ -1,13 +1,6 @@
-// Switch-case with a default when no case matches
-.val:baz
-.result
-switch:x:@.val
-   case:foo
-      set-value:x:@.result
-         .:First
-   case:bar
-      set-value:x:@.result
-         .:Second
-   default
-      set-value:x:@.result
-         .:None
+/*
+ * Example: Check if a string ends with itself.
+ */
+// Returns true
+strings.ends-with:Test
+   .:Test

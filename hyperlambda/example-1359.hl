@@ -1,54 +1,26 @@
 
-// Counts items from your clusters table in your [generic|hub] database according to the specified arguments.
+// Write a Hyperlambda script to delete all existing vectors for a specified model.
 .arguments
-   operator:string
-   clusters.id.like:string
-   clusters.id.eq:string
-   clusters.country.like:string
-   clusters.country.eq:string
-   clusters.name.like:string
-   clusters.name.eq:string
-   clusters.enabled.eq:bool
+   type:string
+.type:internal
 
-// Verifying user is authorized to access endpoint.
+// Ensures user is authorized to access endpoint.
 auth.ticket.verify:root
 
 // Sanity checking invocation.
-validators.enum:x:@.arguments/*/operator
-   .:or
-   .:and
+validators.mandatory:x:@.arguments/*/type
 
-/*
- * Checking if user supplied an [operator] argument, and if so
- * changing the boolean operator for comparison operations.
- */
-if
-   exists:x:@.arguments/*/operator
-   .lambda
+// Connecting to database.
+data.connect:[generic|magic]
 
-      // User provided a boolean comparison [operator] argument.
-      set-name:x:../*/data.connect/*/data.read/*/where/*
-         get-value:x:@.arguments/*/operator
+   // Deleting VSS data.
+   data.execute:delete from vss_ml_training_snippets where rowid in (select id as rowid from ml_training_snippets where type = @type)
+      @type:x:@.arguments/*/type
 
-// Opening up our database connection.
-data.connect:[generic|hub]
+   // Deleting embeddings.
+   data.execute:update ml_training_snippets set embedding = null where type = @type
+      @type:x:@.arguments/*/type
 
-   // Parametrising our read invocation.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/operator
-   remove-nodes:x:@.arguments/*/operator
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      table:clusters
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+// Returning success to caller.
+return
+   result:success

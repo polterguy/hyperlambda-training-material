@@ -1,6 +1,12 @@
-// Show me Hyperlambda endpoint that returns true if a file specified as an argument exists on the server.
-.arguments
-   file:string
-io.file.exists:x:@.arguments/*/file
-yield
-   exists:x:@io.file.exists
+// If with else-if
+.dest
+if
+   .:bool:false
+   .lambda
+      set-value:x:@.dest
+         .:yup!
+else-if
+   .:bool:true
+   .lambda
+      set-value:x:@.dest
+         .:yup2.0!

@@ -1,5 +1,8 @@
-// mt returns true if the left value is greater than the right value
-.x:int:7
-mt
-   get-value:x:@.x
-   .:int:5
+/*
+ * Example: Replace a substring that exists in the text.
+ */
+.original:"Hello world"
+strings.replace:x:@.original
+   .:world
+   .:there
+// Result: "Hello there"

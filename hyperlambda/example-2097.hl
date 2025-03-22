@@ -1,2 +1,6 @@
-// Clear all cache items starting out with 'foo.bar' as their key
-cache.clear:foo.bar
+
+// Append multiple new nodes to a destination node. Nodes to add are specified as arguments
+.arguments:*
+.parent
+add:x:@.parent
+   get-nodes:x:@.arguments/*

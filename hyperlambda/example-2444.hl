@@ -1,5 +1,13 @@
-// Convert a string to a GUID
-
-.src:"68ca1ec2-0776-4c37-a94a-108341fc372c"
-convert:x:-
-   type:guid
+// Fetches a random dog image and checks if the request was successful
+.dog-image
+http.get:"https://dog.ceo/api/breeds/image/random"
+   convert:true
+if
+   and
+      mte:x:@http.get
+         .:int:200
+      lt:x:@http.get
+         .:int:300
+   .lambda
+      set-value:x:@.dog-image
+         get-value:x:@http.get/*/content/*/message

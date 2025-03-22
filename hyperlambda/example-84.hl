@@ -1,21 +1,16 @@
 
-// Connects to sakila with database transactions
-data.connect:sakila
-   data.transaction.create
-      data.execute:delete from film_actor
+// Create a Hyperlambda action to HTML encode a specified string and return the encoded content.
+.arguments
 
-      /*
-       * If you uncomment the line below the
-       * transaction will be committed, resulting
-       * in that everything from your film_actor
-       * table will be deleted.
-       */
+   // Action syntax
+   html
+      type:string
+      mandatory:bool:true
+.icon:pageview
 
-      // data.transaction.commit
-data.connect:sakila
+// Transforming Markdown to HTML.
+strings.html-encode:x:@.arguments/*/html
 
-   /*
-    * Notice, this still returns 5462 items, since
-    * transaction was implicitly rolled back above.
-    */
-   data.scalar:select count(*) from film_actor
+// Returning resulting HTML to caller.
+yield
+   content:x:@strings.html-encode

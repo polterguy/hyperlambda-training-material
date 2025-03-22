@@ -1,4 +1,8 @@
 /*
- * Demonstrates use of escaped quotes in a string literal.
+ * Example: Remove all digits from a string using a regex.
  */
-.message:"He said: \"Hello, world!\""
+.original:"abc123xyz"
+strings.regex-replace:x:@.original
+   .:"\\d+"
+   .:""
+// Result: "abcxyz"

@@ -1,19 +1,13 @@
-// Build a PUT endpoint to update an existing contact's name and email address.
-// Filename: /modules/contacts/update.put.hl
-// The contact's ID is required along with the new data fields to apply the update.
+/*
+ * This Hyperlambda snippet retrieves all child nodes of `.data`.
+ *
+ * 1. The `.data` node has three children: `foo1`, `foo2`, and `foo3`.
+ * 2. The `get-nodes` slot is used to retrieve all direct children.
+ * 3. The output will include all children (`foo1`, `foo2`, `foo3`).
+ */
 
-.arguments
-   id:int
-   name:string
-   email:string
-
-data.connect:[generic|crm]
-   data.update
-      table:contacts
-      values
-         name:x:@.arguments/*/name
-         email:x:@.arguments/*/email
-      where
-         and
-            id:x:@.arguments/*/id
-   return-nodes:x:@data.update/*
+.data
+   foo1:bar1
+   foo2:bar2
+   foo3:bar3
+get-nodes:x:@.data/*

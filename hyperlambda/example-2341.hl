@@ -1,2 +1,11 @@
-// Example: Return the value of the '#text' node, making sure we escape '#' being special character.
-get-value:x:@xml2lambda/**/PRICE/*/\#text
+
+// Generate a Hyperlambda snippet that opens a connection to 'sales_db' and retrieves records from 'transactions' table.
+
+// Opens a connection to "sales_db" and retrieves records from "transactions" table.
+.result
+data.connect:sales_db
+   database-type:mysql
+   data.select:select * from transactions order by transaction_date desc limit 10
+      database-type:mysql
+   add:x:@.result
+      get-nodes:x:@data.select/*

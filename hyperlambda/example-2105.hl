@@ -1,6 +1,20 @@
-// First add [.one]'value with [.two]'value, then multiply by 3
-math.multiply
-   .:int:3
-   math.add
-      get-value:x:@.one
-      get-value:x:@.two
+
+// Create a Hyperlambda snippet that summarizes odd numbers from 1 to 19.
+
+// Summarizing odd numbers from 1 to 19
+.no:int:1
+.sum:int:0
+while
+   lt
+      get-value:x:@.no
+      .:int:20
+   .lambda
+
+      // Summing odd numbers.
+      set-value:x:@.sum
+         math.add:x:@.sum
+            get-value:x:@.no
+
+      // Incrementing by 2 to keep it odd.
+      math.increment:x:@.no
+      math.increment:x:@.no

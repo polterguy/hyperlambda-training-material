@@ -1,5 +1,13 @@
+// Hyperlambda [get-value]
+.data
+   item1:apple
+   item2:banana
+.item:item2
+get-value:x:@.data/*/{@.item}
 
-// Ensures the module's database exists and is updated by running migration scripts.
-signal:magic.modules.ensure-database
-   module:hub
-   database:hub
+// Results in:
+.data
+   item1:apple
+   item2:banana
+.item:item2
+get-value:banana

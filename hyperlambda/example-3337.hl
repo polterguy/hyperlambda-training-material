@@ -1,12 +1,27 @@
+/*
+ * Submits ID and source to an identity verification API.
+ * On success, returns the extracted user name and email address.
+ */
 
-// Delete a single customer record by customer_id
-data.connect:shopDB
-   data.delete
-      table:customers
-      where
-         and
+.arguments
+   id:int
+   source:string:portal
 
-            // Only delete the customer with ID 987
-            customer_id.eq:987
+add:x:+/*/payload
+   get-nodes:x:@.arguments/*
+http.post:"https://identity.example.com/api/verify"
+   convert:true
+   payload
 
-   // WARNING: Without a WHERE clause, this would delete all customers!
+if
+   and
+      mte:x:@http.post
+         .:int:200
+      lt:x:@http.post
+         .:int:300
+   .lambda
+      yield
+         name:x:@http.post/*/content/*/name
+         email:x:@http.post/*/content/*/email
+return
+   error:Identity verification failed

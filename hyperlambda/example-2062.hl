@@ -1,8 +1,13 @@
-// Create a context object and referencing it in its scope
-.result
-context:foo
-   value:bar
-   .lambda
+/*
+ * This example shows how to log an exception and then rethrow it
+ * to be handled by an outer `try` block or to propagate the error further.
+ */
 
-      set-value:x:@.result
-         get-context:foo
+try
+   // Invoking a slot that doesn't exist throws an exception
+   non_existing_slot
+.catch
+   log.error:An error occurred
+   throw:x:@.arguments/*/message
+      status:x:@.arguments/*/status
+      public:x:@.arguments/*/public

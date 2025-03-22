@@ -1,41 +1,23 @@
 
-// Executes the specified shell/bash command with the specified arguments, and returns the result to caller as a string
-.arguments
-   command
-      type:string
-      mandatory:bool:true
-   args
-      type:string
-      mandatory:bool:false
-   structured
-      type:bool
-      mandatory:bool:false
-.icon:rocket_launch
+// Create a Hyperlambda script that returns the setup status of the system, ensuring the user is authorized.
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/command
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Checking if we've got arguments.
+// Checking if JWT secret has been changed.
+config.get:"magic:auth:secret"
 if
-   exists:x:@.arguments/*/args
+   or
+      null:x:@config.get
+      lt
+         strings.length:x:@config.get
+         .:int:50
    .lambda
 
-      // Adding argument to invocation below.
-      add:x:../*/system.execute
-         .
-            get-value:x:@.arguments/*/args
+      // System has not been setup.
+      return
+         result:bool:false
 
-// Executes shell command
-system.execute:x:@.arguments/*/command
-   structured:x:@.arguments/*/structured
-
-/*
- * Checking if caller wanted structured results, at which point we return an array
- * containing lines returned from above invocation.
- */
-if:x:@.arguments/*/structured
-   return-nodes:x:@system.execute/*
-
-// Returning result of above invocation to caller.
-yield
-   result:x:@system.execute
+// Returns results of above invocations to caller.
+return
+   result:bool:true

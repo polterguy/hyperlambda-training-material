@@ -1,14 +1,6 @@
-
-// KPI file for displaying employee productivity
-.name:Employee productivity
-.description:Closed activities by user for current month
-.enabled:bool:false
-.type:pie
-.lambda
-   data.connect:[generic|robo-crm]
-      date.now
-      date.format:x:-
-         format:yyyy-MM-00
-      data.select:"\nselect username as name, count(*) as value\n   from activities\n      where closed > @date\n   group by username"
-         @date:x:@date.format
-      return-nodes:x:-/*
+// Remove all nodes matching the expression (delete item2)
+.data
+   foo1
+   foo2
+   foo3
+remove-nodes:x:@.data/*/foo2

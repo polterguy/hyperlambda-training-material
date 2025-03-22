@@ -1,17 +1,11 @@
 
-// Returns the schema specifications for the specified type
-.arguments
+// Write a Hyperlambda snippet that queries 'messaging_db' for recent chat logs.
 
-   // Mandatory argument declaring the type of object to retrieve the schema specification for.
-   type:string
-
-// Ensuring user is authorized to invoking endpoint.
-auth.ticket.verify:netsuite
-
-// Forwarding heavy lifting to workflow file.
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/modules/netsuite/workflows/workflows/netsuite-schema-spec.hl
-
-// Returning result to caller.
-return-nodes:x:@execute-file/*
+// Queries "messaging_db" for recent chat logs.
+.result
+data.connect:messaging_db
+   database-type:sqlite
+   data.select:select * from chat_logs order by timestamp desc limit 100
+      database-type:sqlite
+   add:x:@.result
+      get-nodes:x:@data.select/*

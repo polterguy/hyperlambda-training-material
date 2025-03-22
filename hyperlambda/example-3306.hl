@@ -1,7 +1,5 @@
-// This example connects to the 'hospital' database and deletes a patient record from the 'patients' table where the diagnosis is 'Cold'.
-sqlite.connect:hospital
-   sqlite.delete
-      table:patients
-      where
-         and
-            diagnosis:Cold
+/**
+ * This example moves the folder "/backups/old/" to "/backups/archived/".
+ */
+io.folder.move:/backups/old/
+   .:/backups/archived/

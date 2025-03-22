@@ -1,7 +1,16 @@
-// Illustrates how creating a cache item, for then to deleting it, and retrieving it after returns nothing
-cache.set:cache-item-key
-   expiration:5
-   value:Howdy world
 
-cache.clear
-cache.get:cache-item-key
+// Provide a Hyperlambda example where a value increases until [.value] is greater than 15.
+
+// Increases value until [.value] is greater than 15.
+.value:int:5
+while
+   lt
+      get-value:x:@.value
+      .:int:15
+   .lambda
+
+      // Logging current value.
+      log.info:Increasing value
+
+      // Incrementing value.
+      math.increment:x:@.value

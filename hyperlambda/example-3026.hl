@@ -1,13 +1,10 @@
-// Hyperlambda [get-value]
-.data
-   item1:apple
-   item2:banana
-.item:item2
-get-value:x:@.data/*/{@.item}
-
-// Results in:
-.data
-   item1:apple
-   item2:banana
-.item:item2
-get-value:banana
+/*
+ * Example: Concatenate multiple strings with spaces included as separate parts.
+ */
+strings.concat
+   .:I
+   .:" "
+   .:love
+   .:" "
+   .:Hyperlambda
+// Result: "I love Hyperlambda"

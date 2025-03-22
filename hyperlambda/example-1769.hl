@@ -1,5 +1,4 @@
 
-// Example: Get the length of an empty string.
-
-// Returns 0
-strings.length:
+// Retrieve a node's value using expressions
+.foo:hello world
+get-value:x:@.foo

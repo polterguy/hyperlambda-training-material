@@ -1,5 +1,8 @@
-// Convert a value to a single-precision floating-point number (float)
+// How to create an expression that retrieves a single node from input arguments
 
-.src:5
-convert:x:-
-   type:float
+get-name:x:@.arguments/*/SOME_NODE_HERE
+
+/*
+ * And expression is ALWAYS type declares as `:x:`, implying the following
+ * parts will be interpreted as an expression and parsed as such.
+ */

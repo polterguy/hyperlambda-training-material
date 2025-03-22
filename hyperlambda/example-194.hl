@@ -1,5 +1,6 @@
-// Clearing only cache items related to product details.
+// Example: Replace [.data]'s 'cool' parts with 'super cool'
+.data:Hyperlambda is cool
 
-cache.clear:products.details
-
-// This removes only items with keys that start with "products.details".
+strings.replace:x:-
+   .:cool
+   .:super cool

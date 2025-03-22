@@ -1,17 +1,42 @@
 
-// How to use the [data.read] CRUD slot and have it join with another table
-sql.read
-   table:people
-      join:salary
-      type:inner
-      on
+/*
+ * Sends an email
+ * 
+ * Send an email to the specified `email` and `name` with the specified `subject` and `body`.
+ */
+.arguments
 
-         // Joins are using similar syntax to [where] parts.
-         and
-            people.id:salary.people_id
+   // Mandatory name of contact to send email to
+   name:string
 
-   // Adding [columns] makes sure we only select columns declared below.
-   columns
-      salary.monthly
-      people.first_name
-      people.last_name
+   // Mandatory email address of contact to send email to
+   email:string
+
+   // Mandatory subject of email
+   subject:string
+
+   // Mandatory body of email
+   body:string
+
+// Making sure workflow is discoverable as such from machine learning component.
+.type:public
+
+/*
+ * Send an email to the specified [name]/[email] recipient, with the specified [subject] and [body].
+ *
+ * Optionally supply [from] and [from-email] as name/email sender, and/or [reply-to] and [reply-to-email]
+ * as the email to reply to. If you don't supply [from] or [from-email] then this action will use the
+ * default sender settings from your configuration.
+ */
+execute:magic.workflows.actions.execute
+   name:email
+   filename:/misc/workflows/actions/misc/email.hl
+   arguments
+      name:x:@.arguments/*/name
+      email:x:@.arguments/*/email
+      subject:x:@.arguments/*/subject
+      body:x:@.arguments/*/body
+      html:bool:true
+
+return
+   result:success

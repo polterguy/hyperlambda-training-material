@@ -1,5 +1,5 @@
-/*
- * Example: Trim whitespace from the beginning of a string.
- */
-// Result: "hello   "
-strings.trim-start:"   hello   "
+
+// [exists] returns true if the expression finds any node
+.present
+   node
+exists:x:@.present/*

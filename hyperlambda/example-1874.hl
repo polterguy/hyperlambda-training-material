@@ -1,7 +1,5 @@
-/**
- * This example attempts to convert an image without specifying a different output format.
- * It should trigger an error since conversion requires a new file format.
- */
-image.convert
-   file:input.jpg
-   output:input.jpg
+// Sets the value of [.res] to the number of records we've got in our table1 table in our foo database
+.res
+data.connect:foo
+   set-value:x:@.res
+      data.scalar:select count(*) from table1

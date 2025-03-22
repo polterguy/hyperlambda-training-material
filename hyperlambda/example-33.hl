@@ -1,11 +1,2 @@
-// Demonstrating nested [if] slots
-.result
-if
-   .:bool:true
-   .lambda
-      if
-         .:bool:false
-         .lambda
-            set-value:x:@.result
-               .:Nested condition met
-// Condition is not true
+// Seed crypto library
+crypto.seed:Foo Bar Whatever Some Random Seed

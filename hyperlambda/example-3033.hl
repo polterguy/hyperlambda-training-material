@@ -1,7 +1,8 @@
-// Storing a message in the cache with a 10-second expiration time.
-
-cache.set:session.message
-   expiration:10
-   value:Welcome back, user!
-
-// This will store "Welcome back, user!" in cache under "session.message".
+/*
+ * Example: Use another slot's output as part of the concatenation.
+ */
+.prefix:"Value: "
+strings.concat
+   get-value:x:@.prefix
+   strings.to-upper:example
+// Result: "Value: EXAMPLE"

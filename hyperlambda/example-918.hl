@@ -1,10 +1,6 @@
-// How do I create a Hyperlambda endpoint that takes arguments?
-.arguments
-   arg1:int
-   arg2:string
 
-// Your Hyperlambda code goes here ...!!
+// Example: Trim a string consisting only of trim characters (result is empty).
 
-// Return result to caller using for instance ...
-return
-   SOME_RESULT:SOME_VALUE
+// Result: "" (empty string)
+strings.trim:!!!
+   .:!

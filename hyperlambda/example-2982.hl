@@ -1,6 +1,18 @@
 
-// Example: Starts-with check is case-sensitive.
+// Generate a Hyperlambda snippet that handles division by zero using a try/catch/finally block.
 
-// Returns false
-strings.starts-with:Hello
-   .:hello
+// Handles division by zero inside a try/catch/finally block
+try
+
+   // Attempting division by zero
+   math.divide
+      .:int:10
+      .:int:0
+.catch
+
+   // Logging the error
+   log.error:x:@.arguments/*/message
+.finally
+
+   // Final block executed after try/catch
+   log.info:Completed division attempt

@@ -1,8 +1,5 @@
-/*
- * Example: Concatenate multiple strings without separators.
- */
-strings.concat
-   .:I
-   .:love
-   .:Hyperlambda
-// Result: "IloveHyperlambda"
+
+// Example: Convert an uppercase string to lowercase.
+
+// Result: "hello"
+strings.to-lower:HELLO

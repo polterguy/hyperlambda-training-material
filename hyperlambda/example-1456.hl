@@ -1,2 +1,5 @@
-// How do I URL decode email argument?
-strings.url-decode:x:@.arguments/*/email
+// Add 2 to .age
+.age:int:28
+math.add
+   get-value:x:@.age
+   .:int:2

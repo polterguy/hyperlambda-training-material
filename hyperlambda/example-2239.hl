@@ -1,3 +1,13 @@
-// Formats specified date according to specified pattern
-date.format:date:"2023-01-19T12:49:44.000Z"
-   format:dd. MMMM yyyy
+
+// Provide a Hyperlambda example where a dynamic date string is concatenated.
+
+// Example of dynamically concatenating a date string.
+.year:2025
+.month:03
+.day:15
+strings.concat
+   get-value:x:@.year
+   .:-
+   get-value:x:@.month
+   .:-
+   get-value:x:@.day

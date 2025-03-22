@@ -1,13 +1,6 @@
-// This example connects to the 'kingdom' database and reads records from the 'castles' table.
-sqlite.connect:kingdom
-   sqlite.read
-      table:castles
-      columns
-         name
-         age
-      where
-         and
-            age.mteq:int:500
-      order:age
-      direction:desc
-      limit:int:3
+/*
+ * Retrieves the `startDate` from an event object referenced by entries in a calendar.
+ * The `event` node in `.calendar/*` contains a reference to another node structure.
+ * The expression dereferences it and selects its `startDate` child.
+ */
+.calendar-start:x:@.calendar/*/event/#/*/startDate

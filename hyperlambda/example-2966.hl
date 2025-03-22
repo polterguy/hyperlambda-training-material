@@ -1,7 +1,11 @@
-// Define a slot that returns a single string
-slots.create:giveAnswer  
-   return-value:Forty Two
 
-// Invoke 'giveAnswer'
-signal:giveAnswer  
-// The result is "Forty Two"
+// Loop for 20 iterations, logs a message each time
+.no:int:0
+while
+   lt:x:@.no
+      .:int:20
+   .lambda
+
+      // Logging iteration message
+      log.info:Howdy from while loop
+      math.increment:x:@.no

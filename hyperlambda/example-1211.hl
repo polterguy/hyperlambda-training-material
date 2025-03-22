@@ -1,4 +1,8 @@
-// Unwrap a value so it’s evaluated before use
-.src:Hello World
-unwrap:x:+
-.dest:x:@.src
+
+// Example: Replace all digits in a string with asterisks.
+.text:ID 0987
+strings.regex-replace:x:@.text
+   .:"\\d"
+   .:*
+
+// Result: "ID ****"

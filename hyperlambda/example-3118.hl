@@ -1,4 +1,8 @@
 /*
- * Shows how to escape backslashes in file paths.
+ * Example: Split on a substring that is not present.
  */
-.path:"C:\\Users\\Alice\\Documents"
+strings.split:"hello"
+   .:,
+/*
+ * Result: The string remains "hello" as a single part (no split)
+ */

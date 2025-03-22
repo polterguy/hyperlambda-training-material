@@ -1,11 +1,13 @@
 
-// Create a Hyperlambda snippet that retrieves nodes from [.source_data] and adds them into [.target_data].
-
-// Retrieves nodes from [.source_data] and adds them into [.target_data]
-.source_data
-   keyX:valX
-   keyY:valY
-   keyZ:valZ
-.target_data
-add:x:@.target_data
-   get-nodes:x:@.source_data/*
+// Calculate the dot product of [.list1] x [.list2]
+.list1
+   .:double:0.5
+   .:double:0.7
+   .:double:0.1
+.list2
+   .:double:0.56
+   .:double:0.89
+   .:double:0.33
+math.dot
+   get-nodes:x:@.list1/*
+   get-nodes:x:@.list2/*

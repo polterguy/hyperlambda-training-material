@@ -1,12 +1,7 @@
-/**
- * This example creates a bar chart with three bars using [image.chart].
- * The chart is saved to a file named "/bar-chart.png".
- */
-image.chart:bars
-   width:int:600
-   height:int:400
-   filename:/bar-chart.png
-   bars
-      Apples:50
-      Bananas:75
-      Cherries:30
+// Illustrates how to use a [for-each] loop to iterate some node-set.
+.data
+   item1:Hello from Item1
+   item2:Hello from Item2
+   item3:Hello from Item3
+for-each:x:@.data/*
+   log.info:x:@.dp/#

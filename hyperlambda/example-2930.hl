@@ -1,11 +1,12 @@
-
-// Example: Find all substrings matching a pattern in curly braces.
-.text:{match1} and {match2} are here
-strings.matches:x:@.text
-   .:"\\{.+?\\}"
-
 /*
- * Resulting matches:
- * .:{match1}
- * .:{match2}
+ * Retrieves temperature readings from multiple sensors and finds the lowest one.
  */
+.sensors
+   t1:int:23
+   t2:int:18
+   t3:int:27
+.lowest
+math.min
+   get-value:x:@.sensors/*/t1
+   get-value:x:@.sensors/*/t2
+   get-value:x:@.sensors/*/t3

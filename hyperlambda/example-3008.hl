@@ -1,23 +1,18 @@
-// Hyperlambda [if] with or condition
-.payment:pending
-.shipment:ready
-.notification
+
+// Generate a Hyperlambda snippet that triggers [.lambda] when [.input] does not contain Go Go Go.
+
+// Triggers [.lambda] when [.input] does not contain Go Go Go.
+.input:Go Go Go
 if
-   or
-      eq:x:@.payment
-         .:pending
-      eq:x:@.shipment
-         .:delayed
+
+   // Validates that [.input] is not "Go Go Go".
+   neq:x:@.input
+      .:Go Go Go
    .lambda
-      set-value:x:@.notification
-         .:Action needed
 
-/* JavaScript equivalent of Hyperlambda [if] with or condition
-const payment = "pending";
-const shipment = "ready";
-let notification;
+      // Executes when [.input] differs.
+      log.info:[.input] is NOT Go Go Go
+else
 
-if (payment === "pending" || shipment === "delayed") {
-  notification = "Action needed";
-}
-*/
+   // Executes when [.input] is exactly "Go Go Go".
+   log.info:[.input] is Go Go Go

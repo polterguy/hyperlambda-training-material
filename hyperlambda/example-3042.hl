@@ -1,10 +1,8 @@
+/*
+ * Example: Check if a string contains a given substring that is not present.
+ */
+// Returns false
+strings.contains:ChatGPT
+   .:OpenAI
 
-// Example: Use variables for the regex pattern and replacement string.
-.pattern:"\\d"
-.replacement:X
-.source:a1b2c3
-strings.regex-replace:x:@.source
-   get-value:x:@.pattern
-   get-value:x:@.replacement
-
-// Result: "aXbXcX"
+// Result is false

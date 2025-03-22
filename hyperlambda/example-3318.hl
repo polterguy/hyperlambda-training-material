@@ -1,6 +1,16 @@
-// This example connects to the 'ocean' database and retrieves the maximum depth from the 'creatures' table.
-// It uses the sqlite.scalar slot to execute a SQL query that finds the maximum value in the 'depth' column.
-// The result is returned as a single scalar value representing the maximum depth of creatures.
 
-sqlite.connect:ocean
-   sqlite.scalar:select max(depth) from creatures
+// Create a Hyperlambda snippet that formats user profile details.
+
+// Hyperlambda file that formats user profile details.
+.arguments
+   username:string
+   role:string
+   country:string
+strings.concat
+   get-value:x:@.arguments/*/username
+   .:" is a "
+   get-value:x:@.arguments/*/role
+   .:" from "
+   get-value:x:@.arguments/*/country
+yield
+   result:x:@strings.concat

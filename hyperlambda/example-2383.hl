@@ -1,7 +1,15 @@
-/*
- * This Hyperlambda snippet retrieves only the first 10 records.
- */
 
-data.read
-   table:table1
-   limit:10
+// Create a Hyperlambda endpoint to count the number of tasks in the system given an optional filter.
+.arguments
+   filter:string
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Retrieves all scheduled tasks in the system.
+tasks.count:x:@.arguments/*/filter
+
+// Returning the results of the evaluation to caller.
+unwrap:x:+/*
+return-nodes
+   count:x:@tasks.count

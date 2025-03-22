@@ -1,10 +1,2 @@
-// Use and to evaluate conditions sequentially
-
-.result
-if
-   and
-      .:bool:true
-      .:bool:false
-   .lambda
-      set-value:x:../*/.result
-         .:ERROR
+// Connecting to the local SQLite database: /data/inventory.db
+data.connect:[generic|inventory]

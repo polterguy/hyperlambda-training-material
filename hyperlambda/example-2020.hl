@@ -1,8 +1,11 @@
-// If the cache does not contain the specified key, generate a new entry.
 
-cache.try-get:user.theme
-   expiration:30
-   .lambda
-      return:dark-mode
+// Write a Hyperlambda snippet that opens a connection to 'warehouse_db' and gets recent inventory changes.
 
-// If "user.theme" is not found in cache, "dark-mode" is stored and returned.
+// Opens a connection to "warehouse_db" and gets recent inventory changes.
+.result
+data.connect:warehouse_db
+   database-type:sqlite
+   data.select:select * from inventory_changes order by modified_at desc limit 15
+      database-type:sqlite
+   add:x:@.result
+      get-nodes:x:@data.select/*

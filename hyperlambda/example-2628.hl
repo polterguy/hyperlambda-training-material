@@ -1,8 +1,6 @@
-/*
- * This Hyperlambda snippet demonstrates an uncaught exception.
- * Since there is no `catch` block, the exception propagates and results in a `HyperlambdaException`.
- * Expected behavior: The execution will fail with a `HyperlambdaException`.
- */
-
-try
-   throw:foo
+// User role types
+.roles
+   .:Admin
+   .:Editor
+   .:Viewer
+   .:Guest

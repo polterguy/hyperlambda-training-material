@@ -1,6 +1,7 @@
 
-// Example: Check if a string contains a given substring that is not present.
-
-// Returns false
-strings.contains:ChatGPT
-   .:OpenAI
+// Creates our image cache folder.
+if
+   not
+      io.folder.exists:/etc/hub/image-cache/
+   .lambda
+      io.folder.create:/etc/hub/image-cache/

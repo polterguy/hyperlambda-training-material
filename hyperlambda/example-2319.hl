@@ -1,8 +1,14 @@
-// Create a task, then schedule it to run once every 3650 days
-tasks.create:task-id-qwerty123
-   .lambda
+/*
+ * Loads the file and counts the number of lines by splitting on `\n`.
+ */
 
-      log.info:Executing seldomly repeating task once every 10 year
+io.file.load:/README.md
+strings.split:x:@io.file.load
 
-tasks.schedule:task-id-qwerty123
-   repeats:3650.days
+   // We must ALWAYS use double quotes if we're adding special characters, or escaped characters, such as for instance \n
+   .:"\n"
+
+// This node will have its value becoming the number of lines from the file
+.number-of-lines-in-file
+set-value:x:-
+   get-count:x:@strings.split/*

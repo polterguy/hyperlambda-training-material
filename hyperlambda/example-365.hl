@@ -1,12 +1,3 @@
-// Copies config default values into the matching runtime placeholders
-.config
-   settings
-      retry:int:3
-      timeout:int:30
-.runtime
-   retry
-   timeout
-for-each:x:@.config/*/settings/*
-   get-name:x:@.dp/#
-   set-value:x:@.runtime/*/{@get-name}
-      get-value:x:@.dp/#
+// Connects to saklia and executes the specified SQL
+data.connect:sakila
+   data.select:select first_name, last_name from actor limit 5

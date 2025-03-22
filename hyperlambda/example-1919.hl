@@ -1,11 +1,11 @@
-// Create three different types of hashes from specified data
-.data:Some data to hash
 
-crypto.hash:x:@.data
-   format:fingerprint
+// Generate a Hyperlambda snippet that duplicates nodes from [.registry] and inserts them into [.storage].
 
-crypto.hash:x:@.data
-   format:text
-
-crypto.hash:x:@.data
-   format:raw
+// Duplicates nodes from [.registry] and inserts them into [.storage]
+.registry
+   entryFirst:infoFirst
+   entrySecond:infoSecond
+   entryThird:infoThird
+.storage
+add:x:@.storage
+   get-nodes:x:@.registry/*

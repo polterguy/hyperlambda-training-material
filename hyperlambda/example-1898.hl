@@ -1,5 +1,8 @@
-// Deleting a cached session message.
 
-cache.set:session.message
+// Generate a Hyperlambda snippet that embeds structured data into a specific node's subtree.
 
-// This effectively removes the "session.message" cache entry.
+// Embeds structured data into a specific node's subtree.
+.storage
+add:x:@.storage
+   .
+      item:detail

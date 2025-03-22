@@ -1,5 +1,4 @@
-/*
- * Example: Trim whitespace from the end of a string.
- */
-// Result: "hello"
-strings.trim-end:"hello   "
+// This example hashes a string using SHA256 and returns the hash in fingerprint format.
+.data:Hello World
+crypto.hash.sha256:x:@.data
+   format:fingerprint

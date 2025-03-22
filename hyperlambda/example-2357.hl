@@ -1,75 +1,41 @@
 
+// Create a Hyperlambda script to return the Magic CAPTCHA JavaScript library, substituting the public key dynamically.
+.arguments
+   v:string
+
+// Getting server auth secret.
+config.get:"magic:auth:secret"
+
+// Double hashing auth secret using SHA256 to avoid predictable hash values.
+crypto.hash.sha256:x:@config.get
+crypto.hash.sha256:x:-
+
+// Loading JavaScript file.
+.file
+if
+   io.file.exists:/system/misc/magic-captcha.min.js
+   .lambda
+
+      // We have a minified file.
+      set-value:x:@.file
+         load-file:/system/misc/magic-captcha.min.js
+else
+
+   // We don't have a minified file.
+   set-value:x:@.file
+      load-file:/system/misc/magic-captcha.js
+
 /*
- * Common helper slot to return the specified [columns] from accounts/group_accounts, matching
- * the specified [org_number].
+ * Dynamically substituting public key in file with public key that was generated
+ * specifically for current server.
  */
-slots.create:finovo.accounts.get-data
+strings.replace:x:@.file
+   .:[[public-key]]
+   get-value:x:@crypto.hash.sha256
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/org_number
-   set-value:x:@.arguments/*/org_number
-      strings.replace-not-of:x:@.arguments/*/org_number
-         .:0123456789
-         .:
-   validators.string:x:@.arguments/*/org_number
-      min:10
-      max:10
+// Applying correct HTTP headers.
+response.headers.set
+   Content-Type:text/javascript
 
-   // Connecting to database.
-   data.connect:[finovo|finovo]
-      database-type:pgsql
-
-      // Trying group accounts.
-      add:x:+/*/columns
-         get-nodes:x:@.arguments/*/columns/*
-      data.read
-         database-type:pgsql
-         table:group_accounts
-         columns
-         where
-            and
-               org_number.eq:x:@.arguments/*/org_number
-               or
-                  n_account_shortage_text.eq:
-                  n_account_shortage_text.eq
-
-      // Checking if we've got data.
-      if
-         not-exists:x:@data.read/*
-         .lambda
-
-            // Trying accounts.
-            add:x:+/*/columns
-               get-nodes:x:@.arguments/*/columns/*
-            data.read
-               database-type:pgsql
-               table:accounts
-               columns
-               where
-                  and
-                     org_number.eq:x:@.arguments/*/org_number
-
-            // Checking if we've got data.
-            if
-               not-exists:x:@data.read/*
-               .lambda
-
-                  // No data.
-                  return
-                     result:No results were found
-
-            else
-
-               // Making sure we return company information related to the account.
-               add:x:../*/return-nodes
-                  get-nodes:x:@data.read/*
-
-      else
-
-         // Making sure we return company information related to the account.
-         add:x:../*/return-nodes
-            get-nodes:x:@data.read/*
-
-   // Returning result to caller.
-   return-nodes
-
+// Returning result to caller.
+return:x:@strings.replace

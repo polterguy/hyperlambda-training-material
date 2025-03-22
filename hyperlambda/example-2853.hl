@@ -1,8 +1,11 @@
-
-// Example: Trim specific characters from the end of a string.
-
-// The trailing "xyz" will be removed
-strings.trim-end:abcxyzxyz
-   .:xyz
-
-// Result: "abc"
+// Hyperlambda endpoint with authorization returning items from contacts in crm database
+.arguments
+   limit:int
+   offset:int
+auth.ticket.verify:root, admin, user
+data.connect:crm
+   data.read
+      table:contacts
+      limit:x:@.arguments/*/limit
+      offset:x:@.arguments/*/offset
+   return-nodes:x:@data.read/*

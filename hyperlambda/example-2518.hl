@@ -1,7 +1,5 @@
 /**
- * This example resizes an image by specifying only the height (500 pixels).
- * The width is automatically adjusted to maintain the aspect ratio.
+ * This example lists all folders inside "/system/" including hidden ones.
  */
-image.resize
-   file:/input.jpg
-   height:int:500
+io.folder.list:/system/
+   display-hidden:bool:true

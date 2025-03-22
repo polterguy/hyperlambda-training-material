@@ -1,42 +1,61 @@
 
-// Create a Hyperlambda script to return the Magic CAPTCHA JavaScript library, substituting the public key dynamically.
+// Create a Hyperlambda script for a CRUD read endpoint that returns items from the users_extra table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
-   v:string
-.type:public
+   limit:long
+   offset:long
+   order:string
+   direction:string
+   operator:string
+   type.eq:string
+   value.like:string
+   user.eq:string
 
-// Getting server auth secret.
-config.get:"magic:auth:secret"
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Double hashing auth secret using SHA256 to avoid predictable hash values.
-crypto.hash.sha256:x:@config.get
-crypto.hash.sha256:x:-
-
-// Loading JavaScript file.
-.file
-if
-   io.file.exists:/system/misc/magic-captcha.min.js
-   .lambda
-
-      // We have a minified file.
-      set-value:x:@.file
-         load-file:/system/misc/magic-captcha.min.js
-else
-
-   // We don't have a minified file.
-   set-value:x:@.file
-      load-file:/system/misc/magic-captcha.js
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
 /*
- * Dynamically substituting public key in file with public key that was generated
- * specifically for current server.
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
  */
-strings.replace:x:@.file
-   .:[[public-key]]
-   get-value:x:@crypto.hash.sha256
+if
+   exists:x:@.arguments/*/operator
+   .lambda
 
-// Applying correct HTTP headers.
-response.headers.set
-   Content-Type:text/javascript
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
 
-// Returning result to caller.
-return:x:@strings.replace
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our read invocation.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/operator
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      table:users_extra
+      columns
+         users_extra.type
+         users_extra.value
+         users_extra.user
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

@@ -1,5 +1,5 @@
-// How to use [data.execute]
-
-// Opening database
-data.connect:sakila
-   data.execute:delete from non_existing_table
+// Pass a node by reference and modify it inside another slot
+.foo
+reference:x:@.foo
+set-value:x:-/#
+   .:Updated

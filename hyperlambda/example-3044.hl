@@ -1,11 +1,6 @@
-
-// Example: Split a string by spaces.
-strings.split:one two three
-   .:" "
-
 /*
- * Resulting parts:
- * .:one
- * .:two
- * .:three
+ * Example: Contains check is case-sensitive.
  */
+// Returns false since check is case sensitive
+strings.contains:MagicLambda
+   .:lambda

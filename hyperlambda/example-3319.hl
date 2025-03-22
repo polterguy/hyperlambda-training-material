@@ -1,14 +1,9 @@
-
-// Create a Hyperlambda script that returns the reCAPTCHA secret and key if existing, ensuring the user is authorized.
-.type:internal
-
-// Making sure user is allowed to invoke endpoint
-auth.ticket.verify:root
-
-// Retrieving key configuration setting and returning to caller.
-config.get:"magic:auth:recaptcha:secret"
-config.get:"magic:auth:recaptcha:key"
-unwrap:x:+/*
-return-nodes
-   key:x:@config.get
-   secret:x:@config.get/@config.get
+/*
+ * Accesses a specific configuration group based on a dynamic environment value.
+ *
+ * The `{@.env}` part is resolved at runtime and could yield "dev", "staging", "prod", etc.
+ * The full expression becomes something like: `@.config/*/prod`
+ *
+ * This allows you to fetch settings based on the current environment context.
+ */
+.active-config:x:@.config/*/{@.env}

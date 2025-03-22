@@ -1,72 +1,93 @@
 
-// Write a Hyperlambda script to return all available system messages from the backend.
+/*
+ * Creates JSONL training data for all data we've got in our database
+ * 
+ * You have to manually download the data after generating it.
+ */
 .arguments
-.type:internal
+.type:public
 
-// Making sure user has access to invoked endpoint.
-auth.ticket.verify:root
+// Buffer for snippets.
+.result:
 
-// Contains list of system messages we find.
-.result
+// Buffer for validation snippets.
+.validation:
 
-// Listing custom files.
-if
-   io.folder.exists:/etc/system/openai/system-messages/
-   .lambda
-      io.file.list:/etc/system/openai/system-messages/
-      for-each:x:@io.file.list/*
-         if
-            strings.ends-with:x:@.dp/#
-               .:hl
-            .lambda
-               io.file.load:x:@.dp/#
-               hyper2lambda:x:@io.file.load
-               add:x:+/*/*
-                  get-nodes:x:@hyper2lambda/*
-               add:x:@.result
-                  .
-                     .
+// Counter to ensure every 8th record becomes a validation snippet and not a training snippet.
+.no:int:0
 
-// Listing system files.
-if
-   io.folder.exists:/system/openai/system-messages/
-   .lambda
-      io.file.list:/system/openai/system-messages/
-      for-each:x:@io.file.list/*
-         if
-            strings.ends-with:x:@.dp/#
-               .:hl
-            .lambda
-               io.file.load:x:@.dp/#
-               hyper2lambda:x:@io.file.load
-               add:x:+/*/*
-                  get-nodes:x:@hyper2lambda/*
-               add:x:@.result
-                  .
-                     .
+// Retrieving all snippets.
+data.connect:fine-tune
+   data.select:select * from hyperlambda
 
-// Listing module specific system messages.
-io.folder.list:/modules/
-for-each:x:@io.folder.list/*
-   strings.concat
-      get-value:x:@.dp/#
-      .:system-messages/
-   if
-      io.folder.exists:x:@strings.concat
-      .lambda
-         io.file.list:x:@strings.concat
-         for-each:x:@io.file.list/*
-            if
-               strings.ends-with:x:@.dp/#
-                  .:hl
-               .lambda
-                  io.file.load:x:@.dp/#
-                  hyper2lambda:x:@io.file.load
-                  add:x:+/*/*
-                     get-nodes:x:@hyper2lambda/*
-                  add:x:@.result
-                     .
-                        .
+   // Iterating through snippets to generate training data.
+   for-each:x:@data.select/*
+
+      // Generating training record, starting with prompt.
+      .prompt
+      set-value:x:@.prompt
+         get-value:x:@.dp/#/*/prompt
+
+      // Then completion.
+      .completion
+      set-value:x:@.completion
+         get-value:x:@.dp/#/*/code
+
+      // Replacing CR and LF characters.
+      set-value:x:@.prompt
+         strings.replace:x:@.prompt
+            .:"\n"
+            .:"\\n"
+      set-value:x:@.prompt
+         strings.replace:x:@.prompt
+            .:"\r"
+      set-value:x:@.completion
+         strings.replace:x:@.completion
+            .:"\n"
+            .:"\\n"
+      set-value:x:@.completion
+         strings.replace:x:@.completion
+            .:"\r"
+      unwrap:x:+/**
+      .data
+         messages
+            .
+               role:system
+               content:You are a Hyperlambda coding assistant. Respond with Hyperlambda code.
+            .
+               role:user
+               content:x:@.prompt
+            .
+               role:assistant
+               content:x:@.completion
+
+      // Adding training data to above [.result].
+      if
+         eq
+            math.modulo:x:@.no
+               .:int:8
+            .:int:0
+         .lambda
+            set-value:x:@.validation
+               strings.concat
+                  get-value:x:@.validation
+                  lambda2json:x:@.data/*
+                  .:"\n"
+      else
+         set-value:x:@.result
+            strings.concat
+               get-value:x:@.result
+               lambda2json:x:@.data/*
+               .:"\n"
+      math.increment:x:@.no
+
+// Saving files.
+io.file.save:/modules/fine-tune-hyperlambda/training-material.jsonl
+   get-value:x:@.result
+io.file.save:/modules/fine-tune-hyperlambda/training-material-validation.jsonl
+   get-value:x:@.validation
 
 // Returning result to caller.
-return-nodes:x:@.result/*
+return
+   result:Success
+   message:"Your training data can be found in '/modules/fine-tune/training-material.jsonl'"

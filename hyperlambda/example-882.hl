@@ -1,8 +1,25 @@
-// How to create Hyperlambda that imports training material from Shopify?
-log.info:Ingesting data from Shopify
-signal:shopify.products.ingest
-   secret:shpat_YOUR_SHOPIFY_API_KEY_HERE
-   shop:YOUR-STORE-NAME-HERE
-   type:YOUR-MACHINE-LEARNING-TYPE-HERE
-   base_url:"https://YOUR-WEBSITE-HERE.COM"
-log.info:Done ingesting data from Shopify
+// Gets a random activity from the Bored API and handles common statuses
+
+.arguments
+
+// Final output from the activity API
+.activity.result
+
+http.get:"https://www.boredapi.com/api/activity"
+   convert:true
+
+switch:x:@http.get
+
+   case:int:200
+      set-value:x:@.activity.result
+         get-value:x:@http.get/*/content/*/activity
+
+   case:int:500
+      throw:500 Internal Server Error – Failed to retrieve activity
+
+   default
+      set-value:x:@.activity.result
+         .:Unexpected error occurred
+
+yield
+   result:x:@.activity.result

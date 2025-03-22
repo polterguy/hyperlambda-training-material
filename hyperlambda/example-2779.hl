@@ -1,14 +1,2 @@
-/*
- * Retrieves the value of the first [zipcode] node found under [.address-book]
- * regardless of how deeply nested it is, and sets [.postal-code] to this value.
- * Demonstrates usage of `**` for deep search and name filtering.
- */
-
-.postal-code
-.address-book
-   person
-      contact
-         location
-            zipcode:90210
-set-value:x:@.postal-code
-   .:x:@.address-book/**/zipcode
+// Returns maximum legal value for a date object ==> 9999-12-31T23:59:59.999
+date.max

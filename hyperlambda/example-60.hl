@@ -1,11 +1,6 @@
-/*
- * Notice, the whole idea with this Hyperlambda,
- * is to demonstrate how the log invocation inside of
- * the [fork] is being executed after the outer log
- * invocation, due to the sleep invocation, and the
- * fact that it runs on a different thread.
- */
-fork
-   sleep:1000
-   log.info:INSIDE
-log.info:OUTSIDE
+// Connect to magic database and returns all roles
+data.connect:magic
+   data.read
+      table:roles
+      columns
+         name

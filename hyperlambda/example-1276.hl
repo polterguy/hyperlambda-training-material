@@ -1,19 +1,11 @@
-// How do I set headers dynamically based on file type using [switch]?
-.fileType:json
-switch:x:@.fileType
-   case:json
-      response.headers.set
-         Content-Type:application/json
-         Content-Disposition:"attachment; filename=\"file.json\""
-   case:xml
-      response.headers.set
-         Content-Type:application/xml
-         Content-Disposition:"attachment; filename=\"file.xml\""
-   case:csv
-      response.headers.set
-         Content-Type:text/csv
-         Content-Disposition:"attachment; filename=\"file.csv\""
-   default
-      response.headers.set
-         Content-Type:application/octet-stream
-         Content-Disposition:"attachment; filename=\"file.bin\""
+
+// Example: Find all substrings matching a pattern in curly braces.
+.text:{match1} and {match2} are here
+strings.matches:x:@.text
+   .:"\\{.+?\\}"
+
+/*
+ * Resulting matches:
+ * .:{match1}
+ * .:{match2}
+ */

@@ -1,10 +1,18 @@
 
-// Adding expressions as new nodes but unwrapping expressions before executing [add]
-.data
-   foo:some value
-unwrap:x:+/*/*
-add:x:@.data
-   .
-      bar:x:@.data/*/foo
+// Create a Hyperlambda switch/case condition that checks an 'input-value'. Log a message if the value is 'foo', another message if the value is 'bar', and a default message if the value is neither.
+switch:x:@.arguments/*/input-value
 
-// Both nodes will contain the values of the above [foo] nodes after [add].
+   case:foo
+
+      // [input-value] was equal to "foo".
+      log.info:Value was foo
+
+   case:bar
+
+      // [input-value] was equal to "bar".
+      log.info:Value was bar
+
+   default
+
+      // [input-value] was neither foo nor bar.
+      log.info:Value was neither foo nor bar

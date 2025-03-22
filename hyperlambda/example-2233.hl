@@ -1,2 +1,10 @@
-// Example: Turn the [.g] into uppercase
-strings.to-upper:x:@.g
+
+// Provide a Hyperlambda example where a formatted date string is concatenated.
+
+// Example of concatenating a formatted date string.
+strings.concat
+   .:2025
+   .:-
+   .:03
+   .:-
+   .:15

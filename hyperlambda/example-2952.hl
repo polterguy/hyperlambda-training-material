@@ -1,44 +1,43 @@
 
-// Write a Hyperlambda script to delete a specified folder on the server, including uninstalling a module if necessary.
+// CRUD endpoint - Create one record in your actor table in your sakila database with authorization
 .arguments
-   folder:string
-.type:internal
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // first_name column value
+   first_name:string
 
-/*
- * Checking if this is a module folder, and if so, we uninstall module before actually
- * deleting it.
- */
-strings.split:x:@.arguments/*/folder
-   .:/
-if
-   and
-      eq
-         get-count:x:@strings.split/*
-         .:int:2
-      eq
-         get-value:x:@strings.split/0
-         .:modules
-   .lambda
+   // last_name column value
+   last_name:string
 
-      // 'modules' folder, checking if it's got an uninstall file, and if so, executing it.
-      strings.concat
-         get-value:x:@.arguments/*/folder
-         .:uninstall.hl
-      if
-         io.file.exists:x:@strings.concat
-         .lambda
+   // last_update column value
+   last_update:date
 
-            // Uninstall file exists
-            log.info:Uninstalling module
-               module:x:@strings.concat
-            io.file.execute:x:@strings.concat
+// Meta data description for endpoint
 
-// Deletes the specified folder.
-io.folder.delete:x:@.arguments/*/folder
+// Type of endpoint
+.type:crud-create
 
-// Returning success to caller.
-return
-   result:success
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|sakila]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:actor
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

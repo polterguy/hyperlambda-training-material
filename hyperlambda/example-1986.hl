@@ -1,7 +1,13 @@
 
-// Connect to the "sakila" database using the default connection string (SQLite) and retrieve actors (default adapter from config)
-data.connect:sakila
-   data.read
+// Generate a Hyperlambda snippet that retrieves customer data from the crm database and customers table.
 
-      // Reads from the "actor" table (returns first 25 records by default)
-      table:actor
+// Retrieves customer data from the crm database and customers table.
+data.connect:crm_db
+
+   // Using MySQL as the database type.
+   database-type:mysql
+
+   // Querying customers without sorting or limiting.
+   data.read
+      database-type:mysql
+      table:customers

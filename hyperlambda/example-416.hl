@@ -1,8 +1,5 @@
+// Convert a value to a short integer (short)
 
-// Create a Hyperlambda snippet that appends child nodes into a given destination.
-
-// Appends child nodes into a given destination.
-.result
-add:x:@.result
-   .
-      data:info
+.src:5
+convert:x:-
+   type:short

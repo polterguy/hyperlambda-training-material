@@ -1,14 +1,9 @@
 
-// Create a Hyperlambda script to evaluate a lambda for as long as a condition is true, with a counter and logging.
-.no:int:0
-while
-   lt
-      get-value:x:@.no
-      .:int:20
-   .lambda
+// Create a Hyperlambda endpoint that returns all endpoints in the system along with their associated meta information, ensuring the user is authorized to access the endpoint.
 
-      // Your lambda goes here.
-      log.info:Howdy from while
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-      // Incrementing counter.
-      math.increment:x:@.no
+// Returns all endpoints to caller.
+endpoints.list
+return-nodes:x:@endpoints.list/*

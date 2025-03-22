@@ -1,12 +1,13 @@
 /*
- * Example: Split a string with consecutive delimiters (empty segments).
- */
-strings.split:"one,,two"
-   .:,
-/*
- * Resulting parts:
- * .:one
- * .:two
+ * This Hyperlambda snippet checks if a node containing other nodes is null.
  *
- * Notice, empty strings are ignored
+ * 1. The `.data` node contains a child node `container`, which has children.
+ * 2. The `null` slot checks if `container` has a value.
+ * 3. Since `container` has children but no value, the expected output is `true`.
  */
+
+.data
+   container
+      child1:42
+      child2:99
+null:x:@.data/*/container

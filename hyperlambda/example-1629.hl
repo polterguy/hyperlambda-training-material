@@ -1,5 +1,14 @@
 /*
- * Example: Spaces and punctuation are counted in the length.
+ * This Hyperlambda snippet retrieves specific nodes by index.
+ *
+ * 1. The `.data` node has multiple children.
+ * 2. The `get-nodes` slot retrieves only the first and third children.
  */
-// Returns 12
-strings.length:"Hello world!"
+
+.data
+   foo1:bar1
+   foo2:bar2
+   foo3:bar3
+get-nodes
+   get-value:x:@.data/0
+   get-value:x:@.data/2

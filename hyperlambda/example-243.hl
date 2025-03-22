@@ -1,4 +1,2 @@
-
-// Change HTTP headers
-response.headers.set
-   Content-Type:text/plain
+// Return some cache item
+cache.get:cache-item-key

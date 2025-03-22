@@ -1,45 +1,6 @@
+// This example connects to the 'ocean' database and retrieves the maximum depth from the 'creatures' table.
+// It uses the sqlite.scalar slot to execute a SQL query that finds the maximum value in the 'depth' column.
+// The result is returned as a single scalar value representing the maximum depth of creatures.
 
-// Create one record in your Categories table in your northwind database
-.arguments
-
-   // CategoryName column value
-   CategoryName:string
-
-   // Description column value
-   Description:string
-
-   // Picture column value
-   Picture:string
-
-// Meta data description for endpoint
-.description:Create one record in your Categories table in your northwind database
-
-// Type of endpoint
-.type:crud-create
-
-// Columns with custom handling as we generate a frontend
-.handling
-   Picture:image
-
-// Opening up database connection.
-data.connect:[generic|northwind]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:Categories
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+sqlite.connect:ocean
+   sqlite.scalar:select max(depth) from creatures

@@ -1,8 +1,18 @@
+// Hyperlambda [if] checking substring
+.filename:document.pdf
+.file-type
+if
+   strings.ends-with:x:@.filename
+      .:pdf
+   .lambda
+      set-value:x:@.file-type
+         .:pdf
 
-// Example: Replace all occurrences of a substring.
-.text:abababab
-strings.replace:x:@.text
-   .:ab
-   .:AB
+/* JavaScript equivalent of Hyperlambda [if] checking substring
+const filename = "document.pdf";
+let fileType;
 
-// Result: "ABABABAB"
+if (filename.endsWith("pdf")) {
+  fileType = "pdf";
+}
+*/

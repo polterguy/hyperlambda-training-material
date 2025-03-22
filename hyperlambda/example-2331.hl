@@ -1,5 +1,8 @@
-// Convert lambda 2 hyperlambda
-.hl
-   log.info:This is some example logging invocation
 
-lambda2hyper:x:-/*
+// Create a Hyperlambda endpoint that sets a session cookie with HTTP-only and secure flags.
+response.cookies.set:session_id
+   value:abc123xyz
+   http-only:bool:true
+   secure:bool:true
+return
+   message:Session cookie set.

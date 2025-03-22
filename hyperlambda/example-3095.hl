@@ -1,5 +1,4 @@
-// Replace "hansen" with "tjobing hansen" in a string
-.full-name:thomas hansen
-strings.replace:x:@.full-name
-   .:hansen
-   .:tjobing hansen
+
+// Shopify module version and name.
+version:v2.0.0
+module_name:shopify

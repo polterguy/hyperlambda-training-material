@@ -1,21 +1,8 @@
 
-// Removes the specified [item_id] from your shopping cart.
-.arguments
-   item_id:int
-   _session:string
-.type:public
+// Example: Concatenate a string and a number (the number is converted to a string).
+.number:int:42
+strings.concat
+   .:"Answer: "
+   get-value:x:@.number
 
-// Opening up database connection.
-data.connect:[generic|shopping-cart-demo]
-
-   // Removing item.
-   data.delete
-      table:items
-      where
-         and
-            item_id.eq:x:@.arguments/*/item_id
-            session_id.eq:x:@.arguments/*/_session
-
-// Returning success to caller.
-return
-   result:success
+// Result: "Answer: 42"

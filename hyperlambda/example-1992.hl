@@ -1,12 +1,5 @@
-// If with else-if
-.dest
-if
-   .:bool:false
-   .lambda
-      set-value:x:@.dest
-         .:yup!
-else-if
-   .:bool:true
-   .lambda
-      set-value:x:@.dest
-         .:yup2.0!
+
+// Example: Capitalize a string starting with a digit (no alphabetical character to capitalize).
+
+// Result: "42hello"
+strings.capitalize:42hello

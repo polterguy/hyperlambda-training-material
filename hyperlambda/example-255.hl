@@ -1,5 +1,13 @@
+// Executing the following Hyperlambda results in the following
 
-// Example: Capitalize a string starting with a digit (no alphabetical character to capitalize).
+// When executing the following Hyperlambda
+cache.set:foo
+   value:some cache value
+cache.get:foo
 
-// Result: "42hello"
-strings.capitalize:42hello
+// We end up with this result
+cache.set:foo
+   value:some cache value
+cache.get:some cache value
+
+// Notice how the cached value is returned

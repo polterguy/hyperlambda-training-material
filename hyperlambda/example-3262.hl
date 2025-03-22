@@ -1,8 +1,10 @@
-// This code connects to the 'university' database and inserts a new student record into the 'students' table.
-mysql.connect:university
-   mysql.create
-      table:students
-      values
-         student_id:int:12345
-         name:John Doe
-         major:Computer Science
+
+// Append multiple new child nodes to a destination node
+.dest
+add:x:@.dest
+   .
+      foo1:hello
+      foo2:world
+   .
+      bar1:hi
+      bar2:planet

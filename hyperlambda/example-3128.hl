@@ -1,19 +1,22 @@
-/*
- * Save this file as `/modules/files/endpoints/read.hl`
- * This exposes an HTTP POST endpoint at `/files/read`
- *
- * It requires a `filename` argument to be passed,
- * and returns the file contents if valid.
- */
 
+// Tracks an order in Shopify.
 .arguments
-   filename
+   order:string
+.type:public
 
-validators.mandatory:x:@.arguments/*/filename
+// Retrieving secret and shop.
+.secret
+set-value:x:@.secret
+   config.get:"magic:shopify:secret"
+.shop
+set-value:x:@.shop
+   config.get:"magic:shopify:shop"
 
-.result
-set-value:x:@.result
-   io.file.load:x:@.arguments/*/filename
+// Invoking slot to do the heavy work.
+execute:shopify.orders.track
+   secret:x:@.secret
+   shop:x:@.shop
+   order_no:x:@.arguments/*/order
 
-yield
-   file:x:@.result
+// Returns the result of your last action.
+return-nodes:x:@execute/*

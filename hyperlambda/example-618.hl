@@ -1,9 +1,20 @@
-
-// Generate a Hyperlambda snippet that inserts a 'second' element after 'first' inside '.elements'.
-
-// Inserts a "second" element after "first" inside ".elements".
-.elements
-   first
-insert-after:x:@.elements/*/first
-   .
-      second:Added dynamically
+/*
+ * This script counts the number of Hyperlambda files, in addition to the combined
+ * number of nodes, within the specified folder.
+ */
+.folder:/
+.loc:int:0
+.files:int:0
+unwrap:x:+/*
+signal:magic.io.file.load-recursively
+   .:x:@.folder
+for-each:x:@signal/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         hyper2lambda:x:@.dp/#/0
+         math.increment:x:@.loc
+            get-count:x:@hyper2lambda/**
+         math.increment:x:@.files
+remove-nodes:x:@signal/*

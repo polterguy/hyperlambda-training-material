@@ -1,8 +1,11 @@
 /*
- * This test ensures that strings can be appended to a string builder.
- * The final result should be a concatenation of all appended strings.
+ * Example: Use a variable for the regex pattern.
  */
-strings.builder
-   strings.builder.append:"howdy"
-   strings.builder.append:" world"
-get-value:x@strings.builder
+.pattern:"[A-Z]+"
+source:"abcDEFghi"
+strings.matches:x:@.source
+   get-value:x:@.pattern
+/*
+ * Resulting matches:
+ * .:DEF
+ */

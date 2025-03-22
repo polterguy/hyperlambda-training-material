@@ -1,6 +1,2 @@
-
-// Example: Use a variable for the string to encode.
-.text:key=value&flag=true
-
-// Result: "key%3Dvalue%26flag%3Dtrue"
-strings.url-encode:x:@.text
+// This snippet defines a node with a GUID value.
+.recordId:guid:123e4567-e89b-12d3-a456-426614174000

@@ -1,9 +1,10 @@
-// This code connects to the 'school' database and updates the grade of a student in the 'students' table.
-pgsql.connect:school
-   pgsql.update
-      table:students
-      values
-         grade:A
-      where
-         and
-            student_id:int:101
+
+// Adding expressions as new nodes but unwrapping expressions before executing [add]
+.data
+   foo:some value
+unwrap:x:+/*/*
+add:x:@.data
+   .
+      bar:x:@.data/*/foo
+
+// Both nodes will contain the values of the above [foo] nodes after [add].

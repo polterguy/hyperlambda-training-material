@@ -1,13 +1,45 @@
-// Multiply a variable's value by two factors
-.num:int:7
 
-math.multiply
+// Moves SQL scripts to the correct folder and creates the Chinook database file if it doesn't exist.
+io.file.list:/modules/sqlite-chinook/magic.startup/
+for-each:x:-/*
+   strings.split:x:@.dp/#
+      .:/
+   if
+      strings.ends-with:x:@.dp/#
+         .:.sql
+      .lambda
+         strings.concat
+            .:/etc/sqlite/templates/
+            get-value:x:@strings.split/0/-
+         if
+            not
+               io.file.exists:x:@strings.concat
+            .lambda
 
-   // retrieves 7 from .num
-   get-value:x:@.num
+               // File doesn't exists, hence moving it.
+               io.file.move:x:@.dp/#
+                  .:/etc/sqlite/templates/
+               log.info:SQL script moved into etc folder
+                  filename:x:@.dp/#
 
-   // multiplies 7 by 2 -> result 14
-   .:int:2
+// Creates the chinook database file.
+if
+   not
+      io.file.exists:/data/chinook.db
+   .lambda
 
-   // multiplies 14 by 3 -> result 42
-   .:int:3
+      // Creating a default database file to store database in.
+      io.file.save:/data/chinook.db
+         .:
+      log.info:Chinook database file created
+         filename:/data/chinook.db
+
+      // Loads and executes the chinook.sql script.
+      io.file.load:/etc/sqlite/templates/chinook.sql
+      sqlite.connect:chinook
+         sqlite.execute:x:@io.file.load
+      log.info:The chinook database was successfully created
+         filename:/etc/sqlite/templates/chinook.sql
+
+      // Evicting cache item related to SQLite.
+      cache.set:magic.sql.databases.sqlite.generic

@@ -1,6 +1,14 @@
 
-// Example: Check if a string ends with a specific substring (positive case).
+// Create a Hyperlambda file concatenating two strings
+.arguments
+   arg1:string
+   arg2:int
+strings.concat
+   get-value:x:@.arguments/*/arg1
+   .:" - "
+   get-value:x:@.arguments/*/arg2
 
-// Returns true
-strings.ends-with:WelcomeHome
-   .:Home
+// Unwrap must be used here or [return] would return the expression and not its result
+unwrap:x:+/*
+return
+   result:x:@strings.concat

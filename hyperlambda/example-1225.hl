@@ -1,2 +1,5 @@
-// Creates a single date node with ISO-8601 format
-.my-date:date:"2025-03-22T14:00:00Z"
+
+// Ensure that the role required to interact with CRM system is created
+signal:magic.auth.ensure-role
+   role:account_manager
+   description:Account manager for Robo CRM system

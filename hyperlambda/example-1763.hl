@@ -1,6 +1,35 @@
 
-// Example: Pass arguments to the inline Hyperlambda code.
-strings.mixin:"2 + val equals {{\nmath.add\n   .:int:2\n   get-value:x:@.arguments/*/val\nreturn:x:-\n}}"
-   val:int:5
+// Delete one record from your Album table in your chinook database
+.arguments
 
-// Result: "2 + val equals 7"
+   // Primary key of record to delete, mandatory argument
+   AlbumId:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/AlbumId
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Album
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

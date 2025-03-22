@@ -1,7 +1,14 @@
+// The oracle decides whether a number is worthy.
 
-// Generate a Hyperlambda snippet that scrapes a BBC News article.
+.verdict
+.number-of-trials:int:42
 
-// Example snippet scraping a BBC News article.
-signal:magic.http.scrape-url
-   url:"https://www.bbc.com/news/world-65973926"
-   semantics:bool:true
+if
+   gt
+      get-value:x:@.number-of-trials
+      .:int:40
+   .lambda
+      set-value:x:@.verdict
+         .:You are worthy!
+
+// If trials exceed 40, the verdict will be "You are worthy!".

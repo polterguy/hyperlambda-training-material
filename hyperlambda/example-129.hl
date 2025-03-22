@@ -1,24 +1,24 @@
-/*
- * This script counts the number of Hyperlambda files, in addition to the combined
- * number of nodes, within the specified folder.
- */
-.folder:/modules/cms/
-unwrap:x:+/*
-signal:magic.io.file.load-recursively
-   .:x:@.folder
-for-each:x:@signal/*
+// Complex logic using multiple [if] and [else] within [for-each]
+.car-parts
+   engine:available
+   wheel:out-of-stock
+   door:out-of-stock
+
+for-each:x:@.car-parts/*
    if
-      strings.ends-with:x:@.dp/#
-         .:.hl
+      eq:x:@.dp/#
+         .:available
       .lambda
-         hyper2lambda:x:@.dp/#/0
-            comments:true
-         set-value:x:@hyper2lambda/0
-            strings.concat
-               .:"Generate a Hyperlambda with authorization for 'guest' roles files that "
-               get-value:x:@hyper2lambda/0
-         lambda2hyper:x:@hyper2lambda/*
-            comments:true
-         io.file.save:x:@.dp/#
-            get-value:x:@lambda2hyper
-remove-nodes:x:@signal/*
+         set-value:x:@.dp/#
+            .:checked
+   else
+      get-name:x:@.dp/#
+      if
+         eq:x:@get-name
+            .:wheel
+         .lambda
+            set-value:x:@.dp/#
+               .:urgent restock
+      else
+         set-value:x:@.dp/#
+            .:restock

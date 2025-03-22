@@ -1,40 +1,25 @@
+// Fetches a random dog image from Dog CEO API and handles basic HTTP status codes
 
-// Lists all tables in your SQLite instance.
-slots.create:magic.db.sqlite.tables
+.arguments
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/database
+// Where we store the result of the request
+.dog.result
 
-   // Opens up our connection
-   .connection:[postgres]
-   if
-      and
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .:
-      .lambda
-         set-value:x:@.connection
-            strings.concat
-               .:[
-               get-value:x:@.arguments/*/connection-string
-               .:|
-               get-value:x:@.arguments/*/database
-               .:]
-   else
-      set-value:x:@.connection
-         strings.concat
-            .:[generic|
-            get-value:x:@.arguments/*/database
-            .:]
-   sqlite.connect:x:@.connection
+http.get:"https://dog.ceo/api/breeds/image/random"
+   convert:true
 
-      // Runs our query
-      sqlite.select:"select name from sqlite_master where type = 'table' and name != 'sqlite_sequence'"
-      set-name:x:@sqlite.select/*/*
-         .:table
-      return-nodes:x:@sqlite.select/*
+switch:x:@http.get
+
+   case:int:200
+      set-value:x:@.dog.result
+         get-value:x:@http.get/*/content/*/message
+
+   case:int:404
+      throw:404 Not Found – Dog image endpoint is unavailable
+
+   default
+      set-value:x:@.dog.result
+         .:Failed to fetch dog image
+
+yield
+   result:x:@.dog.result

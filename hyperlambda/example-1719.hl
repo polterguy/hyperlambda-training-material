@@ -1,5 +1,6 @@
-/*
- * Example: URL-encode a URL (especially characters like : / and spaces).
- */
-strings.url-encode:"https://example.com/foo bar"
-// Result: "https%3A%2F%2Fexample.com%2Ffoo%20bar"
+
+// Example: Pattern not found yields an empty result set.
+strings.matches:no digits here
+   .:"\\d+"
+
+// Result: No child nodes (no matches found)

@@ -1,8 +1,18 @@
 
-// Example: Use an empty allowed set (no characters allowed, so every character is replaced).
-.original:Hello
-strings.replace-not-of:x:@.original
-   .:
-   .:*
+// Returns all plans that exist.
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-// Result: "*****"
+// Returns all plans in the system.
+execute:magic.workflows.actions.execute
+   name:hub-plans-get
+   filename:/modules/hub/workflows/actions/hub-plans-get.hl
+   arguments
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

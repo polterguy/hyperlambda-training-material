@@ -1,6 +1,3 @@
-/*
- * Example: Starts-with check is case-sensitive.
- */
-// Returns false
-strings.starts-with:Hello
-   .:hello
+// Retrieve the value of a specified node
+.data:Hello World
+get-value:x:@.data

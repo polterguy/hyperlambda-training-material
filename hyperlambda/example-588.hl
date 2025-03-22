@@ -1,16 +1,10 @@
+/*
+ * This Hyperlambda snippet demonstrates the basic usage of `compose`.
+ *
+ * 1. The `compose` slot is used to combine multiple iterators.
+ */
 
-// Generate a Hyperlambda snippet that loops until [.requests] reach 10.
-
-// Loops until [.requests] reach 10.
-.requests:int:1
-while
-   lt
-      get-value:x:@.requests
-      .:int:10
-   .lambda
-
-      // Handling request.
-      log.info:Processing request
-
-      // Incrementing request counter.
-      math.increment:x:@.requests
+compose
+   .:@.data
+   .:*
+   .:value

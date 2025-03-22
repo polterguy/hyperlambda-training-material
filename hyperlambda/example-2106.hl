@@ -1,3 +1,9 @@
-// Decrement [.value] by 2
-math.decrement:x:@.NODE_EXPRESSION_HERE
-   .:int:2
+/**
+ * This example checks if the folder "/logs/" exists.
+ * If it does, [.result] is set to "Folder exists".
+ */
+.result
+io.folder.exists:/logs/
+if:x:-
+   set-value:x:@.result
+      .:Folder exists

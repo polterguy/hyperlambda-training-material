@@ -1,14 +1,13 @@
-
-// Write a Hyperlambda script to return a specified CSS file to the caller, with options for position, color, link, start, and end.
-.arguments
-   file:string
-   position:string
-   color:string
-   link:string
-   start:string
-   end:string
-   v:string
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/include-style.css.get.hl
-return:x:-
+// Example of creating a MIME HTTP POST request.
+http.post:"http://localhost:5000/magic/modules/foo/foo"
+   headers
+      Content-Type:multipart/form-data
+   payload
+      entity:text/plain
+         headers
+            Content-Disposition:"form-data; name=\"foo\""
+         content:Foo bar
+      entity:text/plain
+         headers
+            Content-Disposition:"form-data; filename=\"README.md\""
+         filename:/README.md

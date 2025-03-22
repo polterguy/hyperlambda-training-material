@@ -1,13 +1,4 @@
-/*
- * This Hyperlambda snippet retrieves all child nodes of `.data`.
- *
- * 1. The `.data` node has three children: `foo1`, `foo2`, and `foo3`.
- * 2. The `get-nodes` slot is used to retrieve all direct children.
- * 3. The output will include all children (`foo1`, `foo2`, `foo3`).
- */
+// Return the HTTP verb of the current request
+request.verb
 
-.data
-   foo1:bar1
-   foo2:bar2
-   foo3:bar3
-get-nodes:x:@.data/*
+// Result ==> One of get, post, put, patch, or delete

@@ -1,6 +1,4 @@
 
-// Example: Use a variable to provide the input string.
-.text:Test
-
-// Returns 4
-strings.length:x:@.text
+// Change HTTP headers
+response.headers.set
+   Content-Type:text/plain

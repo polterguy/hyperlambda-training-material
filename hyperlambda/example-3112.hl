@@ -1,18 +1,11 @@
-// This code loads an HTML file and replaces old brand names and slogans with updated ones.
-// It replaces "OldBrand" with "NewBrand" and "Experience the Difference" with "Elevate Everything".
+// How the named sibling node works
 .data
-   .
-      what:OldBrand
-      with:NewBrand
-   .
-      what:Experience the Difference
-      with:Elevate Everything
-.filename:/public/index.html
-.result
-set-value:x:-
-   io.file.load:x:@.filename
-for-each:x:@.data/*
-   set-value:x:@.result
-      strings.replace:x:@.result
-         get-value:x:@.dp/#/*/what
-         get-value:x:@.dp/#/*/with
+   .not-found:value
+get-value:x:@.not-found
+
+/*
+ * The above named sibling iterator traverses the node hierarchy from the identity node and upwards,
+ * until it finds a node with the name specified. In the example above the name is `.data`.
+ *
+ * After execution, the value of the [get-value] slot will become 'value'
+ */

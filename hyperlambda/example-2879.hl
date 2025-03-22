@@ -1,8 +1,21 @@
 
-// Example: Replace all digits in a string with asterisks.
-.text:ID 0987
-strings.regex-replace:x:@.text
-   .:"\\d"
-   .:*
-
-// Result: "ID ****"
+// Create a Hyperlambda script to generate a scatter chart image with specified dimensions, data points, line width, marker size, and color.
+image.chart:scatter
+   filename:/scatter.png
+   width:400
+   height:300
+   data-x
+      .:1
+      .:2
+      .:3
+      .:4
+      .:5
+   data-y
+      .:1
+      .:4
+      .:9
+      .:16
+      .:25
+   line-width:5
+   marker-size:15
+   color:#55aa5555

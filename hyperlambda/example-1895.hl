@@ -1,3 +1,8 @@
-// Move folder
-io.folder.move:/misc/source-folder/
-   .:/misc/destination-folder/
+
+// Write a Hyperlambda snippet that pushes elements into the designated node's children collection.
+
+// Pushes elements into the designated node's children collection.
+.container
+add:x:@.container
+   .
+      name:description

@@ -1,33 +1,29 @@
 
-// CRUD Hyperlambda file that deletes one record from your menus table in your cms database
-.arguments
+// Write a Hyperlambda script to return the default database type the system is using and options for alternative database types.
 
-   // Primary key of record to delete, mandatory argument
-   id:long
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Meta data description for endpoint
+// Retrieving database section from configuration.
+config.section:"magic:databases"
 
-// Type of endpoint
-.type:crud-delete
+// Adding default database type to return value.
+add:x:../*/return
+   get-nodes:x:@config.section/*/default
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/id
+/*
+ * Iterating through each optional database type,
+ * and making sure we return those too, making sure
+ * we remove 'default' parts before iterating.
+ */
+remove-nodes:x:@config.section/*/default
+for-each:x:@config.section/*
+   set-value:x:+/*/*
+      get-name:x:@.dp/#
+   add:x:../*/return/*/options
+      .
+         .
 
-// Opening up our database connection with default database type (SQLite).
-data.connect:[generic|cms]
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database using default database type being SQLite.
-   data.delete
-      table:menus
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Returning result of above to caller.
+return
+   options

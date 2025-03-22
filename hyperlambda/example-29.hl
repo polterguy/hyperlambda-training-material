@@ -1,10 +1,11 @@
-// Using variables with the [if] slot to evaluate a condition
-.condition:bool:false
-.result
+// Create three different types of hashes from specified data
+.data:Some data to hash
 
-if
-   get-value:x:@.condition
-   .lambda
-      set-value:x:@.result
-         .:Condition met
-// Result ==> false
+crypto.hash:x:@.data
+   format:fingerprint
+
+crypto.hash:x:@.data
+   format:text
+
+crypto.hash:x:@.data
+   format:raw

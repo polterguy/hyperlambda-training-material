@@ -1,5 +1,4 @@
-// Convert a string to a base64-encoded value
-
-.src:bytes:ICA=
-convert:x:-
-   type:base64
+// Using eq with an expression as the left-hand side (LHS)
+.foo:bar
+eq:x:@.foo
+   .:bar

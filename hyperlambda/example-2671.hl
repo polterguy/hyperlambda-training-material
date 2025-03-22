@@ -1,8 +1,9 @@
-
-// Example: Replace all occurrences of a substring.
-.text:abababab
-strings.replace:x:@.text
-   .:ab
-   .:AB
-
-// Result: "ABABABAB"
+// List of students and their final grade
+.school
+   students
+      .
+         name:Lucas
+         grade:A
+      .
+         name:Nora
+         grade:B+

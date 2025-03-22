@@ -1,9 +1,25 @@
-// Changes the value of all nodes in [.data]
-.data
-   foo1
-   foo2
 
-for-each:x:-/*
+/*
+ * Compiles a snippet of C# code down to a library,
+ * for then to dynamically load it as a plugin.
+ */
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.Private.CoreLib
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.signals.contracts
+   code:"\n\n// Example C# code creating a Hyperlambda slot.\nusing System;\nusing magic.node;\nusing magic.node.extensions;\nusing magic.signals.contracts;\n\n// Our slot class.\n[Slot(Name = \"foo\")]\npublic class Foo : ISlot\n{\n   public void Signal(ISignaler signaler, Node input)\n   {\n      input.Value = $\"Hi {input.GetEx<string>()}, how may I assist you?\";\n   }\n}"
+   assembly-name:foo.dll
 
-   set-value:x:@.dp/#
-      .:hello
+// Loading assembly from raw bytes now that we've created it.
+system.plugin.load:x:@system.compile
+
+// Executing [foo] slot now dynamically injected into AppDomain.
+.name:John Doe
+foo:x:@.name
+
+// Unloading plugin.
+system.plugin.unload:foo.dll

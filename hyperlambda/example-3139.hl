@@ -1,16 +1,7 @@
-/*
- * Save this file as `/modules/auth/endpoints/register.hl`
- * This exposes an HTTP POST endpoint at `/auth/register`
- *
- * Requires `email` to be present and match a valid email regex.
- */
 
-.arguments
-   email
+// Return the URL of the current request
+request.url
 
-validators.mandatory:x:@.arguments/*/email
-validators.regex:x:@.arguments/*/email
-   .:^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$
+// Example result ==> magic/system/evaluator/evaluate
 
-yield
-   result:Email is valid
+// Notice, URL will always be returned as relative URL

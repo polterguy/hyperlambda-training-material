@@ -1,16 +1,16 @@
+// Converts lambda object to CSV string, preserving types
+.data
+   .
+      name:Thomas Hansen
+      age:int:47
+   .
+      name:John Doe
+      age:int:67
 
-// Generate a Hyperlambda snippet that evaluates specified [.check] if condition evaluates to true.
+lambda2csv:x:-/*
 
-// Evaluates specified [.check] if condition evaluates to true.
-.check:bool:true
-if
-   eq:x:@.check
-      .:bool:true
-   .lambda
+add:x:+/*/types
+   get-nodes:x:@lambda2csv/*
 
-      // Lambda evaluates if condition is true.
-      log.info:[.check] is true
-else
-
-   // Lambda evaluated if condition is NOT true.
-   log.info:[.check] is false
+csv2lambda:x:@lambda2csv
+   types

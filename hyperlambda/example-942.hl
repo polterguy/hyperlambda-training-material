@@ -1,34 +1,33 @@
 
-/*
- * Ensures our system messages are updated during deployments.
- */
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the ml_types table in the magic database with a type matching the argument, ensuring authentication and authorization for root roles.
+.arguments
+   type:string
+.type:crud-delete
 
-// Listing all system messages we've got.
-io.file.list:/modules/finovo/system-messages/
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Opening up database connection.
-data.connect:magic
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/type
 
-   // Looping through each system message and updating our machine learning type accordingly.
-   for-each:x:@io.file.list/*
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-      // Loading file.
-      io.file.load:x:@.dp/#
+   // Deleting referenced rows in vss_ml_training_snippets
+   data.execute:"delete from vss_ml_training_snippets where rowid in\n   (select id as rowid from ml_training_snippets where type = @type)"
+      type:x:@.arguments/*/type
 
-      // Finding type name
-      .type
-      strings.split:x:@.dp/#
-         .:/
-      strings.split:x:-/0/-
-         .:.
-      set-value:x:@.type
-         get-value:x:@strings.split/0
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
 
-      // Updating type name's system message.
-      data.update
-         table:ml_types
-         values
-            system_message:x:@io.file.load
-         where
-            and
-               type.eq:x:@.type
+   // Deleting item from database.
+   data.delete
+      table:ml_types
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

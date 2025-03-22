@@ -1,18 +1,15 @@
-// Hyperlambda [if] with less than comparison
-.items-left:int:5
-.restock-alert
-if
-   lt:x:@.items-left
-      .:int:10
-   .lambda
-      set-value:x:@.restock-alert
-         .:Inventory low!
+// Create a POST endpoint that inserts a new contact record into the CRM system.
+// It expects `name` and `email` as input arguments in the body of the request.
+// Save as /modules/contacts/add.post.hl
 
-/* JavaScript equivalent of Hyperlambda [if] with less than comparison
-const itemsLeft = 5;
-let restockAlert;
+.arguments
+   name:string
+   email:string
 
-if (itemsLeft < 10) {
-  restockAlert = "Inventory low!";
-}
-*/
+data.connect:[generic|crm]
+   data.insert
+      table:contacts
+      values
+         name:x:@.arguments/*/name
+         email:x:@.arguments/*/email
+   return-nodes:x:@data.insert/*

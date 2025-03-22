@@ -1,6 +1,27 @@
-// HTTP endpoint that ensures specified name parameter is between 5 and 100 characters in length
+
+// Returns the training snippet with the specified [id] to the caller.
 .arguments
-   name:string
-validators.string:x:@.arguments/*/name
-   min:5
-   max:100
+
+   // Mandatory argument and the primary key and ID of the training snippet to return
+   id:int
+.type:public
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+validators.integer:x:@.arguments/*/id
+   min:int:0
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Finding our snippet from the database.
+   data.read
+      table:ml_training_snippets
+      columns
+         prompt
+         completion
+         uri
+      where
+         and
+            id.eq:x:@.arguments/*/id
+   return-nodes:x:@data.read/*

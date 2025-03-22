@@ -1,13 +1,14 @@
-// [and] slot in [if] slot making sure both conditions must be true
-.s1:bool:true
-.s2:bool:true
-.res
-
-if
-   and
-      get-value:x:@.s1
-      get-value:x:@.s2
-   .lambda
-
-      set-value:x:@.res
-         .:OK
+// Sums all product prices inside items and sets total in total
+.cart
+   items
+      item1
+         price:int:15
+      item2
+         price:int:25
+      item3
+         price:int:10
+   total:int:0
+for-each:x:@.cart/*/items/*
+   set-value:x:@.cart/*/total
+      math.add:x:@.cart/*/total
+         get-value:x:@.dp/#/*/price

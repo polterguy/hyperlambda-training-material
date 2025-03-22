@@ -1,17 +1,24 @@
+// Hello world, taking name and age, and returning a personalised greeting
+.arguments
+   name:string
+   age:int
 
-// Provide a Hyperlambda example with string variables, covering cases of colons, multi-line strings, and escaped characters.
+// IMPORTANT! Endpoints and hyperlambda files taking arguments should almost ALWAYS have an [.arguments] node such as above!
 
-// No special characters, so no quotes required
-.text1:sample
+// Ensures name was provided.
+validators.mandatory:x:@.arguments/*/name
 
-// Contains a colon, requiring quotes
-.text2:"sample:value"
+// Ensures age was provided.
+validators.mandatory:x:@.arguments/*/age
 
-// Multi-line string, using @ notation
-.text3:"lineA\nlineB"
+// Concatenates the name and age into a greeting.
+strings.concat
+   .:"Hello "
+   get-value:x:@.arguments/*/name
+   .:", you are "
+   get-value:x:@.arguments/*/age
+   .:" years old."
 
-// Alternative quoting with single quotes
-.text4:test
-
-// Escaped newline within a string
-.text5:"first\nsecond"
+// Returns the greeting to the caller.
+yield
+   greeting:x:@strings.concat

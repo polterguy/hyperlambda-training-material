@@ -1,8 +1,5 @@
-
-// Example: Use variables for string and trim characters (start only).
-.text:...Hello
-.trimchars:.
-
-// Result: "Hello"
-strings.trim-start:x:@.text
-   get-value:x:@.trimchars
+/*
+ * Example: URL-encode an email address.
+ */
+strings.url-encode:"user@example.com"
+// Result: "user%40example.com"

@@ -1,7 +1,13 @@
-
-// Write a Hyperlambda script to create the system-message folder in the user's /etc/ folder unless it already exists.
-if
-   not
-      io.folder.exists:/etc/system/openai/system-messages/
-   .lambda
-      io.folder.create:/etc/system/openai/system-messages/
+// Builds a payload response by computing sections and adding them to .payload
+.payload
+.compute-user
+   return
+      userId:123
+      username:johndoe
+.compute-meta
+   return
+      timestamp:date:"2025-03-22T10:00:00Z"
+      requestId:xyz-789
+add:x:@.payload
+   get-nodes:x:@.compute-user/*/return/*
+   get-nodes:x:@.compute-meta/*/return/*

@@ -1,2 +1,5 @@
-// This snippet defines a node with a byte (8-bit unsigned int) value.
-.flags:byte:255
+// Sets value of multiple nodes at the same time
+.foo
+.foo
+set-value:x:../*/.foo
+   .:SUCCESS

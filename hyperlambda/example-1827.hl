@@ -1,24 +1,24 @@
-/*
- * Posts an order ID to the order system to fetch order details.
- * If the request is successful (2xx), the full response content is returned.
- */
 
+// Write a Hyperlambda script to list all connection strings in your installation for a specified database type.
 .arguments
-   id:int
+   databaseType:string
 
-http.post:"https://orders.api.example.com/get-order"
-   convert:true
-   payload
-      order_id:x:@.arguments/*/id
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-if
-   and
-      mte:x:@http.post
-         .:int:200
-      lt:x:@http.post
-         .:int:300
-   .lambda
-      yield
-         result:x:@http.post/*/content/*
-else
-   throw:Failed to fetch order
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/databaseType
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:pgsql
+   .:mssql
+   .:sqlite
+
+// Retrieves all connection strings according to database type specified.
+strings.concat
+   .:"magic:databases:"
+   get-value:x:@.arguments/*/databaseType
+config.section:x:-
+add:x:+
+   get-nodes:x:@config.section/*
+return

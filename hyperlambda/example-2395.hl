@@ -1,8 +1,5 @@
-/*
- * This Hyperlambda snippet retrieves 10 records, skipping the first 20.
- */
 
-data.read
-   table:orders
-   limit:10
-   offset:20
+// Example: Convert an uppercase string to lowercase.
+
+// Result: "hello"
+strings.to-lower:HELLO

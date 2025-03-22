@@ -1,2 +1,8 @@
-// Delete a folder
-io.folder.delete:/misc/foo/
+
+// Generate a Hyperlambda snippet that adds multiple nodes into the specified destination's children collection.
+
+// Adds multiple nodes into the specified destination's children collection.
+.target
+add:x:@.target
+   .
+      key:value

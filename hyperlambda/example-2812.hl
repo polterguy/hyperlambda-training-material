@@ -1,8 +1,8 @@
 /*
- * Checking existence of immediate children only.
- * The `exists` slot should return `true` since `.dest` has one direct child being `sub`.
+ * Example: Allow letters and spaces only (remove punctuation by replacing with empty).
  */
-.dest
-   sub
-      foo
-exists:x:-/*
+.phrase:"Hello, World!"
+strings.replace-not-of:x:@.phrase
+   .:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+   .:""
+// Result: "Hello World" (comma and '!' removed)

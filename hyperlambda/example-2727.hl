@@ -1,8 +1,11 @@
-
-// Example: Use another slot's output as part of the concatenation.
-.prefix:"Value: "
-strings.concat
-   get-value:x:@.prefix
-   strings.to-upper:example
-
-// Result: "Value: EXAMPLE"
+// Getting the first customer's name
+.customers
+   .
+      name:Thomas Hansen
+      email:thomas@ainiro.io
+   .
+      name:Jane Fonda
+   .
+      name:Peter Sellers
+      email:peter@sellers.com
+get-value:x:@.customers/0/*/name

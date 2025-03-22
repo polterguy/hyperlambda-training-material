@@ -1,5 +1,18 @@
+/*
+ * Stores a value in the cache with expiration.
+ */
+.arguments
+   key:string
+   value:string
+   seconds:int
 
-// Example: Get the length of an empty string.
+validators.mandatory:x:@.arguments/*/key
+validators.mandatory:x:@.arguments/*/value
+validators.mandatory:x:@.arguments/*/seconds
 
-// Returns 0
-strings.length:
+cache.set:x:@.arguments/*/key
+   get-value:x:@.arguments/*/value
+   expiration:x:@.arguments/*/seconds
+
+return
+   success:true

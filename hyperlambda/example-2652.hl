@@ -1,16 +1,26 @@
-
-// Write a Hyperlambda snippet that formats an address.
-
-// Hyperlambda file that concatenates an address string.
+/*
+ * Lists companies where a director is involved, filtered by revenue
+ */
 .arguments
-   street:string
-   city:string
-   zip:int
-strings.concat
-   get-value:x:@.arguments/*/street
-   .:", "
-   get-value:x:@.arguments/*/city
-   .:" - "
-   get-value:x:@.arguments/*/zip
-yield
-   address:x:@strings.concat
+   director_id:long
+   min_revenue:long
+   limit:long
+   offset:long
+
+data.connect:[pg|finance_data]
+   database-type:pgsql
+
+   data.select:@"
+select b.company_name, b.revenue, d.role_name
+   from directors d
+      join basic b on b.org_number = d.org_number
+   where d.director_id = @id and b.revenue >= @min
+   limit @limit offset @offset"
+      database-type:pgsql
+      @id:x:@.arguments/*/director_id
+      @min:x:@.arguments/*/min_revenue
+      @limit:x:@.arguments/*/limit
+      @offset:x:@.arguments/*/offset
+
+   yield
+      profitable_roles:x:@data.select/*

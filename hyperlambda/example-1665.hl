@@ -1,5 +1,18 @@
-/*
- * Example: Convert a mixed-case sentence to lowercase.
- */
-// Result: "hello world!"
-strings.to-lower:"Hello World!"
+
+// Create a Hyperlambda action to save specified 'content' to a specified 'file'. Validate mandatory fields.
+.arguments
+   file
+      type:string
+      mandatory:bool:true
+   content
+      type:string
+      mandatory:bool:true
+.icon:save
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/file
+validators.mandatory:x:@.arguments/*/content
+
+// Saves the specified file.
+save-file:x:@.arguments/*/file
+   get-value:x:@.arguments/*/content

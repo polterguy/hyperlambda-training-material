@@ -1,8 +1,15 @@
 
-// Example: Remove all digits from a string using a regex.
-.original:abc123xyz
-strings.regex-replace:x:@.original
-   .:"\\d+"
-   .:
+// Create a Hyperlambda snippet that counts transactions in the 'finance_db' database from the 'transactions' table.
 
-// Result: "abcxyz"
+// Counts transactions in the "finance_db" database from the "transactions" table.
+data.connect:finance_db
+   database-type:pgsql
+
+   // Counting total transactions.
+   data.read
+      database-type:pgsql
+      table:transactions
+      columns
+         count(*)
+            as:count
+      limit:long:1

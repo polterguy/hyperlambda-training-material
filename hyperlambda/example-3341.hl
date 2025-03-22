@@ -1,12 +1,6 @@
-// Using [switch] with boolean values to determine if a car part is available
-.available:bool:true
-.result
-switch:x:@.available
 
-   case:bool:true
-      set-value:x:@.result
-         .:Car part is available
-
-   case:bool:false
-      set-value:x:@.result
-         .:Car part is not available
+// Sets the value of [.res] to the number of records we've got in our table1 table in our foo database
+.res
+data.connect:foo
+   set-value:x:@.res
+      data.scalar:select count(*) from table1

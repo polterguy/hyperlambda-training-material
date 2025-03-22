@@ -1,41 +1,48 @@
 
-// Write a Hyperlambda script for an OpenAI AI search endpoint returning only references to matching training snippets.
+// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the questionnaires table in the magic database, filtering which item to update with name and updating type fields, ensuring authentication and authorization for root roles.
 .arguments
-   prompt:string
+   name:string
    type:string
-   recaptcha_response:string
-   max:int
-.type:public
+   action:string
 
-// Invoking slot containing commonalities for all endpoints.
-insert-before:x:../*/signal/*/.callback
-   get-nodes:x:@.arguments/*
-signal:magic.ai.endpoint-common
-   .callback
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/name
 
-      // Invoking slot responsible for returning URLs to us.
-      add:x:+
-         get-nodes:x:@.arguments/*
-      signal:magic.ai.search
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-      // Returning results of above invocation to caller.
-      add:x:./*/return-nodes/*/snippets
-         get-nodes:x:@signal/*/snippets/*
-      add:x:./*/return-nodes
-         get-nodes:x:@signal/*/db_time
-      return-nodes
-         snippets
+// Opening up our database connection.
+data.connect:[generic|magic]
+   database-type:sqlite
 
-/*
- * Applying some HTTP caching to avoid invoking OpenAI again with
- * the same question before some minimum amount of time has passed.
- * 
- * Notice, we can apply more "aggressive" caching here than in our
- * chat endpoints, since the same query will mostly always return
- * the same result, since there is no room for "creativity" here.
- */
-response.headers.set
-   Cache-Control:max-age=300
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
 
-// Returning result of worker slot to caller.
-return-nodes:x:@signal/*
+   // Invoking our update slot.
+   data.update
+      database-type:sqlite
+      table:questionnaires
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning the correct status code.
+   response.status.set:202
+
+   // Returning success to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.update

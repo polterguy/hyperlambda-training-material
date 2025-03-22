@@ -1,2 +1,14 @@
-// Check if folder exists
-io.folder.exists:/misc/foo/
+// Applies env variable values into the system configuration
+.env
+   vars
+      port:int:8080
+      debug:bool:true
+      region:eu-west
+.system
+   port
+   debug
+   region
+for-each:x:@.env/*/vars/*
+   get-name:x:@.dp/#
+   set-value:x:@.system/*/{@get-name}
+      get-value:x:@.dp/#

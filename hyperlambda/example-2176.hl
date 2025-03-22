@@ -1,13 +1,22 @@
+/*
+ * This Hyperlambda snippet accepts a file path as input, reads the content of the file,
+ * splits the text into words using space as the delimiter, counts the number of resulting words,
+ * and returns this count to the caller.
+ */
 
-// Write a Hyperlambda script to ensure the cache folder exists and empty it for JavaScript files.
-if
-   not
-      io.folder.exists:/etc/cache/
-   .lambda
-      io.folder.create:/etc/cache/
-else
+.arguments
+   file-path:string
 
-   // Empties cache folder for JavaScript files.
-   io.file.list:/etc/cache/
-   for-each:x:@io.file.list/*
-      io.file.delete:x:@.dp/#
+// Load the text file's content
+io.file.load:x:@.arguments/*/file-path
+
+// Split the content into words based on spaces
+strings.split:x:@io.file.load
+   .:' '
+
+// Count the number of words found
+get-count:x:@strings.split/*
+
+// Return the word count to the caller
+yield
+   word-count:x:@get-count

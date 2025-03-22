@@ -1,4 +1,5 @@
-// Loads environment-specific settings by executing a config loader file
-.env:dev
-execute-file:/modules/config/load.hl
-   environment:x:@.env
+
+// Converting a string to integer
+.data:42
+convert:x:@.data
+   type:int

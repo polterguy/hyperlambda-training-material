@@ -1,27 +1,44 @@
+/*
+ * Compiles a snippet of C# code down to a library,
+ * for then to dynamically load it as a plugin.
+ *
+ * This particular code creates a slot, but you can create any
+ * code you wish, and it doesn't have to be Hyperlambda related.
+ */
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.Private.CoreLib
+      .:magic.node
+      .:magic.signals.contracts
+   code:@"
 
-// Create a Hyperlambda snippet that executes [.lambda] if at least one condition is met.
+// Example C# code creating a Hyperlambda slot.
+using System;
+using magic.node;
+using magic.signals.contracts;
 
-// Executes [.lambda] if at least one condition is met.
-.output
-.numA:int:6
-.numB:int:12
-if
-   or
+// Our slot class.
+[Slot(Name = ""bar"")]
+public class Bar : ISlot
+{
+   public void Signal(ISignaler signaler, Node input)
+   {
+      input.Value = ""Hello from C#"";
+   }
+}"
+   assembly-name:bar.dll
 
-      // Less than check
-      lt:x:@.numA
-         .:int:7
+// Loading assembly now that we've created it.
+system.plugin.execute:x:@system.compile
 
-      // Greater than check
-      mt:x:@.numB
-         .:int:11
-   .lambda
+   // Invoking dynamically created C# slot.
+   bar
 
-      // Setting [.output] to true
-      set-value:x:@.output
-         .:bool:true
-else
-
-   // Setting [.output] to false
-   set-value:x:@.output
-      .:bool:false
+/*
+ * Now the [bar] slot is no longer available
+ * since the assembly has been unloaded due to
+ * having gone out of scope.
+ */
+system.plugin.list

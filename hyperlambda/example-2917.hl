@@ -1,116 +1,30 @@
 
-/*
- * Sends an email with the specified [subject] and [body] to the specified [name] and [email]
- * 
- * Will use the default HTML template transforming [body] from Markdown to HTML
- */
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the questions table in the magic database with a question_id matching the argument, ensuring authentication and authorization for root and admin roles.
 .arguments
-   name:string
-   email:string
-   subject:string
-   body:string
+   question_id:long
 
-/*
- * Ensures the specified [arg] was given.
- *
- * This action will throw an exception with a descriptive text explaining if the argument is missing.
- */
-execute:magic.workflows.actions.execute
-   name:validators-mandatory
-   filename:/misc/workflows/actions/security/validators-mandatory.hl
-   arguments
-      arg:x:@.arguments/*/name
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-/*
- * Ensures the specified [arg] was given.
- *
- * This action will throw an exception with a descriptive text explaining if the argument is missing.
- */
-execute:magic.workflows.actions.execute
-   name:validators-mandatory
-   filename:/misc/workflows/actions/security/validators-mandatory.hl
-   arguments
-      arg:x:@.arguments/*/email
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/question_id
 
-/*
- * Ensures the specified [arg] was given.
- *
- * This action will throw an exception with a descriptive text explaining if the argument is missing.
- */
-execute:magic.workflows.actions.execute
-   name:validators-mandatory
-   filename:/misc/workflows/actions/security/validators-mandatory.hl
-   arguments
-      arg:x:@.arguments/*/subject
+// Opening up our database connection.
+data.connect:[generic|magic]
+   database-type:sqlite
 
-/*
- * Ensures the specified [arg] was given.
- *
- * This action will throw an exception with a descriptive text explaining if the argument is missing.
- */
-execute:magic.workflows.actions.execute
-   name:validators-mandatory
-   filename:/misc/workflows/actions/security/validators-mandatory.hl
-   arguments
-      arg:x:@.arguments/*/body
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
 
-/*
- * Ensures user is authorized to access endpoint.
- *
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:questions
+      where
+         and
 
-// Transforms the specified [markdown] to HTML and returns to caller.
-execute:magic.workflows.actions.execute
-   name:markdown2html
-   filename:/misc/workflows/actions/misc/markdown2html.hl
-   arguments
-      markdown:x:@.arguments/*/body
-
-// Loads the specified [file] and returns to caller as [content].
-execute:magic.workflows.actions.execute
-   name:file-load
-   filename:/misc/workflows/actions/file/file-load.hl
-   arguments
-      file:/modules/hub/magic.startup/templates/generic.html
-
-/*
- * Replaces the specified [source] string's [what] occurencies with [with].
- *
- * Returns the result as [result].
- */
-execute:magic.workflows.actions.execute
-   name:strings-replace
-   filename:/misc/workflows/actions/strings/strings-replace.hl
-   arguments
-      source:x:--/execute/=file-load/*/content
-      what:{{content}}
-      with:x:--/execute/=markdown2html/*/html
-
-/*
- * Sends an email to the specified [name]/[email] recipient, with the specified [subject] and [body].
- *
- * Optionally supply [from] and [from-email] as name/email sender. If you don't supply from, this action
- * will use the default sender settings from your configuration.
- */
-execute:magic.workflows.actions.execute
-   name:email
-   filename:/misc/workflows/actions/misc/email.hl
-   arguments
-      name:x:@.arguments/*/name
-      email:x:@.arguments/*/email
-      subject:x:@.arguments/*/subject
-      body:x:--/execute/=strings-replace/*/result
-      html:bool:true
-
-// Returning success to caller.
-return
-   result:success
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

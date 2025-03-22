@@ -1,78 +1,27 @@
 
-// Write a Hyperlambda script to export the specified SQL to a module folder.
-.arguments
-   databaseType:string
-   module:string
-   sql:string
+// Create a function to return all existing payment subscription plans in the system. The function should find and execute all slots that declare subscription plans, each returning a name, description, price, currency, period (month or year), and Stripe price ID. The function should loop through these slots, execute them to retrieve the subscription plans, and return the plans to the caller. This setup allows the system to handle Stripe subscriptions effectively.
+slots.vocabulary:stripe.subscriptions.plans.
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Looping through each slot returned above and executing it.
+for-each:x:@slots.vocabulary/*
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/sql
-validators.mandatory:x:@.arguments/*/module
-validators.mandatory:x:@.arguments/*/databaseType
-validators.enum:x:@.arguments/*/databaseType
-   .:mysql
-   .:sqlite
-   .:mssql
-   .:pgsql
-
-// Ensuring folders exists.
-strings.concat
-   .:/modules/
-   get-value:x:@.arguments/*/module
-   .:/
-if
-   not
-      io.folder.exists:x:@strings.concat
-   .lambda
-      io.folder.create:x:@strings.concat
-strings.concat
-   .:/modules/
-   get-value:x:@.arguments/*/module
-   .:/magic.startup/
-if
-   not
-      io.folder.exists:x:@strings.concat
-   .lambda
-      io.folder.create:x:@strings.concat
-
-// Saving file.
-strings.concat
-   .:/modules/
-   get-value:x:@.arguments/*/module
-   .:/magic.startup/
-   get-value:x:@.arguments/*/module
-   .:.
-   get-value:x:@.arguments/*/databaseType
-   .:.sql
-io.file.save:x:@strings.concat
-   get-value:x:@.arguments/*/sql
-
-// Creating ensure database Hyperlambda file.
-.lambda
+   // Changing slot invocation name.
+   set-value:x:./*/execute
+      get-value:x:@.dp/#
 
    /*
-    * Runs during startup of Magic, and basically just ensures the module's database exists,
-    * and is updated by running migration scripts after attempting to create the database.
+    * Executing slot to retrieve supported providers.
     * 
-    * If the database doesn't exist, this script will create it by executing the SQL in the file
+    * Notice, name of slot (value of node) is dynamically created above.
     */
-   signal:magic.modules.ensure-database
-      module:module
-      database:module
-set-value:x:@.lambda/**/=module
-   get-value:x:@.arguments/*/module
-lambda2hyper:x:@.lambda/*
-   comments:true
-strings.concat
-   .:/modules/
-   get-value:x:@.arguments/*/module
-   .:/magic.startup/ensure-database.hl
-io.file.save:x:@strings.concat
-   get-value:x:@lambda2hyper
+   execute
 
-// Returning result to caller.
+   // Looping through all providers returned above to return them to client.
+   for-each:x:@execute/*
+
+      // Returning subscription plan to caller.
+      add:x:../*/return
+         get-nodes:x:@.dp/#
+
+// Returning subscription plans to caller.
 return
-   result:success

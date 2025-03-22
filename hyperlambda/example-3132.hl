@@ -1,21 +1,15 @@
-/*
- * Save this file as `/modules/math/endpoints/add.hl`
- * This exposes an HTTP POST endpoint at `/math/add`
- *
- * It requires both `a` and `b` arguments, adds them,
- * and returns the result.
- */
 
-.arguments
-   a:int
-   b:int
+// Write a Hyperlambda snippet that counts products in the 'inventory_db' database from the 'products' table.
 
-validators.mandatory:x:@.arguments/*/a
-validators.mandatory:x:@.arguments/*/b
+// Counts products in the "inventory_db" database from the "products" table.
+data.connect:inventory_db
+   database-type:sqlite
 
-math.add
-   get-value:x:@.arguments/*/a
-   get-value:x:@.arguments/*/b
-
-yield
-   result:x:@math.add
+   // Counting total products.
+   data.read
+      database-type:sqlite
+      table:products
+      columns
+         count(*)
+            as:count
+      limit:long:1

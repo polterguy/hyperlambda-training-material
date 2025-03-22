@@ -1,8 +1,31 @@
 
-// Example: Use variables to supply the string and prefix to check.
-.text:Sample
-.prefix:Sam
+// Changes the specified [username]'s password to [password].
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   password
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Returns true
-strings.starts-with:x:@.text
-   get-value:x:@.prefix
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
+validators.string:x:@.arguments/*/password
+   min:12
+
+// Hashing specified [password].
+crypto.password.hash:x:@.arguments/*/password
+
+// Opens up database connection.
+data.connect:[generic|magic]
+
+   // Updating user's password.
+   data.update
+      table:users
+      values
+         password:x:@crypto.password.hash
+      where
+         and
+            username.eq:x:@.arguments/*/password

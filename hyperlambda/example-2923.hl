@@ -1,5 +1,5 @@
-// Changing a node's name
-.data
-   old-name:some-value
-set-name:x:@.data/*/old-name
-   .:new-name
+/*
+ * Example: Capitalize a string starting with a digit (no alphabetical character to capitalize).
+ */
+// Result: "42hello"
+strings.capitalize:42hello

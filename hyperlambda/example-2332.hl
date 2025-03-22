@@ -1,6 +1,10 @@
-// Load a file, convert it to lambda, and then execute it
-io.file.load:/foo.hl
 
-hyper2lambda:x:-
-
-eval:x:-
+// Write a Hyperlambda endpoint that handles JSON payloads containing a 'user' and 'action' and returns a message.
+.arguments
+   user:string
+   action:string
+return
+   message:x:@strings.concat
+      get-value:x:@.arguments/*/user
+      .:" performed action: "
+      get-value:x:@.arguments/*/action

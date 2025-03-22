@@ -1,6 +1,17 @@
 
-// Example: No trim characters at start (string remains unchanged).
+// Changes the value of all nodes having a name of [foo]
+.data
+   foo
+      bar
+   hello
+      howdy
+         foo
+      some-node
+         some-other-node
+            foo
 
-// Result: "abc"
-strings.trim-start:abc
-   .:z
+// ** expression yields ALL descendants
+set-value:x:@.data/**/foo
+   .:touched
+
+// After execution, all above nodes having the name of 'foo' will have their values changed

@@ -1,20 +1,24 @@
-/*
- * Save this file as `/modules/code-migration/endpoints/refactor-methods.hl`
- * This exposes an HTTP POST endpoint at `/code-migration/refactor-methods`
- *
- * Accepts a file path from `.arguments/*/filename` and replaces legacy C# method names
- * using `what`/`with` entries in the same argument structure.
- */
 
+// Creates a contact in HubSpot
 .arguments
+   email:string
+   first_name:string
+   last_name:string
+   phone:string
+   company:string
+   website:string
+   lifecyclestage:string
+.type:public
 
-.result
-set-value:x:-
-   io.file.load:x:@.arguments/*/filename
-for-each:x:@.arguments/*
-   set-value:x:@.result
-      strings.replace:x:@.result
-         get-value:x:@.dp/#/*/what
-         get-value:x:@.dp/#/*/with
-yield
-   result:x:@.result
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/email
+
+// Forwarding request to our HTTP POST Hyperlambda file.
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/modules/hubspot/contacts.post.hl
+
+// Returning whatever above invocation returned.
+add:x:./*/return
+   get-nodes:x:@execute-file/*
+return

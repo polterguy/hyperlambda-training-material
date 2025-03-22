@@ -1,27 +1,61 @@
 
-// Write a Hyperlambda script to return the JavaScript required to embed a ChatGPT-based chatbot on a website, with options for CSS, file, and various features.
+// Write a Hyperlambda script to test a specified connection string, ensuring the backend can connect to the database.
 .arguments
-   css:string
-   file:string
-   type:string
-   header:string
-   button:string
-   render_button:bool
-   parent_node:string
-   search:bool
-   chat:bool
-   markdown:bool
-   speech:bool
-   rtl:bool
-   submit_button:bool
-   stream:bool
+   databaseType:string
+   connectionString:string
 
-   // Not used, but allows embedders to do a hard refresh to reload JavaScript.
-   v:string
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // Legacy parameter, ignore, no longer in use.
-   gpt:bool
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/include-javascript.js.get.hl
-return:x:-
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/connectionString
+validators.mandatory:x:@.arguments/*/databaseType
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:pgsql
+   .:mssql
+
+// Sanity checking that connection string contains {database} allowing for dynamic substitutions.
+if
+   not
+      strings.contains:x:@.arguments/*/connectionString
+         .:{database}
+   .lambda
+
+      // Oops!
+      return
+         result:failure
+         message:Connection string does not contain {database}
+
+// Doing the try catch thing, to return failure if connection string is invalid.
+try
+   switch:x:@.arguments/*/databaseType
+      case:mssql
+         strings.replace:x:@.arguments/*/connectionString
+            .:{database}
+            .:master
+         mssql.connect:x:@strings.replace
+            mssql.select:select name from master.dbo.sysdatabases
+      case:mysql
+         strings.replace:x:@.arguments/*/connectionString
+            .:{database}
+            .:information_schema
+         mysql.connect:x:@strings.replace
+            mysql.select:show databases
+      case:pgsql
+         strings.replace:x:@.arguments/*/connectionString
+            .:{database}
+            .:postgres
+         pgsql.connect:x:@strings.replace
+            pgsql.select:select datname from pg_database
+
+   // Success, connetion string is valid.
+   return
+      result:success
+.catch
+
+   // Oops, failure ...
+   unwrap:x:+/*
+   return
+      result:failure
+      message:x:@.arguments/*/message

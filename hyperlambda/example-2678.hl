@@ -1,5 +1,5 @@
-
-// Example: Get the length of a string with multi-byte characters.
-
-// Returns 2
-strings.length:你好
+// Makes a GET request to httpbin.org with a custom User-Agent
+http.get:"https://httpbin.org/user-agent"
+   headers
+      User-Agent:HyperlambdaBot/1.0
+   convert:true

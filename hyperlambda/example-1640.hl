@@ -1,8 +1,17 @@
-/*
- * Example: Remove all digits from a string using a regex.
- */
-.original:"abc123xyz"
-strings.regex-replace:x:@.original
-   .:"\\d+"
-   .:""
-// Result: "abcxyz"
+
+// Provide a Hyperlambda example with string variables, covering cases of colons, multi-line strings, and escaped characters.
+
+// No special characters, so no quotes required
+.text1:sample
+
+// Contains a colon, requiring quotes
+.text2:"sample:value"
+
+// Multi-line string, using @ notation
+.text3:"lineA\nlineB"
+
+// Alternative quoting with single quotes
+.text4:test
+
+// Escaped newline within a string
+.text5:"first\nsecond"

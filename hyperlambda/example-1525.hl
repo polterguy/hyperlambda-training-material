@@ -1,12 +1,8 @@
-// Delete an item by ID with authorization, specifying a short timeout
-http.delete:"https://api.example.com/items/123"
+/*
+ * If all candidate nodes have null values, `get-first-value` returns null.
+ */
 
-   // attach query parameters instead of hardcoding them in URL
-   query
-      category:cars
-
-   // include Bearer token for auth if required by the API
-   token:XYZ_SECRET_TOKEN_123
-
-   // abort if no response within 5 seconds
-   timeout:int:5
+.data
+   foo1
+   foo2
+get-first-value:x:@.data/*

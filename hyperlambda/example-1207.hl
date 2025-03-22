@@ -1,47 +1,38 @@
+// Executing the following Hyperlambda results in the following
 
-// KPI file for new activities created per day the last 14 days
-.name:New activities
-.description:New activities per day the last 14 days
-.enabled:bool:false
-.type:line
-.lambda
-   .now
-   set-value:x:-
-      math.subtract
-         date.now
-         time
-            days:13
-   data.connect:[generic|robo-crm]
-      while
-         lt:x:@.now
-            date.now
-         .lambda
-            .max
-            set-value:x:@.max
-               math.add:x:@.now
-                  time
-                     days:1
-            date.format:x:@.now
-               format:yyyy-MM-dd
-            date.format:x:@.max
-               format:yyyy-MM-dd
-            data.read
-               table:activities
-               columns
-                  count(*)
-                     as:name
-               where
-                  and
-                     created.mt:x:@date.format/@date.format
-                     created.lt:x:@date.format
-            unwrap:x:+/*/*/*
-            add:x:../*/return
-               .
-                  .
-                     name:x:@date.format/@date.format
-                     value:x:@data.read/*/*
-            set-value:x:@.now
-               math.add:x:@.now
-                  time
-                     days:1
-   return
+// When executing the following Hyperlambda
+.folder:/system/
+.loc:int:0
+.files:int:0
+unwrap:x:+/*
+signal:magic.io.file.load-recursively
+   .:x:@.folder
+for-each:x:@signal/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         hyper2lambda:x:@.dp/#/0
+         math.increment:x:@.loc
+            get-count:x:@hyper2lambda/**
+         math.increment:x:@.files
+remove-nodes:x:@signal/*
+
+// We end up with this result
+.folder:/system/
+.loc:int:19696
+.files:int:292
+unwrap:x:+/*
+signal
+for-each:x:@signal/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         hyper2lambda:x:@.dp/#/0
+         math.increment:x:@.loc
+            get-count:x:@hyper2lambda/**
+         math.increment:x:@.files
+remove-nodes:x:@signal/*
+
+// Above you can see how executing Hyperlambda transforms the original node hierarchy, changing it, allowing us to store state in nodes

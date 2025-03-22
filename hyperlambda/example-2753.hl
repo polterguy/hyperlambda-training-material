@@ -1,43 +1,54 @@
 
-// Write a Hyperlambda script to unzip a specified file in its current folder, with an option to create a new folder.
+// Counts items from your clusters table in your [generic|hub] database according to the specified arguments.
 .arguments
-   file:string
-   create_folder:bool
-.type:internal
+   operator:string
+   clusters.id.like:string
+   clusters.id.eq:string
+   clusters.country.like:string
+   clusters.country.eq:string
+   clusters.name.like:string
+   clusters.name.eq:string
+   clusters.enabled.eq:bool
 
-// Ensures user is authorized to access endpoint.
+// Verifying user is authorized to access endpoint.
 auth.ticket.verify:root
 
-// Checking if we need to create folder with name and path of zip file.
-if:x:@.arguments/*/create_folder
-   strings.length:x:@.arguments/*/file
-   strings.substring:x:@.arguments/*/file
-      .:int:0
-      math.subtract:x:@strings.length
-         .:int:4
-   strings.concat
-      get-value:x:@strings.substring
-      .:/
-   unwrap:x:+/*/*
-   add:x:../*/io.file.unzip
-      .
-         folder:x:@strings.concat
-   if
-      not
-         io.folder.exists:x:@strings.concat
-      .lambda
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
-         // Creating folder we're unzipping into.
-         io.folder.create:x:@strings.concat
-   else
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
 
-      // Deleting folder and re-creating it to ensure it's empty.
-      io.folder.delete:x:@strings.concat
-      io.folder.create:x:@strings.concat
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/*
+         get-value:x:@.arguments/*/operator
 
-// Unzipping file.
-io.file.unzip:x:@.arguments/*/file
+// Opening up our database connection.
+data.connect:[generic|hub]
 
-// Returning success to caller.
-return-nodes
-   result:success
+   // Parametrising our read invocation.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/operator
+   remove-nodes:x:@.arguments/*/operator
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      table:clusters
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

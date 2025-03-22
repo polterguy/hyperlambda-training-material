@@ -1,35 +1,9 @@
+// Define a slot that returns two pieces of data
+slots.create:getPair
+   return-nodes
+      key:Value  
+      number:int:123
 
-// Delete one record from your Track table in your chinook database
-.arguments
-
-   // Primary key of record to delete, mandatory argument
-   TrackId:long
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/TrackId
-
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:Track
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Invoke 'getPair'
+signal:getPair
+// The result has child nodes: key = "Value" and number = 123

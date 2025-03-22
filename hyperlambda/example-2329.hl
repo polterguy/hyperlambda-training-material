@@ -1,26 +1,17 @@
 
-// Write a Hyperlambda script to delete all existing vectors for a specified model.
-.arguments
-   type:string
-.type:internal
+// Show another example of Hyperlambda string assignments, ensuring various formatting methods are covered.
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Regular text
+.valueA:simpleData
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+// Needs quotes for special characters
+.valueB:"index:field"
 
-// Connecting to database.
-data.connect:[generic|magic]
+// Multi-line usage
+.valueC:"data1\ndata2"
 
-   // Deleting VSS data.
-   data.execute:delete from vss_ml_training_snippets where rowid in (select id as rowid from ml_training_snippets where type = @type)
-      @type:x:@.arguments/*/type
+// Alternative quoting with single quotes
+.valueD:something-new
 
-   // Deleting embeddings.
-   data.execute:update ml_training_snippets set embedding = null where type = @type
-      @type:x:@.arguments/*/type
-
-// Returning success to caller.
-return
-   result:success
+// Escape sequence in a string
+.valueE:"row\ncolumn"

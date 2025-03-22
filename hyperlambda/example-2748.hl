@@ -1,15 +1,30 @@
 
-// Reads contacts from HubSpot
+// Creates an item in your cloudlets table in your [generic|hub] database according to the specified arguments.
 .arguments
-   after:string
-.type:public
+   created:date
+   name:string
+   plan:string
+   cluster:string
+   user:string
 
-// Forwarding request to our HTTP POST Hyperlambda file.
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/modules/hubspot/contacts.get.hl
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Returning whatever above invocation returned.
-add:x:./*/return
-   get-nodes:x:@execute-file/*
-return
+// Opening up database connection.
+data.connect:[generic|hub]
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      table:cloudlets
+      return-id:bool:true
+      values
+
+   // Returning result of above invoction to caller.
+   response.status.set:201
+   unwrap:x:+/*
+   return
+      id:x:@data.create

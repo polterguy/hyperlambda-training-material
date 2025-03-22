@@ -1,84 +1,69 @@
 
-// Write a Hyperlambda script to import a specified page as training data by scraping its content, with options for summarization and content types.
+// Read or list records from your Categories table in your northwind database
 .arguments
-   url:string
-   type:string
-   threshold:int
-   summarize:bool
-   images:bool
-   lists:bool
-   code:bool
-   feedback-channel:string
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   limit:long
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/url
-validators.mandatory:x:@.arguments/*/threshold
-validators.url:x:@.arguments/*/url
-validators.mandatory:x:@.arguments/*/type
-validators.integer:x:@.arguments/*/threshold
-   min:25
-validators.default:x:@.arguments
-   summarize:bool:true
-   images:bool:true
-   lists:bool:true
-   code:bool:true
+   // Offset into the dataset of where to start retrieving records
+   offset:long
 
-// Doing some basic logging.
-log.info:Crawling page generating OpenAI training snippets
-   url:x:@.arguments/*/url
-   type:x:@.arguments/*/type
-   threshold:x:@.arguments/*/threshold
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+   order:string
 
-// Creating a thread and invoking file doing the heavy lifting.
-insert-before:x:./*/fork/0
-   get-nodes:x:@.arguments
-fork
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
+   Categories.CategoryID.eq:long
+   Categories.CategoryName.like:string
+   Categories.CategoryName.eq:string
+   Categories.Description.like:string
+   Categories.Description.eq:string
+   Categories.Picture.like:string
+   Categories.Picture.eq:string
 
-   // Making sure exceptions does not leave thread.
-   try
+// Meta data description for endpoint
+.description:Read or list records from your Categories table in your northwind database
 
-      /*
-       * Invoking crawl implementation file, now with explicit list of links,
-       * informing invocation that we do NOT want to process links.
-       */
-      unwrap:x:+/*
-      signal:magic.ai.url.scrape
-         url:x:@.arguments/*/url
-         type:x:@.arguments/*/type
-         feedback-channel:x:@.arguments/*/feedback-channel
-         threshold:x:@.arguments/*/threshold
-         summarize:x:@.arguments/*/summarize
-         lists:x:@.arguments/*/lists
-         images:x:@.arguments/*/images
-         code:x:@.arguments/*/code
+// Type of endpoint
+.type:crud-read
 
-      /*
-       * Crawling is done.
-       * Making sure we notify client that we're done and do some logging.
-       */
-      sockets.signal:magic.backend.message
-         roles:root
-         args
-            message:Done creating OpenAI training data from page
-            type:success
-      sockets.signal:x:@.arguments/*/feedback-channel
-         args
-            message:Done!
-            type:success
+// Columns with custom handling as frontend is generated.
+.handling
+   Categories.Picture:image
 
-      // Basic logging.
-      log.info:OpenAI training data successfully created from page
-         url:x:@.arguments/*/url
-         type:x:@.arguments/*/type
-   .catch
+// Opening up our database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
 
-      // Oops ...!!
-      log.error:x:@.arguments/*/message
-         url:x:@.arguments/*/url
+   // Parametrising our read invocation with ordering arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
 
-// Returning success to caller.
-return
-   result:success
+   // Parametrising our read invocation with paging arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Categories
+      columns
+         Categories.CategoryID
+         Categories.CategoryName
+         Categories.Description
+         Categories.Picture
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

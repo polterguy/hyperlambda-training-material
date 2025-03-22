@@ -1,49 +1,57 @@
 
-// Write a Hyperlambda script to speak the specified content using OpenAI TTS.
+// Update endpoint updating one record in your items table in your shopping-cart-demo database.
 .arguments
-   content:string
-   session:string
-.type:internal
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/content
-validators.mandatory:x:@.arguments/*/session
+   // item_id column value being primary key of record to update
+   item_id:long
 
-// Creating a new thread to return before timeout.
-insert-before:x:../*/fork/0
-   get-nodes:x:@.arguments
-fork
+   // product_id column's new value
+   product_id:long
 
-   // Retrieving token used to invoke OpenAI.
-   .token
-   config.get:"magic:openai:key"
-   set-value:x:@.token
-      strings.concat
-         .:"Bearer "
-         get-first-value
-            get-value:x:@.arguments/*/api_key
-            config.get:"magic:openai:key"
+   // session_id column's new value
+   session_id:string
 
-   // Invoking OpenAI's API.
-   http.post:"https://api.openai.com/v1/audio/speech"
-      convert:bool:true
-      headers
-         Authorization:x:@.token
-         Content-Type:application/json
-         Accept:text/event-stream
-      payload
-         model:tts-1
-         input:x:@.arguments/*/content
-         voice:alloy
-         response_format:mp3
-         speed:decimal:1.0
+// Type of endpoint
+.type:crud-update
 
-   // Sending speech to client.
-   convert:x:@http.post/*/content
-      type:base64
-   unwrap:x:+/*/*
-   sockets.signal:x:@.arguments/*/session
-      args
-         audio:x:@http.post/*/content
-yield
-   result:success
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/item_id
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up our database connection.
+data.connect:[generic|shopping-cart-demo]
+   database-type:sqlite
+
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
+
+   // Invoking our update slot.
+   data.update
+      database-type:sqlite
+      table:items
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning the correct status code.
+   response.status.set:202
+
+   // Returning success to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.update

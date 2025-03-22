@@ -1,6 +1,14 @@
-// Encrypt a message using AES algorithm, for then to decrypt it
-.message:This is a secret message
-crypto.aes.encrypt:x:-
-   password:some-secret-password
-crypto.aes.decrypt:x:-
-   password:some-secret-password
+
+// Create a Hyperlambda script that returns a specified configuration setting using a 'key' argument. The key is mandatory and should be a string. Include an icon for settings.
+.arguments
+   key:string
+
+// This becomes the icon in the toolbox
+.icon:settings
+
+// Retrieves config entry.
+config.get:x:@.arguments/*/key
+
+// Returns result of above invocation to caller.
+yield
+   value:x:@config.get

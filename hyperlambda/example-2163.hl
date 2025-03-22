@@ -1,4 +1,9 @@
-// Injects [foo1] node with 'bar1' value unless [.arguments] already contains a [foo1] node
-.arguments
-validators.default:x:@.arguments
-   foo1:bar1
+
+// Generate a Hyperlambda snippet that inserts a 'first' element before 'second' inside '.elements'.
+
+// Inserts a "first" element before "second" inside ".elements".
+.elements
+   second
+insert-before:x:@.elements/*/second
+   .
+      first:Added dynamically before second

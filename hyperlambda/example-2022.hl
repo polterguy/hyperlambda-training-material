@@ -1,17 +1,11 @@
-// Complex if with both [and] and [or]
-.foo1:bar
-.foo2:bool:false
-.foo3:bool:true
+
+// Create a Hyperlambda snippet that fetches recent orders from 'ecommerce_db'.
+
+// Fetches recent orders from "ecommerce_db".
 .result
-
-if
-   and
-      eq:x:@.foo1
-         .:bar
-      or
-         get-value:x:@.foo2
-         get-value:x:@.foo3
-   .lambda
-
-      set-value:x:@.result
-         .:Yup!
+data.connect:ecommerce_db
+   database-type:pgsql
+   data.select:"select order_id, user_id, total from orders where order_status='shipped' order by order_date desc limit 30"
+      database-type:pgsql
+   add:x:@.result
+      get-nodes:x:@data.select/*

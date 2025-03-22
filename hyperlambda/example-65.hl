@@ -1,16 +1,3 @@
-// Changes the value of all nodes having a name of [foo]
-.data
-   foo
-      bar
-   hello
-      howdy
-         foo
-      some-node
-         some-other-node
-            foo
-
-// ** expression yields ALL descendants
-set-value:x:@.data/**/foo
-   .:touched
-
-// After execution, all above nodes having the name of 'foo' will have their values changed
+// Convert from YAML to lambda and back again
+yaml2lambda:x:@.yaml
+lambda2yaml:x:-/*

@@ -1,18 +1,6 @@
+// Compare two values for inequality
 
-// Create a Hyperlambda action to ensure a specified 'value' is given and matches one of the specified 'values'. Validate mandatory fields.
-.arguments
-   value
-      type:string
-      mandatory:bool:true
-   values
-      type:array
-      mandatory:bool:true
-.icon:shield
-
-// Parametrising validator.
-add:x:./*/validators.enum
-   get-nodes:x:@.arguments/*/values/*
-
-// Invoking validators, making sure value is mandatory.
-validators.mandatory:x:@.arguments/*/value
-validators.enum:x:@.arguments/*/value
+.foo1:OK
+neq
+   get-value:x:../*/.foo1
+   .:OK

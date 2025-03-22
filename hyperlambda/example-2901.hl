@@ -1,97 +1,36 @@
 
-// Write a Hyperlambda script to import a specified image file as training data for a specified model.
+/*
+ * Hyperlambda endpoint taking arguments. This SQL query selects media types and their aggregate counts, ordering the results by count in descending order, filtered by a specified name pattern.
+ * 
+ * The SQL code is executed within a SQLite database connection to the Chinook database. It performs an inner join between the MediaType and Track tables to count the occurrences of each media type. The query filters media types based on a provided pattern using the LIKE operator, groups the results by MediaTypeId, and orders them by the count of tracks associated with each media type in descending order. This allows users to retrieve media type information and their usage frequency, filtered by a specific name pattern, from the Chinook database.
+ * 
+ * All arguments are mandatory.
+ */
 .arguments
-   type:string
-   file:*
-.type:internal
-.accept:multipart/form-data
+   filter:string
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Connecting to database.
+data.connect:chinook
+   database-type:sqlite
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
-validators.mandatory:x:@.arguments/*/file
-validators.mandatory:x:@.arguments/*/file/*/name
-validators.mandatory:x:@.arguments/*/file/*/stream
+   // Parametrizing [data.select].
+   add:x:./*/data.select
+      get-nodes:x:@.arguments/*
 
-// First making sure folder exists.
-if
-   not
-      io.folder.exists:/etc/www/assets/
-   .lambda
-      io.folder.create:/etc/www/assets/
-if
-   not
-      io.folder.exists:/etc/www/assets/images/
-   .lambda
-      io.folder.create:/etc/www/assets/images/
+   // Executing [data.select] slot with our SQL.
+   data.select:@"
+/*
+ * Selects media types and aggregate of counts, and orders by count descending.
+ * Make sure you select the chinook database before execxuting the script.
+ */
+select mt.Name, count(mt.MediaTypeId) as Amount 
+  from MediaType mt
+    inner join Track t on mt.MediaTypeId = t.MediaTypeId
+  where mt.Name like @filter
+  group by mt.MediaTypeId
+  order by Amount desc;
+"
+      database-type:sqlite
 
-// Figuring out what filename to store file as.
-.filename
-set-value:x:@.filename
-   strings.concat
-      .:/etc/www/assets/images/
-      get-value:x:@.arguments/*/file/*/name
-
-// Checking if file exists from before, and if so, deleting it.
-if
-   io.file.exists:x:@.filename
-   .lambda
-      io.file.delete:x:@.filename
-
-// Saving file to image folder.
-io.stream.save-file:x:@.filename
-   get-value:x:@.arguments/*/file/*/stream
-
-// Creating our URL.
-.url
-set-value:x:@.url
-   strings.concat
-      request.scheme
-      .:"://"
-      request.host
-      .:/assets/images/
-      get-value:x:@.arguments/*/file/*/name
-
-// Opening database connection.
-data.connect:[generic|magic]
-
-   // Figuring out prompt and completion.
-   .prompt
-   .completion
-   set-value:x:@.prompt
-      strings.concat
-         .:"Image - "
-         get-value:x:@.arguments/*/file/*/name
-   set-value:x:@.completion
-      strings.concat
-         .:![
-         get-value:x:@.arguments/*/file/*/name
-         .:](
-         get-value:x:@.url
-         .:)
-
-   // We only create training snippet if prompt and completion doesn't exist from before.
-   data.read
-      table:ml_training_snippets
-      where
-         and
-            prompt.eq:x:@.prompt
-            completion.eq:x:@.completion
-            type.eq:x:@.arguments/*/type
-   if
-      not-exists:x:@data.read/*
-      .lambda
-
-         // Creating a training snippet for file.
-         data.create
-            table:ml_training_snippets
-            values
-               prompt:x:@.prompt
-               completion:x:@.completion
-               type:x:@.arguments/*/type
-
-// Returning success to caller.
-yield
-   result:success
+   // Returning a result of above invocation to caller.
+   return-nodes:x:@data.select/*

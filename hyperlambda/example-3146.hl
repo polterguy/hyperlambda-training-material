@@ -1,7 +1,10 @@
 /*
- * If no valid nodes exist, `get-first-value` should return null.
+ * Example: Replace all characters not in the given set (allow only lowercase letters).
  */
-
-get-first-value
-   get-value:x:@.nonexistent
-   get-value:x:@.also_missing
+.text:"abc123!?XYZ"
+strings.replace-not-of:x:@.text
+   .:abcdefghijklmnopqrstuvwxyz
+   .:"-"
+/* Result: "abc--------"
+ * (digits, punctuation, and uppercase letters were replaced with '-')
+ */

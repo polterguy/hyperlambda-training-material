@@ -1,14 +1,7 @@
-
-// Switch lambda
-.val:fooXX
-.result
-switch:x:@.val
-   case:bar
-      set-value:x:@.result
-         .:Oops
-   case:foo
-      set-value:x:@.result
-         .:Oops2.0
-   default
-      set-value:x:@.result
-         .:Success!
+// Add the [.dest]'s children nodes to [.dest]
+.src
+   foo1:foo
+   foo2:bar
+.dest
+add:x:@.dest
+   get-nodes:x:@.src/*

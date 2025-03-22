@@ -1,5 +1,5 @@
-// Convert an empty value to a GUID (should return Guid.Empty)
 
-.src
-convert:x:-
-   type:guid
+// Converting a string to integer
+.data:42
+convert:x:@.data
+   type:int

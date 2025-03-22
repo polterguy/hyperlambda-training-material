@@ -1,7 +1,3 @@
-// Unwrap a list of nodes into a target node (applying lists)
-.src
-   foo1:bar1
-   foo2:bar2
-unwrap:x:+
-   apply-lists:bool:true
-.dest:x:@.src/*
+
+// Returns the IP address of the cloudlet
+server.ip

@@ -1,11 +1,10 @@
 /*
- * Example: Split a comma-separated string.
+ * This Hyperlambda snippet checks if a non-existent node is null.
+ *
+ * 1. The `.data` node exists but has no `missing` child.
+ * 2. The `null` slot checks if `missing` is null.
+ * 3. The expected output is `true`.
  */
-strings.split:"a,b,c"
-   .:,
-/*
- * Resulting parts:
- * .:a
- * .:b
- * .:c
- */
+
+.data
+null:x:@.data/*/missing

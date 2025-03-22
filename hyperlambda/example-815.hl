@@ -1,8 +1,9 @@
-// How to create an expression that retrieves a single node from input arguments
+// CRUD slot creating a new item in DATABASE_NAME database and its TABLE_NAME table.
+data.connect:DATABASE_NAME
+   database-type:sqlite
 
-get-name:x:@.arguments/*/SOME_NODE_HERE
-
-/*
- * And expression is ALWAYS type declares as `:x:`, implying the following
- * parts will be interpreted as an expression and parsed as such.
- */
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:TABLE_NAME
+      values

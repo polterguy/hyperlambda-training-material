@@ -1,39 +1,33 @@
 
+// Create a Hyperlambda script that returns the manifests for all installed apps, ensuring the user is authorized.
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
 /*
- * This file returns all companies that the specified director is associated with
- * 
- * director_id is an integer and a mandatory object
+ * Listing all folders in the modules folders, traveres each folder,
+ * checking for a manifest file, and if existing returning the manifest
+ * to caller.
  */
-.arguments
-   director_id:long
-   limit:long
-   offset:long
+io.folder.list:/modules/
+for-each:x:@io.folder.list/*
 
-// Opening database connection.
-data.connect:[finovo|finovo]
-   database-type:pgsql
-
-   // Reading from directors.
-   data.select:@"
-select d1.org_number, b.company_name, d1.role_name
-   from directors d1
-      inner join basic b on b.org_number = d1.org_number
-      inner join directors d2 on d1.director_nbr = d2.director_nbr
-   where d2.director_id = @id and d1.org_number != d2.org_number
-   limit @limit offset @offset"
-      database-type:pgsql
-      @id:x:@.arguments/*/director_id
-      @limit:x:@.arguments/*/limit
-      @offset:x:@.arguments/*/offset
+   // Retrieving manifest.hl file's information, if existing.
+   strings.concat
+      get-value:x:@.dp/#
+      .:manifest.hl
    if
-      mte
-         get-count:x:@data.select/*
-         .:int:10
+      io.file.exists:x:@strings.concat
       .lambda
 
-         // Making sure we inform caller that there might exist additional companies.
-         add:x:@data.connect/*/yield
+         // Loading file, transforming to lambda, and returning to caller.
+         io.file.load:x:@strings.concat
+         hyper2lambda:x:@io.file.load
+         add:x:+/*/*
+            get-nodes:x:@hyper2lambda/*
+         add:x:../*/return
             .
-               notice:The director is probably associated with more companies
-   yield
-      companies:x:@data.select/*
+               .
+
+// Returning result to caller.
+return

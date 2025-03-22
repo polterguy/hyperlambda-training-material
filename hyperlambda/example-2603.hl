@@ -1,7 +1,5 @@
-/**
- * This example moves "/exports/report.csv" to "/archives/report.csv".
- * If the destination file exists, it will be replaced.
- */
-io.file.move
-   from:/exports/report.csv
-   to:/archives/report.csv
+
+// Example: URL-decode an email address.
+strings.url-decode:user%40example.com
+
+// Result: "user@example.com"

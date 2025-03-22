@@ -1,4 +1,13 @@
-// Convert a numeric string to an integer type
-.str:"42"
-convert:x:@.str
-   type:int
+
+// Create a Hyperlambda script to return the backend version to the caller, ensuring user authorization.
+
+// By making our endpoint 'internal' it does not become visible in dashboard
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Retrieves backend version, and returns to client.
+eval:x:+
+return-nodes
+   version

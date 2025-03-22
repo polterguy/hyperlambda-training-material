@@ -1,21 +1,37 @@
 
-// Search the web and returns only the URLs found
+// Delete endpoint deleting one record from your crawl_urls table in your scraper database.
 .arguments
 
-   // Mandatory argument being the actual query to submit to DuckDuckGo.
-   query:string
+   // Primary key of record to delete
+   crawl_url_id:long
 
-   // Optional argument being how many URLs to return. Defaults to 10 if not specified.
-   max_urls:int
-.type:public
+// Meta data description for endpoint
 
-// Returns [max_urls] for the specified [query] by searching DuckDuckGo.
-execute:magic.workflows.actions.execute
-   name:openai-urls-search
-   filename:/modules/openai/workflows/actions/openai-urls-search.hl
-   arguments
-      query:x:@.arguments/*/query
-      max_urls:x:@.arguments/*/max_urls
+// Type of endpoint
+.type:crud-delete
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/crawl_url_id
+
+// Opening up our database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:crawl_urls
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

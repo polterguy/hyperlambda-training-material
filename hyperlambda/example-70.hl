@@ -1,13 +1,11 @@
-.data
-   hello
-      some-node
-         some-other-node
-            foo
-      howdy
-         foo
-   foo
-      bar
 
-// Change value of all "foo" nodes
-set-value:x:@.data/**/foo
-   .:New Value!
+// Create a Hyperlambda script that verifies a JWT token and returns success if the token is valid, ensuring the user is authorized.
+
+// Ensures user is authorized to access endpoint.
+try
+   auth.ticket.verify
+   return
+      result:success
+.catch
+   return
+      result:failure

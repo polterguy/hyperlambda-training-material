@@ -1,6 +1,5 @@
 
-// Example: Check if a string ends with a substring that is not at the end.
-
-// Returns false
-strings.ends-with:HelloWorld
-   .:Universe
+// Hash password for then to verify it
+crypto.password.hash:SomePasswordHere
+crypto.password.verify:SomePasswordHere
+   hash:x:@crypto.password.hash

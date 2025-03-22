@@ -1,5 +1,7 @@
+// First, create a dynamic slot 'hello'
+slots.create:hello  
+   return-value:Hello
 
-// Converting a string to integer
-.data:42
-convert:x:@.data
-   type:int
+// Invoke the 'hello' slot
+signal:hello  
+// The signal node now holds the value "Hello"

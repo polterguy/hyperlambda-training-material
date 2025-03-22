@@ -1,6 +1,9 @@
 /*
- * Example: Check if a string starts with itself.
+ * Retrieving the name of a deeply nested node.
+ * Results in `"child"` being returned
  */
-// Returns true
-strings.starts-with:Test
-   .:Test
+
+.data
+   parent
+      child:42
+get-name:x:@.data/*/*

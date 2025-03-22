@@ -1,11 +1,11 @@
-// How the named sibling node works
-.data
-   .not-found:value
-get-value:x:@.not-found
-
 /*
- * The above named sibling iterator traverses the node hierarchy from the identity node and upwards,
- * until it finds a node with the name specified. In the example above the name is `.data`.
+ * This Hyperlambda snippet checks if a node is null.
  *
- * After execution, the value of the [get-value] slot will become 'value'
+ * 1. The `.data` node has a child `foo` with a `null` value.
+ * 2. The `null` slot checks if `foo`'s value is `null`.
+ * 3. The expected output is `true`.
  */
+
+.data
+   foo
+null:x:@.data/foo

@@ -1,8 +1,5 @@
-/*
- * Example: Replace all occurrences of a substring.
- */
-.text:"abababab"
-strings.replace:x:@.text
-   .:ab
-   .:AB
-// Result: "ABABABAB"
+
+// Example: Convert a string with letters and numbers to uppercase.
+
+// Result: "MIXEDCASE123"
+strings.to-upper:MixedCase123

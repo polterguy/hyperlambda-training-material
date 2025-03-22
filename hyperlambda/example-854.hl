@@ -1,10 +1,7 @@
-// How the named sibling node works
-.data:value
-get-value:x:@.data
-
-/*
- * The above named sibling iterator traverses the node hierarchy from the identity node and upwards,
- * until it finds a node with the name specified. In the example above the name is `.data`.
- *
- * After execution, the value of the [get-value] slot will become 'value'
- */
+// How can I retrieve [foo]'s value when I have the following [.data] data segment?
+.data
+   node1
+      node2
+         node3
+            foo:howdy
+get-value:x:@.data/*/node1/*/node2/*/node3/*/foo

@@ -1,11 +1,13 @@
-/*
- * Example: Split a string by spaces.
- */
-strings.split:"one two three"
-   .:' '
-/*
- * Resulting parts:
- * .:one
- * .:two
- * .:three
- */
+
+// Create a Hyperlambda action to set the HTTP status code to a specified 'status'. Validate the mandatory field.
+.arguments
+   status
+      type:int
+      mandatory:bool:true
+.icon:http
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/status
+
+// Changing status code.
+response.status.set:x:@.arguments/*/status

@@ -1,10 +1,8 @@
-/*
- * Example: Use variables for the string, start index, and length.
+/**
+ * This example tries to crop an image by removing too many pixels,
+ * causing an error since the total crop size exceeds the image dimensions.
  */
-.text:"Magic"
-.start:int:1
-.len:int:3
-strings.substring:x:@.text
-   get-value:x:@.start
-   get-value:x:@.len
-// Result: "agi"
+image.crop
+   file:/input.jpg
+   left:int:500
+   right:int:500

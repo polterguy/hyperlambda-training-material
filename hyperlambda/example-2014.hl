@@ -1,10 +1,5 @@
-// Conditionally setting [.result]'s value
-.result
-.arg1:foo
 
-if
-   eq:x:@.arg1
-      .:foo
-   .lambda
-      set-value:x:@.result
-         .:Yup!
+// Example: Mix in a simple inline expression (2+2 inside curly braces).
+strings.mixin:"The result is {{\nmath.add\n   .:int:2\n   .:int:2\nreturn:x:-\n}}"
+
+// Result: "The result is 4"

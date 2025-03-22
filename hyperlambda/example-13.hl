@@ -1,16 +1,7 @@
-// Using [for-each] with [if] and [else] to check and update car part statuses
-.car-parts
-   engine:available
-   wheel:out-of-stock
-   door:available
-
-for-each:x:@.car-parts/*
-   if
-      eq:x:@.dp/#
-         .:available
-      .lambda
-         set-value:x:@.dp/#
-            .:checked
-   else
-      set-value:x:@.dp/#
-         .:needs restocking
+// Execute Hyperlambda file with arguments
+.args
+   foo1:bar1
+   foo2:bar2
+execute-file:/whatever-file.hl
+   arg1:x:@.args/*/foo1
+   arg2:x:@.args/*/foo2

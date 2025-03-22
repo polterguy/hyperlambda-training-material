@@ -1,5 +1,5 @@
-// More than or equal to
-.src1:int:7
-mte
-   get-value:x:@.src1
-   .:int:5
+// Convert an empty value to a node (should return an empty node)
+
+.src
+convert:x:-
+   type:node

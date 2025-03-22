@@ -1,6 +1,2 @@
-/**
- * This example converts "input.png" to "output.jpg".
- */
-image.convert
-   file:/input.png
-   output:/output.jpg
+// Connecting to the local SQLite database: /data/users.db
+data.connect:[generic|users]

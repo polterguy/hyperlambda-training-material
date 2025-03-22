@@ -1,3 +1,8 @@
-// Save file
-io.file.save:/misc/README2.md
-   .:This is new content for file
+// Subtract multiple values sequentially from a base number
+math.subtract:int:20
+
+   // first subtract 5 from 20 -> intermediate result 15
+   .:int:5
+
+   // then subtract 3 from 15 -> final result 12
+   .:int:3

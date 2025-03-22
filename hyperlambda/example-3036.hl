@@ -1,18 +1,9 @@
-// Hyperlambda [if] with string comparison
-.user-type:admin
-.access-level
+// Loads the config.txt file and checks if it contains the word 'OpenAI'
+io.file.load:/config.txt
 if
-   eq:x:@.user-type
-      .:admin
+   strings.contains:x:@io.file.load
+      .:OpenAI
    .lambda
-      set-value:x:@.access-level
-         .:full
-
-/* JavaScript equivalent of Hyperlambda [if] with string comparison
-const userType = "admin";
-let accessLevel;
-
-if (userType === "admin") {
-  accessLevel = "full";
-}
-*/
+      log.info:"File contains 'OpenAI'"
+else
+   log.info:"File does not contain 'OpenAI'"

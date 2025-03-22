@@ -1,66 +1,33 @@
+// Search through a log file and extracting all emails from it
 
-// Create a Hyperlambda script that authenticates a user with the specified username and password, returning a JWT token if successful.
-slots.create:magic.auth.authenticate
+// Making sure current Hyperlambda file and endpoint does NOT take any arguments
+.arguments
 
-   // Opens up our database connection.
-   data.connect:magic
+// Read the log file
+if
+   io.file.exists:/var/logs/server.log
+   .lambda
 
-      // Selects password from our users table belonging to specified [username].
-      data.read
-         table:users
-         columns
-            password
-         where
-            and
-               username.eq:x:@.arguments/*/username
+      // Reading file's content as text.
+      io.file.load:/var/logs/server.log
 
-      // Checking if user with specified [username] exists.
-      if
-         not-exists:x:@data.read/*
-         .lambda
+      // A temporary place to hold the extracted emails
+      .emails
 
-            // No such user.
-            throw:Access denied
-               status:int:401
-               public:bool:true
+      // Extracting email addresses using regex
+      strings.matches:x:@io.file.load
+         .:"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,6}"
 
-      // Verifying that the password is a match.
-      if
-         or
-            eq:x:@.arguments/*/password-check
-               .:bool:false
-            crypto.password.verify:x:@.arguments/*/password
-               hash:x:@data.read/*/*/password
-         .lambda
+      // Loop through the matches and add them to the list
+      for-each:x:@strings.matches/*/match
+         unwrap:x:+/*/*
+         add:x:@.emails
+            .
+               .:x:@.dp/#
 
-            // Logging the fact that user successfully logged in.
-            log.info:User successfully authenticated
-               username:x:@.arguments/*/username
+      // Returning the result to caller.
+      yield
+         emails:x:@.emails/*
 
-            // Now we need to select all roles user belongs to.
-            data.read
-               table:users_roles
-               columns
-                  role
-               where
-                  and
-                     user.eq:x:@.arguments/*/username
-
-            // Parametrizing [auth.ticket.create] with roles user belongs to.
-            add:x:./*/auth.ticket.create/*/roles
-               get-nodes:x:@data.read/*/*
-
-            // Now we can create our JWT token/ticket.
-            auth.ticket.create
-               username:x:@.arguments/*/username
-               expires:x:@.arguments/*/expires
-               roles
-
-            // Returning JWT token to caller.
-            yield
-               ticket:x:@auth.ticket.create
-
-      // Hash version of password didn't match.
-      throw:Access denied
-         status:int:401
-         public:bool:true
+else
+   log.error:Log file not found

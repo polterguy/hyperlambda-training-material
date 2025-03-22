@@ -1,14 +1,24 @@
-
-// Hyperlambda endpoint taking arguments. The SQL query retrieves distinct customer details who have purchased tracks from the "Rock" genre.
+/*
+ * Returns all companies where the director is no longer active
+ */
 .arguments
+   director_id:long
+   limit:long
+   offset:long
 
-// Connecting to database.
-data.connect:chinook
-   database-type:sqlite
+data.connect:[mssql|legacy_data]
+   database-type:mssql
 
-   // Executing [data.select] slot with our SQL.
-   data.select:"\n/*\n * Selects details from all customers that are listening to rock.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect distinct c.Email, c.FirstName, c.LastName, g.name\n  from Customer c\n    inner join Invoice i on c.CustomerId = i.CustomerId\n    inner join InvoiceLine ii on i.InvoiceId = ii.InvoiceId\n    inner join Track t ON ii.TrackId = t.TrackId\n    inner join Genre g ON t.GenreId = g.GenreId\n  where g.Name = \"Rock\"\n  order by c.Email\n"
-      database-type:sqlite
+   data.select:@"
+select b.company_name, d.role_name, d.end_date
+   from directors d
+      join basic b on d.org_number = b.org_number
+   where d.director_id = @id and d.active = 0
+   limit @limit offset @offset"
+      database-type:mssql
+      @id:x:@.arguments/*/director_id
+      @limit:x:@.arguments/*/limit
+      @offset:x:@.arguments/*/offset
 
-   // Returning a result of above invocation to caller.
-   return-nodes:x:@data.select/*
+   yield
+      inactive_roles:x:@data.select/*

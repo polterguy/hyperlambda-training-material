@@ -1,4 +1,9 @@
+// Evaluates to false.
+or
+   .:bool:false
+   .:bool:false
 
-// Generate random number below 1024
-crypto.random.int
-   max:1024
+// Evaluates to true.
+or
+   .:bool:false
+   .:bool:true

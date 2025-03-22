@@ -1,11 +1,14 @@
-// Show me all different ways we can create a string, with example data
-
-// Single quotes
-.foo:'howdy world this is a string'
-
-// Double quotes
-.foo:"Howdy world, another string\nNew line here ..."
-
-// Multiline strings
-.foo:@"Notice how the new line doesn't end the string
-    here!"
+// Clones all fields from user1 to user2 using extrapolated paths
+.users
+   user1
+      name:Alice
+      role:admin
+      active:yes
+   user2
+      name
+      role
+      active
+for-each:x:@.users/*/user1/*
+   get-name:x:@.dp/#
+   set-value:x:@.users/*/user2/*/{@get-name}
+      get-value:x:@.dp/#

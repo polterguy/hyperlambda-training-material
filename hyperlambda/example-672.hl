@@ -1,12 +1,20 @@
 
-// Sends a multipart email with file attachment
-mail.smtp.send
-   message
-      to
-         Jane Doe:jane@doe.com
-      subject:Subject line
-      entity:multipart/mixed
-         entity:text/plain
-            content:Body content
-         entity:text/plain
-            filename:/files/foo.txt
+// Hyperlambda [if] with not equal condition
+.status:pending
+.action-required
+if
+   neq:x:@.status
+      .:complete
+   .lambda
+      set-value:x:@.action-required
+         .:bool:true
+
+/*
+ * JavaScript equivalent of Hyperlambda [if] with not equal condition
+ * const status = "pending";
+ * let actionRequired;
+ * 
+ * if (status !== "complete") {
+ * actionRequired = true;
+ * }
+ */

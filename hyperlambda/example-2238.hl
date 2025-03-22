@@ -1,8 +1,11 @@
-// Composing a dynamic node expression from parts
-compose
-   .:..
-   .:*
-   .:.data
-   .:*
 
-// The above will construct an expression resembling the following :x:../*/.data/*
+// Create a Hyperlambda snippet that dynamically concatenates a file path.
+
+// Example of dynamically concatenating a file path.
+.base_path:/home/user/
+.folder_name:documents/
+.file_name:report.pdf
+strings.concat
+   get-value:x:@.base_path
+   get-value:x:@.folder_name
+   get-value:x:@.file_name

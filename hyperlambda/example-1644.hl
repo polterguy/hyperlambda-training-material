@@ -1,8 +1,12 @@
 /*
- * Example: Replace only whole word matches using word boundaries.
+ * This Hyperlambda snippet demonstrates an error when multiple nodes match.
+ *
+ * 1. The `.data` node has multiple children.
+ * 2. The `get-value` slot is used with a wildcard selector `*`, which returns multiple nodes.
+ * 3. This will cause a HyperlambdaException because `get-value` expects exactly one node.
  */
-.phrase:"apple apples applepie"
-strings.regex-replace:x:@.phrase
-   .:"\\bapple\\b"
-   .:"fruit"
-// Result: "fruit apples applepie"
+
+.data
+   foo1:bar1
+   foo2:bar2
+get-value:x:@.data/*

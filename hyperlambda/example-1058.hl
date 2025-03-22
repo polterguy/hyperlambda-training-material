@@ -1,26 +1,43 @@
 
-// Inserts training data into database.
+// Write a Hyperlambda script to unzip a specified file in its current folder, with an option to create a new folder.
 .arguments
+   file:string
+   create_folder:bool
+.type:internal
 
-   // Mandatory prompt used to generate specified Hyperlambda
-   prompt:string
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // Mandatory reference to Hyperlambda file.
-   file-no:int
-.type:public
+// Checking if we need to create folder with name and path of zip file.
+if:x:@.arguments/*/create_folder
+   strings.length:x:@.arguments/*/file
+   strings.substring:x:@.arguments/*/file
+      .:int:0
+      math.subtract:x:@strings.length
+         .:int:4
+   strings.concat
+      get-value:x:@strings.substring
+      .:/
+   unwrap:x:+/*/*
+   add:x:../*/io.file.unzip
+      .
+         folder:x:@strings.concat
+   if
+      not
+         io.folder.exists:x:@strings.concat
+      .lambda
 
-// Getting Hyperlambda.
-execute-file:/modules/fine-tune/workflows/create-training-data.hl
-   file-no:x:@.arguments/*/file-no
+         // Creating folder we're unzipping into.
+         io.folder.create:x:@strings.concat
+   else
 
-// Inserting item.
-data.connect:fine-tune
-   data.create
-      table:hyperlambda
-      values
-         prompt:x:@.arguments/*/prompt
-         code:x:@execute-file/*/hyperlambda
+      // Deleting folder and re-creating it to ensure it's empty.
+      io.folder.delete:x:@strings.concat
+      io.folder.create:x:@strings.concat
 
-// Returning success.
-return
+// Unzipping file.
+io.file.unzip:x:@.arguments/*/file
+
+// Returning success to caller.
+return-nodes
    result:success

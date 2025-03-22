@@ -1,13 +1,10 @@
-
-// What types does Hyperlambda support?
-Hyperlambda supports various types including:
-- `string`, `int`, `bool`, `decimal`, `double`, `float`
-- `date` (serialized as UTC time)
-- `guid`, `time`, `char`, `byte`, `sbyte`
-Example of type declarations:
-```
-.foo:int:5
-.bar:bool:true
-.baz:hello
-```
-If no type is specified, `string` is assumed.
+/**
+ * This example checks if "/photos/raw/" exists before creating it.
+ */
+.result
+io.folder.exists:/photos/raw/
+if
+   eq:x:@io.folder.exists
+      .:false
+   .lambda
+      io.folder.create:/photos/raw/

@@ -1,38 +1,14 @@
+/*
+ * This Hyperlambda snippet demonstrates nested `try` blocks with `finally`.
+ * The inner `try` block throws an exception, but the `finally` block still executes.
+ * Expected behavior: `.throws` should be `true`.
+ */
 
-// Create endpoint inserting one record into your spice_urls table in your scraper database.
-.arguments
-
-   // url column value
-   url:string
-
-   // type column value
-   type:string
-
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up database connection.
-data.connect:[generic|scraper]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:spice_urls
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+.throws:bool:false
+try
+   try
+      throw:foo
+   .finally
+      set-value:x:@.throws
+         .:bool:true
+.catch

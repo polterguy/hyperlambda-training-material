@@ -1,83 +1,41 @@
 
-// Create a Hyperlambda action to execute a SQL CRUD Create operation with specified 'database-type', 'connection-string', 'database', 'table', and 'values'. Validate mandatory fields and enums.
+/*
+ * Returns parent company from specified org number.
+ * 
+ * Returns the company the specified org number is owned by.
+ */
 .arguments
-
-   // This is action syntax, NOT endpoint or Hyperlambda file syntax
-   database-type
-      type:enum
-      mandatory:bool:true
-      values
-         .:sqlite
-         .:mssql
-         .:mysql
-         .:pgsql
-   connection-string
-      type:string
-      mandatory:bool:true
-   database
-      type:string
-      mandatory:bool:true
-   table
-      type:string
-      mandatory:bool:true
-   values
-      type:key-value
-      mandatory:bool:true
-.icon:cloud_download
+   org_number:string
+.type:public
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/table
-validators.enum:x:@.arguments/*/database-type
-   .:sqlite
-   .:mssql
-   .:mysql
-   .:pgsql
-
-// Applying defaults.
-validators.default:x:@.arguments
-   connection-string:generic
-   database-type:sqlite
-   database:magic
-
-// Ensuring caller provided [values].
-if
-   not
-      exists:x:@.arguments/*/values/*
-   .lambda
-      throw:Provide [values] to sql-insert action.
-         public:bool:true
-         status:500
-
-// Connection string to actually use as we connect.
-.connection-string
-
-// Caller supplied an explicit [connection-string] argument.
-set-value:x:@.connection-string
-   strings.concat
-      .:[
-      get-value:x:@.arguments/*/connection-string
-      .:|
-      get-value:x:@.arguments/*/database
-      .:]
+validators.mandatory:x:@.arguments/*/org_number
+set-value:x:@.arguments/*/org_number
+   strings.replace-not-of:x:@.arguments/*/org_number
+      .:0123456789
+      .:
 
 // Connecting to database.
-data.connect:x:@.connection-string
-   database-type:x:@.arguments/*/database-type
+data.connect:[finovo|finovo]
+   database-type:pgsql
 
-   // Adding values.
-   for-each:x:@.arguments/*/values/*
-      set-name:x:./0/-/*/*
-         get-name:x:@.dp/#
-      set-value:x:./0/-/*/*
-         get-value:x:@.dp/#
-      add:x:@data.connect/*/data.create/*/values
-         .
-            name
+   // Retrieving items.
+   data.read
+      database-type:pgsql
+      table:group_structure
+      columns
+         group_mother_orgnumber
+      where
+         and
+            org_number.eq:x:@.arguments/*/org_number
+      limit:-1
 
-   // Executing SQL.
-   data.create
-      database-type:x:@.arguments/*/database-type
-      table:x:@.arguments/*/table
-      values
-   yield
-      id:x:@data.create
+   // Verifying the company has a parent company.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+         return
+            result:"This company doesn't have any parent company"
+
+   // Returning result to caller.
+   return-nodes:x:@data.read/*

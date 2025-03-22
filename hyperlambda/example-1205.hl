@@ -1,17 +1,7 @@
+/*
+ * If `.foo1` has no children, `for-each` should not execute the `foo2` slot.
+ */
 
-// KPI file displaying the name of the 10 last created contacts
-.name:Latest contacts
-.description:10 last created contacts
-.enabled:bool:true
-.type:table
-.lambda
-   data.connect:[generic|robo-crm]
-      data.read
-         table:contacts
-         columns
-            name
-            created
-         order:created
-         direction:desc
-         limit:10
-      return-nodes:x:-/*
+.foo1
+for-each:x:../*/.foo1/*
+   foo2

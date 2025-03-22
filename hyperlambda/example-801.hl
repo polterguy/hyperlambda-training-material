@@ -1,17 +1,20 @@
-
-// Generate Hyperlambda endpoint that returns a specified file to caller as raw text. If the file doesn't exist it should throw a 404 exception.
-.arguments
-   file:string
+// How can I check user role with [if], [else-if], and [else]?
+.role:string:admin
+.accessLevel
 if
-   not
-      io.file.exists:x:@.arguments/*/file
+   eq
+      get-value:x:@.role
+      .:admin
    .lambda
-      throw:File not found
-         status:int:404
-         public:bool:true
-io.file.load:x:@.arguments/*/file
-response.headers.set
-   Content-Type:text/plain
-return-value:x:@io.file.load
-
-// Save this file for instance as '/modules/YOUR_MODULE/load-file.get.hl', and pass in file as a QUERY parameter
+      set-value:x:@.accessLevel
+         .:Full access
+else-if
+   eq
+      get-value:x:@.role
+      .:user
+   .lambda
+      set-value:x:@.accessLevel
+         .:Limited access
+else
+   set-value:x:@.accessLevel
+      .:No access

@@ -1,8 +1,8 @@
-// Add nodes retrieved from a source to a destination
 
-.dest
-.src
-   foo1:bar1
-   foo2:bar2
-add:x:../*/.dest
-   get-nodes:x:../*/.src/*
+// Example: Use variables for the string and characters to trim.
+.text:xyzyx
+.chars:xy
+
+// Result: "z"
+strings.trim:x:@.text
+   get-value:x:@.chars

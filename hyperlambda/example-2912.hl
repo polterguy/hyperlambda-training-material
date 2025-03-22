@@ -1,80 +1,33 @@
 
 /*
- * Searches for a company
+ * Creates a new Stripe payment for the given [customer_id], using the
+ * specified [payment_method_id], for the given [amount], in the given [currency].
  * 
- * Will search for a company having a name containing the specified query.
+ * Will use your Stripe API token found from your settings as it's interacting
+ * with the Stripe API.
  */
 .arguments
-   query:string
-   limit:long
-   offset:long
-.type:public
+   amount:int
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/query
-validators.default:x:@.arguments
-   limit:long:10
-   offset:long:0
+// ... more code here ...
 
-// Connecting to database.
-data.connect:[finovo|finovo]
-   database-type:pgsql
+// Executing action from Stripe plugin doing the heavy lifting ...
+execute:magic.workflows.actions.execute
+   name:stripe-payment-create
+   filename:/modules/stripe/workflows/actions/stripe-payment-create.hl
+   arguments
 
-   /*
-    * Parametrising invocations below.
-    *
-    * Notice, we're parametrising both count and get items invocations here!
-    */
-   .query
-   set-value:x:@.query
-      strings.concat
-         .:%
-         get-value:x:@.arguments/*/query
-         .:%
-   unwrap:x:+/*/*
-   add:x:./*/data.read/*/where/*/and
-      .
-         company_name.ilike:x:@.query
+      // Will use the [customer_id] from a previous action
+      customer_id:x:--/execute/=stripe-customer-create/*/customer_id
 
-   // Applying paging if existing.
-   add:x:@data.connect/*/data.read/[0,1]
-      get-nodes:x:@.arguments/*/limit
-      get-nodes:x:@.arguments/*/offset
+      // Will use the [payment_method_id] from a previous action
+      payment_method_id:x:--/execute/=stripe-payment-method-create/*/payment_method_id
+      amount:x:@.arguments/*/amount
+      currency:usd
+      description:Payment from Magic
+      metadata
 
-   // Retrieving items.
-   data.read
-      database-type:pgsql
-      table:basic
-      columns
-         org_number
-         company_name
-      where
-         and
-            legalgroup_code.eq:AB
+         // Notice, since we're using [execute] we don't have to use [unwrap], since all expressions are automatically unwrapped when using [execute].
+         username:x:@.arguments/*/username
 
-   // Checking we've got data.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         return
-            result:No results were found
-
-   // Making sure we return company information related to the account.
-   add:x:./*/yield/*/companies
-      get-nodes:x:@data.read/*
-
-   // Retrieving items.
-   data.read
-      database-type:pgsql
-      table:basic
-      columns
-         count(*)
-            as:count
-      where
-         and
-            legalgroup_code.eq:AB
-
-   // Returning result to caller.
-   yield
-      companies
-      total_companies:x:@data.read/0/0
+// This code depends upon the Stripe plugin being installed

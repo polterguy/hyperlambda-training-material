@@ -1,18 +1,17 @@
 
-// Create a slot 'join-strings' that joins all arguments separated by ' ' character.
-slots.create:join-strings
-   strings.join:x:@.arguments/*
-      .:" "
-   return-value:x:-
+// Scrape the specified URL and returns the raw HTML
+.arguments
 
-// Invoke 'join-strings' using execute with expressions as arguments
-.arg:is cool!
-execute:join-strings
-   text1:Hyperlambda
-   text2:x:@.arg
+   // Mandatory argument and the actual URL to scrape.
+   url:string
+.type:public
 
-// The expressions are evaluated before invocation, so inside 'join-strings':
+// Invokes some HTTP GET resource.
+execute:magic.workflows.actions.execute
+   name:http-get
+   filename:/misc/workflows/actions/http/http-get.hl
+   arguments
+      url:x:@.arguments/*/url
 
-// text2 becomes "is cool!",
-
-// and the returned value is "Hyperlambda is cool".
+// Returns the result of your last action.
+return-nodes:x:@execute/*

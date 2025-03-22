@@ -1,75 +1,54 @@
 
-// Returns balance information for affiliate.
-auth.ticket.get
+// Executes the specified [sql] towards your [type] and returns the result
+.arguments
 
-// Affiliate percent calculated below.
-.percent
+   // Mandatory and is the SQL statement that will be executed
+   sql:string
 
-// Ensuring user is an affiliate
+   // Optional and will default to 4000 if not specified
+   max_tokens:int
+.type:public
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/sql
+
+// Applying defaults.
+validators.default:x:@.arguments
+   max_tokens:int:4000
+
+// Opening up our database connection.
 data.connect:[generic|magic]
 
-   /*
-    * Retrieving affiliate percent for user.
-    * Notice, if user doesn't have an affiliate percent, user is
-    * not an affiliate.
-    */
-   data.read
-      table:users_extra
-      columns
-         value
-      where
-         and
-            type.eq:affiliate_percent
-            user.eq:x:@auth.ticket.get
-   if
-      not-exists:x:@data.read/*/*/value
-      .lambda
+   // Executing SQL as select statement.
+   data.select:x:@.arguments/*/sql
 
-         // Oops ...!!
-         log.error:User is not affiliate
-            username:x:@auth.ticket.get
-         throw:You are not an affiliate
-            public:true
-            status:400
+   // Making sure we return total record count to caller.
+   set-value:x:../*/return/*/count
+      get-count:x:@data.select/*
 
-   // Calculating ratio and storing.
-   convert:x:@data.read/*/*/value
-      type:decimal
-   set-value:x:@.percent
-      math.divide:x:@convert
-         .:decimal:100
+   // Making sure we do't return more context than what was requested.
+   .cont:bool:true
+   while:x:@.cont
+      lambda2hyper:x:@data.select/*
+      if
+         lt
+            openai.tokenize:x:@lambda2hyper
+            convert:x:@.arguments/*/max_tokens
+               type:int
+         .lambda
+            set-value:x:@.cont
+               .:bool:false
+            set-value:x:../*/return/*/complete_information
+               .:WARNING! We found more records than we could fit into the context!
+      else
+         remove-nodes:x:@data.select/0/-
 
-// Connecting to database.
-data.connect:[generic|stripe]
+   // Making sure we return actual records to caller.
+   add:x:../*/return/*/records
+      get-nodes:x:@data.select/*
 
-   // Buffer to hold return values.
-   .balance
-      received
-      accepted
-      withdrawals
-
-   // Retrieving all received amounts from database.
-   set-value:x:@.balance/*/received
-      math.multiply
-         data.scalar:"select coalesce(sum(amount), 0) as sum from transactions\n   where affiliate = @affiliate and\n      type = 'charge.succeeded'"
-            @affiliate:x:@auth.ticket.get
-         get-value:x:@.percent
-
-   // Retrieving all accepted amounts from database.
-   set-value:x:@.balance/*/accepted
-      math.multiply
-         data.scalar:"select coalesce(sum(amount), 0) as sum from transactions t\n   where affiliate = @affiliate and\n      created <= curdate() - interval 1 month and\n      type = 'charge.succeeded' and not exists(\n         select * from transactions t2\n            where t2.type = 'charge.refunded' and\n               t2.invoice = t.invoice and t2.invoice is not null)"
-            @affiliate:x:@auth.ticket.get
-         get-value:x:@.percent
-
-   // Retrieving all withdrawals from database.
-   set-value:x:@.balance/*/withdrawals
-      data.scalar:"select coalesce(sum(amount), 0) as sum from transactions t\n   where affiliate = @affiliate and type = 'withdrawal'"
-         @affiliate:x:@auth.ticket.get
-
-   // Applying some HTTP caching since endpoint is kind of expensive to invoke.
-   response.headers.set
-      Cache-Control:private, max-age=3600
-
-   // Returning result to caller.
-   return-nodes:x:@.balance/*
+// Return result to caller.
+return
+   count
+   records
+   complete_information:This was all the records we could find related to your query

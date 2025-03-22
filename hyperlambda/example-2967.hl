@@ -1,8 +1,5 @@
-// Define a slot that returns both a value and additional nodes
-slots.create:retBoth  
-   return:All Good  
-      status:ok  
-      code:int:200
 
-signal:retBoth  
-// Result: value "All Good", with child nodes [status = "ok", code = 200]
+// Example: Convert a string with letters and numbers to uppercase.
+
+// Result: "MIXEDCASE123"
+strings.to-upper:MixedCase123

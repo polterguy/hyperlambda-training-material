@@ -1,4 +1,6 @@
-// Missing conversion parameters should throw an error
-
-.src:5
-convert:x:-
+/*
+ * Example: Check if a string starts with itself.
+ */
+// Returns true
+strings.starts-with:Test
+   .:Test

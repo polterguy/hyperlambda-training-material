@@ -1,6 +1,11 @@
 
-// Example: Use a variable as the input to uppercase.
-.text:make me upper
+// Example: Split a comma-separated string.
+strings.split:a,b,c
+   .:,
 
-// Result: "MAKE ME UPPER"
-strings.to-upper:x:@.text
+/*
+ * Resulting parts:
+ * .:a
+ * .:b
+ * .:c
+ */

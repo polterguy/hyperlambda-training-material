@@ -1,5 +1,10 @@
-/*
- * Example: Convert an already uppercase string (no change).
- */
-// Result: "HELLO"
-strings.to-upper:HELLO
+// [yaml2json] example no. 3
+.yaml:@"
+user:
+  name: ""Jane Doe""
+  email: ""jane.doe@example.com""
+  preferences:
+    newsletter: true
+    notifications: false
+"
+yaml2json:x:@.yaml

@@ -1,14 +1,12 @@
-// Loops for 5 iterations, adding a static node each iteration
-.no:int:0
-.res
 
-while
-   lt
-      get-value:x:@.no
-      .:int:5
-   .lambda
+// Create a Hyperlambda snippet that iterates through numerical values and logs them.
 
-      add:x:@.res
-         .
-            foo
-      math.increment:x:@.no
+// Iterates through numerical values and logs them.
+.numbers
+   num1:int:10
+   num2:int:20
+   num3:int:30
+for-each:x:@.numbers/*
+
+   // Logging each number.
+   log.info:x:@.dp/#

@@ -1,23 +1,18 @@
 
-// Authenticates the user with the specified [username] and [password].
+// Write a Hyperlambda script to return log items from the database based on optional arguments like 'from', 'max', and 'query'.
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-   password
-      type:string
-      mandatory:bool:true
-.icon:shield
+   from:string
+   max:long
+   query:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/password
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Invokes slot responsible for authenticating caller.
-execute:magic.auth.authenticate
-   username:x:@.arguments/*/username
-   password:x:@.arguments/*/password
+// Invoking slot responsible for returning items, making sure we correctly parametrise invocation.
+add:x:../*/log.query
+   get-nodes:x:@.arguments/*/max
+   get-nodes:x:@.arguments/*/from
+log.query:x:@.arguments/*/query
 
-// Returning resulting ticket/token to caller.
-yield
-   ticket:x:@execute/*/ticket
+// Returning result of above invocation to caller.
+return-nodes:x:-/*

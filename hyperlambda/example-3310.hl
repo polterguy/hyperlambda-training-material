@@ -1,13 +1,6 @@
-// This example connects to the 'forest' database and reads records from the 'trees' table.
-sqlite.connect:forest
-   sqlite.read
-      table:trees
-      columns
-         species
-         height
-      where
-         and
-            height.mt:int:50
-      order:height
-      direction:desc
-      limit:int:7
+/*
+ * Accesses the `price` field from a product object referenced by each cart item.
+ * The `product` node under `.cart/*/items/*` contains a value that is a reference to a product node.
+ * This expression follows that reference and returns the `price` child of the referenced node.
+ */
+.price:x:@.cart/*/items/*/product/#/*/price

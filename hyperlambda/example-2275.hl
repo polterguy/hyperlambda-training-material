@@ -1,40 +1,17 @@
-/*
- * Compiles a snippet of C# code down to a library,
- * for then to dynamically load it as a plugin.
- */
-system.compile
-   references
-      .:netstandard
-      .:System.Runtime
-      .:System.Private.CoreLib
-      .:magic.node
-      .:magic.node.extensions
-      .:magic.signals.contracts
-   code:@"
 
-// Example C# code creating a Hyperlambda slot.
-using System;
-using magic.node;
-using magic.node.extensions;
-using magic.signals.contracts;
+// Generate a Hyperlambda snippet with string variables, demonstrating special character handling, multi-line strings, and alternative quoting.
 
-// Our slot class.
-[Slot(Name = ""foo"")]
-public class Foo : ISlot
-{
-   public void Signal(ISignaler signaler, Node input)
-   {
-      input.Value = $""Hi {input.GetEx<string>()}, how may I assist you?"";
-   }
-}"
-   assembly-name:foo.dll
+// String without special characters, no need for quotes
+.simpleText:hello
 
-// Loading assembly from raw bytes now that we've created it.
-system.plugin.load:x:@system.compile
+// String with a colon, requires quotes
+.colonText:"hello:world"
 
-// Executing [foo] slot now dynamically injected into AppDomain.
-.name:John Doe
-foo:x:@.name
+// Multi-line string using @ notation
+.multiLineText:"line1\nline2"
 
-// Unloading plugin.
-system.plugin.unload:foo.dll
+// Using single quotes as an alternative
+.altQuoteText:example
+
+// Escaping a newline character
+.escapedNewlineText:"hello\nworld"

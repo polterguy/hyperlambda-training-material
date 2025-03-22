@@ -1,7 +1,5 @@
-/*
- * If `.foo1` has no children, `for-each` should not execute the `foo2` slot.
- */
 
-.foo1
-for-each:x:../*/.foo1/*
-   foo2
+// Create a Hyperlambda script to add nodes into a specified destination's children collection.
+add:x:@.destination
+   .
+      foo:bar

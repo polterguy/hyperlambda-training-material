@@ -1,15 +1,55 @@
 
-// What are lambda expressions?
+// Action that compiles the specified C# code and loads into the AppDomain
+.arguments
+   assembly-name
+      type:string
+      mandatory:bool:true
+      default:your-assembly-name.dll
+   recompile
+      type:bool
+      mandatory:bool:true
+      default:bool:true
+   references
+      type:array
+      mandatory:bool:true
+      default
+         .:netstandard
+         .:System.Runtime
+         .:System.ComponentModel
+         .:System.Private.CoreLib
+         .:magic.node
+         .:magic.node.extensions
+         .:magic.signals.contracts
+   code
+      type:csharp
+      mandatory:bool:true
+      default:"using System;\nusing magic.node;\nusing magic.node.extensions;\nusing magic.signals.contracts;\n\n[Slot(Name = \"get-employee-details\")]\npublic class Foo : ISlot\n{\n    public void Signal(ISignaler signaler, Node input)\n    {\n        switch (input.GetEx<string>().ToLower())\n        {\n            case \"john\":\n                input.Add(new Node(\"title\", \"cmo\"));\n                input.Add(new Node(\"phone\", \"92929292\"));\n                input.Add(new Node(\"email\", \"john@doe.come\"));\n                break;\n        }\n        input.Value = null;\n    }\n}"
+.icon:rocket_launch
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/code
+validators.mandatory:x:@.arguments/*/references
+validators.mandatory:x:@.arguments/*/assembly-name
 
 /*
- * Lambda expressions in Hyperlambda are used to reference any node within the currently executing graph object.
- * They allow for dynamic access to nodes, enabling you to express relationships and hierarchies in the nodes effectively.
- * They are similar to XPath expressions found in other technologies.
+ * We only compile C# code if it does not already exist in AppDomain,
+ * unless caller explicitly specifies [recompile] as true.
  */
+system.plugin.list
+if
+   or
+      get-value:x:@.arguments/*/recompile
+      not-exists:x:"@system.plugin.list/*/\"={@.arguments/*/assembly-name}\""
+   .lambda
 
-// Example of a simple lambda expression referencing the [.person] node.
-.person:John
-set-value:x:@.person
-   .:Jane
+      // Parametrizing [system.compile] invocation.
+      add:x:./*/system.compile
+         get-nodes:x:@.arguments/*/references
+         get-nodes:x:@.arguments/*/assembly-name
+         get-nodes:x:@.arguments/*/code
 
-// In this case, @.person is a lambda expression that points to the .person node, and the [set-value] slot changes its value.
+      // Compiling C# code.
+      system.compile
+
+      // Loading assembly into AppDomain.
+      system.plugin.load:x:@system.compile

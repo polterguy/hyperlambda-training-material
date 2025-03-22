@@ -1,13 +1,2 @@
-// Example of creating a MIME HTTP POST request.
-http.post:"http://localhost:5000/magic/modules/foo/foo"
-   headers
-      Content-Type:multipart/form-data
-   payload
-      entity:text/plain
-         headers
-            Content-Disposition:"form-data; name=\"foo\""
-         content:Foo bar
-      entity:text/plain
-         headers
-            Content-Disposition:"form-data; filename=\"README.md\""
-         filename:/README.md
+// Give me Hyperlambda that makes sure ONLY admin, marketing_manager, and c_exec users are able to execute HTTP endpoint
+auth.ticket.verify:admin, marketing_manager, c_exec

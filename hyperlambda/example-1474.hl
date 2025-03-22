@@ -1,17 +1,6 @@
-
-// Scrape the specified URL and returns the raw HTML
-.arguments
-
-   // Mandatory argument and the actual URL to scrape.
-   url:string
-.type:public
-
-// Invokes some HTTP GET resource.
-execute:magic.workflows.actions.execute
-   name:http-get
-   filename:/misc/workflows/actions/http/http-get.hl
-   arguments
-      url:x:@.arguments/*/url
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// Deduct penalty from salary
+.salary:int:2000
+.penalty:int:300
+math.subtract
+   get-value:x:@.salary
+   get-value:x:@.penalty

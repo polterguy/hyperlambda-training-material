@@ -1,22 +1,10 @@
-
-// Create a Hyperlambda action to replace occurrences of 'what' in a 'source' string with 'with'. Return the result.
-.arguments
-   source
-      type:string
-      mandatory:bool:true
-   what
-      type:string
-      mandatory:bool:true
-   with
-      type:string
-      mandatory:bool:true
-.icon:settings
-
-// Joining strings.
-strings.replace:x:@.arguments/*/source
-   get-value:x:@.arguments/*/what
-   get-value:x:@.arguments/*/with
-
-// Returning result to caller.
-yield
-   result:x:@strings.replace
+// Adds two separate time durations to a timestamp
+.timestamp:date:"2025-03-22T05:00:00Z"
+.modified
+set-value:x:@.modified
+   math.add
+      get-value:x:@.timestamp
+      time
+         hours:int:2
+      time
+         minutes:int:45

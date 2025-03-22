@@ -1,8 +1,10 @@
-/*
- * Example: Pattern not found yields an empty result set.
- */
-strings.matches:"no digits here"
-   .:"\\d+"
-/*
- * Result: No child nodes (no matches found)
- */
+slots.create:mySlot  
+   return-value:Hello
+
+// Check if 'mySlot' exists
+slots.exists:mySlot  
+// Yields true (slot is defined)
+
+// Check a slot name that doesn't exist
+slots.exists:noSuch  
+// Yields false (no such slot defined)

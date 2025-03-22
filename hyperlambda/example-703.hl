@@ -1,6 +1,15 @@
 
-// Example: Pass arguments to the inline Hyperlambda code.
-strings.mixin:"2 + val equals {{\nmath.add\n   .:int:2\n   get-value:x:@.arguments/*/val\nreturn:x:-\n}}"
-   val:int:5
+// Write a Hyperlambda snippet that counts messages in the 'messaging_db' database from the 'chat_logs' table.
 
-// Result: "2 + val equals 7"
+// Counts messages in the "messaging_db" database from the "chat_logs" table.
+data.connect:messaging_db
+   database-type:sqlite
+
+   // Counting total chat messages.
+   data.read
+      database-type:sqlite
+      table:chat_logs
+      columns
+         count(*)
+            as:count
+      limit:long:1

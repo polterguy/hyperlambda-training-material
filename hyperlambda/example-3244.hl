@@ -1,16 +1,12 @@
-/*
- * This Hyperlambda snippet demonstrates using `not-null` in an `if` condition.
- *
- * 1. The `.data` node has a child `foo` with a value `"bar"`.
- * 2. The `if` statement checks if `foo` is not null.
- * 3. If `foo` is not null, an exception will be thrown
- *
- * Result: An exception is thrown since `foo` has a value
- */
-
-.data
-   foo:bar
+// How to set different Content-Type headers based on file type?
+.fileType:json
 if
-   not-null:x:@.data/*/foo
+   eq
+      get-value:x:@.fileType
+      .:json
    .lambda
-      throw:You are not supposed to be here!
+      response.headers.set
+         Content-Type:application/json
+else
+   response.headers.set
+      Content-Type:text/plain

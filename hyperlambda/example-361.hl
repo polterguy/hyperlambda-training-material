@@ -1,5 +1,4 @@
-// Getting a list of all cached items.
-
-cache.list
-
-// Returns a list of all stored cache keys.
+// Connects to sakila and returns all items from actor
+data.connect:sakila
+   data.read
+      table:actor

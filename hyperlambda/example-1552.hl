@@ -1,18 +1,15 @@
-
-// Use nested data.connect to interact with two databases in one snippet
-data.connect:MainDB
+// List cities and their country names by joining the city and country tables
+data.connect:sakila
    data.read
-
-      // Query orders from MainDB
-      table:orders
-
-   // Insert a log in LogsDB
-   data.connect:LogsDB
-      data.create
-         table:log_storage
-         values
-            message:Checked orders
-   data.read
-
-      // Back to MainDB connection (still open) to re-query orders
-      table:orders
+      table:city
+      join
+         inner
+            table:country
+            on
+               city.country_id
+               country.country_id
+      columns
+         city.city
+         country.country
+      limit:5
+   // Inner join on country_id returns city-country pairs

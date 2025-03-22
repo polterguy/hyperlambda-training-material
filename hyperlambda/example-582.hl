@@ -1,16 +1,13 @@
 
-// Create a Hyperlambda snippet that repeats logging while [.attempts] is below 3.
+// Provide a Hyperlambda example where multiple loggers run in parallel.
 
-// Repeats logging while [.attempts] is below 3.
-.attempts:int:0
-while
-   lt
-      get-value:x:@.attempts
-      .:int:3
-   .lambda
-
-      // Logging attempt.
-      log.info:Attempting task
-
-      // Increasing attempt count.
-      math.increment:x:@.attempts
+// An example of running multiple loggers in parallel.
+join
+   fork
+      log.info:Logging task 1 started
+      sleep:500
+      log.info:Logging task 1 completed
+   fork
+      log.info:Logging task 2 started
+      sleep:1000
+      log.info:Logging task 2 completed

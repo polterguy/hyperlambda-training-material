@@ -1,11 +1,41 @@
 
-// This snippet uses the '=xxx' iterator to filter nodes by their value.
-.list
-   item1:match
-   item2:no
-   item3:match
-for-each:x:@.list/*/=match
-   set-value:x:@.dp/#
-      :found
+// Delete one record from your posts table in your cms database
+.arguments
 
-// The expression @.list/*/=match finds all children of .list whose value equals "match" (item1 and item3). The loop sets those nodes' values to "found".
+   // Primary key of record to delete, mandatory argument
+   id:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+validators.mandatory:x:@.arguments/*/id
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:posts
+      where
+         and
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.posts.delete
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

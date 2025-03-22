@@ -1,26 +1,14 @@
 
-// Write a Hyperlambda script to delete all existing vectors for a specified model.
+// Write a Hyperlambda script to return a specified CSS file to the caller, with options for position, color, link, start, and end.
 .arguments
-   type:string
-.type:internal
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
-
-// Connecting to database.
-data.connect:[generic|magic]
-
-   // Deleting VSS data.
-   data.execute:delete from vss_ml_training_snippets where rowid in (select id as rowid from ml_training_snippets where type = @type)
-      @type:x:@.arguments/*/type
-
-   // Deleting embeddings.
-   data.execute:update ml_training_snippets set embedding = null where type = @type
-      @type:x:@.arguments/*/type
-
-// Returning success to caller.
-return
-   result:success
+   file:string
+   position:string
+   color:string
+   link:string
+   start:string
+   end:string
+   v:string
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/system/openai/include-style.css.get.hl
+return:x:-

@@ -1,44 +1,43 @@
 
-// Sends the user a warning email informing them that their cloudlet is about to be destroyed 5 days from now.
-slots.create:hub.emails.user.warn-destruction-of-cloudlet
+// Deletes the training snippet with the specified [id]
+.arguments
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/username
-   validators.mandatory:x:@.arguments/*/cloudlet
+   // Mandatory and is the ID of the training snippet to delete.
+   id:int
+.type:public
 
-   // Retrieving frontend URL.
-   .url
-   set-value:x:@.url
-      config.get:"magic:hub:frontend-url"
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+validators.integer:x:@.arguments/*/id
+   min:int:0
 
-   // Retrieving user's name and email address.
-   .email
-   .name
-   data.connect:[generic|magic]
-      data.read
-         table:users_extra
-         values
-            type
-            name
-         where
-            and
-               user.eq:x:@.arguments/*/username
-               or
-                  type.eq:email
-                  type.eq:name
-      set-value:x:@.email
-         get-value:x:@data.read/*/*/type/=email/./*/value
-      set-value:x:@.name
-         get-value:x:@data.read/*/*/type/=name/./*/value
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-   // Sending user his warning email.
-   unwrap:x:+/**
-   signal:magic.emails.send
-      subject:[Important] - Your AINIRO cloudlet is scheduled for destruction!
-      template-file:/modules/hub/magic.startup/templates/cloudlet-to-be-destroyed.html
-      substitutes
-         url:x:@.url
-         cloudlet:x:@.arguments/*/cloudlet
-      mime-type:text/html
-      email:x:@.email
-      name:x:@.name
+   // Making sure snippet exists.
+   data.read
+      table:ml_training_snippets
+      columns
+         prompt
+         completion
+         uri
+      where
+         and
+            id.eq:x:@.arguments/*/id
+   if
+      not-exists:x:@data.read/*
+      .lambda
+         throw:Now such snippet
+         public:bool:true
+         status:int:401
+
+   // Deleting snippet.
+   data.execute:delete from vss_ml_training_snippets where rowid = @id
+      @id:x:@.arguments/*/id
+   data.delete
+      table:ml_training_snippets
+      where
+         and
+            id.eq:x:@.arguments/*/id
+return
+   result:success

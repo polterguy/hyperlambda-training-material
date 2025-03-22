@@ -1,19 +1,9 @@
 
-// Write a Hyperlambda script to save an SQL template file according to specified arguments.
-.arguments
-   databaseType:string
-   filename:string
-   content:string
-.type:internal
+// Example: Create a dynamic slot, then invoke it
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// First we create a dynamic slot.
+slots.create:foo
+   return-value:int:57
 
-// Saving file.
-strings.concat
-   .:/etc/
-   get-value:x:@.arguments/*/databaseType
-   .:/templates/
-   get-value:x:@.arguments/*/filename
-io.file.save:x:-
-   get-value:x:@.arguments/*/content
+// Then we invoke it.
+signal:foo

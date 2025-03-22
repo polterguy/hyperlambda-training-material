@@ -1,54 +1,53 @@
 
-// Write a Hyperlambda script to return all available themes from the backend.
+// Count unique and distinct items from your CustomerCustomerDemo table in your northwind database
 .arguments
-.type:internal
 
-// Making sure user has access to invoked endpoint.
-auth.ticket.verify:root
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
+   CustomerCustomerDemo.CustomerID.like:string
+   CustomerCustomerDemo.CustomerID.eq:string
+   CustomerCustomerDemo.CustomerTypeID.like:string
+   CustomerCustomerDemo.CustomerTypeID.eq:string
 
-// Checking if custom CSS file exists.
-.result
+// Meta data description for endpoint
+.description:Count unique and distinct items from your CustomerCustomerDemo table in your northwind database
 
-// Listing custom files.
-if
-   io.folder.exists:/etc/system/openai/css/search/
-   .lambda
-      io.file.list:/etc/system/openai/css/search/
-      for-each:x:@io.file.list/*
-         if
-            strings.ends-with:x:@.dp/#
-               .:css
-            .lambda
-               strings.split:x:@.dp/#
-                  .:/
-               strings.split:x:@strings.split/0/-
-                  .:.
-               unwrap:x:+/*/*
-               add:x:@.result
-                  .
-                     .:x:@strings.split/0
+// Type of endpoint
+.type:crud-count-distinct
 
-// Listing system files.
-if
-   io.folder.exists:/system/openai/front.files/search/
-   .lambda
-      io.file.list:/system/openai/front.files/search/
-      for-each:x:@io.file.list/*
-         if
-            strings.ends-with:x:@.dp/#
-               .:css
-            .lambda
-               strings.split:x:@.dp/#
-                  .:/
-               strings.split:x:@strings.split/0/-
-                  .:.
-               if
-                  not-exists:x:"@.result/*/\"={@strings.split/0}\""
-                  .lambda
-                     unwrap:x:+/*/*
-                     add:x:@.result
-                        .
-                           .:x:@strings.split/0
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
 
-// Returning result to caller.
-return-nodes:x:@.result/*
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:CustomerCustomerDemo.CustomerID
+   .:CustomerCustomerDemo.CustomerTypeID
+
+// Opening up our database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:"count(distinct "
+         get-value:x:@.arguments/*/distinct_column
+         .:)
+
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:CustomerCustomerDemo
+      columns
+         distinct_functor
+            as:count
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

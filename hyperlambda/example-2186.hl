@@ -1,11 +1,16 @@
-// Use an if statement with eq to compare values
 
-.result
-.src:int:1
-if
-   eq
-      get-value:x:@.src
-      .:int:1
-   .lambda
-      set-value:x:../*/.result
-         .:OK
+// Write a Hyperlambda snippet that handles file read errors using a try/catch/finally block.
+
+// Handles file read errors inside a try/catch/finally block
+try
+
+   // Attempting to read a non-existent file
+   file.read:/invalid/path/to/file.txt
+.catch
+
+   // Logging the error
+   log.error:x:@.arguments/*/message
+.finally
+
+   // Logging completion
+   log.info:File read attempt finished

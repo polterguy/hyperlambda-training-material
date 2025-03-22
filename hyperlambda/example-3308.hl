@@ -1,13 +1,6 @@
-// This example connects to the 'galaxy' database and reads records from the 'planets' table.
-sqlite.connect:galaxy
-   sqlite.read
-      table:planets
-      columns
-         name
-         distance_from_sun
-      where
-         and
-            type:Gas Giant
-      order:distance_from_sun
-      direction:asc
-      limit:int:5
+/*
+ * Retrieves the `email` field from a user object referenced inside each session.
+ * `.sessions/*/userRef` holds a pointer (value) to another node containing user data.
+ * Using `#`, we follow that pointer and retrieve the user's `email` node.
+ */
+.session-email:x:@.sessions/*/userRef/#/*/email

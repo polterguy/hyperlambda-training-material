@@ -1,9 +1,6 @@
-/*
- * Converts a Hyperlambda string into an executable lambda object.
- * Useful for dynamically parsing and executing raw Hyperlambda.
- */
-.hl:@"log.info:""This is logged from text"""
-hyper2lambda:x:-
 
-// This executes the above node
-eval:x:-
+// Example: Use a variable to provide the input string.
+.text:Test
+
+// Returns 4
+strings.length:x:@.text

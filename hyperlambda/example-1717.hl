@@ -1,8 +1,9 @@
-/*
- * Example: Remove all non-digit characters from a string (keep only digits).
- */
-.mixed:"Phone: 555-1234!"
-strings.replace-not-of:x:@.mixed
-   .:0123456789
-   .:""
-// Result: "5551234" (only digits remain)
+// This example encrypts a message with a custom seed for the CSRNG.
+crypto.rsa.create-key
+   strength:2048
+
+crypto.encrypt:Top secret message
+   encryption-key:x:@crypto.rsa.create-key/*/public
+   signing-key:x:@crypto.rsa.create-key/*/private
+   signing-key-fingerprint:x:@crypto.rsa.create-key/*/fingerprint
+   seed:RandomSeed123

@@ -1,19 +1,6 @@
-/*
- * Hyperlambda file taking arguments that invokes a dynamic slot with dynamic parameters.
- */
-.arguments
-   slot:string
-   params:*
-validators.mandatory:x:@.arguments/*/slot
 
-// Forwards all arguments to [invoke].
-add:x:./*/invoke
-   get-nodes:x:@.arguments/*/params/*
+// Example: Check if a string ends with a substring that is not at the end.
 
-// Invoke the slot dynamically
-invoke:x:@.arguments/*/slot
-
-// Returning result
-add:x:./*/return
-   get-nodes:x:@invoke/*
-return
+// Returns false
+strings.ends-with:HelloWorld
+   .:Universe

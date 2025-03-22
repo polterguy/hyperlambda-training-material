@@ -1,6 +1,3 @@
-/*
- * Example: Contains check is case-sensitive.
- */
-// Returns false since check is case sensitive
-strings.contains:MagicLambda
-   .:lambda
+
+// Example: Try signaling a slot without throwing exception if it doesn't exist
+try-signal:foo

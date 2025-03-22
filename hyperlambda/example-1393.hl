@@ -1,7 +1,10 @@
+/*
+ * This Hyperlambda snippet retrieves a single value using `get-first-value`.
+ *
+ * 1. The `.src` node is assigned the value `"foo1"`.
+ * 2. The `get-first-value` slot retrieves its value.
+ * 3. The expected output is `"foo1"`.
+ */
 
-// Creates our image cache folder.
-if
-   not
-      io.folder.exists:/etc/hub/image-cache/
-   .lambda
-      io.folder.create:/etc/hub/image-cache/
+.src:foo1
+get-first-value:x:../*/.src

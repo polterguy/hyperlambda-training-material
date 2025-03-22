@@ -1,5 +1,16 @@
-// Returns all nodes from some expression
-.data
-   foo1
-   foo2
-get-nodes:x:-/*
+
+// Hyperlambda endpoint taking two decimal numbers, then multiplying these and returning the result
+.arguments
+   no1:decimal
+   no2:decimal
+
+// Making sure argument was given
+validators.mandatory:x:@.arguments/*/no1
+validators.mandatory:x:@.arguments/*/no2
+
+// Multiplying.
+math.multiply
+   get-value:x:@.arguments/*/no1
+   get-value:x:@.arguments/*/no2
+yield
+   result:x:@math.multiply

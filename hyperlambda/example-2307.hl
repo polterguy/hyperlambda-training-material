@@ -1,16 +1,22 @@
-
-// Write a Hyperlambda script to list all files in a specified folder recursively, with options to display hidden and system files.
-.arguments
-   folder:string
-   sys:bool
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Listing all file in specified folder.
-io.file.list-recursively:x:@.arguments/*/folder
-   display-hidden:bool:true
-   display-system:x:@.arguments/*/sys
-
-// Returning results of above invocation to caller.
-return-nodes:x:@io.file.list-recursively/*
+// Creates a grouped chart
+image.chart:grouped
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets

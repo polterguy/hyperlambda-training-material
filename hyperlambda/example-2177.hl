@@ -1,16 +1,7 @@
-// Creates a Hyperlambda endpoint to fetch all records from the 'item' table in the erp database.
-.arguments
 
-// Making sure the endpoint is publicly visible
-.type:public
+// Create a Hyperlambda snippet that scrapes a TechCrunch blog post.
 
-data.connect:erp
-
-   // Selecting data.
-   data.select:select * from item
-
-   // Returning results to caller.
-   yield
-      rows:x:@data.select/*
-
-// Save this code as for instance '/modules/erp/item.get.hl'
+// Example snippet scraping a TechCrunch blog post.
+signal:magic.http.scrape-url
+   url:"https://techcrunch.com/2023/07/10/new-ai-startup-launches/"
+   semantics:bool:true

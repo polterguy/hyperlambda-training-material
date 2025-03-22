@@ -1,53 +1,55 @@
-// How does CRUD slots in Hyperlambda
 
-/*
- * Hyperlambda has 4 basic CRUD slots, you can examples of these below.
- */
+// Associates the specified [username] with the specified [extra] fields.
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   extra
+      type:key-value
+      mandatory:bool:true
+.icon:supervisor_account
 
-// [data.create]
-data.create
-   table:table1
-   values
-      column1:value1
-      column2:value2
-      column3:value3
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/extra
 
-// Read
-data.read
-   table:table1
+// Connecting to database.
+data.connect:[generic|magic]
 
-   // Optional
-   limit:5
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
 
-   // Optional
-   offset:5
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
 
-   // Optional
-   order
-      column1
-      column2
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
 
-   // Optional
-   direction:desc
+   // Adding extra fields to user.
+   for-each:x:@.arguments/*/extra/*
+      get-name:x:@.dp/#
 
-   // Conditions we're filtering on
-   where
+      // Deleting old value (if existing).
+      data.delete
+         table:users_extra
+         where
+            and
+               user.eq:x:@.arguments/*/username
+               type.eq:x:@get-name
 
-      // Use either [or] or [and] here
-      and
-
-// Update
-data.update
-   table:table1
-   values
-      column1:new-value
-   where
-      and
-         id.eq:PRIMARY-KEY-OF-RECORD-TO-UPDATE
-
-// Delete
-data.delete
-   table:table1
-   where
-      and
-         id.eq:PRIMARY-KEY-OF-RECORD-TO-UPDATE
+      // Inserting new value.
+      data.create
+         table:users_extra
+         values
+            user:x:@.arguments/*/username
+            type:x:@get-name
+            value:x:@.dp/#

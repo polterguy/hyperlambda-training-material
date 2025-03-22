@@ -1,17 +1,35 @@
 
-// Write a Hyperlambda script to list all folders in a specified folder recursively, with options to display hidden and system folders.
-.arguments
-   folder:string
-   sys:bool
-.type:internal
+// Lists all database in your MySQL instance.
+slots.create:magic.db.mssql.databases
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Opens up our connection
+   .connection:master
+   if
+      and
+         exists:x:@.arguments/*/connection-string
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               .:master]
+   mssql.connect:x:@.connection
 
-// Listing all folders in specified folder.
-io.folder.list-recursively:x:@.arguments/*/folder
-   display-hidden:bool:true
-   display-system:x:@.arguments/*/sys
+      // Runs our query
+      mssql.select:select name from master.dbo.sysdatabases where has_dbaccess(name) = 1
 
-// Returning results of above invocation to caller.
-return-nodes:x:@io.folder.list-recursively/*
+      // Renaming "Database" nodes.
+      set-name:x:@mssql.select/*/*
+         .:db
+
+      // Returns the remaining databases to caller.
+      return-nodes:x:@mssql.select/*

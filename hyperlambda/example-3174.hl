@@ -1,6 +1,6 @@
-
-// Example: Use a variable as the input to lowercase.
-.text:LOWER ME
-
-// Result: "lower me"
-strings.to-lower:x:@.text
+/*
+ * Example: String consisting entirely of trim characters (result is empty).
+ */
+// Result: "" (empty string)
+strings.trim-start:"xxx"
+   .:"x"

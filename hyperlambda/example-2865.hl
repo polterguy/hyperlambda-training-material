@@ -1,12 +1,10 @@
-// Combining the words of an ancient prophecy into one.
 
-.scroll-part1:Elders
-.scroll-part2:" of the Universe"
-.final-scroll
+// Example: Find all digit sequences in a string.
+strings.matches:abc123xyz45
+   .:"\\d+"
 
-set-value:x:@.final-scroll
-   strings.concat
-      get-value:x:@.scroll-part1
-      get-value:x:@.scroll-part2
-
-// After execution, .final-scroll contains "Elders of the Universe".
+/*
+ * Resulting matches:
+ * .:123
+ * .:45
+ */

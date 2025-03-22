@@ -1,6 +1,9 @@
+// Using variables with the [and] slot to check multiple conditions
+.condition1:bool:true
+.condition2:bool:false
 
-// Example: Use a variable to provide the input string.
-.text:Test
+and
+   get-value:x:@.condition1
+   get-value:x:@.condition2
 
-// Returns 4
-strings.length:x:@.text
+// Above [and] becomes false

@@ -1,11 +1,12 @@
 
-// Add children from multiple sources into multiple destinations
-.dest
-.dest
-.src1
-   foo1:bar1
-.src2
-   foo2:bar2
-add:x:../*/.dest
-   get-nodes:x:@.src1/*
-   get-nodes:x:@.src2/*
+// Delete a single customer record by customer_id
+data.connect:shopDB
+   data.delete
+      table:customers
+      where
+         and
+
+            // Only delete the customer with ID 987
+            customer_id.eq:987
+
+   // WARNING: Without a WHERE clause, this would delete all customers!

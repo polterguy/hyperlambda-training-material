@@ -1,5 +1,4 @@
-/*
- * Example: Capitalize only the very first character of a multi-word string.
- */
-// Result: "Hello world"
-strings.capitalize:"hello world"
+// Increase .total-amount by 5
+.total-amount:int:95
+math.increment:x:@.total-amount
+   .:int:5

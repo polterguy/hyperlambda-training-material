@@ -1,21 +1,17 @@
-// Use else as a fallback if no conditions match
 
-.result
-.src:int:3
-if
-   eq
-      get-value:x:@.src
-      .:int:1
-   .lambda
-      set-value:x:../*/.result
-         .:OK
-else-if
-   eq
-      get-value:x:@.src
-      .:int:2
-   .lambda
-      set-value:x:../*/.result
-         .:ERROR
-else
-   set-value:x:../*/.result
-      .:DEFAULT
+// Create a Hyperlambda snippet that handles HTTP request failures using a try/catch/finally block.
+
+// Handles HTTP request failures inside a try/catch/finally block
+try
+
+   // Performing HTTP request
+   http.get:"https://invalid-url.com"
+      convert:true
+.catch
+
+   // Logging the error
+   log.error:x:@.arguments/*/message
+.finally
+
+   // Logging completion
+   log.info:HTTP request attempt finished

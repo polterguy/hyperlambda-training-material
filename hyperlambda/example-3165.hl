@@ -1,11 +1,5 @@
-
-// Example: Split a comma-separated string.
-strings.split:a,b,c
-   .:,
-
 /*
- * Resulting parts:
- * .:a
- * .:b
- * .:c
+ * Example: Trim whitespace from the beginning of a string.
  */
+// Result: "hello   "
+strings.trim-start:"   hello   "

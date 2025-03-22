@@ -1,9 +1,12 @@
-/*
- * Retrieves the value of a specific node.
- *
- * 1. The `.foo` node contains `"hello world"`.
- * 2. The `get-value` slot retrieves its value.
- */
-
-.foo:hello world
-get-value:x:@.foo
+// Loop while a condition is true (increment counter and add items)
+.i:int:0
+.list
+while
+   lt
+      get-value:x:@.i
+      .:int:3
+   .lambda
+      add:x:@.list
+         .
+            item
+      math.increment:x:@.i

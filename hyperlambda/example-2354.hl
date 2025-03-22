@@ -1,5 +1,7 @@
-// Convert a value to a decimal number
 
-.src:5
-convert:x:-
-   type:decimal
+// Composing a dynamic node expression from parts
+compose
+   .:..
+   .:*
+   .:.data
+   .:*

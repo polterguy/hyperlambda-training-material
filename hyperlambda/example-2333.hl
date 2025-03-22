@@ -1,60 +1,237 @@
 
-// Create a Hyperlambda script for a CRUD update endpoint that updates all filtered records in the ml_training_snippets table in the magic database, ensuring authentication and authorization for root roles.
+// Adds the specified link table to the specified database.
 .arguments
-   filter
-      ml_training_snippets.prompt.like:string
-      ml_training_snippets.uri.like:string
-      ml_training_snippets.type.eq:string
-   values
-      type:string
-      pushed:long
-.type:crud-update
+   databaseType:string
+   connectionString:string
+   databaseName:string
+   args
+      name:string
+      table1:string
+      table2:string
+      table1pk
+         .
+            name:string
+            type:string
+            length:int
+      table2pk
+         .
+            name:string
+            type:string
+            length:int
+   generate:bool
 
-// Verifying user is authorized to access endpoint.
+// Ensures user is authorized to access endpoint.
 auth.ticket.verify:root
 
-// Opening up our database connection.
-data.connect:[generic|magic]
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/connectionString
+validators.mandatory:x:@.arguments/*/databaseName
+validators.mandatory:x:@.arguments/*/args
+validators.mandatory:x:@.arguments/*/databaseType
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:sqlite
+   .:pgsql
+   .:mssql
 
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.update/*/where/*/*/or
-      get-nodes:x:@.arguments/*/filter/*/ml_training_snippets.prompt.like
-      get-nodes:x:@.arguments/*/filter/*/ml_training_snippets.uri.like
-   remove-nodes:x:@.arguments/*/filter/*/ml_training_snippets.prompt.like
-   remove-nodes:x:@.arguments/*/filter/*/ml_training_snippets.uri.like
-   add:x:./*/data.update/*/where/*
-      get-nodes:x:@.arguments/*/filter/*
-   add:x:./*/data.update/*/values
-      get-nodes:x:@.arguments/*/values/*
+// Creating our DDL SQL.
+.sql
 
-   // Removing [or] parts unless we've got something to actually or.
+// Create table DDL.
+set-value:x:@.sql
+   strings.concat
+      .:"create table "
+      get-value:x:@.arguments/*/args/*/name
+      .:(
+
+// Looping through primary keys in table1.
+.first:bool:true
+.pk:
+.fk:
+for-each:x:@.arguments/*/args/*/table1pk/*
+
+   // Checking if this is our first column or not.
+   if:x:@.first
+      set-value:x:@.first
+         .:bool:false
+      set-value:x:@.sql
+         strings.concat
+            get-value:x:@.sql
+            .:"\n  "
+   else
+      set-value:x:@.sql
+         strings.concat
+            get-value:x:@.sql
+            .:",\n  "
+
+   // Adding column name and type.
+   set-value:x:@.sql
+      strings.concat
+         get-value:x:@.sql
+         get-value:x:@.dp/#/*/name
+         .:" "
+         get-value:x:@.dp/#/*/type
+
+   // Checking if type has a length.
    if
-      not-exists:x:@data.connect/*/data.update/*/where/*/and/*/or/*
+      and
+         exists:x:@.dp/#/*/length
+         not-null:x:@.dp/#/*/length
       .lambda
-         remove-nodes:x:@data.connect/*/data.update/*/where/*/and/*/or
+         set-value:x:@.sql
+            strings.concat
+               get-value:x:@.sql
+               .:(
+               get-value:x:@.dp/#/*/length
+               .:)
 
-   // Invoking our update slot.
-   data.update
-      table:ml_training_snippets
-      values
-      where
-         and
-            or
-
-   // Verifying record exists.
+   // Adding references constraint for column if not MySQL.
    if
-      eq
-         get-value:x:@data.update
-         .:int:0
+      neq:x:@.arguments/*/databaseType
+         .:mysql
       .lambda
-         response.status.set:404
-         return
-            result:Record not found
+         set-value:x:@.sql
+            strings.concat
+               get-value:x:@.sql
+               .:" references "
+               get-value:x:@.arguments/*/args/*/table1
+               .:" ("
+               get-value:x:@.dp/#/*/name
+               .:)
+   else
+      set-value:x:@.fk
+         strings.concat
+            get-value:x:@.fk
+            .:",\n foreign key ("
+            get-value:x:@.dp/#/*/name
+            .:") references "
+            get-value:x:@.arguments/*/args/*/table1
+            .:" ("
+            get-value:x:@.dp/#/*/name
+            .:)
 
-   // Returning the correct status code.
-   response.status.set:202
+   // Storing primary key's name.
+   set-value:x:@.pk
+      strings.concat
+         get-value:x:@.pk
+         get-value:x:@.dp/#/*/name
+         .:,
 
-   // Returning success to caller.
+// Looping through primary keys in table2.
+for-each:x:@.arguments/*/args/*/table2pk/*
+
+   // Checking if this is our first column or not.
+   if:x:@.first
+      set-value:x:@.first
+         .:bool:false
+      set-value:x:@.sql
+         strings.concat
+            get-value:x:@.sql
+            .:"\n  "
+   else
+      set-value:x:@.sql
+         strings.concat
+            get-value:x:@.sql
+            .:",\n  "
+
+   // Adding column name and type.
+   set-value:x:@.sql
+      strings.concat
+         get-value:x:@.sql
+         get-value:x:@.dp/#/*/name
+         .:" "
+         get-value:x:@.dp/#/*/type
+
+   // Checking if type has a length.
+   if
+      and
+         exists:x:@.dp/#/*/length
+         not-null:x:@.dp/#/*/length
+      .lambda
+         set-value:x:@.sql
+            strings.concat
+               get-value:x:@.sql
+               .:(
+               get-value:x:@.dp/#/*/length
+               .:)
+
+   // Adding references constraint for column if not MySQL.
+   if
+      neq:x:@.arguments/*/databaseType
+         .:mysql
+      .lambda
+         set-value:x:@.sql
+            strings.concat
+               get-value:x:@.sql
+               .:" references "
+               get-value:x:@.arguments/*/args/*/table2
+               .:" ("
+               get-value:x:@.dp/#/*/name
+               .:)
+   else
+      set-value:x:@.fk
+         strings.concat
+            get-value:x:@.fk
+            .:",\n foreign key ("
+            get-value:x:@.dp/#/*/name
+            .:") references "
+            get-value:x:@.arguments/*/args/*/table2
+            .:" ("
+            get-value:x:@.dp/#/*/name
+            .:)
+
+   // Storing primary key's name.
+   set-value:x:@.pk
+      strings.concat
+         get-value:x:@.pk
+         get-value:x:@.dp/#/*/name
+         .:,
+
+// Adding primary key to table.
+strings.trim:x:@.pk
+   .:,
+set-value:x:@.sql
+   strings.concat
+      get-value:x:@.sql
+      .:",\n  primary key("
+      get-value:x:@strings.trim
+      .:)
+
+// Adding closing paranthesis and semi colon.
+set-value:x:@.sql
+   strings.concat
+      get-value:x:@.sql
+      get-value:x:@.fk
+      .:);
+
+// Checking if caller only wants to generate SQL statement.
+if:x:@.arguments/*/generate
    unwrap:x:+/*
    return
-      affected:x:@data.update
+      sql:x:@.sql
+
+// Creating our database connection and executing our SQL.
+strings.concat
+   .:[
+   get-value:x:@.arguments/*/connectionString
+   .:|
+   get-value:x:@.arguments/*/databaseName
+   .:]
+data.connect:x:-
+   database-type:x:@.arguments/*/databaseType
+   data.execute:x:@.sql
+      database-type:x:@.arguments/*/databaseType
+
+// Flushing database cache.
+strings.concat
+   .:magic.sql.databases.
+   get-value:x:@.arguments/*/databaseType
+   :.
+   get-value:x:@.arguments/*/connectionString
+cache.set:x:-
+
+// Returning result to caller.
+unwrap:x:+/*
+return
+   result:success
+   sql:x:@.sql

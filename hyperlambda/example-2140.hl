@@ -1,6 +1,9 @@
 
-// Fetch a few film titles and release years using a raw SQL query
-data.connect:sakila
-   data.select:SELECT title, release_year FROM film LIMIT 3
+// Generate a Hyperlambda snippet that inserts a 'second' element after 'first' inside '.elements'.
 
-   // Executes the SQL directly on the database and returns up to 3 rows
+// Inserts a "second" element after "first" inside ".elements".
+.elements
+   first
+insert-after:x:@.elements/*/first
+   .
+      second:Added dynamically

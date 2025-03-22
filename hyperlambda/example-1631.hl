@@ -1,5 +1,5 @@
 /*
- * Example: Get the length of a numeric string.
+ * If no nodes match, `get-nodes` should return nothing.
  */
-// Returns 5
-strings.length:"12345"
+
+get-nodes:x:@.nonexistent

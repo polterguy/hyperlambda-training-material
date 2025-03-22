@@ -1,30 +1,75 @@
 
-// Write a Hyperlambda script to return the initial questionnaire for a specified type.
+// Write a Hyperlambda script to evaluate the given SQL for a specified database and return the result to the caller.
 .arguments
-   type:string
+   databaseType:string
+   database:string
+   sql:string
+   safeMode:bool
+   batch:bool
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/databaseType
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:pgsql
+   .:mssql
+   .:sqlite
 
-// Opening up database connection.
-data.connect:[generic|magic]
+// Creating our database connection.
+data.connect:x:@.arguments/*/database
+   database-type:x:@.arguments/*/databaseType
 
-   // Retrieving all questions from database.
-   data.select:"\nselect q.question, q.type, q.context, q.name\n\tfrom questions q\n\t\tinner join questionnaires qu on qu.name = q.questionnaire\n        inner join ml_types t on t.initial_questionnaire = qu.name\n\twhere t.type = @type\n   order by q.question_id"
-      type:x:@.arguments/*/type
-
-   // Retrieving main questionnaire from database.
-   data.select:"\nselect q.name, q.type, q.action\n   from questionnaires q\n      inner join ml_types t on t.initial_questionnaire = q.name\n   where t.type = @type"
-      type:x:@.arguments/*/type
-
-   // Returning result to caller.
-   insert-before:x:./*/return/0
-      get-nodes:x:@data.connect/*/data.select/[1,2]/*/*
-   add:x:./*/return/*/questions
-      get-nodes:x:@data.connect/*/data.select/[0,1]/*
+   /*
+    * Checking if we're supposed to execute SQL in safe mode, only
+    * returning the first 200 records.
+    */
    if
-      not-exists:x:@data.connect/*/return/*/questions/*
+      and
+         get-value:x:@.arguments/*/safeMode
+         not
+            get-value:x:@.arguments/*/batch
       .lambda
-         remove-nodes:x:@data.connect/*/return/*/questions
-   return
-      questions
+         add:x:@data.connect/**/data.select
+            .
+               max:200
+
+   /*
+    * Checking if we're supposed to execute SQL as an MS SQL 'batch' operation,
+    * which implies respecting 'go' keywords, splitting SQL by each 'go' keyword.
+    */
+   if
+      and
+         eq
+            get-value:x:@.arguments/*/databaseType
+            .:mssql
+         get-value:x:@.arguments/*/batch
+      .lambda
+         set-name:x:@data.connect/**/data.select
+            .:mssql.execute-batch
+   else
+      add:x:@data.connect/**/data.select
+         .
+            database-type:x:@.arguments/*/databaseType
+
+   /*
+    * Executing SQL and returning results to caller, making sure we're
+    * able to return exceptions to caller.
+    */
+   try
+      data.select:x:@.arguments/*/sql
+         multiple-result-sets:true
+
+      // Returning result of invocation to caller.
+      if
+         exists:x:@data.select/*/*
+         .lambda
+            return-nodes:x:@data.select/*
+   .catch
+
+      // Notice, throwing exceptions as public now.
+      throw:x:@.arguments/*/message
+         public:bool:true
+         status:int:401

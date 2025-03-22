@@ -1,29 +1,54 @@
 
-// Scrapes the specified [url] and returns as context data to caller.
+// Update one record in your Artist table in your chinook database
 .arguments
-   url:string
 
-/*
- * Ensures user is authorized to access endpoint.
- * 
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/modules/auth/workflows/actions/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
+   // ArtistId column value being primary key of record to update, mandatory argument
+   ArtistId:long
 
-// Returns [max_tokens] context from the specified [url].
-execute:magic.workflows.actions.execute
-   name:openai-context-from-url
-   filename:/modules/openai/workflows/actions/openai-context-from-url.hl
-   arguments
-      url:x:@.arguments/*/url
-      max_tokens:int:2000
+   // Name column's new value
+   Name:string
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// Type of endpoint
+.type:crud-update
+
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/ArtistId
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
+
+   // Invoking our update slot.
+   data.update
+      database-type:sqlite
+      table:Artist
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning the correct status code.
+   response.status.set:202
+
+   // Returning success to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.update

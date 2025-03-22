@@ -1,44 +1,22 @@
-
-/*
- * Returns subsidiary companies from specified org number.
- * 
- * Returns all companies the specified org number company owns, either partially or completely.
- */
+// Create a Hyperlambda file that takes two arguments and concatenates these into a personalised greeting. Have it accept name and age
 .arguments
-   org_number:string
+   name:string
+   age:int
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/org_number
-set-value:x:@.arguments/*/org_number
-   strings.replace-not-of:x:@.arguments/*/org_number
-      .:0123456789
-      .:
+// Ensure mandatory arguments are provided
+validators.mandatory:x:@.arguments/*/name
+validators.mandatory:x:@.arguments/*/age
 
-// Connecting to database.
-data.connect:[finovo|finovo]
-   database-type:pgsql
+// Create the greeting message
+.message
+set-value:x:@.message
+   strings.concat
+      .:"Hello, "
+      get-value:x:@.arguments/*/name
+      .:"! You are "
+      get-value:x:@.arguments/*/age
+      .:" years old!"
 
-   // Retrieving items.
-   data.read
-      database-type:pgsql
-      table:group_structure
-      columns
-         org_number
-         company_name
-         company_country_name
-         owned_percent
-      where
-         and
-            group_mother_orgnumber.eq:x:@.arguments/*/org_number
-            org_number.neq:x:@.arguments/*/org_number
-      limit:-1
-
-   // Verifying the company has subsidiaries.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         return
-            result:"This company doesn't have any subsidiaries"
-
-   // Returning result to caller.
-   return-nodes:x:@data.read/*
+// Return the greeting to the caller
+yield
+   greeting:x:@.message

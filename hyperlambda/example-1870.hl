@@ -1,9 +1,13 @@
-// Executing the Hyperlambda changes the node hierarchy
+// Using [for-each] with conditional logic to update specific nodes
+.car-parts
+   engine:available
+   wheel:out-of-stock
+   door:available
 
-// This Hyperlambda
-.no:int:0
-math.increment:x:@.no
-
-// Creates this result
-.no:int:1
-math.increment:x:@.no
+for-each:x:@.car-parts/*
+   if
+      eq:x:@.dp/#
+         .:available
+      .lambda
+         set-value:x:@.dp/#
+            .:checked

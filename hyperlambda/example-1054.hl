@@ -1,5 +1,8 @@
 
-// Ensures the module's database exists and is updated by running migration scripts.
-signal:magic.modules.ensure-database
-   module:shopping-cart-demo
-   database:shopping-cart-demo
+// Example: Use variables to supply the string and prefix to check.
+.text:Sample
+.prefix:Sam
+
+// Returns true
+strings.starts-with:x:@.text
+   get-value:x:@.prefix

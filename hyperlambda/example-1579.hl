@@ -1,35 +1,13 @@
+/*
+ * This Hyperlambda snippet retrieves the name of a specific indexed node.
+ *
+ * 1. The `.data` node has three children: `foo1`, `foo2`, and `foo3`.
+ * 2. The `get-name` slot retrieves the name of the second child (`foo2`).
+ * 3. The expected output is `"foo2"`.
+ */
 
-// Delete one record from your Customer table in your chinook database
-.arguments
-
-   // Primary key of record to delete, mandatory argument
-   CustomerId:long
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/CustomerId
-
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:Customer
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+.data
+   foo1:bar1
+   foo2:bar2
+   foo3:bar3
+get-name:x:@.data/1

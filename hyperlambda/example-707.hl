@@ -1,4 +1,8 @@
+// Define and use a context object
 
-// Move folder
-io.folder.move:/misc/source-folder/
-   .:/misc/destination-folder/
+.result
+context:foo
+   value:bar
+   .lambda
+      set-value:x:@.result
+         get-context:foo

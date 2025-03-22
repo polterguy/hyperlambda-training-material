@@ -1,16 +1,11 @@
+// Show me all different ways we can create a string, with example data
 
-// Write a Hyperlambda script to return the number of log items in the database based on a query.
-.arguments
-   query:string
-.type:internal
+// Single quotes
+.foo:'howdy world this is a string'
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Double quotes
+.foo:"Howdy world, another string\nNew line here ..."
 
-// Invoking slot responsible for returning count.
-log.count:x:@.arguments/*/query
-
-// Returning result of above invocation to caller.
-unwrap:x:+/*
-return
-   count:x:@log.count
+// Multiline strings
+.foo:@"Notice how the new line doesn't end the string
+    here!"

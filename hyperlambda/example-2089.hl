@@ -1,4 +1,16 @@
-// Create a cache item
-cache.set:cache-item-key
-   expiration:5
-   value:Howdy world
+
+// Write a Hyperlambda snippet that loops while [.score] is less than 50.
+
+// Loops while [.score] is less than 50.
+.score:int:0
+while
+   lt
+      get-value:x:@.score
+      .:int:50
+   .lambda
+
+      // Score increasing.
+      log.info:Increasing score
+
+      // Incrementing score.
+      math.increment:x:@.score

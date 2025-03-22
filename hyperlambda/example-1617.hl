@@ -1,8 +1,7 @@
 /*
- * Example: Use variables to supply the string and prefix to check.
+ * This Hyperlambda snippet retrieves the name of a node that has no value.
  */
-.text:"Sample"
-.prefix:"Sam"
-// Returns true
-strings.starts-with:x:@.text
-   get-value:x:@.prefix
+
+.data
+   foo
+get-name:x:@.data/*

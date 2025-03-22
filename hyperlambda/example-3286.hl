@@ -1,7 +1,6 @@
-// This example encrypts a message using RSA and AES, with a private key while also cryptographicall signing the result.
-crypto.rsa.create-key
-   strength:2048
-crypto.encrypt:Confidential data
-   encryption-key:x:././*/crypto.rsa.create-key/[0,1]/*/public
-   signing-key:x:././*/crypto.rsa.create-key/[0,1]/*/private
-   signing-key-fingerprint:x:././*/crypto.rsa.create-key/[0,1]/*/fingerprint
+// eq should throw an error when given more than two values
+
+eq
+   .:foo1
+   .:foo2
+   .:foo3

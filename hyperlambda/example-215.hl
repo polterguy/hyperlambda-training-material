@@ -1,7 +1,9 @@
-// Connects to erp SQLite database using external connection string
-data.connect:[external|erp]
-
-   // You can only de-reference the connection created above inside the 'scope' of the [data.connect] slot
-   data.select:select * from contacts
-
-// The default database type to use is SQLite
+// This snippet uses the '=xxx' iterator to filter nodes by their value.
+.list
+   item1:match
+   item2:no
+   item3:match
+for-each:x:@.list/*/=match  
+   set-value:x:@.dp/#
+      :found
+// The expression @.list/*/=match finds all children of .list whose value equals "match" (item1 and item3). The loop sets those nodes' values to "found".

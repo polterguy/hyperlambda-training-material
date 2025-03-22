@@ -1,11 +1,5 @@
-/*
- * Example: Find all substrings matching a pattern in curly braces.
+/**
+ * This example saves the text "Hello, Hyperlambda!" to "/logs/app.log".
  */
-.text:"{match1} and {match2} are here"
-strings.matches:x:@.text
-   .:"\\{.+?\\}"
-/*
- * Resulting matches:
- * .:{match1}
- * .:{match2}
- */
+io.file.save:/logs/app.log
+   .:Hello, Hyperlambda!

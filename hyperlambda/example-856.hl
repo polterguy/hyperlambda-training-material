@@ -1,6 +1,5 @@
 
-// Create a Hyperlambda for-each loop that iterates through a list of items and logs the current item.
-for-each:x:@.data/*
-
-   // Currently iterated node can be found by reference in [.dp] node
-   log.info:x:@.dp/#
+// [exists] returns true if the expression finds any node
+.present
+   node
+exists:x:@.present/*

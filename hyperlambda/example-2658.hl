@@ -1,13 +1,30 @@
 /*
- * This Hyperlambda snippet demonstrates the use of `finally`.
- * The `finally` block executes regardless of whether an exception is caught.
- * Expected behavior: `.throws` should always be `true` after execution.
+ * Sends a welcome email to all new employees
  */
 
-.throws:bool:false
-try
-   throw:foo
-.catch
-.finally
-   set-value:x:@.throws
-      .:bool:true
+.company
+   new_hires
+      .
+         name:Emily Zhang
+         email:emily@acme.com
+      .
+         name:Noah Clarke
+         email:noah@acme.com
+      .
+         name:Liam Davis
+         email:liam@acme.com
+for-each:x:@.company/*/new_hires/*
+   unwrap:x:+/**
+   mail.smtp.send
+      message
+         to
+            .
+               name:x:@.dp/#/*/name
+               email:x:@.dp/#/*/email
+         from
+            .
+               name:HR Team
+               email:hr@acme.com
+         subject:Welcome to the Company!
+         entity:text/plain
+            content:We're thrilled to have you on board. Please read the onboarding guide attached.

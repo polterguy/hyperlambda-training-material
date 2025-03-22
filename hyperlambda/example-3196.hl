@@ -1,5 +1,18 @@
 
-// Example: URL-encode a simple string (space and special characters become % codes).
-strings.url-encode:hello world
+// Create a Hyperlambda action to join specified 'values' into a single string with an optional 'separator'. Return the joined result.
+.arguments
+   values
+      type:array
+      mandatory:bool:true
+   separator
+      type:string
+      mandatory:bool:false
+.icon:settings
 
-// Result: "hello%20world"
+// Joining strings.
+strings.join:x:@.arguments/*/values/*
+   get-value:x:@.arguments/*/separator
+
+// Returning result to caller.
+yield
+   result:x:@strings.join

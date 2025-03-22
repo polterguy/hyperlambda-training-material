@@ -1,21 +1,29 @@
 
-// Hyperlambda [if] with regex match
-.email:user@example.com
-.is-valid
-strings.matches:x:@.email
-   .:"^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
-if
-   exists:x:@strings.matches/*
-   .lambda
-      set-value:x:@.is-valid
-         .:bool:true
+// Create a Hyperlambda script to return a named task to the caller.
+.arguments
+   offset:long
+   limit:long
+   filter:string
 
-/*
- * JavaScript equivalent of Hyperlambda [if] with regex match
- * const email = "user@example.com";
- * let isValid;
- * 
- * if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
- * isValid = true;
- * }
- */
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Retrieves all scheduled tasks in the system.
+add:x:../*/tasks.list
+   get-nodes:x:@.arguments/*/offset
+   get-nodes:x:@.arguments/*/limit
+tasks.list:x:@.arguments/*/filter
+
+// Retrieving schedules for tasks, if any.
+include:x:@tasks.list/*
+   tasks.get:x:@.dp/#/*/id
+      schedules:true
+   add:x:+/*
+      get-nodes:x:@tasks.get/*/schedules/*
+   add:x:./*/return/*/schedules
+      .
+   return
+      schedules
+
+// Returning the results of the evaluation to caller.
+return-nodes:x:@tasks.list/*

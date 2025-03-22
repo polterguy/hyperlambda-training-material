@@ -1,6 +1,10 @@
-// This code loads a markdown documentation file, replaces the heading "# Getting Started" with "# Introduction", and saves the result back to the same file.
-io.file.load:/docs/introduction.md
-io.file.save:/docs/introduction.md
-   strings.replace:x:@io.file.load
-      .:# Getting Started
-      .:# Introduction
+
+// Create a Hyperlambda script to generate a bar chart image with specified dimensions and bar values.
+image.chart:bars
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring:int:2
+      Summer:int:5
+      Autumn:int:10

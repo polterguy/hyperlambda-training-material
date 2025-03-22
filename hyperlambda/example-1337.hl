@@ -1,35 +1,23 @@
 
-// Deletes the user's account entirely on server.
-.arguments
+// Create a Hyperlambda script to demonstrate a switch case comparison evaluating lambda objects based on the expression's value.
+.source:foo
+.result
+switch:x:@.source
+   case:foo
 
-// Ensuring user is authenticated to invoke endpoint.
-auth.ticket.verify:guest
+      // Lambda object to evaluate if expression's value equals 'foo'.
+      set-value:x:@.result
+         .:Is foo
+   case:bar
 
-// Retrieving currently authenticated user.
-auth.ticket.get
+      // Lambda object to evaluate if expression's value equals 'bar'.
+      set-value:x:@.result
+         .:Is bar
+   default
 
-// Verifying user doesn't have any cloudlets.
-data.connect:[generic|hub]
-   data.read
-      table:cloudlets
-      where
-         and
-            user.eq:x:@auth.ticket.get
-   if
-      exists:x:@data.read/*/*
-      .lambda
-         throw:You have to delete all cloudlets before you delete your account
-            public:true
-            status:400
-
-// Deleting user from magic database.
-data.connect:[generic|magic]
-   data.delete
-      table:users
-      where
-         and
-            username.eq:x:@auth.ticket.get
-
-// Returning success to caller.
-return
-   result:success
+      /*
+       * Lambda object to evaluate if expression is not matched to any
+       * of the above values.
+       */
+      set-value:x:@.result
+         .:None of the above

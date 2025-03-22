@@ -1,13 +1,6 @@
 
-// Create a Hyperlambda snippet that fetches the company name of a user from an API.
+// Example: Pass arguments to the inline Hyperlambda code.
+strings.mixin:"2 + val equals {{\nmath.add\n   .:int:2\n   get-value:x:@.arguments/*/val\nreturn:x:-\n}}"
+   val:int:5
 
-// Fetches the company name of a user.
-http.get:"https://jsonplaceholder.typicode.com/users/2"
-
-   // Converts JSON response.
-   convert:true
-
-// Sets [.company_name] to the user's company name
-.company_name
-set-value:x:@.company_name
-   get-value:x:@http.get/*/content/*/company/*/name
+// Result: "2 + val equals 7"

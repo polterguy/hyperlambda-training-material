@@ -1,6 +1,15 @@
+// Hyperlambda [set-value]
+.data
+   item1:apple
+   item2:banana
+.item:item2
+set-value:x:@.data/*/{@.item}
+   .:orange
 
-// Sets the value of [.res] to the number of records we've got in our table1 table in our foo database
-.res
-data.connect:foo
-   set-value:x:@.res
-      data.scalar:select count(*) from table1
+// Results in:
+.data
+   item1:apple
+   item2:orange
+.item:item2
+set-value:x:@.data/*/{@.item}
+   .:orange

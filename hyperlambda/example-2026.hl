@@ -1,18 +1,11 @@
 
-// Create a Hyperlambda endpoint that saves the specified configuration object to appsettings.json, ensuring the user is authorized.
-.arguments:*
-.type:internal
+// Provide a Hyperlambda example where 'hr_db' is opened to get employee details.
 
-// Ensuring user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Converting input arguments to JSON.
-lambda2json:x:@.arguments/*
-   format:true
-
-// Saving the specified config object to the 'appsettings.json' file.
-config.save:x:@lambda2json
-
-// Returning success to caller.
-return
-   result:success
+// Opens "hr_db" and gets employee details.
+.result
+data.connect:hr_db
+   database-type:mssql
+   data.select:"select employee_id, name, department, hire_date from employees where status='active'"
+      database-type:mssql
+   add:x:@.result
+      get-nodes:x:@data.select/*

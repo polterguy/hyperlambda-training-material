@@ -1,7 +1,5 @@
 
-// Connect to magic database and returns all roles
-data.connect:magic
-   data.read
-      table:roles
-      columns
-         name
+// Convert a numeric string to an integer type
+.str:42
+convert:x:@.str
+   type:int

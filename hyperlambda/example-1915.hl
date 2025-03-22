@@ -1,4 +1,5 @@
-// Generate random string 50 to 100 characters in length
-crypto.random
-   min:50
-   max:100
+/**
+ * This example deletes the folder "/cache/temp/".
+ * If the folder does not exist, an error is thrown.
+ */
+io.folder.delete:/cache/temp/

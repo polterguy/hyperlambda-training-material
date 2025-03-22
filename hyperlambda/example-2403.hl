@@ -1,11 +1,21 @@
 
-// Add children from multiple sources into multiple destinations
-.dest1
-.dest2
-.src1
-   foo1:bar1
-.src2
-   foo2:bar2
-add:x:../*/.dest*
-   get-nodes:x:@.src1/*
-   get-nodes:x:@.src2/*
+// Lists all SQLite database in your default data folder.
+slots.create:magic.db.sqlite.databases
+
+   // Listing files in data folder and returning to caller.
+   io.file.list:/data/
+   for-each:x:-/*
+      if
+         strings.ends-with:x:@.dp/#
+            .:.db
+         .lambda
+            strings.split:x:@.dp/#
+               .:/
+            strings.split:x:-/0/-
+               .:.
+            unwrap:x:+/*/*/*
+            add:x:../*/return-nodes
+               .
+                  .
+                     db:x:@strings.split/0
+   return-nodes

@@ -1,23 +1,17 @@
+/*
+ * Save this file as `/modules/profile/endpoints/set-age.hl`
+ * This exposes an HTTP POST endpoint at `/profile/set-age`
+ *
+ * Requires `age` to be an integer between 18 and 120.
+ */
 
-// Create stacked chart
-image.chart:stacked
-   filename:/stacked-chart.png
-   width:600
-   height:300
-   bars
-      Spring
-         .:int:2
-         .:int:5
-         .:int:10
-      Summer
-         .:int:4
-         .:int:7
-         .:int:10
-      Autumn
-         .:int:2
-         .:int:5
-         .:int:4
-   legend
-      .:Phones
-      .:Computers
-      .:Tablets
+.arguments
+   age:int
+
+validators.mandatory:x:@.arguments/*/age
+validators.enum:x:@.arguments/*/age
+   min:int:18
+   max:int:120
+
+yield
+   result:Age accepted

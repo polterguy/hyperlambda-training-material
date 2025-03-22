@@ -1,26 +1,35 @@
 
-// Write a Hyperlambda script to return a specified TXT training data file to the client.
+// Hyperlambda file that deletes one record from your actor table in your sakila database with authorization. Responds with endpoint or Hyperlambda file syntax.
 .arguments
-   file:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
+   // Primary key of record to delete, mandatory argument
+   actor_id:long
 
-// Figuringout full path of file.
-strings.concat
-   .:/etc/system/openai/pdf/
-   get-value:x:@.arguments/*/file
+// Meta data description for endpoint
 
-// Getting our response HTTP headers sorted out.
-strings.concat
-   .:"attachment; filename=\""
-   get-value:x:@.arguments/*/file
-   .:"\""
-response.headers.set
-   Content-Type:text/plain
-   Content-Disposition:x:@strings.concat
-   Access-Control-Expose-Headers:Content-Disposition
+// Type of endpoint
+.type:crud-delete
 
-// Returning file to caller.
-io.stream.open-file:x:@strings.concat/@strings.concat
-return:x:-
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/actor_id
+
+// Opening up our database connection.
+data.connect:[generic|sakila]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:actor
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

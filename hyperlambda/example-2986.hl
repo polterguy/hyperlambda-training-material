@@ -1,11 +1,13 @@
-// Create a slot 'test' that returns a value
-slots.create:test  
-   return-value:OK
+// Build an HTTP GET endpoint that retrieves a paginated list of contacts from the CRM database.
+// Save as /modules/contacts/list.get.hl
+// It takes `limit` and `offset` as query parameters and returns matching records.
+.arguments
+   limit:int
+   offset:int
 
-// Invoke 'test' safely (slot exists)
-try-signal:test  
-// The try-signal node's value is "OK"
-
-// Invoke a non-existent slot 'missing' safely
-try-signal:missing  
-// No exception is thrown even though 'missing' is not defined (result is empty)
+data.connect:[generic|crm]
+   data.read
+      table:contacts
+      limit:x:@.arguments/*/limit
+      offset:x:@.arguments/*/offset
+   return-nodes:x:@data.read/*

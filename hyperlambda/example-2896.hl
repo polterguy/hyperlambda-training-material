@@ -1,34 +1,49 @@
 
-// Ingests products from Shopify using Shopify API.
+// Create endpoint inserting one record into your products table in your shopping-cart-demo database.
 .arguments
-   shop
-      type:string
-      mandatory:bool:true
-   type
-      type:string
-      mandatory:bool:true
-   base_url
-      type:string
-      mandatory:bool:true
-   secret
-      type:string
-      mandatory:bool:true
-   meta
-      type:bool
-      default:true
-.icon:shopping_cart
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/shop
-validators.mandatory:x:@.arguments/*/type
-validators.mandatory:x:@.arguments/*/base_url
-validators.mandatory:x:@.arguments/*/secret
-validators.url:x:@.arguments/*/base_url
+   // name column value
+   name:string
 
-// Ingesting products using Shopify slot.
-execute:shopify.products.ingest
-   shop:x:@.arguments/*/shop
-   type:x:@.arguments/*/type
-   base_url:x:@.arguments/*/base_url
-   secret:x:@.arguments/*/
-   meta:x:@.arguments/*/meta
+   // description column value
+   description:string
+
+   // sku column value
+   sku:string
+
+   // price column value
+   price:decimal
+
+   // image_url column value
+   image_url:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:products
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

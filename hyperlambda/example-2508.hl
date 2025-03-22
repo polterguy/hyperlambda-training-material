@@ -1,21 +1,13 @@
 
-/*
- * Creates the default email templates if they don't already exist.
- */
-if
-   not
-      io.folder.exists:/etc/wl/
-   .lambda
-      io.folder.create:/etc/wl/
-if
-   not
-      io.file.exists:/etc/wl/bot-created.html
-   .lambda
-      io.file.copy:/modules/white-label/magic.startup/email-templates/bot-created.html
-         .:/etc/wl/bot-created.html
-if
-   not
-      io.file.exists:/etc/wl/plan-purchased.html
-   .lambda
-      io.file.copy:/modules/white-label/magic.startup/email-templates/plan-purchased.html
-         .:/etc/wl/plan-purchased.html
+// Create a Hyperlambda snippet that invokes an HTTP GET endpoint to fetch a post title.
+
+// Invokes an HTTP GET endpoint to fetch a post title.
+http.get:"https://jsonplaceholder.typicode.com/posts/1"
+
+   // Converts response from JSON to lambda.
+   convert:true
+
+// Sets [.title] to the post's title
+.title
+set-value:x:@.title
+   get-value:x:@http.get/*/content/*/title

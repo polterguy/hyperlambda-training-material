@@ -1,4 +1,6 @@
-// Increment the value of .visits by 3
-.visits:int:7
-math.increment:x:@.visits
-   .:int:3
+/*
+ * Example: Trim characters that are not present (no change).
+ */
+// Result: "hello"
+strings.trim:hello
+   .:"?"

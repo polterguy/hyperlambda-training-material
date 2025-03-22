@@ -1,11 +1,11 @@
-// Else-if using an expression shorthand for its condition
-.flag:bool:true
-.result
-if
-   .:bool:false
-   .lambda
-      set-value:x:@.result
-         .:First
-else-if:x:@.flag
-   set-value:x:@.result
-      .:Second
+
+// Create Hyperlambda that sends an email to peter@microsoft.com informing him I'll be late for our meeting
+mail.smtp.send
+   message
+      to
+         .
+            name:Peter
+            email:peter@microsoft.com
+      subject:I will be late
+      entity:text/plain
+         content:Sorry Peter, but I will be late to our meeting

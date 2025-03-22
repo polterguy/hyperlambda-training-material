@@ -1,16 +1,22 @@
-/*
- * Save this file as `/modules/users/endpoints/assign-role.hl`
- * This exposes an HTTP POST endpoint at `/users/assign-role`
- *
- * The endpoint requires a `userId` and `role` to proceed with role assignment.
- */
 
+// Create a Hyperlambda action to replace occurrences of 'what' in a 'source' string with 'with'. Return the result.
 .arguments
-   userId
-   role
+   source
+      type:string
+      mandatory:bool:true
+   what
+      type:string
+      mandatory:bool:true
+   with
+      type:string
+      mandatory:bool:true
+.icon:settings
 
-validators.mandatory:x:@.arguments/*/userId
-validators.mandatory:x:@.arguments/*/role
+// Joining strings.
+strings.replace:x:@.arguments/*/source
+   get-value:x:@.arguments/*/what
+   get-value:x:@.arguments/*/with
 
+// Returning result to caller.
 yield
-   message:Role assigned (simulated)
+   result:x:@strings.replace

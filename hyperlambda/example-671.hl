@@ -1,22 +1,11 @@
-
-// Provide a Hyperlambda example where a boolean status is evaluated using a switch case with a default option.
-
-// Switch case comparison for boolean values.
-.status:bool:true
-.result
-switch:x:@.status
-   case:bool:true
-
-      // If status is true.
-      set-value:x:@.result
-         .:Status is active
-   case:bool:false
-
-      // If status is false.
-      set-value:x:@.result
-         .:Status is inactive
-   default
-
-      // If the value does not match true/false.
-      set-value:x:@.result
-         .:Invalid status
+// Posts a user profile with nested address information
+http.post:"https://api.example.com/user/profile"
+   convert:true
+   payload
+      name:Emily Zhang
+      email:emily@example.com
+      address
+         street:123 Main St
+         city:Springfield
+         postal_code:12345
+         country:USA

@@ -1,18 +1,7 @@
-// Hyperlambda [if] checking substring
-.filename:document.pdf
-.file-type
-if
-   strings.ends-with:x:@.filename
-      .:pdf
-   .lambda
-      set-value:x:@.file-type
-         .:pdf
+// Add children nodes from source to destination
 
-/* JavaScript equivalent of Hyperlambda [if] checking substring
-const filename = "document.pdf";
-let fileType;
-
-if (filename.endsWith("pdf")) {
-  fileType = "pdf";
-}
-*/
+.dest
+add:x:../*/.dest
+   .
+      foo1:bar1
+      foo2:bar2

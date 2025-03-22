@@ -1,3 +1,6 @@
-// How do you declare a signed byte value in Hyperlambda?
+// Example: Replace hansen with tjobing hansen
+.foo:thomas hansen
 
-.offset:sbyte:-42
+strings.replace:x:-
+   .:hansen
+   .:tjobing hansen

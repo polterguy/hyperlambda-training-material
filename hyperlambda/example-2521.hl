@@ -1,153 +1,58 @@
 
-// Returns minimum, maximum, average, sum or count from your Artist table in your chinook database grouped by a column
+// Returns a payment link.
 .arguments
-
-   // Mandatory argument being column to group by and must be in the format of TABLE_NAME.COLUMN_NAME
-   group_column:string
-
-   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
-   limit:long
-
-   // Offset into the dataset of where to start retrieving records
-   offset:long
-
-   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
-   order:string
-
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   direction:string
-
-   // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum, avg or count
-   aggregate_function:string
-
-   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME.
-   aggregate_column:string
-
-   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
-   operator:string
-   Artist.ArtistId.mt:long
-   Artist.ArtistId.lt:long
-   Artist.ArtistId.mteq:long
-   Artist.ArtistId.lteq:long
-   Artist.ArtistId.neq:long
-   Artist.ArtistId.eq:long
-   Artist.Name.like:string
-   Artist.Name.mt:string
-   Artist.Name.lt:string
-   Artist.Name.mteq:string
-   Artist.Name.lteq:string
-   Artist.Name.neq:string
-   Artist.Name.eq:string
-
-// Type of endpoint
-.type:crud-group
-
-// Sanity checking mandatory arguments.
-validators.mandatory:x:@.arguments/*/group_column
-validators.mandatory:x:@.arguments/*/aggregate_function
-validators.mandatory:x:@.arguments/*/aggregate_column
-
-// Sanity checking name of aggregate function.
-validators.enum:x:@.arguments/*/aggregate_function
-   .:min
-   .:max
-   .:sum
-   .:avg
-   .:count
-
-// Sanity checking group column.
-validators.enum:x:@.arguments/*/group_column
-   .:Artist.ArtistId
-   .:Artist.Name
-
-// Sanity checking agggregate column name.
-validators.enum:x:@.arguments/*/aggregate_column
-   .:Artist.ArtistId
-   .:Artist.Name
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Sanity checking invocation.
-validators.enum:x:@.arguments/*/operator
-   .:or
-   .:and
+   plan:string
 
 /*
- * Checking if user supplied an [operator] argument, and if so
- * changing the boolean operator for comparison operations.
+ * Ensures the specified [arg] was given.
+ * 
+ * This action will throw an exception with a descriptive text explaining if the argument is missing.
  */
-if
-   exists:x:@.arguments/*/operator
-   .lambda
+execute:magic.workflows.actions.execute
+   name:validators-enum
+   filename:/misc/workflows/actions/security/validators-enum.hl
+   arguments
+      values
+         .:professional
+         .:enterprise
+      value:x:@.arguments/*/plan
 
-      // User provided a boolean comparison [operator] argument.
-      set-name:x:../*/data.connect/*/data.read/*/where/0
-         get-value:x:@.arguments/*/operator
-      remove-nodes:x:@.arguments/*/operator
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
+// Returns a single plan
+execute:magic.workflows.actions.execute
+   name:hub-plan-get
+   filename:/modules/hub/workflows/actions/hub-plan-get.hl
+   arguments
+      plan:x:@.arguments/*/plan
 
-   // Making sure we're using the correct group column
-   set-name:x:@data.connect/*/data.read/*/group/*/group_column
-      get-value:x:@.arguments/*/group_column
+/*
+ * Creates a Stripe payment link from the specified [price_reference], being
+ * a Stripe payment ID, for [quantity] amount of items, returning the user to
+ * [success_url] after payment has been successfully finished.
+ * 
+ * Will use your Stripe API token found from your settings as it's interacting
+ * with the Stripe API.
+ */
+execute:magic.workflows.actions.execute
+   name:stripe-payment-link-create
+   filename:/modules/stripe/workflows/actions/stripe-payment-link-create.hl
+   arguments
+      price_reference:x:--/execute/=hub-plan-get/*/price_reference
+      quantity:int:1
+      success_url:"https://ainiro.io"
 
-   // Making sure we return group column as a part of the result
-   set-name:x:+/*/*
-      get-value:x:@.arguments/*/group_column
-   insert-before:x:@data.connect/*/data.read/*/columns/0
-      .
-         group_column
-
-   // Changing name of aggregate column returned to caller.
-   set-value:x:@data.connect/*/data.read/*/columns/1/*/as
-      get-value:x:@.arguments/*/aggregate_function
-
-   // Removing group column to simplify adding other arguments
-   remove-nodes:x:@.arguments/*/group_column
-
-   // Adding paging arguments
-   add:x:@data.connect/*/data.read
-      get-nodes:x:@.arguments/*/limit
-      get-nodes:x:@.arguments/*/offset
-   remove-nodes:x:@.arguments/*/limit
-   remove-nodes:x:@.arguments/*/offset
-
-   // Parametrising our read invocation with ordering arguments if specified.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/order
-      get-nodes:x:@.arguments/*/direction
-   remove-nodes:x:@.arguments/*/order
-   remove-nodes:x:@.arguments/*/direction
-
-   // Making sure we're using correct aggregate function.
-   set-name:x:./*/data.read/*/columns/*/aggregate_functor
-      strings.concat
-         get-value:x:@.arguments/*/aggregate_function
-         .:(
-         get-value:x:@.arguments/*/aggregate_column
-         .:)
-
-   // Removing aggregate arguments to simplify adding other arguments.
-   remove-nodes:x:@.arguments/*/[0,2]
-
-   // Adding filtering arguments.
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:Artist
-      columns
-         aggregate_functor
-            as:result
-      where
-         and
-      group
-         group_column
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+// Returns the result of your last action.
+return-nodes:x:@execute/*

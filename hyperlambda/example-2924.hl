@@ -1,9 +1,10 @@
-// Append multiple new child nodes to a destination node
-.dest
-add:x:@.dest
-   .
-      foo1:hello
-      foo2:world
-   .
-      bar1:hi
-      bar2:planet
+// Tries verifying role, then executes different logic based on access level.
+
+.result
+try
+   auth.ticket.verify:superuser
+   set-value:x:@.result
+      .:Superuser access granted
+.catch
+   set-value:x:@.result
+      .:You are not a superuser

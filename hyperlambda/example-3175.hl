@@ -1,18 +1,8 @@
-// Executing the following Hyperlambda results in the following
-
-// When executing the following Hyperlambda
-data.connect:magic
-   data.read
-      table:log_entries
-      columns
-         count(*)
-            as:count
-      limit:long:1
-
-// We end up with this result
-data.connect
-   data.read
-      .
-         count:long:58354
-
-// Notice how lists are declared with nodes having names of "." or even sometimes ""
+/*
+ * Example: Use variables for string and trim characters (start only).
+ */
+.text:"...Hello"
+.trimchars:"."
+// Result: "Hello"
+strings.trim-start:x:@.text
+   get-value:x:@.trimchars

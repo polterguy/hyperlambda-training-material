@@ -1,21 +1,11 @@
-// Use else as a fallback if no conditions match
+// Named sibling not finding its node
+.data
+   not-found:value
+get-value:x:@not-found
 
-.result
-.src:int:3
-if
-   eq
-      get-value:x:@.src
-      .:int:1
-   .lambda
-      set-value:x:../*/.result
-         .:OK
-else-if
-   eq
-      get-value:x:@.src
-      .:int:2
-   .lambda
-      set-value:x:../*/.result
-         .:ERROR
-else
-   set-value:x:../*/.result
-      .:DEFAULT
+/*
+ * The above named sibling iterator will NOT find the [not-found] node, since
+ * it is not a direct ancestor or sibling of its direct ancestors.
+ *
+ * Value of [get-value] will be null after executing the above code
+ */

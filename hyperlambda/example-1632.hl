@@ -1,5 +1,6 @@
 /*
- * Example: Get the length of a string with multi-byte characters.
+ * If `.data` exists but has no children, `get-nodes` should return nothing.
  */
-// Returns 2
-strings.length:"你好"
+
+.data
+get-nodes:x:@.data/*

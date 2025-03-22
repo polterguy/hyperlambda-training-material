@@ -1,0 +1,17 @@
+
+// Create a Hyperlambda action to retrieve a specified cookie by 'name'. Validate the mandatory field and return the cookie's value.
+.arguments
+   name
+      type:string
+      mandatory:bool:true
+.icon:http
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/name
+
+// Retrieving cookie.
+request.cookies.get:x:@.arguments/*/name
+
+// Returning cookie's value to caller.
+yield
+   result:x:@request.cookies.get

@@ -1,5 +1,14 @@
-// Example: Create a slot that returns [return-value] being integer of 57
-slots.create:foo
-   return-value:int:57
 
-slots.get:foo
+// Create a Hyperlambda action to ensure a specified 'arg' matches a specified 'regex'. Validate mandatory fields.
+.arguments
+   arg
+      type:string
+      mandatory:bool:true
+   regex
+      type:string
+      mandatory:bool:true
+.icon:shield
+
+// Invoking validator.
+validators.regex:x:@.arguments/*/arg
+   regex:x:@.arguments/*/regex

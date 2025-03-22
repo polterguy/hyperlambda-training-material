@@ -1,7 +1,17 @@
+// Multiply two numbers given as arguments and return the result to caller
+.arguments
+   arg1:int
+   arg2:int
 
-// Return the URL of the current request
-request.url
+// Making sure arguments are actually passed in, throwing exceptions if not.
+validators.mandatory:x:@.arguments/*/arg1
+validators.mandatory:x:@.arguments/*/arg2
 
-// Example result ==> magic/system/evaluator/evaluate
+// Multiplication.
+math.multiply
+   get-value:x:@.arguments/*/arg1
+   get-value:x:@.arguments/*/arg2
 
-// Notice, URL will always be returned as relative URL
+// Returning result to caller
+yield
+   result:x:@math.multiply

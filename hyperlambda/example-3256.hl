@@ -1,10 +1,11 @@
-// [yaml2json] example no. 4
-.yaml:@"
-user:
-  name: ""Jane Doe""
-  email: ""jane.doe@example.com""
-  preferences:
-    newsletter: true
-    notifications: false
-"
-yaml2json:x:@.yaml
+// The prophecy foretells a name, which we retrieve dynamically.
+
+.prophecy:hero-of-time
+.legends
+   hero-of-time:Link
+   dark-lord:Ganon
+   sage:Zelda
+
+get-value:x:@.legends/*/{@.prophecy}
+
+// The result is "Link" since the prophecy node references "hero-of-time".

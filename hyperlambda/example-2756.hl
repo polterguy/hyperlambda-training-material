@@ -1,8 +1,21 @@
-// Returns a user profile with name, age, and country using return-nodes
-slots.create:user.profile
-   return-nodes
-      name:Jane Doe
-      age:int:35
-      country:Norway
+// Executing the following Hyperlambda results in the following
 
-execute:user.profile
+// When executing the following Hyperlambda
+.result
+.foo:whatever
+if:x:-
+   set-value:x:@.result
+      .:Yup!
+else
+   set-value:x:@.result
+      .:Nope!
+
+// We end up with this result
+.result:Yup!
+.foo:whatever
+if:bool:true
+   set-value:x:@.result
+      .:Yup!
+else:bool:false
+   set-value:x:@.result
+      .:Nope!

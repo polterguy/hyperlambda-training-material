@@ -1,8 +1,11 @@
 /*
- * This Hyperlambda snippet retrieves a static value using `get-first-value`.
- *
- * 1. The `get-first-value` slot is called with `"success"` as the only value.
- * 2. Since there's no alternative, `"success"` is returned.
+ * Example: Split a comma-separated string.
  */
-
-get-first-value:success
+strings.split:"a,b,c"
+   .:,
+/*
+ * Resulting parts:
+ * .:a
+ * .:b
+ * .:c
+ */

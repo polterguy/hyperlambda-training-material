@@ -1,12 +1,13 @@
-// Create a while loop for 20 iterations that creates a log entry
-.no:int:0
+/*
+ * This example demonstrates basic exception handling in Hyperlambda.
+ * It attempts to divide two numbers. If a division by zero occurs,
+ * an exception is thrown and caught by the `.catch` block, logging an error message.
+ */
 
-while
-   lt
-      get-value:x:@.no
-      .:int:20
-   .lambda
-
-      // Your lambda goes here.
-      log.info:Howdy from while
-      math.increment:x:@.no
+.numerator:int:5
+.denominator:int:0
+try
+   math.divide:x:@.numerator
+      .:x:@.denominator
+.catch
+   log.error:Division by zero error occurred.

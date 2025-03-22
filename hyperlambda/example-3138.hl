@@ -1,5 +1,17 @@
-// lt returns true if the left value is less than the right value
-.x:int:4
-lt
-   get-value:x:@.x
-   .:int:5
+/*
+ * FILE: /modules/api/products/available.hl
+ *
+ * DESCRIPTION:
+ * Lists available products in stock using raw SQL.
+ * Demonstrates basic filtering logic using SQL inside [data.select].
+ *
+ * HOW TO CREATE THIS ENDPOINT:
+ * Save to `/modules/api/products/available.hl`, and it becomes available at:
+ *     GET /api/products/available
+ */
+
+data.connect:shop
+   data.select:SELECT name, quantity FROM products WHERE quantity > 0
+
+yield
+   result:x:@data.connect/*/data.select/*

@@ -1,3 +1,4 @@
-
-// Example: Try signaling a slot without throwing exception if it doesn't exist
-try-signal:foo
+// String validation where length must be between 5 and 15
+validators.string:x:@.some-arg
+   min:5
+   max:15

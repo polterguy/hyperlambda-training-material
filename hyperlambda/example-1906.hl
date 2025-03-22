@@ -1,7 +1,14 @@
-// Execute Hyperlambda file with arguments
-.args
-   foo1:bar1
-   foo2:bar2
-execute-file:/whatever-file.hl
-   arg1:x:@.args/*/foo1
-   arg2:x:@.args/*/foo2
+// Copies template field defaults into matching form inputs
+.template
+   fields
+      name:John Doe
+      age:int:40
+      email:john@example.com
+.form
+   name
+   age
+   email
+for-each:x:@.template/*/fields/*
+   get-name:x:@.dp/#
+   set-value:x:@.form/*/{@get-name}
+      get-value:x:@.dp/#

@@ -1,9 +1,8 @@
-// Demonstrating an indented comment inside a code block
-.list
-   item1
-   item2
-for-each:x:@.list/*
-
-   // This comment describes the loop body and is indented correctly
-   set-value:x:@.dp/#
-      .:processed
+/*
+ * Example: Use an empty allowed set (no characters allowed, so every character is replaced).
+ */
+.original:"Hello"
+strings.replace-not-of:x:@.original
+   .:""
+   .:"*"
+// Result: "*****"

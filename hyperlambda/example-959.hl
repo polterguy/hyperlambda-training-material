@@ -1,72 +1,53 @@
 
-// Read endpoint with paging, sorting, filtering selecting records from your spice_urls table.
+// Count unique and distinct items from your CustomerDemographics table in your northwind database
 .arguments
 
-   // Number of records to return
-   limit:long
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
+   CustomerDemographics.CustomerTypeID.like:string
+   CustomerDemographics.CustomerTypeID.eq:string
+   CustomerDemographics.CustomerDesc.like:string
+   CustomerDemographics.CustomerDesc.eq:string
 
-   // Offset into the dataset of where to start retrieving records
-   offset:long
-
-   // What column to order by
-   order:string
-
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   direction:string
-
-   // spice_urls table spice_url_id column equality exact match filtering
-   spice_urls.spice_url_id.eq:long
-
-   // spice_urls table url column wildcard filtering with SQL like '%' comparison
-   spice_urls.url.like:string
-
-   // spice_urls table url column equality exact match filtering
-   spice_urls.url.eq:string
-
-   // spice_urls table type column wildcard filtering with SQL like '%' comparison
-   spice_urls.type.like:string
-
-   // spice_urls table type column equality exact match filtering
-   spice_urls.type.eq:string
+// Meta data description for endpoint
+.description:Count unique and distinct items from your CustomerDemographics table in your northwind database
 
 // Type of endpoint
-.type:crud-read
+.type:crud-count-distinct
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
+
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:CustomerDemographics.CustomerTypeID
+   .:CustomerDemographics.CustomerDesc
 
 // Opening up our database connection.
-data.connect:[generic|scraper]
+data.connect:[generic|northwind]
    database-type:sqlite
 
-   // Parametrising our read invocation with ordering arguments if specified.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/order
-      get-nodes:x:@.arguments/*/direction
-   remove-nodes:x:@.arguments/*/order
-   remove-nodes:x:@.arguments/*/direction
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:"count(distinct "
+         get-value:x:@.arguments/*/distinct_column
+         .:)
 
-   // Parametrising our read invocation with paging arguments if specified.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/limit
-      get-nodes:x:@.arguments/*/offset
-   remove-nodes:x:@.arguments/*/limit
-   remove-nodes:x:@.arguments/*/offset
-
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+   add:x:+/*/where/*
       get-nodes:x:@.arguments/*
 
    // Reading data from database.
    data.read
       database-type:sqlite
-      table:spice_urls
+      table:CustomerDemographics
       columns
-         spice_urls.spice_url_id
-         spice_urls.url
-         spice_urls.type
+         distinct_functor
+            as:count
       where
          and
 
    // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+   return-nodes:x:@data.read/*/*

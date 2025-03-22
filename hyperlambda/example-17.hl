@@ -1,20 +1,3 @@
-// Using string operations within [if] and [else] inside [for-each]
-.car-parts
-   engine:available
-   wheel:out-of-stock
-   door:available
-
-for-each:x:@.car-parts/*
-   if
-      eq:x:@.dp/#
-         .:available
-      .lambda
-         set-value:x:@.dp/#
-            strings.concat
-               get-value:x:@.dp/#
-               .:" - checked"
-   else
-      set-value:x:@.dp/#
-         strings.concat
-            get-value:x:@.dp/#
-            .:" - needs restocking"
+// Move file
+io.file.move:/misc/README.md
+   .:/misc/backup/README-backup.md

@@ -1,10 +1,4 @@
-
-// Create a Hyperlambda action to ensure a specified 'arg' is given. Validate the mandatory field.
-.arguments
-   arg
-      type:string
-      mandatory:bool:true
-.icon:shield
-
-// Invoking validator.
-validators.mandatory:x:@.arguments/*/arg
+// [null] returns false if the target node exists and has a value
+.src1
+   foo:bar
+null:x:@.src1/*

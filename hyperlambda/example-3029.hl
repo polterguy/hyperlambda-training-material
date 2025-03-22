@@ -1,15 +1,8 @@
-// Hyperlambda [set-value]
-.data
-   item1
-   item2
-set-value:x:@.data/*
-   .:Updated Value
-
-// Results in:
-.data
-   item1:Updated Value
-   item2:Updated Value
-set-value:x:@.data/*
-   .:Updated Value
-
-// Notice how [set-value] can change multiple nodes at the same time
+/*
+ * Example: Replace all occurrences of a substring.
+ */
+.text:"abababab"
+strings.replace:x:@.text
+   .:ab
+   .:AB
+// Result: "ABABABAB"

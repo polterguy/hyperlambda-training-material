@@ -1,4 +1,13 @@
-// This example hashes a string using SHA384 and returns the hash in fingerprint format.
-.data:Secure your data
-crypto.hash.sha384:x:@.data
-   format:fingerprint
+
+// Loop while a condition is true (increment counter and add items)
+.i:int:0
+.list
+while
+   lt
+      get-value:x:@.i
+      .:int:3
+   .lambda
+      add:x:@.list
+         .
+            item
+      math.increment:x:@.i

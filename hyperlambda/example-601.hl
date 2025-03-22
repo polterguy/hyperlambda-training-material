@@ -1,3 +1,7 @@
-// How do you declare a float (single-precision) in Hyperlambda?
+/*
+ * This Hyperlambda snippet retrieves only the first 10 records.
+ */
 
-.ratio:float:0.75
+data.read
+   table:table1
+   limit:10

@@ -1,13 +1,17 @@
 
-// Provide a Hyperlambda example where multiple loggers run in parallel.
+// Generate Hyperlambda endpoint that returns a specified file to caller as raw text. If the file doesn't exist it should throw a 404 exception.
+.arguments
+   file:string
+if
+   not
+      io.file.exists:x:@.arguments/*/file
+   .lambda
+      throw:File not found
+         status:int:404
+         public:bool:true
+io.file.load:x:@.arguments/*/file
+response.headers.set
+   Content-Type:text/plain
+return-value:x:@io.file.load
 
-// An example of running multiple loggers in parallel.
-join
-   fork
-      log.info:Logging task 1 started
-      sleep:500
-      log.info:Logging task 1 completed
-   fork
-      log.info:Logging task 2 started
-      sleep:1000
-      log.info:Logging task 2 completed
+// Save this file for instance as '/modules/YOUR_MODULE/load-file.get.hl', and pass in file as a QUERY parameter

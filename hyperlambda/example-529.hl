@@ -1,4 +1,6 @@
+// Using a whitelist without [.lambda] should throw an exception
 
-// Increment a value by 1 (default step)
-.value:int:3
-math.increment:x:@.value
+whitelist
+   vocabulary
+      add
+      vocabulary

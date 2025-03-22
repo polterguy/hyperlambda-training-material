@@ -1,17 +1,13 @@
 /*
- * Save this file as `/modules/auth/endpoints/login.hl`
- * This exposes an HTTP POST endpoint at `/auth/login`
- *
- * It requires `email` and `password` as mandatory arguments.
- * If either is missing, validation will fail and the request will be rejected automatically.
+ * Example: Use variables to supply the string and delimiter.
  */
-
-.arguments
-   email
-   password
-
-validators.mandatory:x:@.arguments/*/email
-validators.mandatory:x:@.arguments/*/password
-
-yield
-   success:User logged in (simulated)
+.text:"x|y|z"
+.delim:"|"
+strings.split:x:@.text
+   get-value:x:@.delim
+/*
+ * Resulting parts:
+ * .:x
+ * .:y
+ * .:z
+ */

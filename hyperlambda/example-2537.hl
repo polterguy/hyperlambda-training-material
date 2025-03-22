@@ -1,11 +1,16 @@
-// Can I build an [or] condition with slot results?
-.a:bool:false
-.b:bool:true
-.decision
-if
-   or
-      get-value:x:@.a
-      get-value:x:@.b
+// Limit the slots that can be invoked within a code block
+.result
+whitelist
+   vocabulary
+      set-value
+      return
    .lambda
-      set-value:x:@.decision
-         .:Passed via OR
+      // Allowed: this uses whitelisted [set-value]
+      set-value:x:@.result
+         .:foo
+      // Disallowed if dot is removed: [add] is not whitelisted
+      .add:x:@.result
+         .
+            extra:bar
+      return
+         status:success

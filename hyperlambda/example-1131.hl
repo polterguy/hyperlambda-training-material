@@ -1,50 +1,15 @@
-
-// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the questions table in the magic database, filtering which item to update with question_id and updating question and questionnaire fields, ensuring authentication and authorization for root and admin roles.
-.arguments
-   question_id:long
-   question:string
-   questionnaire:string
-   type:string
-   name:string
-
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/question_id
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Opening up our database connection.
-data.connect:[generic|magic]
-   database-type:sqlite
-
-   // Parametrising our invocation.
-   add:x:./*/data.update/*/values
-      get-nodes:x:@.arguments/*/[1,1000]
-   add:x:./*/data.update/*/where/*/and
-      get-nodes:x:@.arguments/*/[0,1]
-
-   // Invoking our update slot.
-   data.update
-      database-type:sqlite
-      table:questions
-      values
-      where
-         and
-
-   // Verifying record exists.
-   if
-      eq
-         get-value:x:@data.update
-         .:int:0
-      .lambda
-         response.status.set:404
-         return
-            result:Record not found
-
-   // Returning the correct status code.
-   response.status.set:202
-
-   // Returning success to caller.
+// Greets the user dynamically using string interpolation and yields the message
+slots.create:greet.user
+   strings.concat
+      .:"Hello "
+      get-value:x:@.arguments/*/name
+   math.add:x:@.arguments/*/age
+      .:int:5
    unwrap:x:+/*
-   return
-      affected:x:@data.update
+   return-nodes
+      message:x:@strings.concat
+      five-years-from-now-you-are:x:@math.add
+
+execute:greet.user
+   name:Alice
+   age:int:5

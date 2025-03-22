@@ -1,18 +1,27 @@
-/*
- * Stores a value in the cache with expiration.
- */
-.arguments
-   key:string
-   value:string
-   seconds:int
 
-validators.mandatory:x:@.arguments/*/key
-validators.mandatory:x:@.arguments/*/value
-validators.mandatory:x:@.arguments/*/seconds
-
-cache.set:x:@.arguments/*/key
-   get-value:x:@.arguments/*/value
-   expiration:x:@.arguments/*/seconds
-
-return
-   success:true
+// Creates a new stacked chart
+image.chart:stacked
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   ticks
+      .:Spring
+      .:Summer
+      .:Autumn
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets

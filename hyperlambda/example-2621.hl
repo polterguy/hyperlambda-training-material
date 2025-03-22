@@ -1,4 +1,9 @@
-// [or] returns false if all arguments are false
-or
-   .:bool:false
-   .:bool:false
+// How to declare a list in Hyperlambda
+.data
+   items
+      .
+         name:John
+         email:john@gmail.com
+      .
+         name:Peter
+         email:peter@gmail.com

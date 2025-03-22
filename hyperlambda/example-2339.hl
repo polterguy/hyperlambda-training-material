@@ -1,4 +1,5 @@
-// Return configuration key with default value being value of expression to [.foo]
-.foo:foo
-config.get:"magic:foo:non-existing-key"
-   get-value:x:@.foo
+
+// Example: Mix in a dynamic slot call inside a string.
+strings.mixin:"Current year is {{\ndate.now\nreturn:x:-\n}}"
+
+// Result: "Current year is 2025" (assuming year 2025)

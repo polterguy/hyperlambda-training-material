@@ -1,35 +1,30 @@
 
-// Delete one record from your InvoiceLine table in your chinook database.
-.arguments
+// Write a Hyperlambda script to create a scheduled task that resets no_requests at the first day of the month, with conditions for SQLite.
+if
+   eq
+      config.get:"magic:databases:default"
+      .:sqlite
+   .lambda
 
-   // Primary key of record to delete, mandatory argument
-   InvoiceLineId:long
+      // Wrapping in try/catch in case task already exists.
+      try
 
-// Meta data description for endpoint
+         // Deleting old task if existing.
+         tasks.list:reset-no_requests
+         if
+            exists:x:@tasks.list/*
+            .lambda
+               tasks.delete:x:@tasks.list/0/*/id
 
-// Type of endpoint
-.type:crud-delete
+         // Creating task that periodically deletes old historical requests.
+         tasks.create:reset-no_requests
+            description:Resets no_requests at the first day of the month
+            repeats:**.01.01.01.01
+            .lambda
+               sqlite.connect:magic
+                  sqlite.execute:update ml_types set no_requests = 0
+               log.info:All machine learning models had their no_requests values reset
+      .catch
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/InvoiceLineId
-
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:InvoiceLine
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+         // Task already exists.
+         console.log:Task to reset no_requests already exists

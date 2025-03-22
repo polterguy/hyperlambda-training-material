@@ -1,27 +1,6 @@
-/*
- * Database CRUD example.
- * Creates a new record in the 'users' table.
- */
+
+// Create an argument collection with 3 args being arg1 (string), arg2 (date) and arg3 being any type (unknown)
 .arguments
-   username:string
-   email:string
-   age:int
-
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/email
-validators.email:x:@.arguments/*/email
-
-// Must be 18!
-validators.integer:x:@.arguments/*/age
-   min:18
-   max:120
-
-data.connect:magic
-   data.create
-      table:users
-      values
-         username:x:@.arguments/*/username
-         email:x:@.arguments/*/email
-         age:x:@.arguments/*/age
-yield
-   id:x:@data.select/*/*/id
+   arg1:string
+   arg2:date
+   arg3:*

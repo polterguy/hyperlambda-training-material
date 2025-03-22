@@ -1,4 +1,8 @@
-// Use regular expression matching to look for {match1} and {match2}
-.input:Foo Bar Howdy World {match1} and {match2} and that was it
-strings.matches:x:-
-   .:"\\{.+?\\}"
+
+// Execute Hyperlambda file with arguments
+.args
+   foo1:bar1
+   foo2:bar2
+execute-file:/whatever-file.hl
+   arg1:x:@.args/*/foo1
+   arg2:x:@.args/*/foo2

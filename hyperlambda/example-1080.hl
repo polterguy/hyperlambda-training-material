@@ -1,4 +1,6 @@
 
-// Hyperlambda file containing version and module name information for sqlite-northwind.
-version:v1.0.0
-module_name:sqlite-northwind
+// Example: Check if a string contains a given substring (present case).
+
+// Returns true
+strings.contains:MagicLambda
+   .:Lambda

@@ -1,20 +1,46 @@
 
-/*
- * Endpoint that takes any arguments, converts all arguments to integers, adds all together, and returns result
- * 
- * Pass in whatever arguments you wish.
- */
-.arguments:*
-.type:public
+// CRUD / Create Hyperlambda that creates one record in your menu_items table in your cms database
+.arguments
 
-// Adding all arguments
-.result:int:0
-for-each:x:@.arguments/*
-   set-value:x:@.result
-      math.add:x:@.result
-         convert:x:@.dp/#
-            type:int
+   // menu_id column value
+   menu_id:long
 
-// Returning result (notice, [yield] unwraps all its arguments)
-yield
-   result:x:@.result
+   // title column value
+   title:string
+
+   // url column value
+   url:string
+
+   // position column value
+   position:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:menu_items
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

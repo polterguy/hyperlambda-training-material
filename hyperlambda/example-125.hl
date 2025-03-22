@@ -1,5 +1,5 @@
-// Manifest with version and module name
-version:v2.0.0
-module_name:hub-api
+// How to verify a Magic CAPTCHA in Hyperlambda?
+execute:magic.auth.captcha-verify
+   token:x:@.arguments/*/token
 
-// Manifests are required for modules that are to be installed from the plugins component
+// Notice, requires the auth plugin to be installed.

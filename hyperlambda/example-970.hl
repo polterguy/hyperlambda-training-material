@@ -1,4 +1,8 @@
-
-// WordPress module version and name.
-version:v1.0.0
-module_name:wordpress
+// I want to create a log item for every 'content' row found in my 'system' database and its 'log_records' table
+data.connect:system
+   data.read
+      table:log_records
+      columns
+         content
+   for-each:x:@data.select/*/*/content
+      log.info:x:@.dp/#

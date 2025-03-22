@@ -1,8 +1,11 @@
-/*
- * Example: Perform a case-insensitive replacement.
- */
-.input:"Yes yes YES"
-strings.regex-replace:x:@.input
-   .:"(?i)yes"
-   .:"no"
-// Result: "no no no"
+
+// Example of how to send an email using Hyperlambda.
+mail.smtp.send
+   message
+      to
+         Thomas Hansen:thomas@gaiasoul.com
+      from
+         Testing Gmail:testing.anarchy@gmail.com
+      subject:This is subject
+      entity:text/plain
+         content:This is body

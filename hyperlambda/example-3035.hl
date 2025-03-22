@@ -1,7 +1,7 @@
-// Hyperlambda [math.increment]
-.counter:int:0
-math.increment:x:@.counter
+// Create a new item by POSTing JSON data, with a Bearer token for authorization
+http.post:"https://api.example.com/items"
 
-// Results in:
-.counter:int:1
-math.increment:x:@.counter
+   // optional Bearer JWT token for auth
+   token:XYZ_SECRET_TOKEN_123
+   payload:@"{""name"": ""Sample Book"", ""price"": 19.99}"
+   // Use 'filename' instead of 'payload' for large files to stream from /files directory

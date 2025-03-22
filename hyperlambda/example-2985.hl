@@ -1,32 +1,6 @@
-
-// Write a Hyperlambda script to vectorize all training snippets in a specified model/type.
+// HTTP endpoint that ensures specified name parameter is between 5 and 100 characters in length
 .arguments
-   type:string
-   feedback-channel:string
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
-
-// Doing some basic logging.
-log.info:Started vectorising model
-   model:x:@.arguments/*/type
-
-// Creating a thread and invoking file doing the heavy lifting.
-insert-before:x:./*/fork/0
-   get-nodes:x:@.arguments
-fork
-   add:x:./*/signal
-      get-nodes:x:@.arguments/*
-   signal:magic.ai.vectorise
-      .onafter
-         sockets.signal:x:@.arguments/*/feedback-channel
-            args
-               message:Done!
-               type:success
-
-// Returning success to caller.
-return
-   result:success
+   name:string
+validators.string:x:@.arguments/*/name
+   min:5
+   max:100

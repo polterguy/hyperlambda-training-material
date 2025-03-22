@@ -1,37 +1,22 @@
 
-// Returns Stripe customers.
+// Write a Hyperlambda script to ask OpenAI a question with a specified type and return the answer to the caller.
 .arguments
-   limit:int
-   starting_after:string
-   email:string
+   prompt:string
+   type:string
+   references:bool
+   chat:bool
+   recaptcha_response:string
+   session:string
+   user_id:string
 
 /*
- * Ensures user is authorized to access endpoint.
+ * Forward invocation to chat file, since there are no real differences
+ * between the two endpoints, since we're checking model type in chat file
+ * and acting accordingly.
  * 
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
+ * However, we still need to keep this file for legacy reasons.
  */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
-
-/*
- * Retrieves charges from Stripe.
- * 
- * Will use your Stripe API token found from your settings as it's interacting
- * with the Stripe API.
- */
-execute:magic.workflows.actions.execute
-   name:stripe-customers-get
-   filename:/modules/stripe/workflows/actions/stripe-customers-get.hl
-   arguments
-      limit:x:@.arguments/*/limit
-      email:x:@.arguments/*/email
-      starting_after:x:@.arguments/*/starting_after
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+add:x:+
+   get-nodes:x:@.arguments/*
+io.file.execute:/system/openai/chat.get.hl
+return:x:-/*

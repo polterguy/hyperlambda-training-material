@@ -1,20 +1,12 @@
+// A slot that subtracts arg2 from arg1
+slots.create:math.subtraction
+   math.subtract
+      get-value:x:@.arguments/*/arg1
+      get-value:x:@.arguments/*/arg2
+   yield
+      result:x:@math.subtract
 
-// Create a Hyperlambda script to format all Hyperlambda files recursively within a specified module's folder.
-.folder:/modules/YOUR-MODULE-FOLDER-HERE/
-io.file.list-recursively:x:-
-for-each:x:-/*
-   if
-      strings.ends-with:x:@.dp/#
-         .:.hl
-      .lambda
-         io.file.load:x:@.dp/#
-
-         // These two guys will end up formatting all Hyperlambda code the exact same way
-         hyper2lambda:x:@io.file.load
-            comments:true
-         lambda2hyper:x:@hyper2lambda/*
-            comments:true
-
-         // Saving formatted file.
-         io.file.save:x:@.dp/#
-            get-value:x:@lambda2hyper
+// Invoke the slot with arg1=10 and arg2=4
+signal:math.subtraction
+   arg1:int:10
+   arg2:int:4

@@ -1,61 +1,44 @@
 
-// Write a Hyperlambda script to import a list of training snippets, using prompt and completion, with optional URI, filename, and type.
-slots.create:magic.ai.import-snippets
+// Removes the specified [roles] from the specified [username].
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   roles
+      type:array
+      mandatory:bool:true
+.icon:supervisor_account
 
-   // Connecting to database.
-   data.connect:[generic|magic]
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/roles
 
-      // Looping through each record specified in [snippets] collection.
-      for-each:x:@.arguments/*/snippets/*
+// Connecting to database.
+data.connect:[generic|magic]
 
-         // Verifying prompt is not null.
-         if:x:@.dp/#/*/prompt
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
 
-            // Verifying user can create more snippets.
-            add:x:+
-               get-nodes:x:@.arguments/*/type
-            try-signal:magic.ai.can-create-snippet
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
 
-            // Creating a unique URI based upon the prompt unless the file contains a URI.
-            .uri
-            set-value:x:@.uri
-               get-first-value
-                  get-value:x:@.dp/#/*/uri
-                  .:
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
 
-            // Using type from arguments unless file contains a type declaration.
-            .type
-            if
-               and
-                  exists:x:@.arguments/*/type
-                  not-null:x:@.arguments/*/type
-                  neq:x:@.arguments/*/type
-                     .:
-               .lambda
-                  set-value:x:@.type
-                     get-value:x:@.arguments/*/type
-            else-if
-               exists:x:@.dp/#/*/type
-               .lambda
-                  set-value:x:@.type
-                     get-value:x:@.dp/#/*/type
-            else
-               set-value:x:@.type
-                  .:default
-
-            // Checking if we've got a filename value.
-            if
-               exists:x:@.dp/#/*/filename
-               .lambda
-                  add:x:@for-each/*/data.create/*/values
-                     get-nodes:x:@.dp/#/*/filename
-
-            // Inserting into database.
-            data.create
-               table:ml_training_snippets
-               values
-                  type:x:@.type
-                  uri:x:@.uri
-                  prompt:x:@.dp/#/*/prompt
-                  completion:x:@.dp/#/*/completion
-                  meta:imported
+   // Removing [roles] from [username]
+   for-each:x:@.arguments/*/roles/*
+      data.delete
+         table:users_roles
+         where
+            and
+               user.eq:x:@.arguments/*/username
+               role.eq:x:@.dp/#

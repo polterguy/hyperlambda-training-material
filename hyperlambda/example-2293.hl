@@ -1,5 +1,5 @@
-// Convert a value to an unsigned long integer (ulong)
 
-.src:5
-convert:x:-
-   type:ulong
+// How do I change the response headers in Hyperlambda to return plain text?
+response.headers.set
+   Content-Type:text/plain
+return:Hello from Hyperlambda!

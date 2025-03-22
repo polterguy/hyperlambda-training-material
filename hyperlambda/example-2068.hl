@@ -1,10 +1,16 @@
 
-// Create a Hyperlambda script to override the exception handler and return information to root users.
-log.error:x:@.arguments/*/message
-   url:x:@.arguments/*/path
-   exception:x:@.arguments/*/stack
-add:x:+
-   get-nodes:x:@.arguments/*/status
-   get-nodes:x:@.arguments/*/field
-   get-nodes:x:@.arguments/*/message
-return
+// AI function for CSRegs
+.arguments
+   query:string
+   full_query:string
+execute:magic.workflows.actions.execute
+   name:execute-workflow
+   filename:/misc/workflows/actions/misc/execute-workflow.hl
+   arguments
+      workflow:/modules/openai/workflows/workflows/keyword-context-and-vss-search.hl
+      arguments
+         _type:csregs2
+         query:x:@.arguments/*/query
+         full_query:x:@.arguments/*/full_query
+         max_tokens:int:12000
+return-nodes:x:@execute/*

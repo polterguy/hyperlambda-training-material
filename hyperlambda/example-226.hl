@@ -1,2 +1,7 @@
-// This snippet defines a node with a double (floating-point) value.
-.ratio:double: 0.000123
+// String formats the value of [.foo] with the specified culture
+.foo:decimal:57
+format:x:-
+   pattern:"{0:0.00}"
+   culture:nb-NO
+
+// The [format] slot is just a wrapper around `String.Format` from C#

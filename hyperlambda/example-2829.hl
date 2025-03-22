@@ -1,11 +1,20 @@
 
-// Write a Hyperlambda snippet that opens a connection to 'warehouse_db' and gets recent inventory changes.
+// Returns balance information for affiliate.
+.arguments
 
-// Opens a connection to "warehouse_db" and gets recent inventory changes.
-.result
-data.connect:warehouse_db
-   database-type:sqlite
-   data.select:select * from inventory_changes order by modified_at desc limit 15
-      database-type:sqlite
-   add:x:@.result
-      get-nodes:x:@data.select/*
+// Making sure user is authorised to invoke endpoint.
+auth.ticket.verify:root, admin, guest
+config.get:"magic:databases:default"
+switch:x:@config.get
+   case:mysql
+   case:sqlite
+      strings.concat
+         .:/modules/hub/affiliates/db.overrides/
+         get-value:x:@config.get
+         .:.affiliate-balance.get.hl
+      add:x:+
+         get-nodes:x:@.arguments/*
+      io.file.execute:x:@strings.concat
+      return-nodes:x:-/*
+   default
+      throw:Unsupport database type for Hub

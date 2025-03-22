@@ -1,4 +1,10 @@
-// Saves a piece of string to the memory cache and retrieves it again.
-cache.set:foo
-   value:some cache value
-cache.get:foo
+
+// Example: Use variables for the string, start index, and length.
+.text:Magic
+.start:int:1
+.len:int:3
+strings.substring:x:@.text
+   get-value:x:@.start
+   get-value:x:@.len
+
+// Result: "agi"

@@ -1,6 +1,16 @@
-// Check if a value is less than or equal to another
 
-.foo1:int:5
-lte
-   get-value:x:../*/.foo1
-   .:int:5
+// Generate a Hyperlambda snippet that checks every second while [.time_left] is above 0.
+
+// Checks every second while [.time_left] is above 0.
+.time_left:int:5
+while
+   gt
+      get-value:x:@.time_left
+      .:int:0
+   .lambda
+
+      // Logging remaining time.
+      log.info:Time remaining
+
+      // Decrement time.
+      math.decrement:x:@.time_left

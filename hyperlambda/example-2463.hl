@@ -1,8 +1,10 @@
 
-// Example: Replace all occurrences of a substring.
-.text:abababab
-strings.replace:x:@.text
-   .:ab
-   .:AB
+// Decrement a value by a custom step from another node
+.value:int:10
+.step:int:4
+math.decrement:x:@.value
 
-// Result: "ABABABAB"
+   // use 4 from .step as the decrement amount
+   get-value:x:@.step
+
+// .value should now be 6

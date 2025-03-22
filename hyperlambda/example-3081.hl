@@ -1,5 +1,10 @@
-// Add 8 as correction to .distance
-.distance:int:50
-math.add
-   get-value:x:@.distance
-   .:int:8
+
+// Example: Use variables for the string, start index, and length.
+.text:Magic
+.start:int:1
+.len:int:3
+strings.substring:x:@.text
+   get-value:x:@.start
+   get-value:x:@.len
+
+// Result: "agi"

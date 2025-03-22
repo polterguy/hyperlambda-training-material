@@ -1,13 +1,16 @@
-/*
- * This Hyperlambda snippet demonstrates basic exception handling.
- * The `try` block attempts to throw an exception.
- * The `catch` block catches the exception and sets `.throws` to `true`.
- * Expected behavior: `.throws` should be `true` after execution.
- */
+// Using [for-each] with [if] and [else] to check and update car part statuses
+.car-parts
+   engine:available
+   wheel:out-of-stock
+   door:available
 
-.throws:bool:false
-try
-   throw:foo
-.catch
-   set-value:x:@.throws
-      .:bool:true
+for-each:x:@.car-parts/*
+   if
+      eq:x:@.dp/#
+         .:available
+      .lambda
+         set-value:x:@.dp/#
+            .:checked
+   else
+      set-value:x:@.dp/#
+         .:needs restocking

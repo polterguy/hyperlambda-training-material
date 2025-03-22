@@ -1,9 +1,6 @@
 
-// Write a Hyperlambda GET endpoint that returns server information like IP, host, and request IP.
-server.ip
-request.ip
-request.host
-yield
-   server-ip:x:@server.ip
-   request-ip:x:@request.ip
-   host:x:@request.host
+// Example: Use a variable to provide the input string.
+.text:Test
+
+// Returns 4
+strings.length:x:@.text

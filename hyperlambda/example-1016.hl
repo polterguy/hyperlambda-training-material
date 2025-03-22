@@ -1,5 +1,4 @@
-
-// Example: Capitalize an empty string (result is still an empty string).
-
-// Result: "" (empty string)
-strings.capitalize:
+// Loads environment-specific settings by executing a config loader file
+.env:dev
+execute-file:/modules/config/load.hl
+   environment:x:@.env

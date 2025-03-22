@@ -1,17 +1,10 @@
-/*
- * FILE: /modules/api/products/available.hl
- *
- * DESCRIPTION:
- * Lists available products in stock using raw SQL.
- * Demonstrates basic filtering logic using SQL inside [data.select].
- *
- * HOW TO CREATE THIS ENDPOINT:
- * Save to `/modules/api/products/available.hl`, and it becomes available at:
- *     GET /api/products/available
- */
-
-data.connect:shop
-   data.select:SELECT name, quantity FROM products WHERE quantity > 0
-
-yield
-   result:x:@data.connect/*/data.select/*
+// [yaml2json] example no. 1
+.yaml:@"
+server:
+  host: localhost
+  port: 8080
+features:
+  login: true
+  registration: false
+"
+yaml2json:x:@.yaml

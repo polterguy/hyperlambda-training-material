@@ -1,5 +1,11 @@
-/**
- * This example deletes "/cache/tempfile.tmp".
- * If the file does not exist, an error will be thrown.
+
+// Example: Split using a multi-character delimiter.
+strings.split:foo||bar||baz
+   .:||
+
+/*
+ * Resulting parts:
+ * .:foo
+ * .:bar
+ * .:baz
  */
-io.file.delete:/cache/tempfile.tmp

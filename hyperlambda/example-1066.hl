@@ -1,22 +1,32 @@
-/*
- * Hyperlambda authenticate endpoint
- */
+
+// Create a Hyperlambda script for an endpoint that counts items in the questions table in the magic database, ensuring the user is authorized and handling optional filters.
 .arguments
-   username:string
-   password:string
+   questions.question_id.eq:long
+   questions.question.like:string
+   questions.question.eq:string
+   questions.questionnaire.like:string
+   questions.questionnaire.eq:string
+.type:crud-count
 
-/*
- * Authenticates the user with the specified [username] and [password].
- *
- * Returns a JWT Bearer token that can be used for consecutive requests authorizing user according
- * to his or her roles.
- */
-execute:magic.workflows.actions.execute
-   name:authenticate
-   filename:/modules/auth/workflows/actions/authenticate.hl
-   arguments
-      username:x:@.arguments/*/username
-      password:x:@.arguments/*/password
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// Opening up our database connection.
+data.connect:[generic|magic]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:questions
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

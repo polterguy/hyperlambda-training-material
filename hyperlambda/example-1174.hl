@@ -1,86 +1,44 @@
 
-// Create a Hyperlambda script to create an HTTP interceptor or gateway that invokes another endpoint, executing lambda objects before and after the invocation.
-.arguments:*
+// Write a Hyperlambda script to create a new training snippet with optional URL, prompt, completion, and type.
+.arguments
 
-// Endpoint we're intercepting.
-.endpoint:"https://your-app.com/your-endpoint"
+   // Optional URL for citations
+   uri:string
 
-/*
- * Retrieving Authorization header to transmit to
- * intercepted endpoint.
- */
-request.headers.get:Authorization
+   // Mandatory prompt or short one liner description
+   prompt:string
 
-/*
- * Lambda object executed as an "intercepted lambda object"
- * before invocation to HTTP endpoint.
- */
-.before
+   // Mandatory completion being the content or body of your snippet
+   completion:string
 
-/*
- * This is where you would parametrise your above [.before] object
- * with for instance arguments given by the client, before the
- * invocation to [eval] below.
- */
+   // Mandatory machine learning to to associate snippet with
+   type:string
 
-// Evaluating [.before] lambda object.
-eval:x:@.before
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,service
 
-// Forwarding arguments given to endpoint to intercepted endpoint.
-add:x:../*/http.post/*/payload
-   get-nodes:x:@.arguments/*
+// Opening up database connection.
+data.connect:[generic|magic]
 
-/*
- * Checking if we've got an Authorization HTTP header,
- * at which point we forward it to the original HTTP endpoint.
- */
-if
-   not-null:x:@request.headers.get
-   .lambda
-      add:x:../*/http.post/*/headers
-         .
-            Authorization:x:@request.headers.get
+   // Verifying user can create more snippets.
+   add:x:+
+      get-nodes:x:@.arguments/*/type
+   try-signal:magic.ai.can-create-snippet
 
-// Invoking the intercepted HTTP endpoint.
-http.post:x:@.endpoint
-   headers
-      Content-Type:application/json
-   convert:true
-   payload
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
 
-// Sanity checking invocation to endpoint.
-if
-   not
-      and
-         mte:x:@http.post
-            .:int:200
-         lt:x:@http.post
-            .:int:400
-   .lambda
-      log.error:Something went wrong as we invoked our intercepted HTTP endpoint
-         endpoint:x:@.endpoint
-         status:x:@http.post
-         result:x:@http.post/*/content
-      throw:Intercepted endpoint did not return success
-         public:true
-         status:502
+   // Creating our record.
+   data.create
+      table:ml_training_snippets
+      return-id:bool:true
+      values
 
-/*
- * Lambda object to execute after invocation to
- * intercepted endpoint.
- */
-.after
+   // Returning the correct status code.
+   response.status.set:201
 
-/*
- * This is where you would parametrise your above [.after] object
- * with for instance arguments given by the client, before the
- * invocation to [eval] below.
- */
-
-// Evaluating [.before] lambda object.
-eval:x:@.after
-
-// Return result to caller.
-add:x:+
-   get-nodes:x:@http.post/*/content/*
-return
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

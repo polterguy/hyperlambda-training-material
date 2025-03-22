@@ -1,6 +1,5 @@
 
-// Example: Check if a string ends with a substring that is not at the end.
-
-// Returns false
-strings.ends-with:HelloWorld
-   .:Universe
+// [and] returns true only if all arguments are true
+and
+   .:bool:true
+   .:bool:true

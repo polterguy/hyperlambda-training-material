@@ -1,12 +1,13 @@
+// Retrieve orders that are either pending OR processing
+data.connect:shopDB
 
-// This snippet uses the '**' iterator to retrieve all descendant nodes.
-.tree
-   branch1
-      leaf1:A
-   branch2
-      leaf2:B
-for-each:x:@.tree/**
-   set-value:x:@.dp/#
-      :visited
+   // CRUD read ...
+   data.read
+      table:orders
+      limit:-1
+      where
 
-// The expression @.tree/** selects all descendants of .tree (branch1, leaf1, branch2, leaf2). The loop marks each found node by setting its value to "visited".
+         // Either status equals "pending" OR department not equal "hr"
+         or
+            status.eq:"pending"
+            department.neq:"hr"

@@ -1,5 +1,13 @@
+// Creates a try/catch/finally block
+try
 
-// Example: Trim whitespace from the beginning of a string.
+   // Perform your unsafe operation here.
+   throw:Some error is thrown here
+.catch
 
-// Result: "hello   "
-strings.trim-start:"   hello   "
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:x:@.arguments/*/message
+.finally
+
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:Try finished evaluating

@@ -1,4 +1,9 @@
-// Validate [some-integer-argument] argument is between 50 and 100
-validators.integer:x:@.arguments/*/some-integer-argument
-   min:50
-   max:100
+
+// Generate a Hyperlambda snippet that inserts a 'milestone2' node after 'milestone1' inside '.project'.
+
+// Inserts a "milestone2" node after "milestone1" inside ".project".
+.project
+   milestone1
+insert-after:x:@.project/*/milestone1
+   .
+      milestone2:Second milestone

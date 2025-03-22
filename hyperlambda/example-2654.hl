@@ -1,27 +1,26 @@
+/*
+ * This file defines a list of supported document types for an application.
+ *
+ * The node `.document.types` contains an ordered collection of strings representing
+ * the types of documents that users are allowed to upload or generate through the system.
+ *
+ * Each item is a string node (`.`) and represents a MIME-type friendly label.
+ * 
+ * This structure can be used with:
+ *   - UI dropdowns for document filtering or selection
+ *   - Validation logic to restrict uploads
+ *   - Business rules around formatting or processing
+ * 
+ * Example usage in logic:
+ *   - Looping with [for-each] to validate allowed extensions
+ *   - Populating form elements with options
+ *   - Checking content-type of files being uploaded
+ */
 
-// Generate a Hyperlambda snippet that evaluates specified [.lambda] if both conditions are true.
-
-// Evaluates specified [.lambda] if both conditions are true.
-.result
-.value1:int:3
-.value2:int:10
-if
-   and
-
-      // [lt] implies "less than"
-      lt:x:@.value1
-         .:int:4
-
-      // [mt] implies "more than"
-      mt:x:@.value2
-         .:int:9
-   .lambda
-
-      // Changing the value of [.result] to true
-      set-value:x:@.result
-         .:bool:true
-else
-
-   // Changing the value of [.result] to false
-   set-value:x:@.result
-      .:bool:false
+.document.types
+   .:PDF Document
+   .:Word Document
+   .:Excel Spreadsheet
+   .:Image File
+   .:Text File
+   .:Markdown File

@@ -1,4 +1,8 @@
-// Generate a cryptographically secure random integer between 1 and 100
-crypto.random.int
-   min:int:1
-   max:int:100
+
+// Example: Replace all occurrences of a substring.
+.text:abababab
+strings.replace:x:@.text
+   .:ab
+   .:AB
+
+// Result: "ABABABAB"

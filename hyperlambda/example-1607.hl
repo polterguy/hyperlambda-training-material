@@ -1,8 +1,12 @@
-// Upload a file to replace an existing resource using HTTP PUT
-http.put:"https://api.example.com/upload/README"
+/*
+ * This Hyperlambda snippet demonstrates an error when multiple nodes match.
+ *
+ * 1. The `.data` node has multiple children.
+ * 2. The `get-name` slot is used with a wildcard selector `*`, which returns multiple nodes.
+ * 3. This will cause a HyperlambdaException because `get-name` expects exactly one node.
+ */
 
-   // read file from /files/documents/README.md and send as request body
-   filename:/documents/README.md
-
-   // set a 30-second timeout instead of default
-   timeout:int:30
+.data
+   foo1:bar1
+   foo2:bar2
+get-name:x:@.data/*

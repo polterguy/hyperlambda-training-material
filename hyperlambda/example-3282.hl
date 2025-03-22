@@ -1,20 +1,6 @@
-
-// Hyperlambda [if] checking for empty value
-.user-input:
-.validation-message
-if
-   eq:x:@.user-input
-      .:
-   .lambda
-      set-value:x:@.validation-message
-         .:Input required
-
-/*
- * JavaScript equivalent of Hyperlambda [if] checking for empty value
- * const userInput = "";
- * let validationMessage;
- * 
- * if (userInput === "") {
- * validationMessage = "Input required";
- * }
- */
+// This snippet uses the 'x' type to store a Hyperlambda expression as a value, in addition to extrapolating the expression containing an inner expression.
+.target
+   item1:foo
+.ref:item1
+get-value:x:@.target/*/{@.ref}
+// The Inner expression will be evaluated, and the value of the single node it points to will be used as a part of the outer expression.

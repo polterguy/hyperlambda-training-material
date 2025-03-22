@@ -1,4 +1,10 @@
 
-// How can I list all HTTP request headers in a Hyperlambda endpoint?
-request.headers.list
-return:x:-
+// Example: Join all strings stored as children of a list node.
+.words
+   .:one
+   .:two
+   .:three
+strings.join:x:@.words/*
+   .:|
+
+// Result: "one|two|three"

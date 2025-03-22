@@ -1,2 +1,7 @@
-// Return configuration key named 'foo:bar'
-config.get:"foo:bar"
+
+// Create an exception handler in Hyperlambda that logs the error and returns a status 500 response.
+log.error:x:@.arguments/*/message
+   url:x:@.arguments/*/path
+return
+   error:An error occurred in Hyperlambda processing.
+   status:int:500

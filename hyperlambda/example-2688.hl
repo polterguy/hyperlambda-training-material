@@ -1,34 +1,7 @@
 
-// Create a Hyperlambda script for a CRUD create endpoint that inserts one record into the questions table in the magic database, taking question and questionnaire, ensuring authentication and authorization for root and admin roles.
-.arguments
-   question:string
-   questionnaire:string
-   type:string
-   name:string
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Opening up database connection.
-data.connect:[generic|magic]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:questions
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+// Create a Hyperlambda script to return context data from the 'ainiro_io' type using a specified prompt, threshold, and max tokens.
+signal:magic.ai.get-context
+   type:ainiro_io
+   prompt:"DuckDuckGo \"Pixar\""
+   threshold:float:0.6
+   max_tokens:int:2000

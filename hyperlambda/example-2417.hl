@@ -1,33 +1,34 @@
 
-// Write a Hyperlambda script to rename a specified file or folder.
+// Create a Hyperlambda script to read or list records from a specified table in a database with optional filtering arguments.
 .arguments
-   oldName:string
-   newName:string
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   limit:long
 
-// Basic logging.
-log.info:Renaming file object
-   old_name:x:@.arguments/*/oldName
-   new_name:x:@.arguments/*/newName
+   // Offset into the dataset of where to start retrieving records
+   offset:long
 
-// Checking if specified object is a file or a folder.
-if
-   io.folder.exists:x:@.arguments/*/oldName
-   .lambda
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+   order:string
 
-      // File object is a folder, renaming it.
-      io.folder.move:x:@.arguments/*/oldName
-         get-value:x:@.arguments/*/newName
-else
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
 
-   // File object is a file, renaming it.
-   io.file.move:x:@.arguments/*/oldName
-      strings.concat
-         io.path.get-folder:x:@.arguments/*/oldName
-         get-value:x:@.arguments/*/newName
+// Opening up our database connection.
+data.connect:{database}
+   database-type:{database-type}
 
-// Returning result to caller.
-return-nodes
-   result:success
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:{database-type}
+      table:{table}
+      columns
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

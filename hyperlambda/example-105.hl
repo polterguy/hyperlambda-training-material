@@ -1,27 +1,8 @@
-
-// Create a Hyperlambda snippet that executes [.lambda] if at least one condition is met.
-
-// Executes [.lambda] if at least one condition is met.
-.output
-.numA:int:6
-.numB:int:12
-if
-   or
-
-      // Less than check
-      lt:x:@.numA
-         .:int:7
-
-      // Greater than check
-      mt:x:@.numB
-         .:int:11
-   .lambda
-
-      // Setting [.output] to true
-      set-value:x:@.output
-         .:bool:true
-else
-
-   // Setting [.output] to false
-   set-value:x:@.output
-      .:bool:false
+// Evaluate dynamic lambda object passing in argument using [invoke]
+.lambda
+   strings.concat
+      .:"Hello "
+      get-value:x:@.arguments/*/name
+   return:x:-
+invoke:x:@.lambda
+   name:John

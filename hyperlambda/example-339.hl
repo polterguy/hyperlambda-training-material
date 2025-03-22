@@ -1,5 +1,2 @@
-
-// Example: Convert a string with letters and numbers to lowercase.
-
-// Result: "mixedcase123"
-strings.to-lower:MixedCase123
+// This snippet defines a node with an int (Int32) value.
+.amount:int:1000

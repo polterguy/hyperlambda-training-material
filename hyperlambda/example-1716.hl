@@ -1,5 +1,3 @@
-/*
- * Example: URL-encode an email address.
- */
-strings.url-encode:"user@example.com"
-// Result: "user%40example.com"
+
+// Returns the IP address of the cloudlet
+server.ip

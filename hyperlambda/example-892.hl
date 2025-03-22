@@ -1,34 +1,16 @@
 
-// Lists all database in your MySQL instance.
-slots.create:magic.db.pgsql.databases
+// Provide a Hyperlambda example where [.lambda] runs based on the boolean value of [.flag].
 
-   // Opens up our connection
-   .connection:[postgres]
-   if
-      and
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .:
-      .lambda
-         set-value:x:@.connection
-            strings.concat
-               .:[
-               get-value:x:@.arguments/*/connection-string
-               .:|
-               .:postgres]
-   pgsql.connect:x:@.connection
+// Runs [.lambda] based on the boolean value of [.flag].
+.flag:bool:true
+if
+   eq:x:@.flag
+      .:bool:true
+   .lambda
 
-      // Runs our query
-      pgsql.select:select datname from pg_database
+      // Runs when [.flag] is set to true.
+      log.info:[.flag] is enabled
+else
 
-      // Renaming "Database" nodes.
-      set-name:x:@pgsql.select/*/*
-         .:db
-
-      // Returns the remaining databases to caller.
-      return-nodes:x:@pgsql.select/*
+   // Runs when [.flag] is false.
+   log.info:[.flag] is disabled

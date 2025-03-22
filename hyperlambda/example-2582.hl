@@ -1,8 +1,23 @@
-// CRUD endpoint that selects items from your DATABASE_NAME and TABLE_NAME.
-data.connect:DATABASE_NAME
-   database-type:sqlite
 
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:TABLE_NAME
+// Authenticates the user with the specified [username] and [password].
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   password
+      type:string
+      mandatory:bool:true
+.icon:shield
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
+
+// Invokes slot responsible for authenticating caller.
+execute:magic.auth.authenticate
+   username:x:@.arguments/*/username
+   password:x:@.arguments/*/password
+
+// Returning resulting ticket/token to caller.
+yield
+   ticket:x:@execute/*/ticket

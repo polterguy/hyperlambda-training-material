@@ -1,7 +1,5 @@
-// Insert a node after a specified existing node
-.list
-   item1
-   item2
-insert-after:x:@.list/*/item1
-   .
-      inserted
+
+// How to use Hyperlambda's [lambda2hyper]
+.hl
+   log.info:This is some example logging invocation
+lambda2hyper:x:-/*

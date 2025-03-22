@@ -1,27 +1,17 @@
-
-// Generate a Hyperlambda snippet that evaluates [.lambda] when all conditions evaluate to true.
-
-// Evaluates [.lambda] when all conditions evaluate to true.
-.result
-.factor1:int:1
-.factor2:int:20
-if
-   and
-
-      // Condition 1: Less than
-      lt:x:@.factor1
-         .:int:2
-
-      // Condition 2: More than
-      mt:x:@.factor2
-         .:int:19
-   .lambda
-
-      // Assigning true to [.result]
-      set-value:x:@.result
-         .:bool:true
-else
-
-   // Assigning false to [.result]
-   set-value:x:@.result
-      .:bool:false
+/*
+ * This file opens a connection to the 'sales' database and selects the top 10 records
+ * from the 'campaigns' table where the email contains 'mailchimp' OR the 'company' field
+ * is Microsoft.
+ */
+data.connect:[generic|sales]
+   database-type:sqlite
+   data.read
+      database-type:sqlite
+      table:campaigns
+      
+      // [data.read] slot will automatically convert the following argument to a long value
+      limit:10
+      where
+         or
+            email.like:%mailchimp%
+            company.eq:Microsoft

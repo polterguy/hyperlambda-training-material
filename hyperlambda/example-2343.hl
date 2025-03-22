@@ -1,2 +1,4 @@
-// Create an HTTP GET example
-http.get:"https://google.com"
+
+// How can I retrieve the request URL dynamically in Hyperlambda?
+request.url
+return:x:-

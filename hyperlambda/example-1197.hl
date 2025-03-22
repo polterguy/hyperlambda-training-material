@@ -1,31 +1,13 @@
-
-// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+// Example of endpoint taking two arguments, concatenating them, and returning the result using [return].
 .arguments
-   name:string
-   description:string
+   arg1:string
+   arg2:string
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+strings.concat
+   get-value:x:@.arguments/*/arg1
+   get-value:x:@.arguments/*/arg2
 
-// Sanity checking invocation
-validators.regex:x:@.arguments/*/name
-   regex:"^[A-Za-z0-9\\-_]*$"
-
-// Opening up database connection.
-data.connect:[generic|magic]
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      table:roles
-      return-id:bool:false
-      values
-
-   // Returning result of above invoction to caller.
-   response.status.set:201
-   unwrap:x:+/*
-   return
-      result:success
+// MUST call [unwrap] otherwise we're simply returning the expression.
+unwrap:x:+/*
+return
+   result:x:@strings.concat

@@ -1,5 +1,12 @@
+// Using [switch] with boolean values to determine if a car part is available
+.available:bool:true
+.result
+switch:x:@.available
 
-// [and] returns true only if all arguments are true
-and
-   .:bool:true
-   .:bool:true
+   case:bool:true
+      set-value:x:@.result
+         .:Car part is available
+
+   case:bool:false
+      set-value:x:@.result
+         .:Car part is not available

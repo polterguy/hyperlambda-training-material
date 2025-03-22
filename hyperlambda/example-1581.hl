@@ -1,10 +1,5 @@
-/*
- * Example: Concatenate multiple strings with spaces included as separate parts.
- */
-strings.concat
-   .:I
-   .:" "
-   .:love
-   .:" "
-   .:Hyperlambda
-// Result: "I love Hyperlambda"
+
+// Example: Convert an already uppercase string (no change).
+
+// Result: "HELLO"
+strings.to-upper:HELLO

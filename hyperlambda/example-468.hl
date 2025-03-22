@@ -1,27 +1,40 @@
+/*
+ * Compiles a snippet of C# code down to a library,
+ * for then to dynamically load it as a plugin.
+ */
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.Private.CoreLib
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.signals.contracts
+   code:@"
 
-// Generate a Hyperlambda snippet that evaluates specified [.lambda] if any condition evaluates to true.
+// Example C# code creating a Hyperlambda slot.
+using System;
+using magic.node;
+using magic.node.extensions;
+using magic.signals.contracts;
 
-// Evaluates specified [.lambda] if any condition evaluates to true.
-.result
-.value1:int:3
-.value2:int:10
-if
-   or
+// Our slot class.
+[Slot(Name = ""foo"")]
+public class Foo : ISlot
+{
+   public void Signal(ISignaler signaler, Node input)
+   {
+      input.Value = $""Hi {input.GetEx<string>()}, how may I assist you?"";
+   }
+}"
+   assembly-name:foo.dll
 
-      // [lt] implies "less than"
-      lt:x:@.value1
-         .:int:4
+// Loading assembly from raw bytes now that we've created it.
+system.plugin.load:x:@system.compile
 
-      // [mt] implies "more than"
-      mt:x:@.value2
-         .:int:9
-   .lambda
+// Executing [foo] slot now dynamically injected into AppDomain.
+.name:John Doe
+foo:x:@.name
 
-      // Changing the value of [.result] to true
-      set-value:x:@.result
-         .:bool:true
-else
-
-   // Changing the value of [.result] to false
-   set-value:x:@.result
-      .:bool:false
+// Unloading plugin.
+system.plugin.unload:foo.dll

@@ -1,2 +1,3 @@
-// Dynamically load a plugin/assembly
-system.plugin.load:/etc/foo.dll
+
+// Generate a Hyperlambda snippet using a string containing an escaped newline character.
+.string5:"foo\nbar"

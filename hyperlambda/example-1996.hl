@@ -1,12 +1,14 @@
-// Switch lambda
-.val:foo
-.result
-switch:x:@.val
 
-   case:bar
-      set-value:x:@.result
-         .:Oops
+// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table.
 
-   case:foo
-      set-value:x:@.result
-         .:Success!
+// Queries messages from the messaging database and chat_logs table.
+data.connect:messaging_db
+
+   // Using SQLite.
+   database-type:sqlite
+
+   // Fetching chat history.
+   data.read
+      database-type:sqlite
+      table:chat_logs
+      limit:100

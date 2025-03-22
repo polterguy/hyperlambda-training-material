@@ -1,24 +1,18 @@
+/*
+ * This example attempts to connect to a non-existent database.
+ * It demonstrates how to handle connection failures gracefully by catching exceptions
+ * and logging an error message.
+ */
 
-// Write a Hyperlambda script to load all files recursively from a specified folder.
-slots.create:magic.io.file.load-recursively
+try
+   data.connect:non_existent_database
+      data.select:SELECT * FROM non_existent_table
+.catch
+   log.error:Failed to connect to the database or execute the query.
 
-   // In case we've got a "slot" type of argument.
-   eval:x:@.arguments
-
-   // Lists all files in current [folder], and adds up the result to return value.
-   io.file.list-recursively:x:@.arguments/0
-      show-hidden:x:@.arguments/*/.hidden-files
-
-   /*
-    * Iterating through all files listed above, and loads them,
-    * for then to add their contents as a child node of iterated file.
-    */
-   for-each:x:@io.file.list-recursively/*
-      io.file.load:x:@.dp/#
-      add:x:@.dp/#
-         get-nodes:x:@io.file.load
-      set-name:x:@.dp/#/*
-         .:
-
-   // Returning to caller all files in folder, and sub folder(s).
-   return-nodes:x:@io.file.list-recursively/*
+// Notice, the [data.connect] slot will not fail, since the default database
+// is SQLite, which will simply create a new database file with the
+// path of '/data/non_existent_database.db' - But since this database
+// is initialised as an empty database, without any tables, the
+// [data.select] invocation will still fail, since it doesn't have
+// the 'non_existent_table' table.

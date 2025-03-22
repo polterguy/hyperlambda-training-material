@@ -1,11 +1,4 @@
 
-// Write a Hyperlambda snippet that queries 'messaging_db' for recent chat logs.
-
-// Queries "messaging_db" for recent chat logs.
-.result
-data.connect:messaging_db
-   database-type:sqlite
-   data.select:select * from chat_logs order by timestamp desc limit 100
-      database-type:sqlite
-   add:x:@.result
-      get-nodes:x:@data.select/*
+// Generate random number below 1024
+crypto.random.int
+   max:1024

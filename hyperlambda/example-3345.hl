@@ -1,3 +1,2 @@
-
-// Delete a folder
-io.folder.delete:/misc/foo/
+// This snippet defines a node with a short (Int16) integer value.
+.count:short:-123

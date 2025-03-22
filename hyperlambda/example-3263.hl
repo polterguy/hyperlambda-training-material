@@ -1,37 +1,31 @@
 
-// Delete endpoint deleting one record from your products table in your shopping-cart-demo database.
+// Create a Hyperlambda script that sets the reCAPTCHA key and secret to the specified values, ensuring the user is authorized.
 .arguments
+   key:string
+   secret:string
 
-   // Primary key of record to delete
-   product_id:long
+// Making sure user is allowed to invoke endpoint
+auth.ticket.verify:root
 
-// Meta data description for endpoint
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/key
+validators.mandatory:x:@.arguments/*/secret
 
-// Type of endpoint
-.type:crud-delete
+// Updating settings.
+config.load
+json2lambda:x:-
+remove-nodes:x:@json2lambda/*/magic/*/auth/*/recaptcha
+unwrap:x:+/*/*/*
+add:x:@json2lambda/*/magic/*/auth
+   .
+      recaptcha
+         key:x:@.arguments/*/key
+         secret:x:@.arguments/*/secret
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
+// Saving updated settings.
+lambda2json:x:@json2lambda/*
+config.save:x:-
 
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/product_id
-
-// Opening up our database connection.
-data.connect:[generic|shopping-cart-demo]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:products
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Retrieving key configuration setting and returning to caller.
+return-nodes
+   result:success

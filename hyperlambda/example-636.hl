@@ -1,9 +1,16 @@
+/*
+ * Evaluates different cases based on a variable.
+ */
 
-// Write a Hyperlambda snippet that inserts a 'start' node before 'middle' inside '.sequence'.
-
-// Inserts a "start" node before "middle" inside ".sequence".
-.sequence
-   middle
-insert-before:x:@.sequence/*/middle
-   .
-      start:Beginning of sequence
+.value:hello
+.result
+switch:x:@.value
+   case:hello
+      set-value:x:@.result
+         .:Matched Hello!
+   case:world
+      set-value:x:@.result
+         .:Matched World!
+   default
+      set-value:x:@.result
+         .:No match found.

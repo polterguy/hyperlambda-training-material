@@ -1,11 +1,6 @@
-// [yaml2json] example no. 2
-.yaml:@"
-books:
-  - title: ""The Great Gatsby""
-    author: ""F. Scott Fitzgerald""
-    year: 1925
-  - title: ""1984""
-    author: ""George Orwell""
-    year: 1949
-"
-yaml2json:x:@.yaml
+
+// Example: Pass arguments to the inline Hyperlambda code.
+strings.mixin:"2 + val equals {{\nmath.add\n   .:int:2\n   get-value:x:@.arguments/*/val\nreturn:x:-\n}}"
+   val:int:5
+
+// Result: "2 + val equals 7"

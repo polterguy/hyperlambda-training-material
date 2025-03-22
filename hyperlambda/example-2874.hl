@@ -1,20 +1,10 @@
 
-// Create a Hyperlambda action to set specified HTTP headers in a response. Use 'headers' as a key-value input to determine which headers to set.
-.arguments
-   headers
-      type:key-value
-      mandatory:bool:true
-.icon:http
+// Create a Hyperlambda script to get a token for NetSuite using a private key, account ID, certificate ID, and consumer key.
+io.file.load:/etc/netsuite/private-key.txt
 
-/*
- * Iterating through each header from above invocation and checking if caller is interested in it,
- * and if caller wants this particular header, we make sure we return it below.
- */
-for-each:x:@.arguments/*/headers/*
-
-   // Adding currently iterated HTTP header.
-   add:x:../*/response.headers.set
-      get-nodes:x:@.dp/#
-
-// Invoking slot responsible for setting response HTTP headers.
-response.headers.set
+// Getting an access token.
+netsuite.get-access-token
+   private-key:x:@io.file.load
+   account-id:6384405
+   certificate-id:NyzgrDxwszmkHW6AhqhFA-mqA6jvSajRUCuddQfFgcw
+   consumer-key:dc433c11bc4522a5ee0f841c4e90a972921ae3e8d0d253b897a340b50676f7d1

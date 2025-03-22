@@ -1,10 +1,5 @@
-// Raising a custom signal
-.message:Hello from signal
 
-// Here the expression will NOT be evaluated.
-signal:custom.signal
-   message:x:@.message
+// Example: Convert a string with letters and numbers to lowercase.
 
-// Here the expression will NOT be evaluated.
-execute:custom.signal
-   message:x:@.message
+// Result: "mixedcase123"
+strings.to-lower:MixedCase123

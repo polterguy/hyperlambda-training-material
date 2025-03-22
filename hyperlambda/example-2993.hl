@@ -1,8 +1,12 @@
 
-// Example: Use variables to supply the string and prefix to check.
-.text:Sample
-.prefix:Sam
+// Create a Hyperlambda endpoint that loads the appsettings.json file and returns its content to the caller, ensuring the user is authorized.
+.type:internal
 
-// Returns true
-strings.starts-with:x:@.text
-   get-value:x:@.prefix
+// Ensuring user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Loading the 'appsettings.json' file.
+config.load
+
+// Returning file to caller.
+return-value:x:@config.load

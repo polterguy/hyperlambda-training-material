@@ -1,13 +1,24 @@
-// Use else-if to check multiple conditions in sequence
 
-.result
+// Ensures user is authorized to access endpoint.
+.arguments
+   roles
+      type:array
+      mandatory:bool:false
+.icon:shield
+
+/*
+ * Checking if we've got a [roles] argument,
+ * and if so, joining all roles into a comma separated string of roles.
+ */
+.roles
 if
-   .:bool:false
+   exists:x:@.arguments/*/roles/*
    .lambda
-      set-value:x:../*/.result
-         .:failure
-else-if
-   .:bool:true
-   .lambda
-      set-value:x:../*/.result
-         .:OK
+
+      // Creating comma separated list of roles.
+      set-value:x:@.roles
+         strings.join:x:@.arguments/*/roles/*
+            .:,
+
+// Making sure user is authenticated, and optionally authorised.
+auth.ticket.verify:x:@.roles

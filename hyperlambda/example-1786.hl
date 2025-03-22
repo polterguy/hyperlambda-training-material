@@ -1,10 +1,20 @@
+// Using [switch] with complex conditions for car part actions
+.action:replace
+.result
+switch:x:@.action
 
-// Decrement a value by a custom step from another node
-.value:int:10
-.step:int:4
-math.decrement:x:@.value
+   case:install
+      set-value:x:@.result
+         .:Installing the car part
 
-   // use 4 from .step as the decrement amount
-   get-value:x:@.step
+   case:remove
+      set-value:x:@.result
+         .:Removing the car part
 
-// .value should now be 6
+   case:replace
+      set-value:x:@.result
+         .:Replacing the car part
+
+   default
+      set-value:x:@.result
+         .:Invalid action

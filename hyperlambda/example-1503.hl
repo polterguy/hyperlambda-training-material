@@ -1,11 +1,9 @@
-// HTTP endpoint that selects users from database and returns as YAML
-.arguments
+// Replace "dog" with "cat" using values from other nodes
+.target-string:I love my dog
+.search-for:dog
+.replace-with:cat
 
-// Connect to the database and retrieve contacts
-data.connect:crm
-   data.read
-      table:contacts
-   response.headers.set
-      Content-Type:application/yaml
-   lambda2yaml:x:@data.read/*
-   return:x:@lambda2yaml
+set-value:x:@.target-string
+   strings.replace:x:@.target-string
+      get-value:x:@.search-for
+      get-value:x:@.replace-with

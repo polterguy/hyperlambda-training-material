@@ -1,9 +1,13 @@
 /*
- * Checks if `.foo` exists and sets a value if true.
+ * Conditionally updates [.status] to "OK" if the node named "health" 
+ * after it has a value of "good". This uses `@.health` to access named sibling.
  */
 
-.foo:exists
-.result
-if:x:@.foo
-   set-value:x:@.result
-      .:Node exists!
+.status
+.health:good
+if
+   eq:x:@.health
+      .:good
+   .lambda
+      set-value:x:@.status
+         .:OK

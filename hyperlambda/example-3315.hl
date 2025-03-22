@@ -1,17 +1,52 @@
 
-// Create a Hyperlambda script to compile a snippet of C# code into a library, load it as a plugin, and invoke a slot.
-system.compile
-   references
-      .:netstandard
-      .:System.Runtime
-      .:System.Private.CoreLib
-      .:magic.node
-      .:magic.signals.contracts
-   code:"\n\n// Example C# code creating a Hyperlambda slot.\nusing System;\nusing magic.node;\nusing magic.signals.contracts;\n\n// Our slot class.\n[Slot(Name = \"bar\")]\npublic class Bar : ISlot\n{\n   public void Signal(ISignaler signaler, Node input)\n   {\n      input.Value = \"Hello from C#\";\n   }\n}"
-   assembly-name:bar.dll
+// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the ml_training_snippets table in the magic database, filtering which item to update with ID and updating uri, prompt, and completion fields, ensuring authentication and authorization for root roles.
+.arguments
+   id:long
+   uri:string
+   prompt:string
+   completion:string
+   meta:string
+   type:string
+   pushed:long
+   cached:int
+.type:crud-update
 
-// Loading assembly now that we've created it.
-system.plugin.execute:x:@system.compile
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/id
 
-   // Invoking dynamically created C# slot.
-   bar
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
+
+   // Invoking our update slot.
+   data.update
+      table:ml_training_snippets
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning the correct status code.
+   response.status.set:202
+
+   // Returning success to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.update

@@ -1,5 +1,7 @@
 /*
- * If no nodes match, `get-nodes` should return nothing.
+ * Example: Extract from index 0 (beginning of string).
  */
-
-get-nodes:x:@.nonexistent
+strings.substring:"HelloWorld"
+   .:0
+   .:5
+// Result: "Hello"

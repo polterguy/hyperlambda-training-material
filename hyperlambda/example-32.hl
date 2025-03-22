@@ -1,9 +1,3 @@
-// Decrement a value by a custom step from another node
-.value:int:10
-.step:int:4
-math.decrement:x:@.value
-
-   // use 4 from .step as the decrement amount
-   get-value:x:@.step
-
-// .value should now be 6
+// SHA256 hashing of specified file
+crypto.hash.sha256
+   filename:/README.md

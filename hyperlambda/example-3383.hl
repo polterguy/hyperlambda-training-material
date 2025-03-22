@@ -1,0 +1,4 @@
+
+// Hyperlambda file containing version and module name information for serp-api.
+version:v2.0.0
+module_name:serp-api

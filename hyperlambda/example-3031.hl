@@ -1,22 +1,10 @@
+// Construct a GET endpoint that fetches all user records from the database.
+// Filename - /modules/admin/users.get.hl
+// Access is restricted to users with the `admin` role.
 
-// Create a Hyperlambda action to replace occurrences of 'what' in a 'source' string with 'with'. Return the result.
-.arguments
-   source
-      type:string
-      mandatory:bool:true
-   what
-      type:string
-      mandatory:bool:true
-   with
-      type:string
-      mandatory:bool:true
-.icon:settings
+auth.ticket.verify:admin
 
-// Joining strings.
-strings.replace:x:@.arguments/*/source
-   get-value:x:@.arguments/*/what
-   get-value:x:@.arguments/*/with
-
-// Returning result to caller.
-yield
-   result:x:@strings.replace
+data.connect:[generic|users]
+   data.read
+      table:users
+   return-nodes:x:@data.read/*

@@ -1,16 +1,9 @@
+// Create a task that executes on two specific dates, in addition to repeating every 3 hours and 5 seconds
+tasks.create:foo-bar-task-3
+   due:date:"2025-01-01T23:59:27"
+   repeats:5.seconds
+   repeats:3.hours
+   due:date:"2030-01-01T23:59:27"
+   .lambda
 
-// Generate a Hyperlambda snippet that fetches product details from the inventory database and products table.
-
-// Fetches product details from the inventory database and products table.
-data.connect:inventory_db
-
-   // MySQL database type selected.
-   database-type:mysql
-
-   // Retrieving product records.
-   data.read
-      database-type:mysql
-      table:products
-      sort
-         created_at
-      direction:asc
+      log.info:Executing foo-bar-task-2

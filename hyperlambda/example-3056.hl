@@ -1,11 +1,7 @@
-// Show me Hyperlambda with data segment that joins all values of nodes being children of [.data]
-.data
-   foo1:bar1
-   foo2:bar2
-   foo3:bar3
-
-// Concatenates all child values
-strings.join:x:@.data/*
-
-   // Notice, comments MUST be on separate lines.
-   .:|
+/**
+ * This example resizes an image by specifying only the width (400 pixels).
+ * The height is automatically adjusted to maintain the aspect ratio.
+ */
+image.resize
+   file:/input.jpg
+   width:int:400

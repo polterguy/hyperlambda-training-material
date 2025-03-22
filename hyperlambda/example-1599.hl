@@ -1,6 +1,8 @@
-/*
- * Example: Check if a string ends with a specific substring (positive case).
- */
-// Returns true
-strings.ends-with:WelcomeHome
-   .:Home
+
+// Example: Use variables for string and trim characters (start only).
+.text:...Hello
+.trimchars:.
+
+// Result: "Hello"
+strings.trim-start:x:@.text
+   get-value:x:@.trimchars

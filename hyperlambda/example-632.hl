@@ -1,9 +1,14 @@
-
-// Provide a Hyperlambda example where a new node is inserted before 'step1' inside '.process'.
-
-// Inserts a new node before "step1" inside ".process".
-.process
-   step1
-insert-before:x:@.process/*/step1
-   .
-      init:Initialization step
+// create a hyperlambda endpoint taking name and age, returning a personalised greeting
+.arguments
+   name:string
+   age:int
+.result
+set-value:x:@.result
+   strings.concat
+      .:"Hello "
+      get-value:x:@.arguments/*/name
+      .:", you are "
+      get-value:x:@.arguments/*/age
+      .:" years old."
+yield
+   result:x:@.result

@@ -1,20 +1,21 @@
-// Creates a scatter chart.
-image.chart:scatter
-   filename:/scatter.png
-   width:400
-   height:300
-   data-x
-      .:1
-      .:2
-      .:3
-      .:4
-      .:5
-   data-y
-      .:1
-      .:4
-      .:9
-      .:16
-      .:25
-   line-width:5
-   marker-size:15
-   color:#55aa5555
+
+// Fallback else block when prior if/else-if conditions are false
+.value:int:3
+.result
+if
+   eq
+      get-value:x:@.value
+      .:int:1
+   .lambda
+      set-value:x:@.result
+         .:One
+else-if
+   eq
+      get-value:x:@.value
+      .:int:2
+   .lambda
+      set-value:x:@.result
+         .:Two
+else
+   set-value:x:@.result
+      .:Other

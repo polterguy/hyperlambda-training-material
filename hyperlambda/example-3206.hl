@@ -1,7 +1,5 @@
-/*
- * This Hyperlambda snippet retrieves the name of a node that has no value.
- */
 
-.data
-   foo
-get-name:x:@.data/*
+// Ensures the module's database exists and is updated by running migration scripts.
+signal:magic.modules.ensure-database
+   module:shopify
+   database:shopify

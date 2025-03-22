@@ -1,7 +1,7 @@
-/*
- * Example: Extract with length exceeding string bounds (returns till end).
- */
-strings.substring:"Hello"
-   .:2
-   .:10
-// Result: "llo"
+// Deletes a student record from the 'students' table where the major is 'Biology'.
+sqlite.connect:university
+   sqlite.delete
+      table:students
+      where
+         and
+            major:Biology

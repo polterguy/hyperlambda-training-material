@@ -1,5 +1,8 @@
-/*
- * Example: URL-decode an email address.
- */
-strings.url-decode:user%40example.com
-// Result: "user@example.com"
+// This example connects to the 'restaurant' database and inserts a new menu item into the 'menu' table.
+sqlite.connect:restaurant
+   sqlite.create
+      table:menu
+      values
+         dish_name:Margherita Pizza
+         price:decimal:8.50
+         category:Pizza

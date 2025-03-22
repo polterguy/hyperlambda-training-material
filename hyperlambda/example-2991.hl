@@ -1,9 +1,18 @@
-// Hyperlambda [get-value]
-.data:Hello World
 
-// Returns the value of the previous node
-get-value:x:-
+// Use nested data.connect to interact with two databases in one snippet
+data.connect:MainDB
+   data.read
 
-// Results in:
-.data:Hello World
-get-value:Hello World
+      // Query orders from MainDB
+      table:orders
+
+   // Insert a log in LogsDB
+   data.connect:LogsDB
+      data.create
+         table:log_storage
+         values
+            message:Checked orders
+   data.read
+
+      // Back to MainDB connection (still open) to re-query orders
+      table:orders

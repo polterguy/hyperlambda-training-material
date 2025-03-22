@@ -1,4 +1,8 @@
-// Convert [.foo]'s value to int
-.foo:57
-convert:x:-
-   type:int
+
+// Example: Extract a substring given a start index and length.
+.text:HelloWorld
+strings.substring:x:@.text
+   .:5
+   .:3
+
+// Result: "Wor"

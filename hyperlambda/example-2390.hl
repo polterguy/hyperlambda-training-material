@@ -1,61 +1,30 @@
 
-// Create a Hyperlambda action to set a cookie with specified settings like 'name', 'value', 'domain', 'expires', 'http-only', 'secure', 'path', and 'same-site'. Validate mandatory fields and enums.
+// Create a Hyperlambda script to return a named task to the caller.
 .arguments
-   name
-      type:string
-      mandatory:bool:true
-   value
-      type:string
-      mandatory:bool:true
-   domain
-      type:string
-      mandatory:bool:false
-   expires
-      type:int
-      mandatory:bool:false
-   http-only
-      type:bool
-      mandatory:bool:false
-   secure
-      type:bool
-      mandatory:bool:false
-   path
-      type:string
-      mandatory:bool:false
-   same-site
-      type:enum
-      mandatory:bool:false
-      values
-         .:Strict
-         .:Lax
-         .:None
-.icon:http
+   offset:long
+   limit:long
+   filter:string
+.type:internal
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/name
-validators.mandatory:x:@.arguments/*/value
-validators.enum:x:@.arguments/*/same-site
-   .:Strict
-   .:Lax
-   .:None
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Adding optional arguments if specified.
-if:x:@.arguments/*/expires
-   math.add
-      date.now
-      time
-         expires:x:@.arguments/*/expires
-   unwrap:x:+/*/*
-   add:x:../*/response.cookies.set
+// Retrieves all scheduled tasks in the system.
+add:x:../*/tasks.list
+   get-nodes:x:@.arguments/*/offset
+   get-nodes:x:@.arguments/*/limit
+tasks.list:x:@.arguments/*/filter
+
+// Retrieving schedules for tasks, if any.
+include:x:@tasks.list/*
+   tasks.get:x:@.dp/#/*/id
+      schedules:true
+   add:x:+/*
+      get-nodes:x:@tasks.get/*/schedules/*
+   add:x:./*/return/*/schedules
       .
-         expires:x:@math.add
-add:x:../*/response.cookies.set
-   get-nodes:x:@.arguments/*/domain
-   get-nodes:x:@.arguments/*/http-only
-   get-nodes:x:@.arguments/*/secure
-   get-nodes:x:@.arguments/*/path
-   get-nodes:x:@.arguments/*/same-site
+   return
+      schedules
 
-// Setting cookie value.
-response.cookies.set:x:@.arguments/*/name
-   value:x:@.arguments/*/value
+// Returning the results of the evaluation to caller.
+return-nodes:x:@tasks.list/*

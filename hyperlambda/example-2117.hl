@@ -1,5 +1,5 @@
+// Compare two values using inline eq syntax
 
-// Example: Capitalize a fully lowercase word.
-
-// Result: "Hyperlambda"
-strings.capitalize:hyperlambda
+.foo1:OK
+eq:x:../*/.foo1
+   .:OK

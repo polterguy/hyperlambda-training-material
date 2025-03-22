@@ -1,20 +1,41 @@
-// Traverse node hierarchy and look for nodes with a name starting with 'n'. Then change their values to 'visited'.
-.result
-.data
-   n1:howdy
-      n2:nope!
-   some-node-1
-      n3:" world"
-         is-not-considered
 
-            // Considered since it starts with 'n' character
-            nanna:". "
-            n4:old-value
-for-each:x:@.data/**
-   get-name:x:@.dp/#
+// Create a Hyperlambda script for a CRUD update endpoint that updates an existing item in the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+.arguments
+   name:string
+   description:string
+
+// Verifying user is authorized to access endpoint.
+validators.mandatory:x:@.arguments/*/name
+auth.ticket.verify:root
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
+
+   // Invoking our update slot.
+   data.update
+      table:roles
+      values
+      where
+         and
+
+   // Verifying record exists.
    if
-      strings.starts-with:x:@get-name
-         .:n
+      eq
+         get-value:x:@data.update
+         .:int:0
       .lambda
-         set-value:x:@.dp/#
-            .:visited
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning success to caller.
+   response.status.set:202
+   unwrap:x:+/*
+   return
+      affected:x:@data.update

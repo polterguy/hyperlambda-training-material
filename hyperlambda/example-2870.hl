@@ -1,13 +1,11 @@
 
-// Counts items from your DATABASE_NAME and TABLE_NAME.
-data.connect:DATABASE_NAME
-   database-type:sqlite
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:TABLE_NAME
-      columns
-         count(*)
-            as:count
-      limit:long:1
+// Create a Hyperlambda script to demonstrate a nested expression example.
+.arg1:.data
+.arg2:foo2
+.result
+.data
+   foo1:john
+   foo2:thomas
+   foo3:peter
+set-value:x:@.result
+   get-value:x:../*/{@.arg1}/*/{@.arg2}

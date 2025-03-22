@@ -1,48 +1,63 @@
 
-// Write a Hyperlambda script to return a specified CSS file to the caller.
+// Create a Hyperlambda script that returns all filtered training snippets as a CSV file, ensuring the user is authorized.
 .arguments
-   file:string
+   ml_training_snippets.completion.like:string
+   ml_training_snippets.prompt.like:string
+   ml_training_snippets.uri.like:string
+   ml_training_snippets.type.eq:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Checking if custom CSS file exists.
-.result
-strings.concat
-   .:/etc/system/openai/css/search/
-   get-value:x:@.arguments/*/file
-   .:.css
-if
-   io.file.exists:x:@strings.concat
-   .lambda
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-      // Custom template file.
-      set-value:x:@.result
-         io.file.load:x:@strings.concat
-else
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*/*/or
+      get-nodes:x:@.arguments/*/ml_training_snippets.completion.like
+      get-nodes:x:@.arguments/*/ml_training_snippets.prompt.like
+      get-nodes:x:@.arguments/*/ml_training_snippets.uri.like
+   remove-nodes:x:@.arguments/*/ml_training_snippets.completion.like
+   remove-nodes:x:@.arguments/*/ml_training_snippets.prompt.like
+   remove-nodes:x:@.arguments/*/ml_training_snippets.uri.like
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
 
-   // Checking if system CSS file exists.
-   strings.concat
-      .:/system/openai/front.files/search/
-      get-value:x:@.arguments/*/file
-      .:.css
+   // Removing [or] parts unless we've got something to actually or.
    if
-      io.file.exists:x:@strings.concat
+      not-exists:x:@data.connect/*/data.read/*/where/*/and/*/or/*
       .lambda
+         remove-nodes:x:@data.connect/*/data.read/*/where/*/and/*/or
 
-         // Generic template file.
-         set-value:x:@.result
-            io.file.load:x:@strings.concat
-   else
+   // Invoking our read slot.
+   data.read
+      table:ml_training_snippets
+      columns
+         type
+         uri
+         prompt
+         completion
+      where
+         and
+            or
+      limit:-1
 
-      // Oops, no such file exists.
-      throw:No such AI chat template file exists
-         public:bool:true
-         status:400
+   // Verifying records exists.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+         response.status.set:404
+         return
+            result:No records found
 
-// Making sure we return correct Content-Type to caller, and applying some cache.
-response.headers.set
-   Content-Type:text/css
+   // Converting result to CSV.
+   lambda2csv:x:@data.read/*
 
-// Returning result to caller.
-return:x:@.result
+   // Applying correct HTTP header.
+   response.headers.set
+      Content-Type:text/csv
+      Access-Control-Expose-Headers:Content-Disposition
+      Content-Disposition:"attachment; filename=\"training-snippets.csv\""
+
+   // Returning content to caller.
+   return:x:@lambda2csv

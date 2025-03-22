@@ -1,10 +1,10 @@
-
-// Example: Use variables for the string, start index, and length.
-.text:Magic
-.start:int:1
-.len:int:3
-strings.substring:x:@.text
-   get-value:x:@.start
-   get-value:x:@.len
-
-// Result: "agi"
+/*
+ * Compares three integer test scores and returns the highest one.
+ */
+.result
+math.max
+   .:int:78
+   .:int:92
+   .:int:85
+set-value:x:@.result
+   .:x:@math.max

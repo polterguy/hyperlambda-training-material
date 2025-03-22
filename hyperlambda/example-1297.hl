@@ -1,23 +1,11 @@
+/*
+ * This Hyperlambda snippet demonstrates formatting a decimal number with two decimal places.
+ *
+ * 1. The `.foo` node is defined as a decimal with a value of `57`.
+ * 2. The `format` slot applies the pattern `"{0:0.00}"`, ensuring two decimal places.
+ * 3. The result will be `"57.00"`.
+ */
 
-// Updates an existing object of the specified type with the specified fields
-.arguments
-
-   // Type of object to update. Mandatory.
-   type:string
-
-   // Id of object to update. Mandatory.
-   id:long
-
-   // Key/value list of fields to update in object. Mandatory.
-   object:*
-
-// Ensuring user is authorized to invoking endpoint.
-auth.ticket.verify:netsuite
-
-// Forwarding heavy lifting to workflow file.
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/modules/netsuite/workflows/workflows/netsuite-update-record.hl
-
-// Returning result to caller.
-return-nodes:x:@execute-file/*
+.foo:decimal:57
+format:x:-
+   pattern:"{0:0.00}"

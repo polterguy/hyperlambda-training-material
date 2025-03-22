@@ -1,37 +1,16 @@
 
-// Delete endpoint deleting one record from your items table in your shopping-cart-demo database.
+// Create a Hyperlambda script to return cryptographically secure random text based on specified arguments.
 .arguments
+   min:long
+   max:long
+.type:public
 
-   // Primary key of record to delete
-   item_id:long
+// Generating gibberish text.
+add:x:./*/crypto.random
+   get-nodes:x:@.arguments/*
+crypto.random
 
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/item_id
-
-// Opening up our database connection.
-data.connect:[generic|shopping-cart-demo]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:items
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Generating gibberish text.
+unwrap:x:+/*
+return
+   result:x:@crypto.random

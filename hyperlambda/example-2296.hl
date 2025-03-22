@@ -1,2 +1,11 @@
-// Example: Convert a PDF file to text.
-pdf2text:/foo/bar.pdf
+// Executing the Hyperlambda changes the node hierarchy
+
+// This Hyperlambda
+.destination
+set-value:x:@.destination
+   .:value
+
+// Creates this result
+.destination:value
+set-value:x:@.destination
+   .:value

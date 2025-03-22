@@ -1,18 +1,18 @@
+/*
+ * Tries to retrieve the value of the first [zipcode] node found under [.address-book]
+ * but throws exception since there are two [zipcode] nodes and [set-value] assumes a single value
+ * is returned in its source expression.
+ */
 
-// Create a Hyperlambda script to count the number of Hyperlambda files and nodes in a specified folder.
-.folder:/
-.loc:int:0
-.files:int:0
-unwrap:x:+/*
-signal:magic.io.file.load-recursively
-   .:x:@.folder
-for-each:x:@signal/*
-   if
-      strings.ends-with:x:@.dp/#
-         .:.hl
-      .lambda
-         hyper2lambda:x:@.dp/#/0
-         math.increment:x:@.loc
-            get-count:x:@hyper2lambda/**
-         math.increment:x:@.files
-remove-nodes:x:@signal/*
+.postal-code
+.address-book
+   person1
+      contact
+         location
+            zipcode:90210
+   person2
+      contact
+         location
+            zipcode:90210
+set-value:x:@.postal-code
+   .:x:@.address-book/**/zipcode

@@ -1,8 +1,5 @@
+// Convert a string to a GUID
 
-// Provide a Hyperlambda example simulating a long-running task using [fork].
-
-// Simulates a long-running task running in parallel.
-fork
-   sleep:3000
-   log.info:Long-running task completed
-log.info:Main process continues...
+.src:"68ca1ec2-0776-4c37-a94a-108341fc372c"
+convert:x:-
+   type:guid

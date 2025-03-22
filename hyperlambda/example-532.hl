@@ -1,22 +1,45 @@
 
-// Write a Hyperlambda script for an OpenAI chat endpoint to handle conversations using 'gpt-xxx' models, with an option to stream response tokens.
+// Write a Hyperlambda script to create a new training snippet with optional URL, prompt, completion, and type.
 .arguments
+
+   // Optional URL for citations
+   uri:string
+
+   // Mandatory prompt or short one liner description
    prompt:string
+
+   // Mandatory completion being the content or body of your snippet
+   completion:string
+
+   // Mandatory machine learning to to associate snippet with
    type:string
-   references:bool
-   chat:bool
-   recaptcha_response:string
-   user_id:string
-   session:string
-   stream:bool
-   data:string
-   referrer:string
-.type:public
+.type:private
 
-// Forwarding to get Hyperlambda file.
-add:x:+
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/chat.get.hl
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,service
 
-// Returning result to caller.
-return-nodes:x:-/*
+// Opening up database connection.
+data.connect:[generic|magic]
+
+   // Verifying user can create more snippets.
+   add:x:+
+      get-nodes:x:@.arguments/*/type
+   try-signal:magic.ai.can-create-snippet
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      table:ml_training_snippets
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

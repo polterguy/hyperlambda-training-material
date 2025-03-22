@@ -1,31 +1,5 @@
 
-// Returns a bar chart image to caller. Values is a mandatory comma separated list of values.
-.arguments:*
-.type:public
+// Returns the operating system to caller
+system.os
 
-// Creating our individual bars.
-.bars
-for-each:x:@.arguments/*
-
-   // Adding primary node for bar.
-   unwrap:x:+/+/*/*
-   set-name:x:+/*/*
-      get-name:x:@.dp/#
-   add:x:@.bars
-      .
-         .:x:@.dp/#
-
-// Parametrizing [image.chart] invocation.
-add:x:../*/image.chart/*/bars
-   get-nodes:x:@.bars/*
-image.chart:bars
-   width:800
-   height:500
-   bars
-
-// Applying correct HTTP header.
-response.headers.set
-   Content-Type:image/png
-
-// Returning chart to caller.
-return:x:@image.chart
+// Results in (for Mac); Darwin 23.1.0 Darwin Kernel Version 23.1.0: Mon Oct  9 21:32:11 PDT 2023; root:xnu-10002.41.9~7/RELEASE_ARM64_T6030

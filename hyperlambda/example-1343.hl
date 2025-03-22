@@ -1,29 +1,32 @@
 
-// Returns all types of cloudlets the system supports.
+// Write a Hyperlambda script to vectorize all training snippets in a specified model/type.
+.arguments
+   type:string
+   feedback-channel:string
 
-// Opening up our database connection.
-data.connect:[generic|hub]
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // Reading data from database.
-   data.read
-      table:plans
-      columns
-         name
-         description
-         cpu
-         memory
-         storage
-         max_timeout
-         max_upload
-         price
-         price_reference
-         yearly_price
-         yearly_price_reference
-         frontend
-         bandwidth
-      where
-         and
-            enabled.eq:bool:true
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+// Doing some basic logging.
+log.info:Started vectorising model
+   model:x:@.arguments/*/type
+
+// Creating a thread and invoking file doing the heavy lifting.
+insert-before:x:./*/fork/0
+   get-nodes:x:@.arguments
+fork
+   add:x:./*/signal
+      get-nodes:x:@.arguments/*
+   signal:magic.ai.vectorise
+      .onafter
+         sockets.signal:x:@.arguments/*/feedback-channel
+            args
+               message:Done!
+               type:success
+
+// Returning success to caller.
+return
+   result:success

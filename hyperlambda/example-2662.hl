@@ -1,17 +1,9 @@
-/* This Hyperlambda snippet checks if the user's age is 18 or older.
-   If true, it updates the [status] node with "Adult". Otherwise, it sets it to "Minor". */
-
-.user
-   name:John Doe
-   age:int:22
-.status
-
-if
-   mte:x:@.user/*/age
-      .:int:18
-   .lambda
-      set-value:x:@.status
-         .:Adult
-else
-   set-value:x:@.status
-      .:Minor
+// Blog post entries
+.blog
+   posts
+      .
+         title:Introduction to Hyperlambda
+         author:Thomas
+      .
+         title:Working with Slots
+         author:Sarah

@@ -1,6 +1,23 @@
-// Creates a new Hyperlambda slot.
-slots.create:meaning-of-life
-   return-value:int:57
 
-// Invoking slot we created above.
-signal:meaning-of-life
+// Create stacked chart
+image.chart:stacked
+   filename:/stacked-chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets

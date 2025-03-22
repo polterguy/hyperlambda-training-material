@@ -1,8 +1,6 @@
-
-// Example: Trim specific characters from the beginning of a string.
-
-// The leading "xyz" will be removed
-strings.trim-start:xyzabcxyz
-   .:xyz
-
-// Result: "abcxyz"
+/*
+ * Example: String consisting entirely of trim characters (result is empty).
+ */
+// Result: "" (empty string)
+strings.trim-end:"xxx"
+   .:"x"

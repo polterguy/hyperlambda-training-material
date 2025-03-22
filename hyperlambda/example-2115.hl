@@ -1,4 +1,21 @@
-// Divide [.arg]'s value by 2
-math.divide
-   get-value:x:@.arg
-   .:int:2
+
+// Removes the specified [item_id] from your shopping cart.
+.arguments
+   item_id:int
+   _session:string
+.type:public
+
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
+
+   // Removing item.
+   data.delete
+      table:items
+      where
+         and
+            item_id.eq:x:@.arguments/*/item_id
+            session_id.eq:x:@.arguments/*/_session
+
+// Returning success to caller.
+return
+   result:success

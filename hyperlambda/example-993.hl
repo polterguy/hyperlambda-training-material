@@ -1,5 +1,15 @@
 
-// Example: URL-decode an email address.
-strings.url-decode:user%40example.com
+// Generate a Hyperlambda snippet that counts customers in the 'crm_db' database from the 'customers' table.
 
-// Result: "user@example.com"
+// Counts customers in the "crm_db" database from the "customers" table.
+data.connect:crm_db
+   database-type:mysql
+
+   // Counting total customers.
+   data.read
+      database-type:mysql
+      table:customers
+      columns
+         count(*)
+            as:count
+      limit:long:1

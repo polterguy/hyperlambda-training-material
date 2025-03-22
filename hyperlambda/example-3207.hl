@@ -1,9 +1,5 @@
 /*
- * Retrieving the name of a deeply nested node.
- * Results in `"child"` being returned
+ * Example: URL-decode a fully encoded URL.
  */
-
-.data
-   parent
-      child:42
-get-name:x:@.data/*/*
+strings.url-decode:https%3A%2F%2Fexample.com%2Ffoo%20bar
+// Result: "https://example.com/foo bar"

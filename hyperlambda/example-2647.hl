@@ -1,33 +1,25 @@
-
-// Create a Hyperlambda script for a CRUD create endpoint that inserts one record into the ml_requests table in the magic database, taking type, prompt, completion, and finish_reason, ensuring authentication and authorization for root roles.
+/*
+ * Fetches companies where the director is involved, excluding their primary company
+ */
 .arguments
-   type:string
-   prompt:string
-   completion:string
-   finish_reason:string
-   cached:int
-.type:crud-create
+   director_id:long
+   limit:long
+   offset:long
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+data.connect:[pg|corporate_network]
+   database-type:pgsql
 
-// Opening up database connection.
-data.connect:[generic|magic]
+   data.select:@"
+select d1.org_number, b.company_name, d1.role_name
+   from directors d1
+      inner join basic b on b.org_number = d1.org_number
+      inner join directors d2 on d1.director_nbr = d2.director_nbr
+   where d2.director_id = @id and d1.org_number != d2.org_number
+   limit @limit offset @offset"
+      database-type:pgsql
+      @id:x:@.arguments/*/director_id
+      @limit:x:@.arguments/*/limit
+      @offset:x:@.arguments/*/offset
 
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      table:ml_requests
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+   yield
+      secondary_roles:x:@data.select/*

@@ -1,6 +1,11 @@
-// Creates a JWT token
-auth.ticket.create
-   username:foo
-   roles
-      .:howdy
-      .:world
+// Updates the status of all employees in .company/staff/* to "active"
+.company
+   staff
+      emp1
+         name:Alice
+         status:inactive
+      emp2
+         name:Bob
+         status:inactive
+set-value:x:@.company/*/staff/*/*/status
+   .:active

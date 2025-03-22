@@ -1,7 +1,2 @@
-// Returns a configuration settings
-slots.create:generate.config
-   return-nodes
-      users:int:3
-      timeout:int:30
-
-execute:generate.config
+// How do I URL encode email argument?
+strings.url-encode:x:@.arguments/*/email

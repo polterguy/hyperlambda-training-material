@@ -1,5 +1,6 @@
 
-// Example: Embed multiple inline expressions in a single string.
-strings.mixin:"Sum {{\nmath.add\n   .:int:1\n   .:int:2\nreturn:x:-\n}} and Product {{\nmath.multiply\n   .:int:3\n   .:int:4\nreturn:x:-}}"
+// Example: Use a variable to provide the input string.
+.text:Test
 
-// Result: "Sum 3 and Product 12"
+// Returns 4
+strings.length:x:@.text

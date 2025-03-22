@@ -1,5 +1,7 @@
-// Add 2 to .age
-.age:int:28
-math.add
-   get-value:x:@.age
-   .:int:2
+// Attempt to add nodes to a destination when source is empty
+
+.dest
+add:x:../*/.dest
+   get-nodes
+
+// No change to [.dest]

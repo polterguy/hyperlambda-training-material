@@ -1,4 +1,5 @@
+// Convert a string to a byte array
 
-// Create a simple Hyperlambda endpoint that returns a greeting.
-return
-   result:Hello from Magic Backend
+.src:"  "
+convert:x:-
+   type:bytes

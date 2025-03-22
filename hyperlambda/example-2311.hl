@@ -1,2 +1,4 @@
-// Delete task with 'task-id' as its ID
-tasks.delete:task-id
+/**
+ * This example lists all folders inside "/projects/".
+ */
+io.folder.list:/projects/

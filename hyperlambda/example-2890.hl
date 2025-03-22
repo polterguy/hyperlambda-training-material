@@ -1,2 +1,12 @@
-// Load a binary file and returns content as raw bytes
-io.file.load.binary:/whatever-path.png
+
+// Else-if using an expression shorthand for its condition
+.flag:bool:true
+.result
+if
+   .:bool:false
+   .lambda
+      set-value:x:@.result
+         .:First
+else-if:x:@.flag
+   set-value:x:@.result
+      .:Second

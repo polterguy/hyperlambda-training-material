@@ -1,32 +1,22 @@
 
+// Generate a Hyperlambda snippet that compiles a C# file 'math.cs' into a library and loads it dynamically.
+
 /*
- * Inserts training data into database
- * 
- * Saves training data for using to fine-tune an LLM.
+ * Compiles a C# file "math.cs" into a library and loads it dynamically.
+ * This assumes "math.cs" exists in "/etc/" and contains a slot named [calculate].
  */
-.arguments
+io.file.load:/etc/math.cs
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.Math
+      .:System.Private.CoreLib
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.signals.contracts
+   code:x:@io.file.load
+   assembly-name:math.dll
 
-   // Mandatory prompt used to generate specified Hyperlambda
-   prompt:string
-
-   // Mandatory reference to Hyperlambda file.
-   file-no:int
-
-// Public files can be used as AI functions in machine learning types.
-.type:public
-
-// Getting Hyperlambda.
-execute-file:/modules/fine-tune/workflows/create-training-data.hl
-   file-no:x:@.arguments/*/file-no
-
-// Inserting item.
-data.connect:fine-tune
-   data.create
-      table:hyperlambda
-      values
-         prompt:x:@.arguments/*/prompt
-         code:x:@execute-file/*/hyperlambda
-
-// Returning success.
-return
-   result:success
+// Loading the compiled assembly.
+system.plugin.load:x:@system.compile

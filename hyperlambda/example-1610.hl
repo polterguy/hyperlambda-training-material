@@ -1,7 +1,5 @@
-// How can I check if use is logged in?
-auth.ticket.get
+// Purging all cache entries.
 
-// If the user is logged in, the above will return something such as follows:
-auth.ticket.get:root
-   roles
-      :root
+cache.clear
+
+// All cache items will be removed.

@@ -1,42 +1,27 @@
-// Build the dynamic JSON payload
-.payload
-   username:admin
-   password:supersecret123
-   client_id:web-client
 
-// Create headers for content-type and custom request ID
-.headers
-   Content-Type:application/json
-   X-Request-ID:xyz-123-abc
+// Create a function to return all existing payment subscription plans in the system. The function should find and execute all slots that declare subscription plans, each returning a name, description, price, currency, period (month or year), and Stripe price ID. The function should loop through these slots, execute them to retrieve the subscription plans, and return the plans to the caller. This setup allows the system to handle Stripe subscriptions effectively.
+slots.vocabulary:stripe.subscriptions.plans.
 
-// Make the HTTP POST request
-add:x:./*/http.post/*/headers
-   get-value:x:@.headers/*
-add:x:./*/http.post/*/payload
-   get-value:x:@.payload/*
-http.post:"https://api.example.com/auth/login"
-   headers
-   payload
+// Looping through each slot returned above and executing it.
+for-each:x:@slots.vocabulary/*
 
-   // This automatically converts result to lambda object
-   convert:true
+   // Changing slot invocation name.
+   set-value:x:./*/execute
+      get-value:x:@.dp/#
 
-// Verify above POST was a success.
-if
-   and
-      mte:x:@http.post
-         .:int:200
-      lt:x:@http.post
-         .:int:300
-   .lambda
+   /*
+    * Executing slot to retrieve supported providers.
+    * 
+    * Notice, name of slot (value of node) is dynamically created above.
+    */
+   execute
 
-      // Store response status and body
-      .name
-      set-value:x:@.name
-         get-value:x:@http.post/*/content/*/name
+   // Looping through all providers returned above to return them to client.
+   for-each:x:@execute/*
 
-      .user-id
-      set-value:x:@.user-id
-         get-value:x:@http.post/*/content/*/user-id
-else
-   throw:Something went wrong when invoking HTTP POST
+      // Returning subscription plan to caller.
+      add:x:../*/return
+         get-nodes:x:@.dp/#
+
+// Returning subscription plans to caller.
+return

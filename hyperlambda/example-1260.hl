@@ -1,71 +1,115 @@
 
-// Creates a new object in NetSuite of the specified type
+/*
+ * Sends an email with the specified [subject] and [body] to the specified [name] and [email]
+ * 
+ * Will use the default HTML template transforming [body] from Markdown to HTML
+ */
 .arguments
-
-   // Mandatory argument declaring the type of entity we want to create.
-   type:string
-
-   // Mandatory argument declaring the actual content of the new entity we want to create.
-   object:*
-.type:public
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
-validators.mandatory:x:@.arguments/*/object
-validators.mandatory:x:@.arguments/*/object/0
+   name:string
+   email:string
+   subject:string
+   body:string
 
 /*
- * Returns an access token for NetSuite.
- * 
- * Returns a JWT token that can be used to invoke NetSuite according to your configuration settings.
- * Notice, this will read account-id, certificate-id, and consumer-key from your configuration settings,
- * in addition to assume your private key exists in the file '/etc/netsuite/private-key.txt'.
+ * Ensures the specified [arg] was given.
+ *
+ * This action will throw an exception with a descriptive text explaining if the argument is missing.
  */
 execute:magic.workflows.actions.execute
-   name:netsuite-get-access-token
-   filename:/modules/netsuite/workflows/actions/netsuite-get-access-token.hl
+   name:validators-mandatory
+   filename:/misc/workflows/actions/security/validators-mandatory.hl
    arguments
+      arg:x:@.arguments/*/name
 
-// Creating our idempotency key to prevent replay attacks.
-guid.new
+/*
+ * Ensures the specified [arg] was given.
+ *
+ * This action will throw an exception with a descriptive text explaining if the argument is missing.
+ */
+execute:magic.workflows.actions.execute
+   name:validators-mandatory
+   filename:/misc/workflows/actions/security/validators-mandatory.hl
+   arguments
+      arg:x:@.arguments/*/email
 
-// Creating invocation URL.
-.url
-set-value:x:@.url
-   strings.concat
-      .:"https://"
-      config.get:"magic:netsuite:account-id"
-      .:.suitetalk.api.netsuite.com/services/rest/record/v1
-      .:/
-      get-value:x:@.arguments/*/type
+/*
+ * Ensures the specified [arg] was given.
+ *
+ * This action will throw an exception with a descriptive text explaining if the argument is missing.
+ */
+execute:magic.workflows.actions.execute
+   name:validators-mandatory
+   filename:/misc/workflows/actions/security/validators-mandatory.hl
+   arguments
+      arg:x:@.arguments/*/subject
 
-// Parametrizing our payload.
-add:x:./*/http.post/*/payload
-   get-nodes:x:@.arguments/*/object/*
+/*
+ * Ensures the specified [arg] was given.
+ *
+ * This action will throw an exception with a descriptive text explaining if the argument is missing.
+ */
+execute:magic.workflows.actions.execute
+   name:validators-mandatory
+   filename:/misc/workflows/actions/security/validators-mandatory.hl
+   arguments
+      arg:x:@.arguments/*/body
 
-// Invoking our HTTP GET endpoint, now correctly parametrised.
-http.post:x:@.url
-   token:x:--/execute/=netsuite-get-access-token/*/access-token
-   headers
-      X-NetSuite-Idempotency-Key:x:@guid.new
-      Content-Type:application/json; charset=UTF-8
-   payload
+/*
+ * Ensures user is authorized to access endpoint.
+ *
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-// Sanity checking above invocation.
-if
-   not
-      and
-         mte:x:@http.post
-            .:int:200
-         lt:x:@http.post
-            .:int:300
-   .lambda
+// Transforms the specified [markdown] to HTML and returns to caller.
+execute:magic.workflows.actions.execute
+   name:markdown2html
+   filename:/misc/workflows/actions/misc/markdown2html.hl
+   arguments
+      markdown:x:@.arguments/*/body
 
-      // Oops, error ...!!
-      json2lambda:x:@http.post
-      lambda2hyper:x:@json2lambda
-      log.error:x:@lambda2hyper
-      throw:Could not create entity in NetSuite, check your log for details.
+// Loads the specified [file] and returns to caller as [content].
+execute:magic.workflows.actions.execute
+   name:file-load
+   filename:/misc/workflows/actions/file/file-load.hl
+   arguments
+      file:/modules/hub/magic.startup/templates/generic.html
+
+/*
+ * Replaces the specified [source] string's [what] occurencies with [with].
+ *
+ * Returns the result as [result].
+ */
+execute:magic.workflows.actions.execute
+   name:strings-replace
+   filename:/misc/workflows/actions/strings/strings-replace.hl
+   arguments
+      source:x:--/execute/=file-load/*/content
+      what:{{content}}
+      with:x:--/execute/=markdown2html/*/html
+
+/*
+ * Sends an email to the specified [name]/[email] recipient, with the specified [subject] and [body].
+ *
+ * Optionally supply [from] and [from-email] as name/email sender. If you don't supply from, this action
+ * will use the default sender settings from your configuration.
+ */
+execute:magic.workflows.actions.execute
+   name:email
+   filename:/misc/workflows/actions/misc/email.hl
+   arguments
+      name:x:@.arguments/*/name
+      email:x:@.arguments/*/email
+      subject:x:@.arguments/*/subject
+      body:x:--/execute/=strings-replace/*/result
+      html:bool:true
 
 // Returning success to caller.
 return

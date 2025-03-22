@@ -1,5 +1,18 @@
+// Loop inside a process node
 
-// Example: Convert a string with letters and numbers to uppercase.
+// This node will not be executed by default since it starts with a "." character
+.process
+   .i:int:0
+   .list
+   while
+      lt
+         get-value:x:@.i
+         .:int:3
+      .lambda
+         add:x:@.list
+            .
+               item
+         math.increment:x:@.i
 
-// Result: "MIXEDCASE123"
-strings.to-upper:MixedCase123
+// Now we're executing lambda object explicitly
+eval:x:@.process

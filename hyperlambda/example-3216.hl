@@ -1,14 +1,14 @@
-/*
- * This Hyperlambda snippet retrieves specific nodes by index.
- *
- * 1. The `.data` node has multiple children.
- * 2. The `get-nodes` slot retrieves only the first and third children.
- */
-
+// Exchange name with value, and value with name, in all nodes, for the following [.data] segment
 .data
-   foo1:bar1
-   foo2:bar2
-   foo3:bar3
-get-nodes
-   get-value:x:@.data/0
-   get-value:x:@.data/2
+   n1:v1
+      n2:v2
+   n3:v3
+      n4:v4
+         n5:v5
+   n6:v6
+for-each:x:@.data/**
+   get-name:x:@.dp/#
+   set-name:x:@.dp/#
+      get-value:x:@.dp/#
+   set-value:x:@.dp/#
+      get-value:x:@get-name

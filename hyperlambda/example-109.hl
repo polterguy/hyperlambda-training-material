@@ -1,3 +1,8 @@
-// How do you declare a DateTime value in Hyperlambda?
+// Simplified [if] referencing input argument
+.arguments
+   foo:bool:true
+.dest
 
-.launch-date:date:"2023-11-05T18:45:00Z"
+if:x:@.arguments/*/foo
+   set-value:x:@.dest
+      .:yup!

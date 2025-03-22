@@ -1,13 +1,11 @@
+// Concatenating strings for each node in the list
+.car-parts
+   engine
+   wheel
+   door
 
-// Write a Hyperlambda script to list all folders in a specified folder.
-.arguments
-   folder:string
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Listing all folders in specified folder.
-io.folder.list:x:@.arguments/*/folder
-
-// Returning results of above invocation to caller.
-return-nodes:x:@io.folder.list/*
+for-each:x:@.car-parts/*
+   set-value:x:@.dp/#
+      strings.concat
+         get-name:x:@.dp/#
+         .:" is checked"

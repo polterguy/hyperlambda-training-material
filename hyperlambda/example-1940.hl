@@ -1,27 +1,16 @@
 
-// Provide a Hyperlambda example where [.lambda] runs if any of the conditions hold true.
+// Generate a Hyperlambda snippet that triggers a conditional lambda execution based on [.switch].
 
-// Runs [.lambda] if any of the conditions hold true.
-.state
-.check1:int:2
-.check2:int:8
+// Triggers a conditional lambda execution based on [.switch].
+.switch:bool:true
 if
-   or
-
-      // First condition: Less than
-      lt:x:@.check1
-         .:int:3
-
-      // Second condition: More than
-      mt:x:@.check2
-         .:int:7
+   eq:x:@.switch
+      .:bool:true
    .lambda
 
-      // Updating [.state] to true
-      set-value:x:@.state
-         .:bool:true
+      // Executes when [.switch] is true.
+      log.info:[.switch] is enabled
 else
 
-   // Updating [.state] to false
-   set-value:x:@.state
-      .:bool:false
+   // Executes when [.switch] is false.
+   log.info:[.switch] is disabled

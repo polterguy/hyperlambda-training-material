@@ -1,32 +1,27 @@
 
+// Create a Hyperlambda action to return specified HTTP headers from a request. Use 'headers' as an input array to determine which headers to return.
+.arguments
+   headers
+      type:array
+      mandatory:bool:true
+.icon:http
+
+// Retrieving HTTP headers from request.
+request.headers.list
+
 /*
- * Compiles a C# file and creates a library from the compiled result,
- * for then to dynamically load it as a plugin and invoke a slot
- * called [foo] expected to exist within the C# code.
- * 
- * Notice, the code assumes there's a C# file called "foo.cs"
- * in your '/etc/' folder. Create this file with Hyper IDE
- * using the "slot" template to test the code.
+ * Iterating through each header from above invocation and checking if caller is interested in it,
+ * and if caller wants this particular header, we make sure we return it below.
  */
-io.file.load:/etc/foo.cs
-system.compile
-   references
-      .:netstandard
-      .:System.Runtime
-      .:System.ComponentModel
-      .:System.Private.CoreLib
-      .:magic.node
-      .:magic.node.extensions
-      .:magic.signals.contracts
-   code:x:@io.file.load
-   assembly-name:foo.dll
+for-each:x:@request.headers.list/*
+   get-name:x:@.dp/#
+   if
+      exists:x:@.arguments/*/headers/*/={@get-name}
+      .lambda
 
-// Loading assembly now that we've created it and saved it.
-system.plugin.load:x:@system.compile
+         // Caller wants currently iterated HTTP header.
+         add:x:../*/return-nodes
+            get-nodes:x:@.dp/#
 
-// Invoking dynamically created C# slot.
-.name:John Doe
-foo:x:@.name
-
-// Unloading plugin.
-system.plugin.unload:foo.dll
+// Returning result to caller.
+return-nodes

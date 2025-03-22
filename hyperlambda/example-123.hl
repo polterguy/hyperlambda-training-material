@@ -1,13 +1,12 @@
-/*
- * Retrieves the values of the second direct child of [.data] regardless of its name
- *
- * After execution the value of the [.first-value] node will be 200.
- */
+// Switch lambda
+.val:foo
+.result
+switch:x:@.val
 
-.first-value
-.data
-   alpha:100
-   beta:200
-   gamma:300
-set-value:x:@.first-value
-   .:x:@.data/1
+   case:bar
+      set-value:x:@.result
+         .:Oops
+
+   case:foo
+      set-value:x:@.result
+         .:Success!

@@ -1,51 +1,26 @@
 
-// Create a Hyperlambda script for an endpoint that counts items from the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+// Create a Hyperlambda script that changes the password of the currently authenticated user, ensuring the user is authorized.
 .arguments
-   operator:string
-   name.eq:string
-   name.like:string
-   description.like:string
-.type:crud-count
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+   password:string
+.type:public
 
 // Sanity checking invocation.
-validators.enum:x:@.arguments/*/operator
-   .:or
-   .:and
+validators.mandatory:x:@.arguments/*/password
+validators.string:x:@.arguments/*/password
+   min:12
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify
 
 /*
- * Checking if user supplied an [operator] argument, and if so
- * changing the boolean operator for comparison operations.
+ * Invokes the slot that does the heavy lifting, and updates the user's current password.
+ * 
+ * This slot will change the password of the currently logged in user.
  */
-if
-   exists:x:@.arguments/*/operator
-   .lambda
+unwrap:x:+/*
+signal:magic.auth.change-password
+   password:x:@.arguments/*/password
 
-      // User provided a boolean comparison [operator] argument.
-      set-name:x:../*/data.connect/*/data.read/*/where/0
-         get-value:x:@.arguments/*/operator
-
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Parametrising our read invocation.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/operator
-   remove-nodes:x:@.arguments/*/operator
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      table:roles
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+// Returns success to caller.
+return-nodes
+   result:success

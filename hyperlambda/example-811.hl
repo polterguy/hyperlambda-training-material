@@ -1,11 +1,21 @@
+// Converts the specified lambda to XML
+.lambda
+   customers
+      customer
+         name
+            #text:John Doe
+         email
+            #text:john@doe.com
 
-// Create Hyperlambda endpoint to return all dynamic slots in the system.
+// Expression referencing above [.lambda] node's children nodes
+lambda2xml:x:@.lambda/*
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Retrieving all system slots.
-slots.vocabulary
-
-// Returning results of the above to caller.
-return-nodes:x:@slots.vocabulary/*
+/*
+Resulting Hyperlambda;
+lambda2xml:@"<customers>
+  <customer>
+    <name>John Doe</name>
+    <email>john@doe.com</email>
+  </customer>
+</customers>"
+ */

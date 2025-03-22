@@ -1,3 +1,5 @@
+// Attempting to convert to a non-existing type should throw an error
 
-// Hyperlambda that returns the result of the last executed action.
-return-nodes:x:@execute/*
+.src:int:5
+convert:x:-
+   type:non-existing-type

@@ -1,21 +1,34 @@
 
-// Create a Hyperlambda script to generate a scatter chart image with specified dimensions, data points, line width, marker size, and color.
-image.chart:scatter
-   filename:/scatter.png
-   width:400
-   height:300
-   data-x
-      .:1
-      .:2
-      .:3
-      .:4
-      .:5
-   data-y
-      .:1
-      .:4
-      .:9
-      .:16
-      .:25
-   line-width:5
-   marker-size:15
-   color:#55aa5555
+// Creates an image
+.arguments
+
+   // Mandatory and is the prompt used to generate the image.
+   prompt:string
+
+   // Optional and will default to '1024x1024' if not specified. Legal are 1024x1024, 1792x1024, and 1024x1792.
+   size:string
+
+   // Optional and will default to 'vivid' if not specified. Legal values are 'vivid' and 'natural'.
+   style:string
+
+// Applying defaults.
+validators.default:x:@.arguments
+   size:1792x1024
+   style:vivid
+
+/*
+ * Invokes OpenAI's image generation API with the specified [query] and [model].
+ * 
+ * Will use the default API key found from configurations.
+ */
+execute:magic.workflows.actions.execute
+   name:openai-image-create
+   filename:/modules/openai/workflows/actions/openai-image-create.hl
+   arguments
+      model:dall-e-3
+      size:x:@.arguments/*/size
+      style:x:@.arguments/*/style
+      query:x:@.arguments/*/prompt
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

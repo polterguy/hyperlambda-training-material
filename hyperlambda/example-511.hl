@@ -1,17 +1,37 @@
 
-// Subtract a computed sum and another number from a base value
-math.subtract:int:30
+// Returns Stripe charges.
+.arguments
+   limit:int
+   starting_after:string
+   customer_id:string
 
-   // compute a sum to subtract
-   math.add
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-      // first addend
-      .:int:5
+/*
+ * Retrieves charges from Stripe.
+ * 
+ * Will use your Stripe API token found from your settings as it's interacting
+ * with the Stripe API.
+ */
+execute:magic.workflows.actions.execute
+   name:stripe-charges-get
+   filename:/modules/stripe/workflows/actions/stripe-charges-get.hl
+   arguments
+      limit:x:@.arguments/*/limit
+      starting_after:x:@.arguments/*/starting_after
+      customer_id:x:@.arguments/*/customer_id
 
-      // second addend (5 + 3 = 8)
-      .:int:3
-
-   // subtract 2 after subtracting the above sum
-   .:int:2
-
-   // Step-by-step: 30 - 8 = 22, then 22 - 2 = 20
+// Returns the result of your last action.
+return-nodes:x:@execute/*

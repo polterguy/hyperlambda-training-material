@@ -1,45 +1,35 @@
 
-// Create a Hyperlambda script that ensures the specified role exists, creating it if not, ensuring the user is authorized.
-slots.create:magic.auth.ensure-role
+// Imports training snippets into the specified [type].
+.arguments
+   type
+      type:string
+      mandatory:bool:true
+   snippets
+      type:*
+      mandatory:bool:true
+   meta
+      type:string
+      mandatory:bool:false
+      default:imported
+.icon:chat_bubble
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/role
-   validators.mandatory:x:@.arguments/*/description
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
 
-   /*
-    * Ensures the [role] role exists.
-    * 
-    * Notice, in case system hasn't been setup yet, we'll need to silently
-    * catch all exceptions.
-    */
-   try
+// Connecting to database.
+data.connect:[generic|magic]
 
-      // Connecting to Magic database.
-      data.connect:[generic|magic]
+   // Looping through each record specified in [snippets] collection.
+   for-each:x:@.arguments/*/snippets/*
 
-         // Checking to see if [role] role exists.
-         data.read
-            table:roles
-            where
-               and
-                  name.eq:x:@.arguments/*/role
+      // Verifying prompt is not null.
+      if:x:@.dp/#/*/prompt
 
-         // Checking result of above invocation.
-         if
-            not
-               exists:x:@data.read/*/*
-            .lambda
-
-               // We need to insert [role] role into Magic database.
-               data.create
-                  table:roles
-                  values
-                     name:x:@.arguments/*/role
-                     description:x:@.arguments/*/description
-   .catch
-
-      /*
-       * Silently catching here, to avoid application crash
-       * if system hasn't been setup yet.
-       */
-      .silent
+         // Inserting into database.
+         data.create
+            table:ml_training_snippets
+            values
+               type:x:@.arguments/*/type
+               prompt:x:@.dp/#/*/prompt
+               completion:x:@.dp/#/*/completion
+               meta:x:@.arguments/*/meta

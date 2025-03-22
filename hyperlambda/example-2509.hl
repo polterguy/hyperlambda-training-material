@@ -1,52 +1,83 @@
 
-/*
- * Returns an access token for NetSuite.
- * 
- * Returns a JWT token that can be used to invoke NetSuite according to your configuration settings.
- * Notice, this will read account-id, certificate-id, and consumer-key from your configuration settings,
- * in addition to assume your private key exists in the file '/etc/netsuite/private-key.txt'.
- */
+// Create a Hyperlambda action to execute a SQL CRUD Create operation with specified 'database-type', 'connection-string', 'database', 'table', and 'values'. Validate mandatory fields and enums.
 .arguments
-.icon:http
 
-// Loading private key.
-.key
-set-value:x:@.key
-   io.file.load:/etc/netsuite/private-key.txt
+   // This is action syntax, NOT endpoint or Hyperlambda file syntax
+   database-type
+      type:enum
+      mandatory:bool:true
+      values
+         .:sqlite
+         .:mssql
+         .:mysql
+         .:pgsql
+   connection-string
+      type:string
+      mandatory:bool:true
+   database
+      type:string
+      mandatory:bool:true
+   table
+      type:string
+      mandatory:bool:true
+   values
+      type:key-value
+      mandatory:bool:true
+.icon:cloud_download
 
-/*
- * Loading settings from configuration.
- * 
- * Notice, these settings must exist for the system to function.
- */
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/table
+validators.enum:x:@.arguments/*/database-type
+   .:sqlite
+   .:mssql
+   .:mysql
+   .:pgsql
 
-// Account id
-.account-id
-set-value:x:@.account-id
-   config.get:"magic:netsuite:account-id"
-validators.mandatory:x:@.account-id
+// Applying defaults.
+validators.default:x:@.arguments
+   connection-string:generic
+   database-type:sqlite
+   database:magic
 
-// Certificate id
-.certificate-id
-set-value:x:@.certificate-id
-   config.get:"magic:netsuite:certificate-id"
-validators.mandatory:x:@.certificate-id
+// Ensuring caller provided [values].
+if
+   not
+      exists:x:@.arguments/*/values/*
+   .lambda
+      throw:Provide [values] to sql-insert action.
+         public:bool:true
+         status:500
 
-// Consumer key
-.consumer-key
-set-value:x:@.consumer-key
-   config.get:"magic:netsuite:consumer-key"
-validators.mandatory:x:@.consumer-key
+// Connection string to actually use as we connect.
+.connection-string
 
-// Invoking slot doing the heavy lifting.
-netsuite.get-access-token
-   private-key:x:@.key
-   account-id:x:@.account-id
-   certificate-id:x:@.certificate-id
-   consumer-key:x:@.consumer-key
+// Caller supplied an explicit [connection-string] argument.
+set-value:x:@.connection-string
+   strings.concat
+      .:[
+      get-value:x:@.arguments/*/connection-string
+      .:|
+      get-value:x:@.arguments/*/database
+      .:]
 
-// Returning result to caller.
-yield
-   access-token:x:@netsuite.get-access-token
+// Connecting to database.
+data.connect:x:@.connection-string
+   database-type:x:@.arguments/*/database-type
 
-// This Hyperlambda code depends upon the netsuite plugin being available and installed
+   // Adding values.
+   for-each:x:@.arguments/*/values/*
+      set-name:x:./0/-/*/*
+         get-name:x:@.dp/#
+      set-value:x:./0/-/*/*
+         get-value:x:@.dp/#
+      add:x:@data.connect/*/data.create/*/values
+         .
+            name
+
+   // Executing SQL.
+   data.create
+      database-type:x:@.arguments/*/database-type
+      table:x:@.arguments/*/table
+      values
+   yield
+      id:x:@data.create

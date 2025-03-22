@@ -1,10 +1,16 @@
 
-// Decrement a value by a custom step from another node
-.value:int:10
-.step:int:4
-math.decrement:x:@.value
+// Hyperlambda [set-value]
+.data
+   item1
+   item2
+set-value:x:@.data/*
+   .:Updated Value
 
-   // use 4 from .step as the decrement amount
-   get-value:x:@.step
+// Results in:
+.data
+   item1:Updated Value
+   item2:Updated Value
+set-value:x:@.data/*
+   .:Updated Value
 
-// .value should now be 6
+// Notice how [set-value] can change multiple nodes at the same time

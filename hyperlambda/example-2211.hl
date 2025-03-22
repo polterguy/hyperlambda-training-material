@@ -1,14 +1,8 @@
 
-// Write a Hyperlambda script to delete a specified file on the server.
-.arguments
-   file:string
+// Provide a Hyperlambda example simulating a long-running task using [fork].
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Deletes the specified file.
-io.file.delete:x:@.arguments/*/file
-
-// Returning success to caller.
-return
-   result:success
+// Simulates a long-running task running in parallel.
+fork
+   sleep:3000
+   log.info:Long-running task completed
+log.info:Main process continues...

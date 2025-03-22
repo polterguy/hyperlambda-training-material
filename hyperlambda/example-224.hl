@@ -1,10 +1,25 @@
 
-// Example: Join multiple strings with a comma separator.
-.input
-   .:A
-   .:B
-   .:C
-strings.join:x:@.input/*
-   .:,
+// Retrieves the specified [username] and return information associated with the user.
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Result: "A,B,C"
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+
+// Opens up database connection.
+data.connect:[generic|magic]
+
+   // Inserting user into database.
+   data.read
+      table:users
+      columns
+         username
+         created
+      where
+         and
+            username.eq:x:@.arguments/*/username
+   yield
+      created:x:@data.read/*/*/created

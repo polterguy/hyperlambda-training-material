@@ -1,5 +1,4 @@
-
-// Example: Get the length of a numeric string.
-
-// Returns 5
-strings.length:12345
+// Execute a file to schedule a meeting with a contact and meeting duration
+execute-file:/modules/calendar/schedule.hl
+   contact_name:Jason Lee
+   duration_minutes:int:45

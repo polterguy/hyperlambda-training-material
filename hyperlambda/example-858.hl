@@ -1,84 +1,31 @@
+/**
+ * This example checks user role permissions before allowing access.
+ * If the user is an "admin", they get full access.
+ * If the user is a "moderator" but the feature is disabled, access is denied.
+ * Otherwise, they get limited access.
+ */
+.user
+   role:moderator
+   feature-enabled:bool:false
 
-// Create a Hyperlambda action to export columns from a specified database table. Include 'database-type', 'connection-string', 'database', 'table', and optional 'limit', 'offset', 'columns'. Validate mandatory fields and enums.
-.arguments
-   database-type
-      type:enum
-      mandatory:bool:true
-      default:sqlite
-      values
-         .:sqlite
-         .:mssql
-         .:mysql
-         .:pgsql
-   connection-string
-      type:string
-      mandatory:bool:true
-      default:generic
-   database
-      type:string
-      mandatory:bool:true
-   table
-      type:string
-      mandatory:bool:true
-   limit
-      type:int
-      mandatory:bool:false
-   offset
-      type:int
-      mandatory:bool:false
-   columns
-      type:array
-      mandatory:bool:false
-.icon:cloud_download
+.access
+if
+   eq:x:@.user/*/role
+      .:admin
+   .lambda
+      set-value:x:@.access
+         .:Full Access Granted
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/database-type
-validators.mandatory:x:@.arguments/*/connection-string
-validators.mandatory:x:@.arguments/*/database
-validators.mandatory:x:@.arguments/*/table
-validators.enum:x:@.arguments/*/database-type
-   .:sqlite
-   .:mssql
-   .:mysql
-   .:pgsql
-validators.default:x:@.arguments
-   limit:int:-1
+else-if
+   and
+      eq:x:@.user/*/role
+         .:moderator
+      eq:x:@.user/feature-enabled
+         .:bool:true
+   .lambda
+      set-value:x:@.access
+         .:Limited Access Granted
 
-// Connection string to actually use as we connect.
-.connection-string
-
-// Caller supplied an explicit [connection-string] argument.
-set-value:x:@.connection-string
-   strings.concat
-      .:[
-      get-value:x:@.arguments/*/connection-string
-      .:|
-      get-value:x:@.arguments/*/database
-      .:]
-
-// Connecting to database.
-data.connect:x:@.connection-string
-   database-type:x:@.arguments/*/database-type
-
-   // Parametrizing SQL.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/limit
-      get-nodes:x:@.arguments/*/offset
-
-   // Checking if caller wants to only return specific columns.
-   if:x:@.arguments/*/columns/0
-      add:x:@data.connect/*/data.read
-         .
-            columns
-      for-each:x:@.arguments/*/columns/*
-         set-name:x:+/*/*
-            get-value:x:@.dp/#
-         add:x:@data.connect/*/data.read/*/columns
-            .
-               foo
-
-   // Executing SQL.
-   data.read:x:@.arguments/*/sql
-      database-type:x:@.arguments/*/database-type
-      table:x:@.arguments/*/table
-   return-nodes:x:@data.read/*
+else
+   set-value:x:@.access
+      .:Access Denied

@@ -1,12 +1,27 @@
 /*
- * This Hyperlambda snippet demonstrates an error when multiple nodes match.
+ * FILE: /modules/api/employees/search-lastname.hl
  *
- * 1. The `.data` node has multiple children.
- * 2. The `get-name` slot is used with a wildcard selector `*`, which returns multiple nodes.
- * 3. This will cause a HyperlambdaException because `get-name` expects exactly one node.
+ * DESCRIPTION:
+ * Searches employees by their last name using a `LIKE` query.
+ * Useful for autocomplete by surname.
+ *
+ * HOW TO CREATE THIS ENDPOINT:
+ * 1. Save as `/modules/api/employees/search-lastname.hl`
+ * 2. Access via: GET /api/employees/search-lastname?lastname=Smi
  */
 
-.data
-   foo1:bar1
-   foo2:bar2
-get-name:x:@.data/*
+.arguments
+   lastname:string
+
+validators.mandatory:x:@.arguments/*/lastname
+
+data.connect:sakila
+   strings.concat
+      .:%
+      get-value:x:@.arguments/*/lastname
+      .:%
+   data.select:SELECT first_name, last_name FROM actor WHERE last_name LIKE @filter
+      @filter:x:@strings.concat
+
+   yield
+      results:x:@data.select/*

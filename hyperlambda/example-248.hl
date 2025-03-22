@@ -1,16 +1,7 @@
+// Illustrates how creating a cache item, for then to deleting it, and retrieving it after returns nothing
+cache.set:cache-item-key
+   expiration:5
+   value:Howdy world
 
-// Create a Hyperlambda snippet that repeats logging while [.attempts] is below 3.
-
-// Repeats logging while [.attempts] is below 3.
-.attempts:int:0
-while
-   lt
-      get-value:x:@.attempts
-      .:int:3
-   .lambda
-
-      // Logging attempt.
-      log.info:Attempting task
-
-      // Increasing attempt count.
-      math.increment:x:@.attempts
+cache.clear
+cache.get:cache-item-key

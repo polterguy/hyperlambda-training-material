@@ -1,13 +1,5 @@
+// This example connects to the 'kingdom' database and retrieves the oldest castle age from the 'castles' table.
+// The result is returned as a single scalar value representing the age of the oldest castle.
 
-// Create a Hyperlambda script that returns the reCAPTCHA secret and key if existing, ensuring the user is authorized.
-
-// Making sure user is allowed to invoke endpoint
-auth.ticket.verify:root
-
-// Retrieving key configuration setting and returning to caller.
-config.get:"magic:auth:recaptcha:secret"
-config.get:"magic:auth:recaptcha:key"
-unwrap:x:+/*
-return-nodes
-   key:x:@config.get
-   secret:x:@config.get/@config.get
+sqlite.connect:kingdom
+   sqlite.scalar:select min(age) from castles

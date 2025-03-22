@@ -1,5 +1,6 @@
-// Retrieve all nodes matching an expression
-.data
-   foo1
-   foo2
-get-nodes:x:@.data/*
+/*
+ * Example: Ends-with check is case-sensitive.
+ */
+// Returns false
+strings.ends-with:Hello
+   .:LLO

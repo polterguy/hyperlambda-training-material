@@ -1,6 +1,4 @@
-// Create a multipart MIME message
-mime.create:multipart/mixed
-   entity:text/plain
-      content:Some text content
-   entity:text/markdown
-      filename:/etc/README.md
+
+// How can I list all HTTP request headers in a Hyperlambda endpoint?
+request.headers.list
+return:x:-

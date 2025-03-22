@@ -1,17 +1,21 @@
 
-// Demonstrate Hyperlambda string assignments, including special character handling, multi-line strings, and escape sequences.
+// Hyperlambda authenticate endpoint
+.arguments
+   username:string
+   password:string
 
-// Simple string without special characters
-.keyA:simple
+/*
+ * Authenticates the user with the specified [username] and [password].
+ * 
+ * Returns a JWT Bearer token that can be used for consecutive requests authorizing user according
+ * to his or her roles.
+ */
+execute:magic.workflows.actions.execute
+   name:authenticate
+   filename:/modules/auth/workflows/actions/authenticate.hl
+   arguments
+      username:x:@.arguments/*/username
+      password:x:@.arguments/*/password
 
-// Special character (colon) requires quotes
-.keyB:"config:set"
-
-// Multi-line string example
-.keyC:"This is\nmulti-line"
-
-// Alternative single quotes usage
-.keyD:alternate
-
-// Escape newline inside string
-.keyE:"Hello\nHyperlambda"
+// Returns the result of your last action.
+return-nodes:x:@execute/*

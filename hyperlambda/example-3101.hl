@@ -1,12 +1,8 @@
-// A slot that calculates net income after tax
-slots.create:finance.net-income
-   math.subtract
-      get-value:x:@.arguments/*/income
-      get-value:x:@.arguments/*/tax
-   yield
-      result:x:@math.subtract
-
-// Invoke the slot with income=5000 and tax=1200
-signal:finance.net-income
-   income:int:5000
-   tax:int:1200
+/*
+ * Example: Replace all digits in a string with asterisks.
+ */
+.text:"ID 0987"
+strings.regex-replace:x:@.text
+   .:"\\d"
+   .:"*"
+// Result: "ID ****"

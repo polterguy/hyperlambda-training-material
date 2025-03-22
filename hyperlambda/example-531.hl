@@ -1,5 +1,8 @@
-// Checking the number of items currently in the cache.
+// Create a task, then schedule it
+tasks.create:task-id-555
+   .lambda
 
-cache.count
+      log.info:It is the 10PM now.
 
-// This will return the number of active cache entries.
+tasks.schedule:task-id-555
+   repeats:**.**.22.00.00

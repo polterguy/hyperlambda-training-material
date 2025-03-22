@@ -1,5 +1,5 @@
-
-// Example: Convert an already uppercase string (no change).
-
-// Result: "HELLO"
-strings.to-upper:HELLO
+/*
+ * Example: Trim whitespace from the end of a string.
+ */
+// Result: "hello"
+strings.trim-end:"hello   "

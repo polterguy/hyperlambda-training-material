@@ -1,5 +1,14 @@
+// What are lambda expressions?
 
-// Example: URL-encode a simple string (space and special characters become % codes).
-strings.url-encode:hello world
+/*
+ * Lambda expressions in Hyperlambda are used to reference any node within the currently executing graph object.
+ * They allow for dynamic access to nodes, enabling you to express relationships and hierarchies in the nodes effectively.
+ * They are similar to XPath expressions found in other technologies.
+ */
 
-// Result: "hello%20world"
+// Example of a simple lambda expression referencing the [.person] node.
+.person:John
+set-value:x:@.person
+   .:Jane
+
+// In this case, @.person is a lambda expression that points to the .person node, and the [set-value] slot changes its value.

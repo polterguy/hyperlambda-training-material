@@ -1,10 +1,18 @@
-// Tries verifying role, then executes different logic based on access level.
-
+// This code loads a Python script and replaces several variable names to improve readability.
+// Specifically, it replaces "tmp" with "temp" and "cfg" with "config" using dynamic replacement from the .data block.
+.data
+   .
+      what:tmp
+      with:temp
+   .
+      what:cfg
+      with:config
+.filename:/scripts/main.py
 .result
-try
-   auth.ticket.verify:superuser
+set-value:x:-
+   io.file.load:x:@.filename
+for-each:x:@.data/*
    set-value:x:@.result
-      .:Superuser access granted
-.catch
-   set-value:x:@.result
-      .:You are not a superuser
+      strings.replace:x:@.result
+         get-value:x:@.dp/#/*/what
+         get-value:x:@.dp/#/*/with

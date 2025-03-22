@@ -1,11 +1,43 @@
 
-// Create a Hyperlambda script to send an email with specified 'to', 'from', 'subject', and 'content'.
-mail.smtp.send
-   message
-      to
-         Thomas Hansen:thomas@gaiasoul.com
-      from
-         Testing Gmail:testing.anarchy@gmail.com
-      subject:This is subject
-      entity:text/plain
-         content:This is body
+// Associates the specified [username] with the specified [roles] roles.
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   roles
+      type:array
+      mandatory:bool:true
+.icon:supervisor_account
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/roles
+
+// Connecting to database.
+data.connect:[generic|magic]
+
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
+
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Associating user with specified [roles].
+   for-each:x:@.arguments/*/roles/*
+      data.create
+         table:users_roles
+         values
+            user:x:@.arguments/*/username
+            role:x:@.dp/#

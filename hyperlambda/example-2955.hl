@@ -1,10 +1,12 @@
-// Create a temporary slot 'temp'
-slots.create:temp  
-   return-value:Temporary
 
-// Delete the dynamic slot 'temp'
-slots.delete:temp
+// This snippet uses the '**' iterator to retrieve all descendant nodes.
+.tree
+   branch1
+      leaf1:A
+   branch2
+      leaf2:B
+for-each:x:@.tree/**
+   set-value:x:@.dp/#
+      :visited
 
-// Check if 'temp' still exists
-slots.exists:temp  
-// Returns false (since 'temp' was removed)
+// The expression @.tree/** selects all descendants of .tree (branch1, leaf1, branch2, leaf2). The loop marks each found node by setting its value to "visited".

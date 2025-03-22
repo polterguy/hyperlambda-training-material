@@ -1,4 +1,15 @@
-// List tasks between 20 and 30
-tasks.list
-   offset:20
-   limit:10
+
+// Create a Hyperlambda script to return cryptographically secure random text based on specified arguments.
+.arguments
+   min:long
+   max:long
+
+// Generating gibberish text.
+add:x:./*/crypto.random
+   get-nodes:x:@.arguments/*
+crypto.random
+
+// Generating gibberish text.
+unwrap:x:+/*
+return
+   result:x:@crypto.random

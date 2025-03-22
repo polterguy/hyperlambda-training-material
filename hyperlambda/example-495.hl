@@ -1,17 +1,14 @@
 
-// Create a Hyperlambda snippet that fetches active orders from the e-commerce database and orders table.
-
-// Fetching active orders from the e-commerce database and orders table.
-data.connect:ecommerce_db
-
-   // Database type set to PostgreSQL.
-   database-type:pgsql
-
-   // Reading order records.
-   data.read
-      database-type:pgsql
-      table:orders
-      limit:30
-      sort
-         order_date
-      direction:desc
+// Create HTTP POST invocation as MIME
+http.post:"http://localhost:5000/magic/modules/foo/foo"
+   headers
+      Content-Type:multipart/form-data
+   payload
+      entity:text/plain
+         headers
+            Content-Disposition:"form-data; name=\"foo\""
+         content:Foo bar
+      entity:text/plain
+         headers
+            Content-Disposition:"form-data; filename=\"README.md\""
+         filename:/README.md

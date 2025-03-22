@@ -1,10 +1,6 @@
-// Connect to "CustomerDB" explicitly using a PostgreSQL adapter, then fetch data
-data.connect:CustomerDB
-
-   // Force use of PostgreSQL adapter for this connection
-   database-type:"pgsql"
-   data.read
-      table:customer
-
-      // Retrieve first 5 customers
-      limit:5
+// This snippet uses the '^xxx' iterator to find an ancestor by name.
+.grandparent
+   parent
+      target:found me
+get-name:x:@.grandparent/*/*/target/^.grandparent  
+// Starting from 'target', '^grandparent' climbs up to the nearest ancestor named "grandparent". get-name then returns ".grandparent".

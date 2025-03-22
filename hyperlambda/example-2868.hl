@@ -1,13 +1,23 @@
-// Example of endpoint taking two arguments, concatenating them, and returning the result using yield.
-.arguments
-   arg1:string
-   arg2:string
 
-strings.concat
-   get-value:x:@.arguments/*/arg1
-   get-value:x:@.arguments/*/arg2
-
-// No need to call [unwrap] since [yield] will do it automatically.
-unwrap:x:+/*
-yield
-   result:x:@strings.concat
+// Create a Hyperlambda script to perform a complex read invocation joining two tables using semantic SQL. Requires the Sakila database.
+mysql.connect:sakila
+   mysql.read
+      columns
+         film.title
+         film.description
+         actor.last_name
+         actor.first_name
+      table:film
+         join:film_actor
+            type:inner
+            on
+               and
+                  film.film_id:film_actor.film_id
+            join:actor
+               type:inner
+               on
+                  and
+                     film_actor.actor_id:actor.actor_id
+      where
+         and
+            actor.first_name:NICK

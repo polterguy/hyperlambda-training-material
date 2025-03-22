@@ -1,2 +1,3 @@
-// Decrement [.arg]'s value by 1
-math.decrement:x:@.arg
+// How do you declare a float (single-precision) in Hyperlambda?
+
+.ratio:float:0.75

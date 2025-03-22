@@ -1,40 +1,16 @@
-
-// Create endpoint inserting one record into your crawl_urls table in your scraper database.
+// Hyperlambda endpoint taking two decimal numbers, then multiplying these and returning the result
 .arguments
+   no1:decimal
+   no2:decimal
 
-   // url column value
-   url:string
+// Making sure argument was given
+validators.mandatory:x:@.arguments/*/no1
+validators.mandatory:x:@.arguments/*/no2
 
-   // type column value
-   type:string
+// Multiplying.
+math.multiply
+   get-value:x:@.arguments/*/no1
+   get-value:x:@.arguments/*/no2
 
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up database connection.
-data.connect:[generic|scraper]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:crawl_urls
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+yield
+   result:x:@math.multiply

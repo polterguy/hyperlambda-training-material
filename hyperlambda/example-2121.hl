@@ -1,14 +1,13 @@
+// Executing the Hyperlambda changes the node hierarchy
 
-// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table.
+// This Hyperlambda
+.no:int:0
+set-value:x:@.no
+   math.modulo
+      .:int:20
+      .:int:7
 
-// Queries messages from the messaging database and chat_logs table.
-data.connect:messaging_db
-
-   // Using SQLite.
-   database-type:sqlite
-
-   // Fetching chat history.
-   data.read
-      database-type:sqlite
-      table:chat_logs
-      limit:100
+// Creates this result
+.no:int:6
+set-value:x:@.no
+   math.modulo:int:6

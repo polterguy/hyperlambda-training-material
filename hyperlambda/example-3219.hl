@@ -1,6 +1,7 @@
 /*
- * If `.data` exists but has no children, `get-nodes` should return nothing.
+ * Example: Extract with length exceeding string bounds (returns till end).
  */
-
-.data
-get-nodes:x:@.data/*
+strings.substring:"Hello"
+   .:2
+   .:10
+// Result: "llo"

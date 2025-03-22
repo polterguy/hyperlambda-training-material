@@ -1,11 +1,19 @@
-// Getting the customer's name
-.customers
-   .
-      name:John Doe
-      email:john@doe.com
-   .
-      name:Peter Jensen
-      email:peter@jensen.com
+/*
+ * Hyperlambda file taking arguments that invokes a dynamic slot with dynamic parameters.
+ */
+.arguments
+   slot:string
+   params:*
+validators.mandatory:x:@.arguments/*/slot
 
-// Retrieving the second customer's name
-get-value:x:@.customers/1/*/name
+// Forwards all arguments to [invoke].
+add:x:./*/invoke
+   get-nodes:x:@.arguments/*/params/*
+
+// Invoke the slot dynamically
+invoke:x:@.arguments/*/slot
+
+// Returning result
+add:x:./*/return
+   get-nodes:x:@invoke/*
+return

@@ -1,10 +1,7 @@
-// Schedule shifted by 1 day and 4 hours
-.schedule
-   base:date:"2025-03-20T12:00:00Z"
-   shifted
-set-value:x:@.schedule/*/shifted
-   math.add
-      get-value:x:@.schedule/*/base
-      time
-         days:int:1
-         hours:int:4
+/**
+ * This example checks if "/tmp/session/" exists before deleting it.
+ */
+if
+   io.folder.exists:/tmp/session/
+   .lambda
+      io.folder.delete:/tmp/session/

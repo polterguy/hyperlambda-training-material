@@ -1,8 +1,6 @@
 
-// Example: Concatenate multiple strings without separators.
-strings.concat
-   .:I
-   .:love
-   .:Hyperlambda
+// Example: Ends-with check is case-sensitive.
 
-// Result: "IloveHyperlambda"
+// Returns false
+strings.ends-with:Hello
+   .:LLO

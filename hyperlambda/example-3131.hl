@@ -1,8 +1,5 @@
 /*
- * If all candidate nodes have null values, `get-first-value` returns null.
+ * Example: Convert a string with letters and numbers to lowercase.
  */
-
-.data
-   foo1
-   foo2
-get-first-value:x:@.data/*
+// Result: "mixedcase123"
+strings.to-lower:MixedCase123

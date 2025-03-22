@@ -1,14 +1,29 @@
 
-// Create a new RSA key pair and encrypt a message using its public key before finally decrypting it
-crypto.rsa.create-key
-   key-size:int:2048
+// Returns all types of cloudlets the system supports.
 
-// Encrypt a message using RSA public key
-.message
-   content:Secret Message
-crypto.rsa.encrypt:x:@.message/*/content
-   public-key:x:@crypto.rsa.create-key/*/public
+// Opening up our database connection.
+data.connect:[generic|hub]
 
-// Decrypting message we encrypted above
-crypto.rsa.decrypt:x:-
-   private-key:x:@crypto.rsa.create-key/*/private
+   // Reading data from database.
+   data.read
+      table:plans
+      columns
+         name
+         description
+         cpu
+         memory
+         storage
+         max_timeout
+         max_upload
+         price
+         price_reference
+         yearly_price
+         yearly_price_reference
+         frontend
+         bandwidth
+      where
+         and
+            enabled.eq:bool:true
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

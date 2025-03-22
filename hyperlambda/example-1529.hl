@@ -1,11 +1,7 @@
-// Create new todo with HTTP POST and JSON payload
-http.post:"https://jsonplaceholder.typicode.com/todos"
-   headers
-      Content-Type: application/json
-   payload
-      object
-         userId:1
-         title:Buy groceries
+// How to use string builder in Hyperlambda
+strings.builder
+   strings.builder.append:Hello
+   strings.builder.append:" "
+   strings.builder.append:world
 
-         // Retrieved from completed argument
-         completed:x:@.arguments/*/completed
+// Results in; Hello world

@@ -1,6 +1,2 @@
-
-// Example: Pass arguments to the inline Hyperlambda code.
-strings.mixin:"2 + val equals {{\nmath.add\n   .:int:2\n   get-value:x:@.arguments/*/val\nreturn:x:-\n}}"
-   val:int:5
-
-// Result: "2 + val equals 7"
+// Retrieve all supported Hyperlambda data types
+types

@@ -1,34 +1,13 @@
+/*
+ * This Hyperlambda snippet demonstrates basic exception handling.
+ * The `try` block attempts to throw an exception.
+ * The `catch` block catches the exception and sets `.throws` to `true`.
+ * Expected behavior: `.throws` should be `true` after execution.
+ */
 
-// Lists all database in your MySQL instance.
-slots.create:magic.db.mysql.databases
-
-   // Opens up our connection
-   .connection:[information_schema]
-   if
-      and
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .:
-      .lambda
-         set-value:x:@.connection
-            strings.concat
-               .:[
-               get-value:x:@.arguments/*/connection-string
-               .:|
-               .:information_schema]
-   mysql.connect:x:@.connection
-
-      // Runs our query
-      mysql.select:show databases
-
-      // Renaming "Database" nodes.
-      set-name:x:@mysql.select/*/*
-         .:db
-
-      // Returns the remaining databases to caller.
-      return-nodes:x:@mysql.select/*
+.throws:bool:false
+try
+   throw:foo
+.catch
+   set-value:x:@.throws
+      .:bool:true

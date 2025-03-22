@@ -1,32 +1,9 @@
-
 /*
- * Inserts training data into database
- * 
- * Saves training data for using to fine-tune an LLM.
+ * Retrieving the value of a deeply nested node.
+ * Result becomes 42.
  */
-.arguments
 
-   // Mandatory prompt used to generate specified Hyperlambda
-   prompt:string
-
-   // Mandatory reference to Hyperlambda file.
-   file-no:int
-
-// Public files can be used as AI functions in machine learning types.
-.type:public
-
-// Getting Hyperlambda.
-execute-file:/modules/fine-tune/workflows/create-training-data.hl
-   file-no:x:@.arguments/*/file-no
-
-// Inserting item.
-data.connect:fine-tune
-   data.create
-      table:hyperlambda
-      values
-         prompt:x:@.arguments/*/prompt
-         code:x:@execute-file/*/hyperlambda
-
-// Returning success.
-return
-   result:success
+.data
+   parent
+      child:42
+get-value:x:@.data/*/*

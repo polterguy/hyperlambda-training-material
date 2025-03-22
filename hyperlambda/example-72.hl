@@ -1,24 +1,6 @@
-
-// Create a Hyperlambda script that returns the setup status of the system, ensuring the user is authorized.
-.type:internal
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Checking if JWT secret has been changed.
-config.get:"magic:auth:secret"
-if
-   or
-      null:x:@config.get
-      lt
-         strings.length:x:@config.get
-         .:int:50
-   .lambda
-
-      // System has not been setup.
-      return
-         result:bool:false
-
-// Returns results of above invocations to caller.
-return
-   result:bool:true
+// Show me an example lambda object with 3 nodes, the third node having two children with values. Use random names and values.
+foo:bar
+foo:int:5
+foo
+   child1:its-value
+   child2:its-value

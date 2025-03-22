@@ -1,18 +1,10 @@
 
-// Create a Hyperlambda action to save specified 'content' to a specified 'file'. Validate mandatory fields.
+// Create a Hyperlambda action to ensure a specified 'arg' is given. Validate the mandatory field.
 .arguments
-   file
+   arg
       type:string
       mandatory:bool:true
-   content
-      type:string
-      mandatory:bool:true
-.icon:save
+.icon:shield
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
-validators.mandatory:x:@.arguments/*/content
-
-// Saves the specified file.
-save-file:x:@.arguments/*/file
-   get-value:x:@.arguments/*/content
+// Invoking validator.
+validators.mandatory:x:@.arguments/*/arg

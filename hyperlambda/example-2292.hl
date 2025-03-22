@@ -1,7 +1,12 @@
 
-// Return the URL of the current request
-request.url
-
-// Example result ==> magic/system/evaluator/evaluate
-
-// Notice, URL will always be returned as relative URL
+// Write a Hyperlambda endpoint that accepts a name and an age as arguments, then returns a concatenated string.
+.arguments
+   name:string
+   age:int
+strings.concat
+   get-value:x:@.arguments/*/name
+   .:" is "
+   get-value:x:@.arguments/*/age
+   .:" years old."
+return
+   message:x:@strings.concat

@@ -1,28 +1,17 @@
 
-// Write a Hyperlambda script to return the JavaScript required to embed a ChatGPT-based chatbot on a website, with various customization options.
-.arguments
-   type:string
-   header:string
-   button:string
-   rtl:bool
-   color:string
-   start:string
-   end:string
-   link:string
-   theme:string
-   references:bool
-   file:string
-   placeholder:string
-   position:string
-   clear_button:bool
-   copyButton:bool
-   follow_up:bool
-   new_tab:bool
-   popup:string
+// Demonstrate Hyperlambda string assignments, including special character handling, multi-line strings, and escape sequences.
 
-   // Not used, but allows embedders to do a hard refresh to reload JavaScript.
-   v:string
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/include-chatbot.js.get.hl
-return:x:-
+// Simple string without special characters
+.keyA:simple
+
+// Special character (colon) requires quotes
+.keyB:"config:set"
+
+// Multi-line string example
+.keyC:"This is\nmulti-line"
+
+// Alternative single quotes usage
+.keyD:alternate
+
+// Escape newline inside string
+.keyE:"Hello\nHyperlambda"

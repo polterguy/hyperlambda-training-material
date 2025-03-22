@@ -1,14 +1,50 @@
-// Show me Hyperlambda that selects all contacts from an employees database, extracts their name and email, and send these an email each. I will provide the subject and body myself.
-data.connect:employees
-   data.select:select name, email from contacts
-   for-each:x:@data.select/*
-      unwrap:x:+/**
-      mail.smtp.send
-         message
-            to
-               .
-                  name:x:@.dp/#/*/name
-                  email:x:@.dp/#/*/email
-            subject:REPLACE WITH YOUR SUBJECT
-            entity:text/plain
-               content:REPLACE WITH YOUR BODY
+
+// Associates the specified [username] with the specified [roles] roles.
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   roles
+      type:array
+      mandatory:bool:true
+.icon:supervisor_account
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/roles
+
+// Connecting to database.
+data.connect:[generic|magic]
+
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
+
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Removing all roles user is already associated with.
+   data.delete
+      table:users_roles
+      where
+         and
+            user.eq:x:@.arguments/*/username
+
+   // Associating user with specified [roles].
+   for-each:x:@.arguments/*/roles/*
+      data.create
+         table:users_roles
+         values
+            user:x:@.arguments/*/username
+            role:x:@.dp/#

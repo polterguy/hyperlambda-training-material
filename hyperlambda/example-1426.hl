@@ -1,16 +1,5 @@
-
-// Create a Hyperlambda snippet that keeps checking until [.tries] reaches 5.
-
-// Keeps checking until [.tries] reaches 5.
-.tries:int:0
-while
-   lt
-      get-value:x:@.tries
-      .:int:5
-   .lambda
-
-      // Attempting operation.
-      log.info:Retrying operation
-
-      // Incrementing tries counter.
-      math.increment:x:@.tries
+// Example of how to use [strings.concat] to concatenate two or more strings together.
+strings.concat
+   .:foo
+   .:-
+   .:bar

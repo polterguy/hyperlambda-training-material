@@ -1,10 +1,14 @@
-// Example of how to send an email using Hyperlambda.
-mail.smtp.send
-   message
-      to
-         Thomas Hansen:thomas@gaiasoul.com
-      from
-         Testing Gmail:testing.anarchy@gmail.com
-      subject:This is subject
-      entity:text/plain
-         content:This is body
+/**
+ * This example generates a bar chart and returns it as a binary stream instead of saving it to a file.
+ *
+ * This allows you to return it directly from your Hyperlambda file, having .Net Core return it as a stream
+ * instead of loading it all up into memory at the same time.
+ */
+image.chart:bars
+   width:int:600
+   height:int:400
+   bars
+      Dogs:40
+      Cats:50
+      Birds:20
+return-value:x:@.image.chart

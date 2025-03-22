@@ -1,7 +1,4 @@
-// Insert 'inserted' node before [foo1]
-.foo
-   foo1
-   foo2
-insert-before:x:@.foo/*/foo1
-   .
-      inserted
+
+// Increment a value by 1 (default step)
+.value:int:3
+math.increment:x:@.value

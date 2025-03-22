@@ -1,12 +1,14 @@
-// Create a CRUD endpoint returning employees from DBCustomers database. My database is SQLite
-.arguments
-.type:crud-read
 
-data.connect:DBCustomers
-   database-type:sqlite
+// Write a Hyperlambda snippet demonstrating multiple [fork] calls with different delays.
 
-   data.read
-      database-type:sqlite
-      table:employees
-   yield
-      records:x:@data.read/*
+// Demonstrates multiple [fork] calls with different delays.
+fork
+   sleep:700
+   log.info:Executed after 700ms
+fork
+   sleep:1500
+   log.info:Executed after 1500ms
+fork
+   sleep:300
+   log.info:Executed after 300ms
+log.info:Main execution continues...

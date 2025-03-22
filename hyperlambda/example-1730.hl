@@ -1,6 +1,5 @@
-/*
- * Example: Use a variable for the string to decode.
- */
-.enc:"key%3Dvalue%26flag%3Dtrue"
-strings.url-decode:x:@.enc
-// Result: "key=value&flag=true"
+
+// Example: URL-decode an email address.
+strings.url-decode:user%40example.com
+
+// Result: "user@example.com"

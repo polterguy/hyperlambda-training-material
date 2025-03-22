@@ -1,34 +1,18 @@
+// Hyperlambda [if] checking for empty value
+.user-input:
+.validation-message
+if
+   eq:x:@.user-input
+      .:
+   .lambda
+      set-value:x:@.validation-message
+         .:Input required
 
-// Creates an item in your clusters table in your [generic|hub] database according to the specified arguments.
-.arguments
-   id:string
-   country:string
-   name:string
-   enabled:bool
+/* JavaScript equivalent of Hyperlambda [if] checking for empty value
+const userInput = "";
+let validationMessage;
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/id
-validators.mandatory:x:@.arguments/*/country
-validators.mandatory:x:@.arguments/*/name
-
-// Opening up database connection.
-data.connect:[generic|hub]
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      table:clusters
-      return-id:bool:false
-      values
-
-   // Returning result of above invoction to caller.
-   response.status.set:201
-   unwrap:x:+/*
-   return
-      result:success
+if (userInput === "") {
+  validationMessage = "Input required";
+}
+*/

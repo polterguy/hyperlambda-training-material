@@ -1,14 +1,18 @@
+// Dynamically accesses settings keys and stores their values as comma separated list in .result using extrapolated expressions
+.settings
+   apiKey:XYZ-123
+   secretKey:ABC-987
+   region:us-east
+.result
+for-each:x:@.settings/*
+   get-name:x:@.dp/#
+   set-value:x:@.result
+      strings.concat
+         get-value:x:@.result
+         get-value:x:@.dp/#
+         .:,
 
-// Evaluates specified [.lambda] if condition evaluates to true.
-if
-   or
-      eq:x:@SOME_EXPRESSION
-         .:SOME_VALUE
-      eq:x:@SOME_OTHER_EXPRESSION
-         .:SOME_OTHER_VALUE
-   .lambda
-
-      // Lambda evaluates if condition is true.
-else
-
-   // Lambda evaluated if condition is NOT true.
+// Removing last comma.
+set-value:x:@.result
+   strings.trim-end:x:@.result
+      .:,

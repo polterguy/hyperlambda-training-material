@@ -1,14 +1,9 @@
-// Conditional execution using [if], [else-if], and [else]
-.value:int:10
-if
-   eq:x:@.value
-      .:int:10
-   .lambda
-      log.info:Value is 10
-else-if
-   lt:x:@.value
-      .:int:10
-   .lambda
-      log.info:Value is less than 10
-else
-   log.info:Value is greater than 10
+
+// Write a Hyperlambda snippet that inserts a 'middle' node after 'start' inside '.sequence'.
+
+// Inserts a "middle" node after "start" inside ".sequence".
+.sequence
+   start
+insert-after:x:@.sequence/*/start
+   .
+      middle:Intermediate step

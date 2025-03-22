@@ -1,5 +1,13 @@
-// Convert a numeric value to a byte
+// Executing the Hyperlambda changes the node hierarchy
 
-.src:57
-convert:x:-
-   type:byte
+// This Hyperlambda
+.no:int:0
+set-value:x:@.no
+   math.add
+      .:int:3
+      .:int:5
+
+// Creates this result
+.no:int:8
+set-value:x:@.no
+   math.add:int:8

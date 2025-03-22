@@ -1,28 +1,9 @@
-// Return all types in the system
+// Changes the value of all nodes in [.data]
+.data
+   foo1
+   foo2
 
-// [types] will return all Hyperlambda types in the system
-types
+for-each:x:-/*
 
-// Result after executing above:
-types
-   :bytes
-   :short
-   :ushort
-   :int
-   :uint
-   :long
-   :ulong
-   :decimal
-   :double
-   :single
-   :float
-   :char
-   :byte
-   :sbyte
-   :string
-   :bool
-   :date
-   :time
-   :guid
-   :x
-   :node
+   set-value:x:@.dp/#
+      .:hello

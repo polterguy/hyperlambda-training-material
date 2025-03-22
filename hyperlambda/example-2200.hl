@@ -1,6 +1,7 @@
-// Creates a new record in table1 with field1 and field2 having values
-sql.create
-   table:table1
-   values
-      field1:howdy
-      field2:world
+/**
+ * This example copies "/videos/movie.mp4" to "/backup/movie_backup.mp4".
+ * The original file remains unchanged.
+ */
+io.file.copy
+   from:/videos/movie.mp4
+   to:/backup/movie_backup.mp4

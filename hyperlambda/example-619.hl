@@ -1,9 +1,21 @@
 
-// Create a Hyperlambda snippet that inserts a new department node after 'HR' inside '.departments'.
+// Hyperlambda [if] with regex match
+.email:user@example.com
+.is-valid
+strings.matches:x:@.email
+   .:"^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+if
+   exists:x:@strings.matches/*
+   .lambda
+      set-value:x:@.is-valid
+         .:bool:true
 
-// Inserts a new department node after "HR" inside ".departments".
-.departments
-   HR
-insert-after:x:@.departments/*/HR
-   .
-      Finance:New department added
+/*
+ * JavaScript equivalent of Hyperlambda [if] with regex match
+ * const email = "user@example.com";
+ * let isValid;
+ * 
+ * if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+ * isValid = true;
+ * }
+ */

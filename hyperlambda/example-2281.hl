@@ -1,46 +1,17 @@
 
-// Returns true if the specified username is available.
-.arguments
-   username
-      type:string
-      mandatory:bool:true
-   throw
-      type:bool
-      mandatory:bool:false
-.icon:supervisor_account
+// Demonstrate Hyperlambda string assignments, including special character handling, multi-line strings, and escape sequences.
 
-// Applying defaults.
-validators.default:x:@.arguments
-   throw:bool:false
+// Simple string without special characters
+.keyA:simple
 
-// Opens up database connection.
-data.connect:[generic|magic]
+// Special character (colon) requires quotes
+.keyB:"config:set"
 
-   // Selecting user from database such that we can check if it exists or not.
-   data.read
-      table:users
-      columns
-         username
-      where
-         and
-            username.eq:x:@.arguments/*/username
+// Multi-line string example
+.keyC:"This is\nmulti-line"
 
-   // Checks if above invocation returned anything.
-   if
-      exists:x:@data.read/*
-      .lambda
+// Alternative single quotes usage
+.keyD:alternate
 
-         // Checking if we should throw an exception instead of returning false.
-         if:x:@.arguments/*/throw
-            throw:User already exists
-               status:int:400
-               public:bool:true
-
-         // User exists, returning false to caller.
-         return
-            available:bool:false
-   else
-
-      // User does not exist, returning true to caller.
-      return
-         available:bool:true
+// Escape newline inside string
+.keyE:"Hello\nHyperlambda"

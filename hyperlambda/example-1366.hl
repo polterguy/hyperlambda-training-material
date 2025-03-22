@@ -1,16 +1,18 @@
-
-// Create a Hyperlambda snippet that loops while [.stock] is above 0.
-
-// Loops while [.stock] is above 0.
-.stock:int:5
-while
-   gt
-      get-value:x:@.stock
-      .:int:0
+// Hyperlambda [if] with less than comparison
+.items-left:int:5
+.restock-alert
+if
+   lt:x:@.items-left
+      .:int:10
    .lambda
+      set-value:x:@.restock-alert
+         .:Inventory low!
 
-      // Logging stock status.
-      log.info:Stock available
+/* JavaScript equivalent of Hyperlambda [if] with less than comparison
+const itemsLeft = 5;
+let restockAlert;
 
-      // Decrementing stock.
-      math.decrement:x:@.stock
+if (itemsLeft < 10) {
+  restockAlert = "Inventory low!";
+}
+*/

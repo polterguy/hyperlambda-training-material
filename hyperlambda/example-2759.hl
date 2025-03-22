@@ -1,15 +1,10 @@
-// Use a whitelist to limit allowed functions
-
-.result
-whitelist
-   vocabulary
-      if
-      set-value
-      and
+// How to provide different dashboards based on user role?
+.dashboard
+if
+   auth.ticket.in-role:sales
    .lambda
-      if
-         and
-            get-value:x:@.result
-         .lambda
-            set-value:x:../*/.result
-               .:OK
+      set-value:x:@.dashboard
+         .:/dashboards/sales.hl
+else
+   set-value:x:@.dashboard
+      .:/dashboards/default.hl

@@ -1,40 +1,62 @@
 
-// Create endpoint inserting one record into your spice_urls table in your scraper database.
-.arguments
+// Lists all indexes in some SQL Server table.
+slots.create:magic.db.mssql.indexes
 
-   // url column value
-   url:string
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/database
+   validators.mandatory:x:@.arguments/*/table
 
-   // type column value
-   type:string
+   // Opens up our connection
+   .connection:[information_schema]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               get-value:x:@.arguments/*/database
+               .:]
+   else
+      set-value:x:@.connection
+         strings.concat
+            .:[generic|
+            get-value:x:@.arguments/*/database
+            .:]
+   mssql.connect:x:@.connection
 
-// Meta data description for endpoint
+      // Dynamically creating our SQL.
+      strings.split:x:@.arguments/*/table
+         .:.
+      strings.concat
+         .:"\nselect IndexName = ind.name, ColumnName = col.name from sys.indexes ind \n  inner join sys.index_columns ic on ind.object_id = ic.object_id and ind.index_id = ic.index_id \n  inner join sys.columns col on ic.object_id = col.object_id and ic.column_id = col.column_id \n  inner join sys.tables t on ind.object_id = t.object_id \nwhere\n  ind.is_primary_key = 0 \n  and ind.is_unique = 0 \n  and ind.is_unique_constraint = 0 \n  and t.is_ms_shipped = 0 \n  and t.name = '"
+         get-value:x:@strings.split/0/-
+         .:"'"
+      mssql.select:x:@strings.concat
 
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up database connection.
-data.connect:[generic|scraper]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:spice_urls
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+      /*
+       * Creating our return value, by projecting it into
+       * a generic form, that does not rely upon SQL Server's syntactic
+       * details.
+       */
+      for-each:x:@mssql.select/*
+         unwrap:x:+/*/*/*
+         add:x:@mssql.connect/*/return-nodes
+            .
+               .
+                  name:x:@.dp/#/*/IndexName
+                  columns
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/return-nodes/0/-/*/columns
+            .
+               .:x:@.dp/#/*/ColumnName
+      return-nodes

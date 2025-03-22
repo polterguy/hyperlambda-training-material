@@ -1,16 +1,25 @@
 
-// Generate a Hyperlambda snippet that loops until [.requests] reach 10.
+// Retrieves the specified [username] and return information associated with the user.
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Loops until [.requests] reach 10.
-.requests:int:1
-while
-   lt
-      get-value:x:@.requests
-      .:int:10
-   .lambda
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
 
-      // Handling request.
-      log.info:Processing request
+// Opens up database connection.
+data.connect:[generic|magic]
 
-      // Incrementing request counter.
-      math.increment:x:@.requests
+   // Inserting user into database.
+   data.read
+      table:users
+      columns
+         username
+         created
+      where
+         and
+            username.eq:x:@.arguments/*/username
+   yield
+      created:x:@data.read/*/*/created

@@ -1,7 +1,10 @@
-// This example connects to the 'library' database and deletes a book record from the 'books' table where the title is '1984'.
-sqlite.connect:library
-   sqlite.delete
-      table:books
-      where
-         and
-            title.eq:1984
+// Decodes the specified HTML
+.html:@"&lt;html&gt;
+&lt;body&gt;
+  &lt;h1&gt;Quarterly Newsletter - Q1 2025&lt;/h1&gt;
+  &lt;p&gt;Our Q1 results are now available.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;"
+
+// HTML decodes the above HTML
+strings.html-decode:x:@.html

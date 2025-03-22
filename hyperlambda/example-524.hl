@@ -1,28 +1,41 @@
 
-// Create a Hyperlambda endpoint for a CRUD delete endpoint that deletes one record from the ml_requests table in the magic database with an ID matching the argument, ensuring authentication and authorization for root roles.
+// Write a Hyperlambda script for an OpenAI AI search endpoint returning only references to matching training snippets.
 .arguments
-   id:long
+   prompt:string
+   type:string
+   recaptcha_response:string
+   max:int
+.type:public
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+// Invoking slot containing commonalities for all endpoints.
+insert-before:x:../*/signal/*/.callback
+   get-nodes:x:@.arguments/*
+signal:magic.ai.endpoint-common
+   .callback
 
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/id
+      // Invoking slot responsible for returning URLs to us.
+      add:x:+
+         get-nodes:x:@.arguments/*
+      signal:magic.ai.search
 
-// Opening up our database connection.
-data.connect:[generic|magic]
+      // Returning results of above invocation to caller.
+      add:x:./*/return-nodes/*/snippets
+         get-nodes:x:@signal/*/snippets/*
+      add:x:./*/return-nodes
+         get-nodes:x:@signal/*/db_time
+      return-nodes
+         snippets
 
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
+/*
+ * Applying some HTTP caching to avoid invoking OpenAI again with
+ * the same question before some minimum amount of time has passed.
+ * 
+ * Notice, we can apply more "aggressive" caching here than in our
+ * chat endpoints, since the same query will mostly always return
+ * the same result, since there is no room for "creativity" here.
+ */
+response.headers.set
+   Cache-Control:max-age=300
 
-   // Deleting item from database.
-   data.delete
-      table:ml_requests
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Returning result of worker slot to caller.
+return-nodes:x:@signal/*

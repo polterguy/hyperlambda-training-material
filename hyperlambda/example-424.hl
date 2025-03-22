@@ -1,8 +1,13 @@
-// Subtract multiple values sequentially from a base number
-math.subtract:int:20
 
-   // first subtract 5 from 20 -> intermediate result 15
-   .:int:5
+// Create a Hyperlambda script to count items from a specified database and table using SQLite.
+data.connect:DATABASE_NAME
+   database-type:sqlite
 
-   // then subtract 3 from 15 -> final result 12
-   .:int:3
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:TABLE_NAME
+      columns
+         count(*)
+            as:count
+      limit:long:1

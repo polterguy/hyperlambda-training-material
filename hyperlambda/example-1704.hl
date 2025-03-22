@@ -1,29 +1,21 @@
+// Create a new order and update product stock in one atomic transaction
+data.connect:shopDB
 
-// Lists all available products.
-.arguments
-.type:public
+   // MUST be in a [data.connect] invocation
+   data.transaction.create
+      data.create
+         table:orders
+         values
+            customer_id:42
+            total:100.00
+      data.update
+         table:products
+         values
+            stock:long:50
+         where
+            and
+               product_id:123
 
-/*
- * Invokes the SQL CRUD Read slot with the specified parameters.
- * 
- * Provide [connection-string], [database-type], [database], and [table] to inform the action of
- * what database/table you want to execute your SQL towards, and add [and] or [or] arguments
- * to filter your returns, in addition to [limit] and [offset] to apply paging. Use [order]
- * and [direction] to sort either ascending or descending. Notice, you can only use one of [or]
- * or [and], and not both.
- */
-execute:magic.workflows.actions.execute
-   name:sql-read
-   filename:/misc/workflows/actions/sql/sql-read.hl
-   arguments
-      columns
-         .:name
-         .:description
-         .:sku
-         .:image_url
-         .:price
-      database:shopping-cart-demo
-      table:products
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+      // Commit the transaction to save both changes
+      data.transaction.commit
+   // Both the new order and the stock update are committed together

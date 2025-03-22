@@ -1,10 +1,9 @@
-
-// Example: Concatenate multiple strings with spaces included as separate parts.
-strings.concat
-   .:I
-   .:" "
-   .:love
-   .:" "
-   .:Hyperlambda
-
-// Result: "I love Hyperlambda"
+// A list of products with name and price
+.store
+   products
+      .
+         name:Laptop
+         price:999.99
+      .
+         name:Mouse
+         price:25.50

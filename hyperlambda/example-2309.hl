@@ -1,9 +1,9 @@
-// Loads the README.md file and checks if it contain the text 'Hyperlambda'
-io.file.load:/README.md
-if
-   strings.contains:x:@io.file.load
-      .:Hyperlambda
-   .lambda
-      log.info:"File contains 'Hyperlambda'"
-else
-   log.info:"File does not contain 'Hyperlambda'"
+
+// Create a Hyperlambda DELETE endpoint that accepts an 'id' argument and returns a 200 status with a confirmation message.
+.arguments
+   id:int
+response.status.set
+   .:200
+yield
+   message:Record deleted
+   id:x:@.arguments/*/id

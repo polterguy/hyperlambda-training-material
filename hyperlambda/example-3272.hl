@@ -1,43 +1,50 @@
 
-// Deletes the training snippet with the specified [id]
-.arguments
-
-   // Mandatory and is the ID of the training snippet to delete.
-   id:int
+// Returns a grouped chart image to caller. Values is a mandatory comma separated list of values.
+.arguments:*
 .type:public
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/id
-validators.integer:x:@.arguments/*/id
-   min:int:0
+validators.mandatory:x:@.arguments/*/legend
 
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Making sure snippet exists.
-   data.read
-      table:ml_training_snippets
-      columns
-         prompt
-         completion
-         uri
-      where
-         and
-            id.eq:x:@.arguments/*/id
+// Creating our individual bars.
+.bars
+for-each:x:@.arguments/*
+   get-name:x:@.dp/#
    if
-      not-exists:x:@data.read/*
+      not
+         strings.starts-with:x:@get-name
+            .:legend
       .lambda
-         throw:Now such snippet
-         public:bool:true
-         status:int:401
 
-   // Deleting snippet.
-   data.execute:delete from vss_ml_training_snippets where rowid = @id
-      @id:x:@.arguments/*/id
-   data.delete
-      table:ml_training_snippets
-      where
-         and
-            id.eq:x:@.arguments/*/id
-return
-   result:success
+         // Adding primary node for bar.
+         set-name:x:+/*/*
+            get-value:x:@get-name
+         add:x:@.bars
+            .
+               .
+
+         // Adding values for individual cells.
+         add:x:@.bars/0/-
+            strings.split:x:@.dp/#
+               .:,
+
+// Creating our legend.
+add:x:../*/image.chart/*/legend
+   strings.split:x:@.arguments/*/legend
+      .:,
+
+// Parametrizing [image.chart] invocation.
+add:x:../*/image.chart/*/bars
+   get-nodes:x:@.bars/*
+image.chart:grouped
+   width:800
+   height:500
+   bars
+   legend
+
+// Applying correct HTTP header.
+response.headers.set
+   Content-Type:image/png
+
+// Returning chart to caller.
+return:x:@image.chart

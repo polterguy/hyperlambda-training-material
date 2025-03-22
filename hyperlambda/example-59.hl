@@ -1,3 +1,5 @@
-// How do you declare a decimal number in Hyperlambda?
+// Compare two values using inline eq syntax
 
-.account-balance:decimal:10987.6543
+.foo1:OK
+eq:x:../*/.foo1
+   .:OK

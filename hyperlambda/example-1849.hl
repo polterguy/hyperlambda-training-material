@@ -1,17 +1,8 @@
-
-// Generate a Hyperlambda snippet that executes multiple computational tasks in parallel.
-
-// An example of running multiple mathematical operations in parallel.
-join
-   fork
-      math.multiply
-         .:int:5
-         .:int:10
-   fork
-      math.add
-         .:int:20
-         .:int:30
-   fork
-      math.subtract
-         .:int:100
-         .:int:40
+// Conditionally updates value if it matches
+.user:Alice
+if
+   eq:x:@.user
+      .:Alice
+   .lambda
+      set-value:x:@.user
+         .:Admin

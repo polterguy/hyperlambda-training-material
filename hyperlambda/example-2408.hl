@@ -1,14 +1,15 @@
-// create a hyperlambda endpoint taking name and age, returning a personalised greeting
-.arguments
-   name:string
-   age:int
-.result
-set-value:x:@.result
-   strings.concat
-      .:"Hello "
-      get-value:x:@.arguments/*/name
-      .:", you are "
-      get-value:x:@.arguments/*/age
-      .:" years old."
-yield
-   result:x:@.result
+
+// What are lambda expressions?
+
+/*
+ * Lambda expressions in Hyperlambda are used to reference any node within the currently executing graph object.
+ * They allow for dynamic access to nodes, enabling you to express relationships and hierarchies in the nodes effectively.
+ * They are similar to XPath expressions found in other technologies.
+ */
+
+// Example of a simple lambda expression referencing the [.person] node.
+.person:John
+set-value:x:@.person
+   .:Jane
+
+// In this case, @.person is a lambda expression that points to the .person node, and the [set-value] slot changes its value.

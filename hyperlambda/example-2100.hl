@@ -1,5 +1,16 @@
-// Create a cache item and counts items after
-cache.set:cache-item-key
-   expiration:5
-   value:Howdy world
-cache.count
+
+// Write a Hyperlambda snippet that loops while [.progress] is not equal to 100.
+
+// Loops while [.progress] is not equal to 100.
+.progress:int:0
+while
+   neq
+      get-value:x:@.progress
+      .:int:100
+   .lambda
+
+      // Logging progress.
+      log.info:Processing...
+
+      // Increasing progress.
+      math.increment:x:@.progress

@@ -1,9 +1,6 @@
-// Replace "dog" with "cat" using values from other nodes
-.target-string:I love my dog
-.search-for:dog
-.replace-with:cat
 
-set-value:x:@.target-string
-   strings.replace:x:@.target-string
-      get-value:x:@.search-for
-      get-value:x:@.replace-with
+// Fetch a few film titles and release years using a raw SQL query
+data.connect:sakila
+   data.select:SELECT title, release_year FROM film LIMIT 3
+
+   // Executes the SQL directly on the database and returns up to 3 rows

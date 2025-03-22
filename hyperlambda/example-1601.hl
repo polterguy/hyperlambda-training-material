@@ -1,8 +1,8 @@
-/*
- * Example: Replace a substring that is not present (no change occurs).
- */
-.input:"foo bar"
-strings.replace:x:@.input
-   .:baz
-   .:qux
-// Result: "foo bar" (unchanged)
+
+// Example: Trim specific characters from the end of a string.
+
+// The trailing "xyz" will be removed
+strings.trim-end:abcxyzxyz
+   .:xyz
+
+// Result: "abc"

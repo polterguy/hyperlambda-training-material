@@ -1,5 +1,6 @@
-// What is the default type if you omit the type declaration in Hyperlambda?
+// Example: Capitalise a string
+strings.capitalize:thomas
 
-.message:Hello from the other side
-
-// The default type is string
+/*
+ * Resulting in "Thomas" after invocation.
+ */

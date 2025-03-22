@@ -1,5 +1,9 @@
+// Returns ALL items (limit is -1) from table1 where field1 equals 'howdy' and field2 equals 'world'
+sql.read
+   table:table1
+   limit:-1
+   where
 
-// Develop a startup script for Magic to ensure the Stripe module's database exists and is updated. The script should run migration scripts and create the database if it doesn't exist by executing the necessary SQL file. This setup is crucial for maintaining the database's integrity and ensuring the module functions correctly.
-signal:magic.modules.ensure-database
-   module:stripe
-   database:stripe
+      and
+         field1.eq:howdy
+         field2.eq:world

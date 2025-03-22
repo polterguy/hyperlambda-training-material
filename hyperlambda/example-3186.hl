@@ -1,8 +1,6 @@
-
-// Example: Use variables for the string and characters to trim.
-.text:xyzyx
-.chars:xy
-
-// Result: "z"
-strings.trim:x:@.text
-   get-value:x:@.chars
+/*
+ * Example: No trim characters at end (string remains unchanged).
+ */
+// Result: "abc"
+strings.trim-end:abc
+   .:"z"

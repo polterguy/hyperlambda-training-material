@@ -1,8 +1,3 @@
-/*
- * Example: Use another slot's output as part of the concatenation.
- */
-.prefix:"Value: "
-strings.concat
-   get-value:x:@.prefix
-   strings.to-upper:example
-// Result: "Value: EXAMPLE"
+
+// Returns the IP address of the cloudlet
+server.ip

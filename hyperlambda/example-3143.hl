@@ -1,18 +1,18 @@
-/*
- * Save this file as `/modules/settings/endpoints/set-theme.hl`
- * This exposes an HTTP POST endpoint at `/settings/set-theme`
- *
- * Requires `theme` to be one of "light", "dark", or "auto".
- */
 
+// Execute Hyperlambda action
 .arguments
-   theme
+   filter:string
 
-validators.mandatory:x:@.arguments/*/theme
-validators.enum:x:@.arguments/*/theme
-   .:light
-   .:dark
-   .:auto
+// Returns artists and count of records per artist, sorted by artist having the most albums.
+execute:magic.workflows.actions.execute
 
-yield
-   result:Theme set
+   // Name used to reference action further down in your Hyperlambda code
+   name:chinook-albums-count
+
+   // file containing action
+   filename:/etc/workflows/actions/chinook-albums-count.hl
+   arguments
+      filter:x:@.arguments/*/filter
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

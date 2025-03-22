@@ -1,19 +1,10 @@
-
-// Write a Hyperlambda script to return the maximum tokens for a specified completion slot.
+// How do I create a Hyperlambda endpoint that takes arguments?
 .arguments
-   slot:string
-.type:internal
+   arg1:int
+   arg2:string
 
-// Making sure user is authenticate to access endpoint
-auth.ticket.verify:root
+// Your Hyperlambda code goes here ...!!
 
-// Retrieving max tokens from config.
-strings.split:x:@.arguments/*/slot
-   .:.
-strings.concat
-   .:"magic:"
-   get-value:x:@strings.split/0/-
-   .:":max_tokens"
-config.get:x:@strings.concat
-yield
-   max_tokens:x:@config.get
+// Return result to caller using for instance ...
+return
+   SOME_RESULT:SOME_VALUE

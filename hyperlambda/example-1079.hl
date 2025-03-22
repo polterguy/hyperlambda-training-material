@@ -1,5 +1,4 @@
-/**
- * This example moves the folder "/backups/old/" to "/backups/archived/".
- */
-io.folder.move:/backups/old/
-   .:/backups/archived/
+
+// Create a Hyperlambda script to invoke an HTTP GET endpoint and return the result.
+http.get:"https://jsonplaceholder.typicode.com/users/1"
+   convert:true

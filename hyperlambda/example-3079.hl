@@ -1,33 +1,42 @@
 
-// Create a Hyperlambda script to schedule a task with a specified ID for execution according to specified parameters.
+// Counts items from your roles table in your cms database
 .arguments
-   id:string
-   due:date
-   repeats:string
-.type:internal
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
 
-/*
- * Adds either a [repeats] or [due] argument to invocation below,
- * depending upon what argument was supplied by caller.
- */
-if
-   not
-      eq
-         get-value:x:@.arguments/*/repeats
-         .
-   .lambda
-      add:x:../*/tasks.schedule
-         get-nodes:x:@.arguments/*/repeats
-else
-   add:x:../*/tasks.schedule
-      get-nodes:x:@.arguments/*/due
+   // Offset into the dataset of where to start retrieving records
 
-// Performs actual scheduling of task.
-tasks.schedule:x:@.arguments/*/id
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
 
-// Returns success to caller.
-return-nodes
-   result:success
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   roles.id.eq:long
+   roles.name.like:string
+   roles.name.eq:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-count
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:roles
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

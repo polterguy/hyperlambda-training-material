@@ -1,35 +1,18 @@
 
-// Imports training snippets into the specified [type].
+// Create a Hyperlambda script to return a Magic CAPTCHA challenge
 .arguments
-   type
-      type:string
-      mandatory:bool:true
-   snippets
-      type:*
-      mandatory:bool:true
-   meta
-      type:string
-      mandatory:bool:false
-      default:imported
-.icon:chat_bubble
+.type:public
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+// Generating cryptographically secure random text.
+crypto.random
+strings.concat
+   .:c_
+   get-value:x:@crypto.random
+cache.set:x:@strings.concat
+   expiration:long:30
+   value:valid
 
-// Connecting to database.
-data.connect:[generic|magic]
-
-   // Looping through each record specified in [snippets] collection.
-   for-each:x:@.arguments/*/snippets/*
-
-      // Verifying prompt is not null.
-      if:x:@.dp/#/*/prompt
-
-         // Inserting into database.
-         data.create
-            table:ml_training_snippets
-            values
-               type:x:@.arguments/*/type
-               prompt:x:@.dp/#/*/prompt
-               completion:x:@.dp/#/*/completion
-               meta:x:@.arguments/*/meta
+// Generating gibberish text.
+unwrap:x:+/*
+return
+   result:x:@strings.concat

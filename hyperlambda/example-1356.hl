@@ -1,30 +1,18 @@
+// Hyperlambda [if] with numeric comparison
+.temperature:int:31
+.weather-status
+if
+   mt:x:@.temperature
+      .:int:30
+   .lambda
+      set-value:x:@.weather-status
+         .:hot
 
-// Creates an item in your cloudlets table in your [generic|hub] database according to the specified arguments.
-.arguments
-   created:date
-   name:string
-   plan:string
-   cluster:string
-   user:string
+/* JavaScript equivalent of Hyperlambda [if] with numeric comparison
+const temperature = 25;
+let weatherStatus;
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Opening up database connection.
-data.connect:[generic|hub]
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      table:cloudlets
-      return-id:bool:true
-      values
-
-   // Returning result of above invoction to caller.
-   response.status.set:201
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+if (temperature > 30) {
+  weatherStatus = "hot";
+}
+*/

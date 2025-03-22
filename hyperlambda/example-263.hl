@@ -1,3 +1,6 @@
-// How do you declare a variable that contains a node reference in Hyperlambda?
+// Check if a value is greater than or equal to another
 
-.reference-node:node:".data\n   name:Thomas\n   email:thomas@ainiro.io"
+.foo1:int:7
+mte
+   get-value:x:../*/.foo1
+   .:int:5

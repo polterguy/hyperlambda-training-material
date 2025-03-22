@@ -1,11 +1,4 @@
-
-// Generate a Hyperlambda snippet that opens a connection to 'sales_db' and retrieves records from 'transactions' table.
-
-// Opens a connection to "sales_db" and retrieves records from "transactions" table.
-.result
-data.connect:sales_db
-   database-type:mysql
-   data.select:select * from transactions order by transaction_date desc limit 10
-      database-type:mysql
-   add:x:@.result
-      get-nodes:x:@data.select/*
+// Convert a numeric string to an integer type
+.str:"42"
+convert:x:@.str
+   type:int

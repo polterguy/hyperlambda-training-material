@@ -1,44 +1,77 @@
 
-/*
- * Returns subsidiary companies from specified org number.
- * 
- * Returns all companies the specified org number company owns, either partially or completely.
- */
+// Create a Hyperlambda script that authenticates a user and returns a JWT token if successful, handling default root credentials for initial setup.
 .arguments
-   org_number:string
+   username:string
+   password:string
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/org_number
-set-value:x:@.arguments/*/org_number
-   strings.replace-not-of:x:@.arguments/*/org_number
-      .:0123456789
-      .:
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
 
-// Connecting to database.
-data.connect:[finovo|finovo]
-   database-type:pgsql
+/*
+ * Checking if JWT secret has been changed, and if not, simply checking if username/password is
+ * root/root, and if so returning a valid token allowing the user to setup his or her cloudlet.
+ * 
+ * This is necessary to allow for configuring a new cloudlet where the user haven't selected a root
+ * password yet.
+ */
+config.get:"magic:auth:secret"
+if
+   or
+      null:x:@config.get
+      lt
+         strings.length:x:@config.get
+         .:int:50
+   .lambda
 
-   // Retrieving items.
+      // System has not been setup.
+      if
+         and
+            eq
+               get-value:x:@.arguments/*/username
+               .:root
+            eq
+               get-value:x:@.arguments/*/password
+               .:root
+         .lambda
+
+            // Success!
+            auth.ticket.create
+               username:root
+               roles
+                  .:root
+            yield
+               ticket:x:@auth.ticket.create
+
+/*
+ * Invokes [magic.auth.authenticate] that does the heavy lifting, and creates our JWT token,
+ * making sure we return that token to caller.
+ */
+execute:magic.auth.authenticate
+   username:x:@.arguments/*/username
+   password:x:@.arguments/*/password
+
+// Buffer for extra information.
+.extra
+data.connect:magic
    data.read
-      database-type:pgsql
-      table:group_structure
-      columns
-         org_number
-         company_name
-         company_country_name
-         owned_percent
+      table:users_extra
       where
          and
-            group_mother_orgnumber.eq:x:@.arguments/*/org_number
-            org_number.neq:x:@.arguments/*/org_number
-      limit:-1
+            user.eq:x:@.arguments/*/username
+            or
+               type.eq:name
+               type.eq:email
+   for-each:x:@data.read/*
+      set-name:x:./*/add/*/*
+         get-value:x:@.dp/#/*/type
+      set-value:x:./*/add/*/*
+         get-value:x:@.dp/#/*/value
+      add:x:@.extra
+         .
+            .
 
-   // Verifying the company has subsidiaries.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         return
-            result:"This company doesn't have any subsidiaries"
-
-   // Returning result to caller.
-   return-nodes:x:@data.read/*
+// Returns the authentication JWT ticket created above to caller.
+yield
+   ticket:x:@execute/*/ticket
+   extra:x:@.extra/*

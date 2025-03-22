@@ -1,10 +1,22 @@
-// Subtract one variable's value from another
-.x:int:50
-.y:int:8
-math.subtract
 
-   // 50 (minuend)
-   get-value:x:@.x
+// Create a Hyperlambda script to retrieve all URLs from the sitemap of a specified website.
+.url:"https://ainiro.io"
 
-   // subtract 8 -> result 42
-   get-value:x:@.y
+// will contain all URLs from website
+.urls
+
+// Retrieving main sitemap.
+strings.concat
+   get-value:x:@.url
+   .:/sitemap.xml
+http.get:x:@strings.concat
+xml2lambda:x:@http.get/*/content
+
+// Iterating through each URL referenced in main sitemap.
+for-each:x:"@xml2lambda/*/urlset/*/url/*/loc/*/\\#text"
+
+   // Getting XML from currently iterated sitemap subset.
+   unwrap:x:+/*/*
+   add:x:@.urls
+      .
+         .:x:@.dp/#

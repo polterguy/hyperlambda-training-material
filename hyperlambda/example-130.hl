@@ -1,13 +1,15 @@
-// Retrieve all pending orders of amount 100 (using AND conditions in where clause)
-data.connect:shopDB
-   data.read
-      table:orders
+/*
+ * Invalid: This expression tries to access `settings` directly after `@.config`
+ * without using a `*` iterator in between, which is required to traverse children.
+ *
+ * This expression will NOT find the [settings] nodes since it is not using a children iterator
+ * between the `@.config` iterator and the `settings` iterator.
+ */
 
-      // No limit on results (-1 means no limit)
-      limit:long:-1
-      where
+.config
+   settings
+      theme:dark
+get-value:x:@.config/settings
 
-         // Both conditions must be true (AND)
-         and
-            status.eq:"pending"
-            amount.eq:long:100
+// Correct expression would be
+:x:@.config/*/settings

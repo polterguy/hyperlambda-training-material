@@ -1,8 +1,5 @@
-/*
- * Example: Replace all digits in a string with asterisks.
+/**
+ * This example saves new data to "/notes/todo.txt", overwriting its content.
  */
-.text:"ID 0987"
-strings.regex-replace:x:@.text
-   .:"\\d"
-   .:"*"
-// Result: "ID ****"
+io.file.save:/notes/todo.txt
+   .:Buy groceries, call mom, finish project.

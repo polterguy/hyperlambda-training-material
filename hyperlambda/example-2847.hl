@@ -1,44 +1,75 @@
 
-// Write a Hyperlambda script to create a new training snippet with optional URL, prompt, completion, and type.
-.arguments
+// Returns balance information for affiliate.
+auth.ticket.get
 
-   // Optional URL for citations
-   uri:string
+// Affiliate percent calculated below.
+.percent
 
-   // Mandatory prompt or short one liner description
-   prompt:string
-
-   // Mandatory completion being the content or body of your snippet
-   completion:string
-
-   // Mandatory machine learning to to associate snippet with
-   type:string
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,service
-
-// Opening up database connection.
+// Ensuring user is an affiliate
 data.connect:[generic|magic]
 
-   // Verifying user can create more snippets.
-   add:x:+
-      get-nodes:x:@.arguments/*/type
-   try-signal:magic.ai.can-create-snippet
+   /*
+    * Retrieving affiliate percent for user.
+    * Notice, if user doesn't have an affiliate percent, user is
+    * not an affiliate.
+    */
+   data.read
+      table:users_extra
+      columns
+         value
+      where
+         and
+            type.eq:affiliate_percent
+            user.eq:x:@auth.ticket.get
+   if
+      not-exists:x:@data.read/*/*/value
+      .lambda
 
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
+         // Oops ...!!
+         log.error:User is not affiliate
+            username:x:@auth.ticket.get
+         throw:You are not an affiliate
+            public:true
+            status:400
 
-   // Creating our record.
-   data.create
-      table:ml_training_snippets
-      return-id:bool:true
-      values
+   // Calculating ratio and storing.
+   convert:x:@data.read/*/*/value
+      type:decimal
+   set-value:x:@.percent
+      math.divide:x:@convert
+         .:decimal:100
 
-   // Returning the correct status code.
-   response.status.set:201
+// Connecting to database.
+data.connect:[generic|stripe]
 
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+   // Buffer to hold return values.
+   .balance
+      received
+      accepted
+      withdrawals
+
+   // Retrieving all received amounts from database.
+   set-value:x:@.balance/*/received
+      math.multiply
+         data.scalar:"select coalesce(sum(amount), 0) as sum from transactions\n   where affiliate = @affiliate and\n      type = 'charge.succeeded'"
+            @affiliate:x:@auth.ticket.get
+         get-value:x:@.percent
+
+   // Retrieving all accepted amounts from database.
+   set-value:x:@.balance/*/accepted
+      math.multiply
+         data.scalar:"select coalesce(sum(amount), 0) as sum from transactions t\n   where affiliate = @affiliate and\n      created <= curdate() - interval 1 month and\n      type = 'charge.succeeded' and not exists(\n         select * from transactions t2\n            where t2.type = 'charge.refunded' and\n               t2.invoice = t.invoice and t2.invoice is not null)"
+            @affiliate:x:@auth.ticket.get
+         get-value:x:@.percent
+
+   // Retrieving all withdrawals from database.
+   set-value:x:@.balance/*/withdrawals
+      data.scalar:"select coalesce(sum(amount), 0) as sum from transactions t\n   where affiliate = @affiliate and type = 'withdrawal'"
+         @affiliate:x:@auth.ticket.get
+
+   // Applying some HTTP caching since endpoint is kind of expensive to invoke.
+   response.headers.set
+      Cache-Control:private, max-age=3600
+
+   // Returning result to caller.
+   return-nodes:x:@.balance/*

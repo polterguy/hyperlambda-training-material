@@ -1,10 +1,18 @@
-/*
- * Compares the higher of two internal max blocks (e.g., regional vs. global highs).
- */
-math.max
-   math.max
-      .:int:91
-      .:int:88
-   math.max
-      .:int:85
-      .:int:94
+
+// KPI file for displaying the 10 last created accounts
+.name:Latest accounts
+.description:10 last created accounts
+.enabled:bool:false
+.type:table
+.lambda
+   data.connect:[generic|robo-crm]
+      data.read
+         table:accounts
+         columns
+            name
+            status
+            created
+         order:created
+         direction:desc
+         limit:10
+      return-nodes:x:-/*

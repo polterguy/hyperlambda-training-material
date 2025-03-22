@@ -1,3 +1,5 @@
-// Retrieve the value of a specified node
-.data:Hello World
-get-value:x:@.data
+/*
+ * Example: URL-decode an email address.
+ */
+strings.url-decode:user%40example.com
+// Result: "user@example.com"

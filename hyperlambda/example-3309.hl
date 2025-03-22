@@ -1,13 +1,16 @@
-// This example connects to the 'ocean' database and reads records from the 'creatures' table.
-sqlite.connect:ocean
-   sqlite.read
-      table:creatures
-      columns
-         species
-         habitat
-      where
-         and
-            habitat:Coral Reef
-      order:species
-      direction:asc
-      limit:int:10
+/*
+ * Finds all "email" nodes that are children of any node named "user",
+ * and changes their values to "hidden@example.com". This demonstrates deep
+ * lambda expression chaining with `@`, `*`, and named iterators.
+ */
+
+.users
+   user
+      name:Alice
+      email:alice@example.com
+   user
+      name:Bob
+      email:bob@example.com
+for-each:x:@.users/*/user/*/email
+   set-value:x:@.dp/#
+      .:hidden@example.com

@@ -1,11 +1,12 @@
-// HTTP endpoint that selects users from database and returns as XML
-.arguments
+// A slot that calculates net income after tax
+slots.create:finance.net-income
+   math.subtract
+      get-value:x:@.arguments/*/income
+      get-value:x:@.arguments/*/tax
+   yield
+      result:x:@math.subtract
 
-// Connect to the database and retrieve employee
-data.connect:company_database
-   data.read
-      table:employees
-   response.headers.set
-      Content-Type:application/xml
-   lambda2xml:x:@data.read/*
-   return:x:-
+// Invoke the slot with income=5000 and tax=1200
+signal:finance.net-income
+   income:int:5000
+   tax:int:1200

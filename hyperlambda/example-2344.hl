@@ -1,4 +1,6 @@
-// Create HTTP GET example with headers
-http.get:"https://google.com"
-   headers
-      Accept:text/html
+// Compare two values using less than (lt)
+
+.foo1:int:3
+lt
+   get-value:x:../*/.foo1
+   .:int:5

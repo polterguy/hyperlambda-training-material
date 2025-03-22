@@ -1,10 +1,10 @@
 /*
- * Example: Join all strings stored as children of a list node.
+ * This Hyperlambda snippet demonstrates behavior when no nodes match.
+ *
+ * 1. The `.data` node exists but has no matching children.
+ * 2. The `get-nodes` slot is used to retrieve nonexistent nodes.
+ * 3. The output should be empty.
  */
-.words
-   .:one
-   .:two
-   .:three
-strings.join:x:@.words/*
-   .:"|"
-// Result: "one|two|three"
+
+.data
+get-nodes:x:@.data/*

@@ -1,4 +1,6 @@
-// Increase .total-amount by 5
-.total-amount:int:95
-math.increment:x:@.total-amount
-   .:int:5
+/*
+ * Example: Trim a string consisting only of trim characters (result is empty).
+ */
+// Result: "" (empty string)
+strings.trim:"!!!"
+   .:"!"

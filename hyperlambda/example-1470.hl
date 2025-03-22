@@ -1,12 +1,5 @@
-
-// Else-if using an expression shorthand for its condition
-.flag:bool:true
-.result
-if
-   .:bool:false
-   .lambda
-      set-value:x:@.result
-         .:First
-else-if:x:@.flag
-   set-value:x:@.result
-      .:Second
+// Subtract 15 minutes from total time
+.total-time:int:120
+math.subtract
+   get-value:x:@.total-time
+   .:int:15

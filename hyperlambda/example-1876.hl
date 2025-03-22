@@ -1,10 +1,18 @@
+/*
+ * Sends an email with explicitly provided SMTP settings inline.
+ * Useful when overriding global or default configurations.
+ */
 
-// Creates a new item in DATABASE_NAME database and its TABLE_NAME table.
-data.connect:DATABASE_NAME
-   database-type:sqlite
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:TABLE_NAME
-      values
+mail.smtp.send
+   smtp
+      host:smtp.example.com
+      port:int:587
+      username:your-username
+      password:your-password
+      enableSsl:bool:true
+   message
+      to
+         recipient:john.doe@example.com
+      subject:SMTP Settings Inline
+      entity:text/plain
+         content:This email was sent using inline SMTP configuration.

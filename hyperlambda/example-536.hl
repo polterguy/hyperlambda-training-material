@@ -1,24 +1,17 @@
 
-// Ensures user is authorized to access endpoint.
+// Generate a Hyperlambda snippet that formats a full name and age.
+
+// Hyperlambda file that takes 3 arguments and formats a greeting message.
 .arguments
-   roles
-      type:array
-      mandatory:bool:false
-.icon:shield
-
-/*
- * Checking if we've got a [roles] argument,
- * and if so, joining all roles into a comma separated string of roles.
- */
-.roles
-if
-   exists:x:@.arguments/*/roles/*
-   .lambda
-
-      // Creating comma separated list of roles.
-      set-value:x:@.roles
-         strings.join:x:@.arguments/*/roles/*
-            .:,
-
-// Making sure user is authenticated, and optionally authorised.
-auth.ticket.verify:x:@.roles
+   first_name:string
+   last_name:string
+   age:int
+strings.concat
+   get-value:x:@.arguments/*/first_name
+   .:" "
+   get-value:x:@.arguments/*/last_name
+   .:", you are "
+   get-value:x:@.arguments/*/age
+   .:" years old."
+yield
+   result:x:@strings.concat

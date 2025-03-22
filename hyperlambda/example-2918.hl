@@ -1,16 +1,32 @@
-/*
- * This Hyperlambda snippet demonstrates nested iteration.
- * Each `barX` contains sub-elements, and `foo2` is executed for each sub-element.
- * After execution 3 new log items will exist.
- */
 
-.foo1
-   bar1
-      sub1
-      sub2
-   bar2
-      sub3
-   bar3
-for-each:x:../*/.foo1/*
-   for-each:x:@.dp/#/*
-      log.info:For each executed
+// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+.arguments
+   name:string
+   description:string
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation
+validators.regex:x:@.arguments/*/name
+   regex:"^[A-Za-z0-9\\-_]*$"
+
+// Opening up database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      table:roles
+      return-id:bool:false
+      values
+
+   // Returning result of above invoction to caller.
+   response.status.set:201
+   unwrap:x:+/*
+   return
+      result:success

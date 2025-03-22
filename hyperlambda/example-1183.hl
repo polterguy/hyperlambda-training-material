@@ -1,15 +1,16 @@
 
-// Moves all default KPI widgets into etc folder during installation/startup
-if
-   not
-      io.folder.exists:/etc/robo-crm/kpi/
-   .lambda
+// Write a Hyperlambda snippet that extracts nodes from [.data_source1] and [.data_source2] and places them into [.data_target].
 
-      // Creating folder.
-      io.folder.create:/etc/robo-crm/kpi/
-
-      // Copying files.
-      io.file.list:/modules/robo-crm/magic.startup/kpi/
-      for-each:x:@io.file.list/*
-         io.file.copy:x:@.dp/#
-            .:/etc/robo-crm/kpi/
+// Extracts nodes from [.data_source1] and [.data_source2] and places them into [.data_target]
+.data_source1
+   attrOne:valOne
+   attrTwo:valTwo
+   attrThree:valThree
+.data_source2
+   attrFour:valFour
+   attrFive:valFive
+   attrSix:valSix
+.data_target
+add:x:@.data_target
+   get-nodes:x:@.data_source1/*
+   get-nodes:x:@.data_source2/*

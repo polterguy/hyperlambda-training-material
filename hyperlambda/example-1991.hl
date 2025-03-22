@@ -1,27 +1,31 @@
 
-// Create a Hyperlambda action to execute a specified workflow file with optional arguments. Validate the workflow parameter and return the execution result.
+// Write a Hyperlambda script to list all files in a specified folder, with an optional filter to match file names.
 .arguments
-   workflow
-      type:workflow
-      mandatory:bool:true
-   arguments
-      type:key-value
-      mandatory:bool:false
-.icon:settings
+   folder:string
+   filter:string
+.type:internal
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/workflow
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Parametrising [execute-file].
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*/arguments/*
+// Listing all files in specified folder.
+io.file.list:x:@.arguments/*/folder
 
-// Executing file.
-execute-file:x:@.arguments/*/workflow
+// Checking if we have a filter, and if so, only return files matching filter.
+if
+   exists:x:@.arguments/*/filter
+   .lambda
 
-// Parametrising [return] invocation.
-add:x:./*/return
-   get-nodes:x:@execute-file/*
+      // Filtering out files not matching filter condition.
+      for-each:x:@io.file.list/*
+         if
+            strings.contains:x:@.dp/#
+               get-value:x:@.arguments/*/filter
+            .lambda
+               add:x:@for-each/./*/return-nodes
+                  get-nodes:x:@.dp/#
+      return-nodes
+else
 
-// Returning result of execution to caller.
-return
+   // Returning all files from above invocation to caller.
+   return-nodes:x:@io.file.list/*

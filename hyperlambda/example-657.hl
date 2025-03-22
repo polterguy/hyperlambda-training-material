@@ -1,51 +1,66 @@
 
-// Create one record in your media table in your cms database
-.arguments
+// Create a Hyperlambda script to delete all images not referenced in text files inside the 'www' folder. Include a warning about the consequences of executing the script.
 
-   // post_id column value
-   post_id:long
+// WARNING!! Uncomment this line if you *REALLY* want to execute this code!
+throw:You do NOT want to execute this script unless you understand the consequences of executing it!
 
-   // file_path column value
-   file_path:string
+// Buffer holding all images not referenced.
+.delete
 
-   // file_type column value
-   file_type:string
+// Buffer for holding all text files.
+.text
 
-   // created_at column value
-   created_at:date
+// Buffer for holding all image files.
+.images
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:enterprise,root
+// Finding all files recursively in 'www' folder.
+io.file.list-recursively:/etc/www/
+for-each:x:@io.file.list-recursively/*
 
-// Opening up database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
+   // Finding file extension.
+   strings.split:x:@.dp/#
+      .:.
+   switch:x:@strings.split/0/-
 
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
+      // Image files stored in [.images]
+      case:jpg
+      case:jpeg
+      case:svg
+      case:png
+      case:gif
+      case:bmp
+         add:x:@.images
+            get-nodes:x:@.dp/#
 
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:media
-      return-id:bool:true
-      values
+      // Text files stored in [.text]
+      case:md
+      case:html
+      case:js
+      case:css
+      case:htm
+         add:x:@.text
+            get-nodes:x:@.dp/#
 
-   // Returning the correct status code.
-   response.status.set:201
+// Iterating through all text files.
+.all-content
+for-each:x:@.text/*
+   set-value:x:@.all-content
+      strings.concat
+         get-value:x:@.all-content
+         io.file.load:x:@.dp/#
 
-   // Publishing socket message.
-   add:x:./*/sockets.signal/*/args
-      get-nodes:x:@.arguments/*
-   add:x:./*/sockets.signal
-      get-nodes:x:@auth.ticket.verify
-   set-name:x:./*/sockets.signal/*/auth.ticket.verify
-      .:roles
-   sockets.signal:cms.media.post
-      args
+// Iterating through all images
+for-each:x:@.images/*
+   strings.split:x:@.dp/#
+      .:/
+   if
+      not
+         strings.contains:x:@.all-content
+            get-value:x:@strings.split/0/-
+      .lambda
+         add:x:@.delete
+            get-nodes:x:@.dp/#
 
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+// Iterating through each image not referenced and deleting it from disc.
+for-each:x:@.delete/*
+   io.file.delete:x:@.dp/#

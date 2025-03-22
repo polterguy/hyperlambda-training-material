@@ -1,6 +1,23 @@
-// How to use [data.read] and have it order by name desc
-sql.read
-   table:people
-   order
-      name
-   direction:desc
+// Hyperlambda [if] checking multiple conditions
+.role:editor
+.content-type:premium
+.permission
+if
+   and
+      eq:x:@.role
+         .:editor
+      eq:x:@.content-type
+         .:premium
+   .lambda
+      set-value:x:@.permission
+         .:granted
+
+/* JavaScript equivalent of Hyperlambda [if] checking multiple conditions
+const role = "editor";
+const contentType = "premium";
+let permission;
+
+if (role === "editor" && contentType === "premium") {
+  permission = "granted";
+}
+*/

@@ -1,11 +1,8 @@
-
-// Create a Hyperlambda script that verifies a JWT token and returns success if the token is valid, ensuring the user is authorized.
-
-// Ensures user is authorized to access endpoint.
-try
-   auth.ticket.verify
-   return
-      result:success
-.catch
-   return
-      result:failure
+// Finds nodes whose value is "true" and change their values to 'yes'
+.flags
+   active:bool:true
+   deleted:bool:false
+   verified:bool:true
+for-each:x:@.flags/*/=true
+   set-value:x:@.dp/#
+      .:yes

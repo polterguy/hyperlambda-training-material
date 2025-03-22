@@ -1,4 +1,3 @@
-// Compare a static value for equality
+// How do you declare a short integer variable in Hyperlambda?
 
-eq:OK
-   .:OK
+.age:short:45

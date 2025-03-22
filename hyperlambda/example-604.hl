@@ -1,13 +1,10 @@
+// Converting a date string to date object and assigning to another node
 
-// Create a Hyperlambda snippet that fetches the company name of a user from an API.
+// This is a string, but it's formatted as a valid date
+.data:"2023-05-17T23:59:59"
+.dest
+set-value:x:-
+   convert:x:@.data
+      type:date
 
-// Fetches the company name of a user.
-http.get:"https://jsonplaceholder.typicode.com/users/2"
-
-   // Converts JSON response.
-   convert:true
-
-// Sets [.company_name] to the user's company name
-.company_name
-set-value:x:@.company_name
-   get-value:x:@http.get/*/content/*/company/*/name
+// The above will result in [.dest] having a value of :date:"2023-05-17T23:59:59"

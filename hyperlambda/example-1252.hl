@@ -1,92 +1,47 @@
 
-// Create a Hyperlambda script that executes a single workflow action, ensuring the user is authorized.
-slots.create:magic.workflows.actions.execute
+// Create one record in your Genre table in your chinook database.
+.arguments
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/name
-   validators.mandatory:x:@.arguments/*/filename
+   // GenreId column value
+   GenreId:long
 
-   /*
-    * Checking if we're authenticated as root user, and if so,
-    * publishing a socket message as "debug info" back to caller.
-    */
-   .time
-   if
-      auth.ticket.in-role:root
-      .lambda
+   // Name column value
+   Name:string
 
-         // Publishing socket debug message to client.
-         add:x:./*/sockets.signal/*/args/*/input
-            get-nodes:x:@.arguments/*/arguments/*
-         unwrap:x:+/**
-         sockets.signal:magic.workflows.action
-            roles:root
-            args
-               type:action
-               name:x:@.arguments/*/name
-               input
-         set-value:x:@.time
-            date.now
+// Meta data description for endpoint
 
-   // Making sure we're able to catch exceptions.
-   try
+// Type of endpoint
+.type:crud-create
 
-      // Parametrising [execute-file].
-      add:x:./*/execute-file
-         get-nodes:x:@.arguments/*/arguments/*
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:partner
 
-      // Executing action.
-      execute-file:x:@.arguments/*/filename
+// Logging invocation.
+auth.ticket.get
+lambda2hyper:x:@.arguments/*
+log.info:chinook.Genre entry created
+   username:x:@auth.ticket.get
+   arguments:x:@lambda2hyper
 
-      /*
-       * Checking if we're authenticated as root user, and if so,
-       * publishing a socket message as "debug info" back to caller.
-       */
-      if
-         auth.ticket.in-role:root
-         .lambda
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
 
-            // Publishing socket debug message to client.
-            add:x:./*/sockets.signal/*/args/*/output
-               get-nodes:x:@execute-file/*
-            math.subtract
-               date.now
-               get-value:x:@.time
-            unwrap:x:+/**
-            sockets.signal:magic.workflows.action
-               roles:root
-               args
-                  type:result
-                  time:x:@math.subtract
-                  output
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
 
-      // Decorating [result] node.
-      set-value:x:./*/return
-         get-value:x:@.arguments/*/name
-      add:x:./*/return
-         get-nodes:x:@execute-file/*
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:Genre
+      return-id:bool:false
+      values
 
-      // Returning result of invocation to caller.
-      return
-   .catch
+   // Returning the correct status code.
+   response.status.set:201
 
-      /*
-       * Checking if we're authenticated as root user, and if so,
-       * publishing a socket message as "debug info" back to caller.
-       */
-      if
-         auth.ticket.in-role:root
-         .lambda
-
-            // Publishing socket debug message to client.
-            unwrap:x:+/**
-            sockets.signal:magic.workflows.action
-               roles:root
-               args
-                  type:error
-                  message:x:@.arguments/*/message
-
-      // Rethrowing exception
-      throw:x:@.arguments/*/message
-         status:x:@.arguments/*/status
-         public:x:@.arguments/*/public
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

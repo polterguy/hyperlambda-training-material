@@ -1,15 +1,16 @@
 
-// Ensure that the roles for paid users exists in the system
-signal:magic.auth.ensure-role
-   role:basic
-   description:A user with the basic subscription
+// Vectorizing the specified [type].
+.arguments
+   type
+      type:string
+      mandatory:bool:true
+.icon:chat_bubble
 
-// Professional role.
-signal:magic.auth.ensure-role
-   role:professional
-   description:A user with the professional subscription
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
 
-// Enterprise role.
-signal:magic.auth.ensure-role
-   role:enterprise
-   description:A user with the enterprise subscription
+// Vectorizing model.
+unwrap:x:+/*/*
+fork
+   signal:magic.ai.vectorise
+      type:x:@.arguments/*/type

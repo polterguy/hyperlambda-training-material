@@ -1,67 +1,121 @@
 
-// Update one record in your address table in your sakila database without authorization. Log invocation
+// Create a function that returns minimum, maximum, average, or sum from the SubscriptionPlan table in the saas database based on specified conditions.
 .arguments
 
-   // address_id column value being primary key of record to update, mandatory argument
-   address_id:long
+   // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg
+   aggregate_function:string
 
-   // address column's new value
-   address:string
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME.
+   aggregate_column:string
 
-   // district column's new value
-   district:string
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   SubscriptionPlan.PlanId.mt:long
+   SubscriptionPlan.PlanId.lt:long
+   SubscriptionPlan.PlanId.mteq:long
+   SubscriptionPlan.PlanId.lteq:long
+   SubscriptionPlan.PlanId.neq:long
+   SubscriptionPlan.PlanId.eq:long
+   SubscriptionPlan.PlanName.like:string
+   SubscriptionPlan.PlanName.mt:string
+   SubscriptionPlan.PlanName.lt:string
+   SubscriptionPlan.PlanName.mteq:string
+   SubscriptionPlan.PlanName.lteq:string
+   SubscriptionPlan.PlanName.neq:string
+   SubscriptionPlan.PlanName.eq:string
+   SubscriptionPlan.MonthlyPrice.mt:decimal
+   SubscriptionPlan.MonthlyPrice.lt:decimal
+   SubscriptionPlan.MonthlyPrice.mteq:decimal
+   SubscriptionPlan.MonthlyPrice.lteq:decimal
+   SubscriptionPlan.MonthlyPrice.neq:decimal
+   SubscriptionPlan.MonthlyPrice.eq:decimal
+   SubscriptionPlan.MonthlyQuota.mt:long
+   SubscriptionPlan.MonthlyQuota.lt:long
+   SubscriptionPlan.MonthlyQuota.mteq:long
+   SubscriptionPlan.MonthlyQuota.lteq:long
+   SubscriptionPlan.MonthlyQuota.neq:long
+   SubscriptionPlan.MonthlyQuota.eq:long
+   SubscriptionPlan.Features.like:string
+   SubscriptionPlan.Features.mt:string
+   SubscriptionPlan.Features.lt:string
+   SubscriptionPlan.Features.mteq:string
+   SubscriptionPlan.Features.lteq:string
+   SubscriptionPlan.Features.neq:string
+   SubscriptionPlan.Features.eq:string
 
-   // city_id column's new value
-   city_id:long
+// Sanity checking mandatory arguments.
+validators.mandatory:x:@.arguments/*/aggregate_function
+validators.mandatory:x:@.arguments/*/aggregate_column
 
-   // phone column's new value
-   phone:string
+// Sanity checking name of aggregate function.
+validators.enum:x:@.arguments/*/aggregate_function
+   .:min
+   .:max
+   .:sum
+   .:avg
 
-// Type of endpoint
-.type:crud-update
+// Sanity checking agggregate column name.
+validators.enum:x:@.arguments/*/aggregate_column
+   .:SubscriptionPlan.PlanId
+   .:SubscriptionPlan.PlanName
+   .:SubscriptionPlan.MonthlyPrice
+   .:SubscriptionPlan.MonthlyQuota
+   .:SubscriptionPlan.Features
 
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/address_id
+// Adding Cache-Control HTTP header.
+response.headers.set
+   Cache-Control:private, max-age=50
 
-// Logging invocation.
-auth.ticket.get
-lambda2hyper:x:@.arguments/*
-log.info:sakila.address entry updated
-   username:x:@auth.ticket.get
-   arguments:x:@lambda2hyper
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:admin
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
 
 // Opening up our database connection.
-data.connect:[generic|sakila]
+data.connect:[generic|saas]
    database-type:sqlite
 
-   // Parametrising our invocation.
-   add:x:./*/data.update/*/values
-      get-nodes:x:@.arguments/*/[1,1000]
-   add:x:./*/data.update/*/where/*/and
-      get-nodes:x:@.arguments/*/[0,1]
+   // Making sure we're using correct aggregate function.
+   set-name:x:./*/data.read/*/columns/*/aggregate_functor
+      strings.concat
+         get-value:x:@.arguments/*/aggregate_function
+         .:(
+         get-value:x:@.arguments/*/aggregate_column
+         .:)
 
-   // Invoking our update slot.
-   data.update
+   // Removing aggregate arguments to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/[0,2]
+
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
       database-type:sqlite
-      table:address
-      values
+      table:SubscriptionPlan
+      columns
+         aggregate_functor
+            as:result
       where
          and
+      limit:long:1
 
-   // Verifying record exists.
-   if
-      eq
-         get-value:x:@data.update
-         .:int:0
-      .lambda
-         response.status.set:404
-         return
-            result:Record not found
-
-   // Returning the correct status code.
-   response.status.set:202
-
-   // Returning success to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.update
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

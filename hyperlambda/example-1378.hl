@@ -1,28 +1,25 @@
+// Hyperlambda [if] and [else] with exists check
+.data
+   item1:value1
+   item2:value2
+.has-item
+if
+   exists:x:@.data/*/item3
+   .lambda
+      set-value:x:@.has-item
+         .:bool:true
+else
+   set-value:x:@.has-item
+      .:bool:false
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the users_roles table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
-.arguments
-   role:string
-   user:string
+/* JavaScript equivalent of Hyperlambda [if] with exists check
+const data = {
+  item1: "value1",
+  item2: "value2"
+};
+let hasItem;
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-validators.mandatory:x:@.arguments/*/role
-validators.mandatory:x:@.arguments/*/user
-
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      table:users_roles
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+if (data.hasOwnProperty("item3")) {
+  hasItem = true;
+}
+*/

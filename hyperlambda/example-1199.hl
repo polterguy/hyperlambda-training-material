@@ -1,8 +1,10 @@
-/*
- * Example: Allowed set includes all characters in the input (no replacements occur).
- */
-.input:"ABC123"
-strings.replace-not-of:x:@.input
-   .:ABC123
-   .:"#"
-// Result: "ABC123" (unchanged, since all characters were allowed)
+// Doubles a given number using math.multiply and yields the result
+slots.create:double.value
+   math.multiply
+      get-value:x:@.arguments/*/number
+      .:int:2
+   yield
+      result:x:@math.multiply
+
+execute:double.value
+   number:int:7

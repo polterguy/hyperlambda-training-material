@@ -1,63 +1,46 @@
 
-// Write a Hyperlambda script to create a system message from specified arguments, including URL, template, and instruction.
+// Counts items from your spice_urls table in your scraper database.
 .arguments
-   url:string
-   template:string
-   instruction:string
-   channel:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/url
-validators.mandatory:x:@.arguments/*/channel
-validators.mandatory:x:@.arguments/*/template
-validators.mandatory:x:@.arguments/*/instruction
+   // spice_urls table spice_url_id column equality exact match filtering
+   spice_urls.spice_url_id.eq:long
 
-// Prepending scheme to URL unless explicitly specified.
-if
-   and
-      not
-         strings.starts-with:x:@.arguments/*/url
-            .:"http://"
-      not
-         strings.starts-with:x:@.arguments/*/url
-            .:"https://"
-   .lambda
-      set-value:x:@.arguments/*/url
-         strings.concat
-            .:"https://"
-            get-value:x:@.arguments/*/url
+   // spice_urls table url column wildcard filtering with SQL like '%' comparison
+   spice_urls.url.like:string
 
-// Sanity checking URL.
-validators.url:x:@.arguments/*/url
+   // spice_urls table url column equality exact match filtering
+   spice_urls.url.eq:string
 
-// Doing heavy lifting on a background thread to avoid 60 second timeouts.
-insert-before:x:./*/fork/0
-   get-nodes:x:@.arguments
-fork
-   try
+   // spice_urls table type column wildcard filtering with SQL like '%' comparison
+   spice_urls.type.like:string
 
-      // Creating our system message.
-      execute:magic.ai.create-system-message
-         url:x:@.arguments/*/url
-         template:x:@.arguments/*/template
-         instruction:x:@.arguments/*/instruction
+   // spice_urls table type column equality exact match filtering
+   spice_urls.type.eq:string
 
-      // Invoking frontend with message.
-      unwrap:x:+/*/*/message
-      sockets.signal:x:@.arguments/*/channel
-         roles:root
-         args
-            message:x:@execute
-   .catch
+// Meta data description for endpoint
 
-      // Oops, signaling frontend that we experienced an error.
-      unwrap:x:+/*/*
-      sockets.signal:x:@.arguments/@.arguments/*/channel
-         roles:root
-         args
-            message:ERROR
-            extra:x:@.arguments/*/message
+// Type of endpoint
+.type:crud-count
 
-// Returning result of invocation to caller.
-yield
-   result:success
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up our database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:spice_urls
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

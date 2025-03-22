@@ -1,85 +1,43 @@
 
-// Write a Hyperlambda script to return the specified JavaScript file wrapping a model, with options for placeholder, button, type, CSS, and max.
+// Read or list records from your roles table in your cms database
 .arguments
-   placeholder:string
-   button:string
-   type:string
-   css:string
-   max:int
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/placeholder
-validators.mandatory:x:@.arguments/*/button
-validators.mandatory:x:@.arguments/*/type
-validators.mandatory:x:@.arguments/*/css
-validators.mandatory:x:@.arguments/*/max
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
 
-// Figuring out API URL.
-.scheme
-request.host
-if
-   strings.contains:x:@request.host
-      .:localhost
-   .lambda
-      set-value:x:@.scheme
-         .:http
-else
-   set-value:x:@.scheme
-      .:https
-.url
-set-value:x:@.url
-   strings.concat
-      get-value:x:@.scheme
-      .:"://"
-      request.host
+   // Offset into the dataset of where to start retrieving records
 
-// Loading search JavaScript file.
-.result
-set-value:x:@.result
-   io.file.load:/system/openai/front.files/search/search.js
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
 
-// Retrieving reCAPTCHA key.
-.captcha
-set-value:x:@.captcha
-   config.get:"magic:auth:recaptcha:key"
-      .:
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   roles.id.eq:long
+   roles.name.like:string
+   roles.name.eq:string
 
-// Dynamically exchanging template fields in JavaScript file.
-set-value:x:@.result
-   strings.replace:x:@.result
-      .:[[url]]
-      get-value:x:@.url
-set-value:x:@.result
-   strings.replace:x:@.result
-      .:[[recaptcha]]
-      get-value:x:@.captcha
-set-value:x:@.result
-   strings.replace:x:@.result
-      .:[[max]]
-      get-value:x:@.arguments/*/max
-set-value:x:@.result
-   strings.replace:x:@.result
-      .:[[placeholder]]
-      get-value:x:@.arguments/*/placeholder
-set-value:x:@.result
-   strings.replace:x:@.result
-      .:[[button]]
-      get-value:x:@.arguments/*/button
-set-value:x:@.result
-   strings.replace:x:@.result
-      .:[[type]]
-      get-value:x:@.arguments/*/type
-set-value:x:@.result
-   strings.replace:x:@.result
-      .:[[css]]
-      get-first-value
-         get-value:x:@.arguments/*/css
-         get-value:x:@.arguments/*/file
-         .:
+// Meta data description for endpoint
 
-// Making sure we return correct Content-Type to caller, and applying some cache.
-response.headers.set
-   Content-Type:application/javascript
+// Type of endpoint
+.type:crud-read
 
-// Returning result to caller.
-return:x:@.result
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:roles
+      columns
+         roles.id
+         roles.name
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

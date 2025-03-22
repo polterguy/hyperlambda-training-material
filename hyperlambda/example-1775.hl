@@ -1,6 +1,8 @@
-/**
- * This example converts "input.jpg" to "output.png".
- */
-image.convert
-   file:/input.jpg
-   output:/output.png
+
+// How to use string builder in Hyperlambda
+strings.builder
+   strings.builder.append:Hello
+   strings.builder.append:" "
+   strings.builder.append:world
+
+// Results in; Hello world

@@ -1,6 +1,3 @@
-// Inserts a bunch of nodes after the specified destination expression's node.
-.destination
-   foo1
-insert-after:x:@.destination/*/foo1
-   .
-      foo2:bar
+// Increments a value by 1 using lambda expressions
+.counter:int:5
+math.increment:x:@.counter

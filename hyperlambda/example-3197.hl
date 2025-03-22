@@ -1,8 +1,5 @@
-
-// Example: Remove all non-digit characters from a string (keep only digits).
-.mixed:"Phone: 555-1234!"
-strings.replace-not-of:x:@.mixed
-   .:0123456789
-   .:
-
-// Result: "5551234" (only digits remain)
+/*
+ * Example: URL-encode a URL (especially characters like : / and spaces).
+ */
+strings.url-encode:"https://example.com/foo bar"
+// Result: "https%3A%2F%2Fexample.com%2Ffoo%20bar"

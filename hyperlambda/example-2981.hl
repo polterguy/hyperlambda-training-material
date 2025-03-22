@@ -1,11 +1,17 @@
-// Evaluates specified [.lambda] if condition evaluates to true.
-if
-   eq:x:@SOME_EXPRESSION
-      .:SOME_VALUE
-   .lambda
 
-      // Lambda evaluates if condition is true.
+// Generate a Hyperlambda snippet with string variables, demonstrating special character handling, multi-line strings, and alternative quoting.
 
-else
+// String without special characters, no need for quotes
+.simpleText:hello
 
-   // Lambda evaluated if condition is NOT true.
+// String with a colon, requires quotes
+.colonText:"hello:world"
+
+// Multi-line string using @ notation
+.multiLineText:"line1\nline2"
+
+// Using single quotes as an alternative
+.altQuoteText:example
+
+// Escaping a newline character
+.escapedNewlineText:"hello\nworld"

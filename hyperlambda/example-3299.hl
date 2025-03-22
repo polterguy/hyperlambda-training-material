@@ -1,5 +1,34 @@
 
-// Example: URL-decode an email address.
-strings.url-decode:user%40example.com
+// Lists all database in your MySQL instance.
+slots.create:magic.db.pgsql.databases
 
-// Result: "user@example.com"
+   // Opens up our connection
+   .connection:[postgres]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               .:postgres]
+   pgsql.connect:x:@.connection
+
+      // Runs our query
+      pgsql.select:select datname from pg_database
+
+      // Renaming "Database" nodes.
+      set-name:x:@pgsql.select/*/*
+         .:db
+
+      // Returns the remaining databases to caller.
+      return-nodes:x:@pgsql.select/*

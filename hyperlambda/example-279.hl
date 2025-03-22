@@ -1,17 +1,14 @@
-// Hyperlambda endpoint that connects to the specified database and returns all records from specified table.
-.arguments
-   database:string
-   table:string
 
-// Making sure argument was given
-validators.mandatory:x:@.arguments/*/database
-validators.mandatory:x:@.arguments/*/table
+// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table.
 
-// Checking if 'xyz' exists in string
-data.connect:x:@.arguments/*/database
+// Queries messages from the messaging database and chat_logs table.
+data.connect:messaging_db
+
+   // Using SQLite.
+   database-type:sqlite
+
+   // Fetching chat history.
    data.read
-      table:x:@.arguments/*/table
-   yield
-      rows:x:@data.read/*
-
-// Save file as for instance '/modules/foo/bar.get.hl' which creates an HTTP GET endpoint
+      database-type:sqlite
+      table:chat_logs
+      limit:100

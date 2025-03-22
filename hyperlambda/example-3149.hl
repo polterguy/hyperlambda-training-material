@@ -1,5 +1,6 @@
-// lte returns false if the left value is greater than the right
-.x:int:6
-lte
-   get-value:x:@.x
-   .:int:5
+/*
+ * Example: Use a variable as the input to uppercase.
+ */
+.text:"make me upper"
+// Result: "MAKE ME UPPER"
+strings.to-upper:x:@.text

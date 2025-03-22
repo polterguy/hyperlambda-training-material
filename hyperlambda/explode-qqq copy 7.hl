@@ -8,7 +8,7 @@
 
 // Adding ALL arguments to payload.
 add:x:+/*/payload
-    get-nodes:x:@.arguments/*
+   get-nodes:x:@.arguments/*
 http.post:"https://logistics.example.org/get-user"
    convert:true
    payload

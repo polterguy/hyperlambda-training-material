@@ -1,7 +1,7 @@
 // Build the dynamic JSON payload
 .payload
    api_key:sk_test_51H9...
-   scope:read:all
+   scope:all
 
 // Create headers for content-type and custom request ID
 .headers
@@ -10,9 +10,9 @@
 
 // Make the HTTP POST request
 add:x:./*/http.post/*/headers
-   get-value:x:@.headers/*
+   get-nodes:x:@.headers/*
 add:x:./*/http.post/*/payload
-   get-value:x:@.payload/*
+   get-nodes:x:@.payload/*
 http.post:"https://api.example.com/token/validate"
    headers
    payload

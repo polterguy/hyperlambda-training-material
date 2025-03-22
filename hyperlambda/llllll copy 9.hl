@@ -1,0 +1,6 @@
+// Button labels for UI
+.ui.buttons
+   .:Save
+   .:Cancel
+   .:Delete
+   .:Submit

@@ -1,5 +1,7 @@
-// Hash password for then to verify it
-crypto.password.hash:SomePasswordHere
-
-crypto.password.verify:SomePasswordHere
-   hash:x:@crypto.password.hash
+// Math slot adding two numeric values
+slots.create:calc.plus
+   math.add
+      get-value:x:@.arguments/*/left
+      get-value:x:@.arguments/*/right
+   yield
+      total:x:@math.add

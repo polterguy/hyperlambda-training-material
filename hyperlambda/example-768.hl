@@ -1,9 +1,8 @@
-// Executing the Hyperlambda changes the node hierarchy
+// Custom endpoint or Hyperlambda file taking mandatory two arguments
+.arguments
+   arg1:string
+   arg2:date
 
-// This Hyperlambda
-.no:int:0
-math.increment:x:@.no
-
-// Creates this result
-.no:int:1
-math.increment:x:@.no
+validators.mandatory:x:@.arguments/*/arg1
+validators.mandatory:x:@.arguments/*/arg2
+// If either of the arguments don't exists, the above will throw an exception

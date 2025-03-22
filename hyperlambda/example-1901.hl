@@ -1,11 +1,3 @@
-// Concatenating strings for each node in the list
-.car-parts
-   engine
-   wheel
-   door
-
-for-each:x:@.car-parts/*
-   set-value:x:@.dp/#
-      strings.concat
-         get-name:x:@.dp/#
-         .:" is checked"
+// Save file
+io.file.save:/misc/README2.md
+   .:This is new content for file

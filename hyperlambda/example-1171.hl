@@ -1,113 +1,26 @@
 
-/*
- * Returns the count and sum of quotations
- * 
- * Optionally apply filtering or a date range as you see fit
- */
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the roles table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
 .arguments
+   name:string
 
-   // Optional filtering argument allowing to filter items on No_, Description, etc.
-   filter:string
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+validators.mandatory:x:@.arguments/*/name
 
-   // Optional minimum date. ISO formatted as follows "yyyy-MM-dd"
-   min_date:string
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-   // Optional maximum date. ISO formatted as follows "yyyy-MM-dd"
-   max_date:string
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
 
-.type:public
-
-// Making sure user is authorised to access the workflow.
-auth.ticket.verify:mnhc-admin
-
-// Opening up database connection.
-mssql.connect:[production|MNDG_LSC18-1]
-
-   // Checking if we're filtering items.
-   if
-      and
-         exists:x:@.arguments/*/filter
-         not-null:x:@.arguments/*/filter
-         neq:x:@.arguments/*/filter
-            .:
-      .lambda
-
-         // Creating our filtering condition. To filter on additional columns, add these columns here.
-         .fields
-            .:"No_"
-            .:"Location Code"
-            .:"Sell-to Customer No_"
-            .:"Bill-to Customer No_"
-            .:"Bill-to Name"
-            .:"Bill-to Address"
-            .:"Bill-to Address 2"
-            .:"Bill-to City"
-            .:"Bill-to Contact"
-            .:"Sell-to E-Mail"
-            .:"Document Date"
-            .:"Payment Terms Code"
-            .:"Salesperson Code"
-            .:"Assigned User ID"
-            .:"Item Category Code"
-            .:"Item_No"
-            .:"Description"
-            .:"Unit of Measure"
-            .:"Quantity"
-            .:"Unit Price"
-            .:"Amount"
-         for-each:x:@.fields/*
-            .condition
-               cond
-            set-name:x:@.condition/*
-               strings.concat
-                  get-value:x:@.dp/#
-                  .:.like
-            set-value:x:@.condition/*
-               strings.concat
-                  .:%
-                  get-value:x:@.arguments/*/filter
-                  .:%
-            add:x:@mssql.connect/*/mssql.read/*/where/*/or
-               get-nodes:x:@.condition/*
-
-   // Checking if we're filtering items on [min_date].
-   if
-      and
-         exists:x:@.arguments/*/min_date
-         not-null:x:@.arguments/*/min_date
-      .lambda
-         convert:x:@.arguments/*/min_date
-            type:date
-         unwrap:x:+/*/*
-         add:x:@mssql.connect/*/mssql.read/*/where/*/and
-            .
-               Document Date.mt:x:@convert
-
-   // Checking if we're filtering items on [max_date].
-   if
-      and
-         exists:x:@.arguments/*/max_date
-         not-null:x:@.arguments/*/max_date
-      .lambda
-         convert:x:@.arguments/*/max_date
-            type:date
-         unwrap:x:+/*/*
-         add:x:@mssql.connect/*/mssql.read/*/where/*/and
-            .
-               Document Date.lt:x:@convert
-
-   // Reading records.
-   mssql.read
-      table:addv_Cotizaciones
-      columns
-         count(distinct No_)
-            as:count
-         sum(Amount)
-            as:sum
+   // Deleting item from database.
+   data.delete
+      table:roles
       where
-         or
          and
-   
+
    // Returning result of above invocation to caller.
-   yield
-      result:x:@mssql.read/*
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

@@ -1,6 +1,6 @@
 
-// Fetch a few film titles and release years using a raw SQL query
-data.connect:sakila
-   data.select:SELECT title, release_year FROM film LIMIT 3
+// Example: Split on a substring that is not present.
+strings.split:hello
+   .:,
 
-   // Executes the SQL directly on the database and returns up to 3 rows
+// Result: The string remains "hello" as a single part (no split)

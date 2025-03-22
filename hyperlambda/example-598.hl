@@ -1,20 +1,21 @@
 
-// Deletes the specified [username] from the system.
+// Removes the specified [item_id] from your shopping cart.
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-.icon:supervisor_account
+   item_id:int
+   _session:string
+.type:public
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
 
-// Opens up database connection.
-data.connect:[generic|magic]
-
-   // Deleting user from database.
+   // Removing item.
    data.delete
-      table:users
+      table:items
       where
          and
-            username.eq:x:@.arguments/*/username
+            item_id.eq:x:@.arguments/*/item_id
+            session_id.eq:x:@.arguments/*/_session
+
+// Returning success to caller.
+return
+   result:success

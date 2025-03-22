@@ -1,8 +1,17 @@
-/*
- * Example: Replace all digits in a string with asterisks.
- */
-.text:"ID 0987"
-strings.regex-replace:x:@.text
-   .:"\\d"
-   .:"*"
-// Result: "ID ****"
+
+// Provide a Hyperlambda example with string variables, covering cases of colons, multi-line strings, and escaped characters.
+
+// No special characters, so no quotes required
+.text1:sample
+
+// Contains a colon, requiring quotes
+.text2:"sample:value"
+
+// Multi-line string, using @ notation
+.text3:"lineA\nlineB"
+
+// Alternative quoting with single quotes
+.text4:test
+
+// Escaped newline within a string
+.text5:"first\nsecond"

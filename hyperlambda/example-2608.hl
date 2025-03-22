@@ -1,34 +1,44 @@
+// Submits feedback and handles all common HTTP status codes using [switch] and [throw] with correct value syntax
 
-// Write a Hyperlambda script to rename a specified file or folder.
 .arguments
-   oldName:string
-   newName:string
-.type:internal
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Final feedback submission result
+.feedback.status
 
-// Basic logging.
-log.info:Renaming file object
-   old_name:x:@.arguments/*/oldName
-   new_name:x:@.arguments/*/newName
+// Send HTTP POST to feedback API
+http.post:"https://api.feedbackly.io/v1/submit"
+   convert:true
+   payload
+      name:Sarah Lee
+      email:sarah.lee@example.com
+      message:This platform is fantastic!
 
-// Checking if specified object is a file or a folder.
-if
-   io.folder.exists:x:@.arguments/*/oldName
-   .lambda
+// Branch based on HTTP status code
+switch:x:@http.post
 
-      // File object is a folder, renaming it.
-      io.folder.move:x:@.arguments/*/oldName
-         get-value:x:@.arguments/*/newName
-else
+   case:int:200
+      set-value:x:@.feedback.status
+         .:Feedback submitted successfully
 
-   // File object is a file, renaming it.
-   io.file.move:x:@.arguments/*/oldName
-      strings.concat
-         io.path.get-folder:x:@.arguments/*/oldName
-         get-value:x:@.arguments/*/newName
+   case:int:400
+      throw:400 Bad Request – Please check your input data
 
-// Returning result to caller.
-return-nodes
-   result:success
+   case:int:401
+      throw:401 Unauthorized – You must log in to submit feedback
+
+   case:int:403
+      throw:403 Forbidden – You don’t have permission to perform this action
+
+   case:int:404
+      throw:404 Not Found – The feedback endpoint does not exist
+
+   case:int:500
+      throw:500 Internal Server Error – Please try again later
+
+   default
+      set-value:x:@.feedback.status
+         .:Unhandled response – unknown status code
+
+// Return the result
+yield
+   result:x:@.feedback.status

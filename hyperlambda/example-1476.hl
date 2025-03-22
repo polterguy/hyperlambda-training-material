@@ -1,11 +1,25 @@
 
-// Write a Hyperlambda snippet that opens a connection to 'warehouse_db' and gets recent inventory changes.
+// Retrieves the specified [username] and return information associated with the user.
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Opens a connection to "warehouse_db" and gets recent inventory changes.
-.result
-data.connect:warehouse_db
-   database-type:sqlite
-   data.select:select * from inventory_changes order by modified_at desc limit 15
-      database-type:sqlite
-   add:x:@.result
-      get-nodes:x:@data.select/*
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+
+// Opens up database connection.
+data.connect:[generic|magic]
+
+   // Inserting user into database.
+   data.read
+      table:users
+      columns
+         username
+         created
+      where
+         and
+            username.eq:x:@.arguments/*/username
+   yield
+      created:x:@data.read/*/*/created

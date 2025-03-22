@@ -1,6 +1,7 @@
 /*
- * Example: Check if a string starts with itself.
+ * This Hyperlambda snippet retrieves the name of a node that has no value.
  */
-// Returns true
-strings.starts-with:Test
-   .:Test
+
+.data
+   foo
+get-name:x:@.data/*

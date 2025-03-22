@@ -1,5 +1,10 @@
+// Execute an action if at least one condition is true
 
-// Example: Convert an already uppercase string (no change).
-
-// Result: "HELLO"
-strings.to-upper:HELLO
+.result
+if
+   or
+      .:bool:false
+      .:bool:true
+   .lambda
+      set-value:x:../*/.result
+         .:OK

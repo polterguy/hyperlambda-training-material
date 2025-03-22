@@ -1,4 +1,3 @@
-// Convert [.foo]'s value to int
-.foo:57
-convert:x:-
-   type:int
+// How do you declare a 64-bit integer in Hyperlambda?
+
+.transaction-id:long:9223372036854775806

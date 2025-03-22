@@ -1,24 +1,55 @@
 
-// Scrapes the specified URL and returns all hyperlinks found
+// Create a Hyperlambda script for a CRUD read endpoint with paging, sorting, and filtering that selects records from the questions table in the magic database, returning question_id, question, and questionnaire, ensuring authentication and authorization for root and admin roles.
 .arguments
+   limit:long
+   offset:long
+   order:string
+   direction:string
+   questions.question_id.eq:long
+   questions.question.like:string
+   questions.question.eq:string
+   questions.questionnaire.like:string
+   questions.questionnaire.eq:string
+.type:crud-read
 
-   // Mandatory argument and becomes the URL the function will scrape for hyperlinks to return.
-   url:string
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // Optional argument that filters out any URLs not starting with the specified string.
-   starts_with:string
+// Opening up our database connection.
+data.connect:[generic|magic]
+   database-type:sqlite
 
-   // Optional argument for how many URLs to return. If not specified the function will return all hyperlinks found.
-   max:int
-.type:public
+   // Parametrising our read invocation with ordering arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
 
-// Parametrising our slot invocation.
-add:x:./*/signal
-   get-nodes:x:@.arguments/*
+   // Parametrising our read invocation with paging arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
 
-// Invoking slot doing the heavy lifting for us.
-signal:magic.http.html2markdown-links
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
 
-// Returning result to caller.
-yield
-   result:x:@signal
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:questions
+      columns
+         questions.question_id
+         questions.question
+         questions.questionnaire
+         questions.type
+         questions.context
+         questions.name
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

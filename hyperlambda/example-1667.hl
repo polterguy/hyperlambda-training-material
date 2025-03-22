@@ -1,13 +1,15 @@
-// Switch-case with a default when no case matches
-.val:baz
-.result
-switch:x:@.val
-   case:foo
-      set-value:x:@.result
-         .:First
-   case:bar
-      set-value:x:@.result
-         .:Second
-   default
-      set-value:x:@.result
-         .:None
+
+// Write a Hyperlambda snippet that counts products in the 'inventory_db' database from the 'products' table.
+
+// Counts products in the "inventory_db" database from the "products" table.
+data.connect:inventory_db
+   database-type:sqlite
+
+   // Counting total products.
+   data.read
+      database-type:sqlite
+      table:products
+      columns
+         count(*)
+            as:count
+      limit:long:1

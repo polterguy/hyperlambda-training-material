@@ -1,8 +1,10 @@
-/*
- * Checking existence of immediate children only.
- * The `exists` slot should return `true` since `.dest` has one direct child being `sub`.
- */
-.dest
-   sub
-      foo
-exists:x:-/*
+// Checks for the 'manager' role and sets result accordingly.
+
+.result
+try
+   auth.ticket.verify:manager
+   set-value:x:@.result
+      .:Access granted
+.catch
+   set-value:x:@.result
+      .:Access denied

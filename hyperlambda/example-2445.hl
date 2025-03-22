@@ -1,14 +1,6 @@
 
-// Write a Hyperlambda snippet demonstrating multiple [fork] calls with different delays.
+// Set all inactive users to have NULL last_login
+data.connect:authDB
+   data.execute:UPDATE users SET last_login = NULL WHERE active = 0
 
-// Demonstrates multiple [fork] calls with different delays.
-fork
-   sleep:700
-   log.info:Executed after 700ms
-fork
-   sleep:1500
-   log.info:Executed after 1500ms
-fork
-   sleep:300
-   log.info:Executed after 300ms
-log.info:Main execution continues...
+   // Executes the UPDATE; number of affected records returned

@@ -1,5 +1,5 @@
-/**
- * This example deletes "/cache/tempfile.tmp".
- * If the file does not exist, an error will be thrown.
- */
-io.file.delete:/cache/tempfile.tmp
+
+// Ensures the module's database exists and is updated by running migration scripts.
+signal:magic.modules.ensure-database
+   module:scraper
+   database:scraper

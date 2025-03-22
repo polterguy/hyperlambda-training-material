@@ -1,8 +1,17 @@
+/*
+ * Save this file as `/modules/profile/endpoints/set-age.hl`
+ * This exposes an HTTP POST endpoint at `/profile/set-age`
+ *
+ * Requires `age` to be an integer between 18 and 120.
+ */
 
-// Example: Remove a substring by replacing it with an empty string.
-.sentence:Apples and oranges
-strings.replace:x:@.sentence
-   .:"and "
-   .:
+.arguments
+   age:int
 
-// Result: "Apples oranges" (removed "and ")
+validators.mandatory:x:@.arguments/*/age
+validators.enum:x:@.arguments/*/age
+   min:int:18
+   max:int:120
+
+yield
+   result:Age accepted

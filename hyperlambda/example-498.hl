@@ -1,7 +1,31 @@
 
-// Connect to the "sakila" database using the default connection string (SQLite) and retrieve actors (default adapter from config)
-data.connect:sakila
-   data.read
+// Write a Hyperlambda script to list all files in a specified folder, with an optional filter to match file names.
+.arguments
+   folder:string
+   filter:string
+.type:internal
 
-      // Reads from the "actor" table (returns first 25 records by default)
-      table:actor
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Listing all files in specified folder.
+io.file.list:x:@.arguments/*/folder
+
+// Checking if we have a filter, and if so, only return files matching filter.
+if
+   exists:x:@.arguments/*/filter
+   .lambda
+
+      // Filtering out files not matching filter condition.
+      for-each:x:@io.file.list/*
+         if
+            strings.contains:x:@.dp/#
+               get-value:x:@.arguments/*/filter
+            .lambda
+               add:x:@for-each/./*/return-nodes
+                  get-nodes:x:@.dp/#
+      return-nodes
+else
+
+   // Returning all files from above invocation to caller.
+   return-nodes:x:@io.file.list/*

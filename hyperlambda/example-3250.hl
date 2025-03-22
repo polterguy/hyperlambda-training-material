@@ -1,5 +1,10 @@
-/*
- * Example: Convert a lowercase string to uppercase.
- */
-// Result: "HELLO"
-strings.to-upper:hello
+// [yaml2json] example no. 1
+.yaml:@"
+server:
+  host: localhost
+  port: 8080
+features:
+  login: true
+  registration: false
+"
+yaml2json:x:@.yaml

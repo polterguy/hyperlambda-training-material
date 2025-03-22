@@ -1,22 +1,38 @@
 
-// Executing the following Hyperlambda results in the following
+// Lists all tables in your MySQL instance.
+slots.create:magic.db.mssql.tables
 
-// When executing the following Hyperlambda
-.result
-.foo:whatever
-if:x:-
-   set-value:x:@.result
-      .:Yup!
-else
-   set-value:x:@.result
-      .:Nope!
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/database
 
-// We end up with this result
-.result:Yup!
-.foo:whatever
-if:bool:true
-   set-value:x:@.result
-      .:Yup!
-else:bool:false
-   set-value:x:@.result
-      .:Nope!
+   // Opens up our connection
+   .connection:[master]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               get-value:x:@.arguments/*/database
+               .:]
+   else
+      set-value:x:@.connection
+         strings.concat
+            .:[generic|
+            get-value:x:@.arguments/*/database
+            .:]
+   mssql.connect:x:@.connection
+
+      // Runs our query
+      mssql.select:"select table_schema + '.' + table_name as \"table\"\n   from information_schema.tables\n   where table_type='base table' and table_name != 'sysdiagrams'"
+      return-nodes:x:@mssql.select/*

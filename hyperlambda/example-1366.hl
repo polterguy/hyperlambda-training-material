@@ -1,40 +1,16 @@
 
-// Create one record in your Artist table in your chinook database
-.arguments
+// Create a Hyperlambda snippet that loops while [.stock] is above 0.
 
-   // ArtistId column value
-   ArtistId:long
+// Loops while [.stock] is above 0.
+.stock:int:5
+while
+   gt
+      get-value:x:@.stock
+      .:int:0
+   .lambda
 
-   // Name column value
-   Name:string
+      // Logging stock status.
+      log.info:Stock available
 
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:Artist
-      return-id:bool:false
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      result:success
+      // Decrementing stock.
+      math.decrement:x:@.stock

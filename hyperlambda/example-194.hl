@@ -1,17 +1,5 @@
-// Use nested data.connect to interact with two databases in one snippet
-data.connect:MainDB
-   data.read
+// Clearing only cache items related to product details.
 
-      // Query orders from MainDB
-      table:orders
+cache.clear:products.details
 
-   // Insert a log in LogsDB
-   data.connect:LogsDB
-      data.create
-         table:log_storage
-         values
-            message:"Checked orders"
-
-   data.read
-      // Back to MainDB connection (still open) to re-query orders
-      table:orders
+// This removes only items with keys that start with "products.details".

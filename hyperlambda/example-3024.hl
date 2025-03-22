@@ -1,11 +1,10 @@
+/*
+ * This Hyperlambda snippet retrieves a single value using `get-first-value`.
+ *
+ * 1. The `.src` node is assigned the value `"foo1"`.
+ * 2. The `get-first-value` slot retrieves its value.
+ * 3. The expected output is `"foo1"`.
+ */
 
-// Create a Hyperlambda script to connect to a POP3 server, retrieve all emails, and create a log entry for each email.
-mail.pop3.fetch
-   .lambda
-
-      /*
-       * Lambda object evaluated once for every
-       * email fetched from POP3 server.
-       */
-      log.info
-         lambda2hyper:x:./.
+.src:foo1
+get-first-value:x:../*/.src

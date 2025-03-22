@@ -1,13 +1,7 @@
-// This example connects to the 'kingdom' database and reads records from the 'castles' table.
-sqlite.connect:kingdom
-   sqlite.read
-      table:castles
-      columns
-         name
-         age
-      where
-         and
-            age.mteq:int:500
-      order:age
-      direction:desc
-      limit:int:3
+
+// Example: Extract with length exceeding string bounds (returns till end).
+strings.substring:Hello
+   .:2
+   .:10
+
+// Result: "llo"

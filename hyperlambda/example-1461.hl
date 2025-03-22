@@ -1,15 +1,21 @@
-// Greets the user dynamically using string interpolation and yields the message
-slots.create:greet.user
-   strings.concat
-      .:"Hello "
-      get-value:x:@.arguments/*/name
-   math.add:x:@.arguments/*/age
-      .:int:5
-   unwrap:x:+/*
-   return-nodes
-      message:x:@strings.concat
-      five-years-from-now-you-are:x:@math.add
 
-execute:greet.user
-   name:Alice
-   age:int:5
+// Create a Hyperlambda script to generate a scatter chart image with specified dimensions, data points, line width, marker size, and color.
+image.chart:scatter
+   filename:/scatter.png
+   width:400
+   height:300
+   data-x
+      .:1
+      .:2
+      .:3
+      .:4
+      .:5
+   data-y
+      .:1
+      .:4
+      .:9
+      .:16
+      .:25
+   line-width:5
+   marker-size:15
+   color:#55aa5555

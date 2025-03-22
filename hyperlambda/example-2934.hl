@@ -1,29 +1,11 @@
+/*
+ * This Hyperlambda snippet demonstrates formatting an integer with leading zeros.
+ *
+ * 1. The `.foo` node is defined with an integer value of `57`.
+ * 2. The `format` slot applies the pattern `"{0:00000}"`, ensuring a 5-digit number with leading zeros.
+ * 3. The result will be `"00057"`.
+ */
 
-// Compiles C# code files required to wire up module correctly
-io.file.load:/modules/netsuite/magic.startup/csharp/GenerateToken.cs.raw
-
-// Compiling file into an assembly.
-system.compile
-   references
-      .:netstandard
-      .:System.Linq
-      .:System.Runtime
-      .:System.Net.Http
-      .:System.Private.Uri
-      .:System.ComponentModel
-      .:System.Private.CoreLib
-      .:System.Linq.Expressions
-      .:System.Security.Cryptography
-      .:Microsoft.IdentityModel.Tokens
-      .:System.IdentityModel.Tokens.Jwt
-      .:Microsoft.IdentityModel.Abstractions
-      .:Newtonsoft.Json
-      .:magic.node
-      .:magic.node.extensions
-      .:magic.signals.contracts
-      .:System.Net.Primitives
-   code:x:@io.file.load
-   assembly-name:dynamic.magic.lambda.netsuite.dll
-
-// Loading assembly as plugin now that we've created it.
-system.plugin.load:x:@system.compile
+.foo:int:57
+format:x:-
+   pattern:"{0:00000}"

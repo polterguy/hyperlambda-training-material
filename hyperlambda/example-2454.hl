@@ -1,11 +1,6 @@
 
-// Write a Hyperlambda snippet that waits for multiple file operations to finish.
+// Example: Use a variable as the input to uppercase.
+.text:make me upper
 
-// An example of waiting for multiple file operations to finish.
-join
-   fork
-      io.file.read:/var/logs/app.log
-   fork
-      io.file.read:/var/logs/system.log
-   fork
-      io.file.read:/var/logs/security.log
+// Result: "MAKE ME UPPER"
+strings.to-upper:x:@.text

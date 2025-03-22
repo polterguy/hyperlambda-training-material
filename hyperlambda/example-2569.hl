@@ -1,21 +1,9 @@
 
-// Lists all SQLite database in your default data folder.
-slots.create:magic.db.sqlite.databases
+// Returns items from your DATABASE_NAME and TABLE_NAME.
+data.connect:DATABASE_NAME
+   database-type:sqlite
 
-   // Listing files in data folder and returning to caller.
-   io.file.list:/data/
-   for-each:x:-/*
-      if
-         strings.ends-with:x:@.dp/#
-            .:.db
-         .lambda
-            strings.split:x:@.dp/#
-               .:/
-            strings.split:x:-/0/-
-               .:.
-            unwrap:x:+/*/*/*
-            add:x:../*/return-nodes
-               .
-                  .
-                     db:x:@strings.split/0
-   return-nodes
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:TABLE_NAME

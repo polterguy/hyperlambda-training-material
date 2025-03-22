@@ -1,9 +1,7 @@
 /*
- * Converts a lambda structure to Hyperlambda text while including inline comments.
- * Preserves [..] nodes when converting back to text.
+ * Example: Trim specific characters from both ends.
  */
-.log
-   info:This is structured
-   ..:This is a comment that will be preserved
-lambda2hyper:x:-/*
-   comments:bool:true
+// The character "?" at both ends will be removed
+strings.trim:"??hello??"
+   .:"?"
+// Result: "hello"

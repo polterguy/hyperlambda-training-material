@@ -1,6 +1,6 @@
 
-// Example: Use a variable for the string to encode.
-.text:key=value&flag=true
+// Connect using a named connection string "foo" and database "bar", then count records
+data.connect:[foo|bar]
+   data.scalar:select count(*) from users
 
-// Result: "key%3Dvalue%26flag%3Dtrue"
-strings.url-encode:x:@.text
+   // [foo|bar] uses connection string "foo" and database "bar" from configuration

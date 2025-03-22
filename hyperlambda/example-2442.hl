@@ -1,11 +1,6 @@
 
-// Generate a Hyperlambda snippet demonstrating delayed execution using [fork].
+// Set all inactive users to have NULL last_login
+data.connect:authDB
+   data.execute:UPDATE users SET last_login = NULL WHERE active = 0
 
-/*
- * Demonstrates delayed execution using [fork].
- * The inner log runs after the outer log due to sleep.
- */
-fork
-   sleep:2000
-   log.info:Delayed message
-log.info:Immediate message
+   // Executes the UPDATE; number of affected records returned

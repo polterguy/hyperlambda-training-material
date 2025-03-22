@@ -1,11 +1,20 @@
-/*
- * This Hyperlambda snippet demonstrates formatting a decimal number with two decimal places.
- *
- * 1. The `.foo` node is defined as a decimal with a value of `57`.
- * 2. The `format` slot applies the pattern `"{0:0.00}"`, ensuring two decimal places.
- * 3. The result will be `"57.00"`.
- */
 
-.foo:decimal:57
-format:x:-
-   pattern:"{0:0.00}"
+// Create a Hyperlambda if/else-if/else condition that checks two variables, 'var1' and 'var2'. Log a message if the first condition is true, another message if the second condition is true, and a default message if neither condition is true.
+if
+   eq:x:@.arguments/*/var1
+      .:bool:true
+   .lambda
+
+      // First condition is true.
+      log.info:First condition is true
+else-if
+   eq:x:@.arguments/*/var2
+      .:bool:true
+   .lambda
+
+      // Second condition is true.
+      log.info:Second condition is true
+else
+
+   // Both above conditions are false.
+   log.info:Both conditions are false

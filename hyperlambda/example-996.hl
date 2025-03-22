@@ -1,35 +1,46 @@
 
-// Create a Hyperlambda endpoint for a CRUD create endpoint that creates an item in the users table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+// Returns true if the specified username is available.
 .arguments
-   username:string
-   password:string
-.type:crud-create
+   username
+      type:string
+      mandatory:bool:true
+   throw
+      type:bool
+      mandatory:bool:false
+.icon:supervisor_account
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+// Applying defaults.
+validators.default:x:@.arguments
+   throw:bool:false
 
-// Sanity checking invocation
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/password
-eval:x:+
-signal:transformers.hash-password
-   reference:x:@.arguments/*/password
-
-// Opening up database connection.
+// Opens up database connection.
 data.connect:[generic|magic]
 
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
+   // Selecting user from database such that we can check if it exists or not.
+   data.read
       table:users
-      return-id:bool:false
-      values
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
 
-   // Returning result of above invoction to caller.
-   response.status.set:201
-   unwrap:x:+/*
-   return
-      result:success
+   // Checks if above invocation returned anything.
+   if
+      exists:x:@data.read/*
+      .lambda
+
+         // Checking if we should throw an exception instead of returning false.
+         if:x:@.arguments/*/throw
+            throw:User already exists
+               status:int:400
+               public:bool:true
+
+         // User exists, returning false to caller.
+         return
+            available:bool:false
+   else
+
+      // User does not exist, returning true to caller.
+      return
+         available:bool:true

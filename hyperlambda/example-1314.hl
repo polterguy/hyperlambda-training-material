@@ -1,13 +1,5 @@
 
-// Create a Hyperlambda snippet that fetches users from the authentication database and its user_accounts table.
-
-// Fetches users from the authentication database and its user_accounts table.
-data.connect:auth_db
-
-   // Database type set to PostgreSQL.
-   database-type:pgsql
-
-   // Querying the database for users.
-   data.read
-      database-type:pgsql
-      table:user_accounts
+// Create a Hyperlambda script to search for a query using DuckDuckGo, scrape URLs in parallel, and return the result as Markdown.
+signal:magic.http.duckduckgo-and-scrape
+   query:Who won the US Open in 2023?
+   max:int:5

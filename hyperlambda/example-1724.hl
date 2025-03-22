@@ -1,7 +1,33 @@
-// How to use string builder in Hyperlambda
-strings.builder
-   strings.builder.append:Hello
-   strings.builder.append:" "
-   strings.builder.append:world
 
-// Results in; Hello world
+// Delete one record from your Artist table in your chinook database
+.arguments
+
+   // Primary key of record to delete, mandatory argument
+   ArtistId:long
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/ArtistId
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Artist
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

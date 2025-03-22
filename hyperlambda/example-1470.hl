@@ -1,2 +1,12 @@
-// Gets parent of .foo and fetches its next sibling named 'meta'
-.sibling-via-parent:x:@.foo/+/meta
+
+// Else-if using an expression shorthand for its condition
+.flag:bool:true
+.result
+if
+   .:bool:false
+   .lambda
+      set-value:x:@.result
+         .:First
+else-if:x:@.flag
+   set-value:x:@.result
+      .:Second

@@ -1,42 +1,91 @@
 
-/*
- * Sends an email
- * 
- * Send an email to the specified `email` and `name` with the specified `subject` and `body`.
- */
+// Returns all cloudlets in the system.
 .arguments
+   username
+      type:string
+      mandatory:bool:false
+   name
+      type:string
+      mandatory:bool:false
+   limit
+      type:int
+      mandatory:bool:false
+   offset
+      type:int
+      mandatory:bool:false
 
-   // Mandatory name of contact to send email to
-   name:string
+// Applying defaults
+validators.default:x:@.arguments
+   limit:int:5
+   offset:int:0
 
-   // Mandatory email address of contact to send email to
-   email:string
+// Connecting to database.
+data.connect:[generic|hub]
 
-   // Mandatory subject of email
-   subject:string
+   /*
+    * Checking if caller provided a [username] argument,
+    * and if so, applying it to [where].
+    */
+   if
+      and
+         exists:x:@.arguments/*/username
+         not-null:x:@.arguments/*/username
+      .lambda
 
-   // Mandatory body of email
-   body:string
+         // Adding [user.eq] filter criteria to [data.read].
+         unwrap:x:+/*/*
+         add:x:@data.connect/*/data.read/*/where/*/and
+            .
+               user.eq:x:@.arguments/*/username
 
-// Making sure workflow is discoverable as such from machine learning component.
-.type:public
+   /*
+    * Checking if caller provided a [name] argument,
+    * and if so, applying it to [where].
+    */
+   if
+      and
+         exists:x:@.arguments/*/name
+         not-null:x:@.arguments/*/name
+      .lambda
 
-/*
- * Send an email to the specified [name]/[email] recipient, with the specified [subject] and [body].
- *
- * Optionally supply [from] and [from-email] as name/email sender, and/or [reply-to] and [reply-to-email]
- * as the email to reply to. If you don't supply [from] or [from-email] then this action will use the
- * default sender settings from your configuration.
- */
-execute:magic.workflows.actions.execute
-   name:email
-   filename:/misc/workflows/actions/misc/email.hl
-   arguments
-      name:x:@.arguments/*/name
-      email:x:@.arguments/*/email
-      subject:x:@.arguments/*/subject
-      body:x:@.arguments/*/body
-      html:bool:true
+         // Adding [user.eq] filter criteria to [data.read].
+         unwrap:x:+/*/*
+         add:x:@data.connect/*/data.read/*/where/*/and
+            .
+               name.eq:x:@.arguments/*/name
 
-return
-   result:success
+   // Removing [where] if there are no conditions.
+   if
+      not-exists:x:@data.connect/*/data.read/*/where/*/and/*
+      .lambda
+         remove-nodes:x:@data.connect/*/data.read/*/where
+
+   // Adding [limit] and [offset]
+   add:x:@data.connect/*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+
+   // Reading records.
+   data.read
+      table:cloudlets
+      columns
+         created
+         name
+         user
+         plan
+         "('https://' || name || '-' || user || '.' || cluster)"
+            as:login
+      where
+         and
+      order:created
+      direction:desc
+
+   // Iterating through above result to change it to dashboard login link.
+   for-each:x:@data.read/*
+      set-value:x:@.dp/#/*/login
+         strings.concat
+            .:"https://dashboard.ainiro.io?backend="
+            strings.url-encode:x:@.dp/#/*/login
+
+   // Returning result of above invocation back to caller.
+   return-nodes:x:@data.read/*

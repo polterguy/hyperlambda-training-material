@@ -1,16 +1,22 @@
-
-// Generate a Hyperlambda snippet that duplicates nodes from [.registry1] and [.registry2] and inserts them into [.storage].
-
-// Duplicates nodes from [.registry1] and [.registry2] and inserts them into [.storage]
-.registry1
-   entryFirst:infoFirst
-   entrySecond:infoSecond
-   entryThird:infoThird
-.registry2
-   entryFourth:infoFourth
-   entryFifth:infoFifth
-   entrySixth:infoSixth
-.storage
-add:x:@.storage
-   get-nodes:x:@.registry1/*
-   get-nodes:x:@.registry2/*
+// Create stacked chart
+image.chart:stacked
+   filename:/stacked-chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets

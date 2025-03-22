@@ -1,17 +1,9 @@
 
-// Generate a Hyperlambda example with string variables, demonstrating quoting variations, newlines, and multi-line strings.
+// Returns items from your DATABASE_NAME and TABLE_NAME.
+data.connect:DATABASE_NAME
+   database-type:sqlite
 
-// No special characters, no quotes needed
-.textAlpha:demo
-
-// String contains a colon, needs quotes
-.textBeta:"value:pair"
-
-// Multi-line string with @ notation
-.textGamma:"first line\nsecond line"
-
-// Alternative single quotes usage
-.textDelta:quotedText
-
-// Newline escaping within a string
-.textEpsilon:"split\nline"
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:TABLE_NAME

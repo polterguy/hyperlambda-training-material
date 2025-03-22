@@ -1,9 +1,9 @@
-// Calculates average score per category by dividing total score by number of categories
-.scores
-   total:int:270
-   categories:int:3
-   average
-set-value:x:@.scores/*/average
-   math.divide
-      get-value:x:@.scores/*/total
-      get-value:x:@.scores/*/categories
+/*
+ * Retrieves the value of a specific node.
+ *
+ * 1. The `.foo` node contains `"hello world"`.
+ * 2. The `get-value` slot retrieves its value.
+ */
+
+.foo:hello world
+get-value:x:@.foo

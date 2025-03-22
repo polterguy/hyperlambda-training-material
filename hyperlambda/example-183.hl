@@ -1,4 +1,5 @@
-// Set all inactive users to have NULL last_login
-data.connect:authDB
-   data.execute:UPDATE users SET last_login = NULL WHERE active = 0
-   // Executes the UPDATE; number of affected records returned
+
+// Hash password for then to verify it
+crypto.password.hash:SomePasswordHere
+crypto.password.verify:SomePasswordHere
+   hash:x:@crypto.password.hash

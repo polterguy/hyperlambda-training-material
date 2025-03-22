@@ -1,5 +1,8 @@
-/*
- * Example: URL-decode a fully encoded URL.
- */
-strings.url-decode:https%3A%2F%2Fexample.com%2Ffoo%20bar
-// Result: "https://example.com/foo bar"
+// This example connects to the 'restaurant' database and inserts a new menu item into the 'menu' table.
+sqlite.connect:restaurant
+   sqlite.create
+      table:menu
+      values
+         dish_name:Margherita Pizza
+         price:decimal:8.50
+         category:Pizza

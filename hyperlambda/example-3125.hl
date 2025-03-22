@@ -1,11 +1,17 @@
-// While loop for 20 iterations logging a message
-.no:int:0
-while
-   lt
-      get-value:@.no
-      .:int:20
-   .lambda
+/*
+ * Save this file as `/modules/auth/endpoints/login.hl`
+ * This exposes an HTTP POST endpoint at `/auth/login`
+ *
+ * It requires `email` and `password` as mandatory arguments.
+ * If either is missing, validation will fail and the request will be rejected automatically.
+ */
 
-      // Executing log inside the loop
-      log.info:"Howdy from while"
-      math.increment:@.no
+.arguments
+   email
+   password
+
+validators.mandatory:x:@.arguments/*/email
+validators.mandatory:x:@.arguments/*/password
+
+yield
+   success:User logged in (simulated)

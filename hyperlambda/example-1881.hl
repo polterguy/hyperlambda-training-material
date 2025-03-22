@@ -1,11 +1,3 @@
-// Connects to the 'aquarium' database and retrieves fish species from the 'fishes' table where the habitat is 'Freshwater'.
-pgsql.connect:aquarium
-   pgsql.read
-      table:fishes
-      columns
-         species
-         habitat
-      where
-         and
-            habitat:Freshwater
-      limit:int:5
+// Example: Connect to the SQLite 'foo' database using the 'generic' connection string and create a backup as 'foo.backup' filename
+sqlite.connect:[generic|foo]
+   sqlite.backup:foo.backup

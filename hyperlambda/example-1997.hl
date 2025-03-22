@@ -1,11 +1,16 @@
-// Create an endpoint taking a name argument, check the name, if it's 'Thomas' then return 'Hello boss', otherwise return 'Hello stranger'.
-.arguments
-   name:string
-if
-   eq:x:@.arguments/*/name
-      .:Thomas
-   .lambda
-      return
-         result:Hello boss
-return
-   result:Hello stranger
+// Switch lambda
+.val:fooXX
+.result
+switch:x:@.val
+
+   case:bar
+      set-value:x:@.result
+         .:Oops
+
+   case:foo
+      set-value:x:@.result
+         .:Oops2.0
+
+   default
+      set-value:x:@.result
+         .:Success!

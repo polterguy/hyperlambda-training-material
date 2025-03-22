@@ -1,15 +1,11 @@
-/*
- * Example: Embed multiple inline expressions in a single string.
- */
-strings.mixin:@"Sum {{
-math.add
-   .:int:1
-   .:int:2
-return:x:-
-}} and Product {{
-math.multiply
-   .:int:3
-   .:int:4
-return:x:-
-}}"
-// Result: "Sum 3 and Product 12"
+
+// Generate a Hyperlambda snippet that retrieves product inventory from 'inventory_db'.
+
+// Retrieves product inventory from "inventory_db".
+.result
+data.connect:inventory_db
+   database-type:mysql
+   data.select:select product_id, name, stock, price from products where stock > 0 order by stock asc
+      database-type:mysql
+   add:x:@.result
+      get-nodes:x:@data.select/*

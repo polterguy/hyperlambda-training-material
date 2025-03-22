@@ -1,5 +1,5 @@
-// Compare two values for inequality using inline syntax
+// Connects to logistics SQLite database using 'azure' connection string
+data.connect:[azure|logistics]
+   data.select:select * from contacts
 
-.foo1:OK
-neq:x:../*/.foo1
-   .:OK
+// You can only use slots requiring a database connection from INSIDE the connect slot!

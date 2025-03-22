@@ -1,12 +1,8 @@
+// Demonstrating nested [and] slots
+and
+   .:bool:true
+   and
+      .:bool:true
+      .:bool:false
 
-// Example: Split a string with consecutive delimiters (empty segments).
-strings.split:one,,two
-   .:,
-
-/*
- * Resulting parts:
- * .:one
- * .:two
- * 
- * Notice, empty strings are ignored
- */
+// Becomes false

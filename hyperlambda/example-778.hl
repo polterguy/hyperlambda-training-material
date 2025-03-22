@@ -1,6 +1,7 @@
-// Load a file, convert it to lambda, and then execute it
-io.file.load:/foo.hl
 
-hyper2lambda:x:-
-
-eval:x:-
+// Create an exception handler in Hyperlambda that logs the error and returns a status 500 response.
+log.error:x:@.arguments/*/message
+   url:x:@.arguments/*/path
+return
+   error:An error occurred in Hyperlambda processing.
+   status:int:500

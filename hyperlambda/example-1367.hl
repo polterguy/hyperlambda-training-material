@@ -1,14 +1,34 @@
 
-// Write a Hyperlambda script to return a specified CSS file to the caller, with options for position, color, link, start, and end.
+// Creates an item in your clusters table in your [generic|hub] database according to the specified arguments.
 .arguments
-   file:string
-   position:string
-   color:string
-   link:string
-   start:string
-   end:string
-   v:string
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/include-style.css.get.hl
-return:x:-
+   id:string
+   country:string
+   name:string
+   enabled:bool
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+validators.mandatory:x:@.arguments/*/country
+validators.mandatory:x:@.arguments/*/name
+
+// Opening up database connection.
+data.connect:[generic|hub]
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      table:clusters
+      return-id:bool:false
+      values
+
+   // Returning result of above invoction to caller.
+   response.status.set:201
+   unwrap:x:+/*
+   return
+      result:success

@@ -1,9 +1,6 @@
 /*
- * Converts a Hyperlambda string into an executable lambda object.
- * Useful for dynamically parsing and executing raw Hyperlambda.
+ * Example: Check if a string starts with a substring that is not at the beginning.
  */
-.hl:@"log.info:""This is logged from text"""
-hyper2lambda:x:-
-
-// This executes the above node
-eval:x:-
+// Returns false
+strings.starts-with:HelloWorld
+   .:World

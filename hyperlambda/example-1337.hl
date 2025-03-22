@@ -1,28 +1,35 @@
 
-// Create a Hyperlambda action to throw an exception with a mandatory 'message'. Optionally include 'status' and 'public' to control HTTP propagation and status code. Validate and apply defaults.
+// Deletes the user's account entirely on server.
 .arguments
 
-   // Notice, this is action syntax
-   message
-      type:string
-      mandatory:bool:true
-   status
-      type:int
-      mandatory:bool:false
-   public
-      type:bool
-      mandatory:bool:false
-.icon:warning
+// Ensuring user is authenticated to invoke endpoint.
+auth.ticket.verify:guest
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/message
+// Retrieving currently authenticated user.
+auth.ticket.get
 
-// Applying defaults.
-validators.default:x:@.arguments
-   status:int:500
-   public:bool:false
+// Verifying user doesn't have any cloudlets.
+data.connect:[generic|hub]
+   data.read
+      table:cloudlets
+      where
+         and
+            user.eq:x:@auth.ticket.get
+   if
+      exists:x:@data.read/*/*
+      .lambda
+         throw:You have to delete all cloudlets before you delete your account
+            public:true
+            status:400
 
-// Throwing exception.
-throw:x:@.arguments/*/message
-   public:x:@.arguments/*/public
-   status:x:@.arguments/*/status
+// Deleting user from magic database.
+data.connect:[generic|magic]
+   data.delete
+      table:users
+      where
+         and
+            username.eq:x:@auth.ticket.get
+
+// Returning success to caller.
+return
+   result:success

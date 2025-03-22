@@ -1,27 +1,18 @@
-
-// Create a Hyperlambda snippet that executes [.lambda] only if both conditions are met.
-
-// Executes [.lambda] only if both conditions are met.
-.output
-.numA:int:6
-.numB:int:12
-if
-   and
-
-      // Less than check
-      lt:x:@.numA
-         .:int:7
-
-      // Greater than check
-      mt:x:@.numB
-         .:int:11
-   .lambda
-
-      // Setting [.output] to true
-      set-value:x:@.output
-         .:bool:true
-else
-
-   // Setting [.output] to false
-   set-value:x:@.output
-      .:bool:false
+// This code loads a C# source file and replaces outdated method names with modern equivalents.
+// Specifically, it changes "BeginTransaction" to "StartTransaction" and "CommitChanges" to "SaveAll".
+.data
+   .
+      what:BeginTransaction
+      with:StartTransaction
+   .
+      what:CommitChanges
+      with:SaveAll
+.filename:/src/Data/Repository.cs
+.result
+set-value:x:-
+   io.file.load:x:@.filename
+for-each:x:@.data/*
+   set-value:x:@.result
+      strings.replace:x:@.result
+         get-value:x:@.dp/#/*/what
+         get-value:x:@.dp/#/*/with

@@ -1,4 +1,5 @@
 
-// Retrieve a node's value using expressions
-.foo:hello world
-get-value:x:@.foo
+// Hash password for then to verify it
+crypto.password.hash:SomePasswordHere
+crypto.password.verify:SomePasswordHere
+   hash:x:@crypto.password.hash

@@ -1,6 +1,9 @@
-// Invokes Dog CEO API using HTTP GET to fetch a random dog image
-.dog-image
-http.get:"https://dog.ceo/api/breeds/image/random"
-   convert:true
-set-value:x:@.dog-image
-   get-value:x:@http.get/*/content/*/message
+
+// Create a Hyperlambda endpoint that returns all endpoints in the system along with their associated meta information, ensuring the user is authorized to access the endpoint.
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Returns all endpoints to caller.
+endpoints.list
+return-nodes:x:@endpoints.list/*

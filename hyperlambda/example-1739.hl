@@ -1,3 +1,4 @@
-// Increment the value of .count by 1
-.count:int:10
-math.increment:x:@.count
+// Saves a piece of string to the memory cache and retrieves it again.
+cache.set:foo
+   value:some cache value
+cache.get:foo

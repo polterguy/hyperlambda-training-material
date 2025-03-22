@@ -1,11 +1,12 @@
-/*
- * This example sets [.result] to the value of the first node named "email"
- * found as a child of [.contact-info].
- */
-
-.result
-.contact-info
-   name:John Doe
-   email:john@example.com
-set-value:x:@.result
-   .:x:@.contact-info/*/email
+// Calculate the dot product of [.list1] x [.list2]
+.list1
+   .:double:0.5
+   .:double:0.7
+   .:double:0.1
+.list2
+   .:double:0.56
+   .:double:0.89
+   .:double:0.33
+math.dot
+   get-nodes:x:@.list1/*
+   get-nodes:x:@.list2/*

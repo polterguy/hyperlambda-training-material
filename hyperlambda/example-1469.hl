@@ -1,11 +1,10 @@
-
-// Create a Hyperlambda action to return the originating IP address of an HTTP request.
-.arguments
-.icon:http
-
-// Retrieving IP address from equest.
-request.ip
-
-// Returning IP address to caller.
-yield
-   ip:x:@request.ip
+/*
+ * Compares the higher of two internal max blocks (e.g., regional vs. global highs).
+ */
+math.max
+   math.max
+      .:int:91
+      .:int:88
+   math.max
+      .:int:85
+      .:int:94

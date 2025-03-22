@@ -1,24 +1,16 @@
 
-// KPI file for displaying 10 last log items
-.name:Latest log items
-.description:10 last log items
-.enabled:bool:true
-.type:table
-.lambda
-   data.connect:[generic|magic]
-      data.read
-         table:log_entries
-         columns
-            content
-            created
-         where
-            and
-               content.like:Robo CRM - %
-         order:created
-         direction:desc
-         limit:10
-      for-each:x:@data.read/*
-         set-value:x:@.dp/#/*/content
-            strings.substring:x:@.dp/#/*/content
-               .:int:11
-      return-nodes:x:@data.read/*
+// Create a Hyperlambda snippet that retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target].
+
+// Retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target]
+.sourceA
+   keyX:valX
+   keyY:valY
+   keyZ:valZ
+.sourceB
+   keyM:valM
+   keyN:valN
+   keyO:valO
+.target
+add:x:@.target
+   get-nodes:x:@.sourceA/*
+   get-nodes:x:@.sourceB/*

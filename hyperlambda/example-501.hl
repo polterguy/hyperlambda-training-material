@@ -1,12 +1,14 @@
-// If with else-if
-.dest
-if
-   .:bool:false
-   .lambda
-      set-value:x:@.dest
-         .:yup!
-else-if
-   .:bool:true
-   .lambda
-      set-value:x:@.dest
-         .:yup2.0!
+
+// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table.
+
+// Queries messages from the messaging database and chat_logs table.
+data.connect:messaging_db
+
+   // Using SQLite.
+   database-type:sqlite
+
+   // Fetching chat history.
+   data.read
+      database-type:sqlite
+      table:chat_logs
+      limit:100

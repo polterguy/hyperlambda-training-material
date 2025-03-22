@@ -1,6 +1,5 @@
 
-// Example: Pattern not found yields an empty result set.
-strings.matches:no digits here
-   .:"\\d+"
+// Example: Capitalize a string starting with a digit (no alphabetical character to capitalize).
 
-// Result: No child nodes (no matches found)
+// Result: "42hello"
+strings.capitalize:42hello

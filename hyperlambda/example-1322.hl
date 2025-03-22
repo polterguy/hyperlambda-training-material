@@ -1,25 +1,48 @@
 
+// Create a function that authenticates a user with a username and password, returning a JWT Bearer token and user extra fields.
+.arguments
+   username:string
+   password:string
+
 /*
- * This script counts the number of Hyperlambda files, in addition to the combined
- * number of nodes, within the specified folder.
+ * Authenticates the user with the specified [username] and [password].
+ * 
+ * Returns a JWT Bearer token that can be used for consecutive requests authorizing user according
+ * to his or her roles.
  */
-.folder:/modules/cms/
-unwrap:x:+/*
-signal:magic.io.file.load-recursively
-   .:x:@.folder
-for-each:x:@signal/*
-   if
-      strings.ends-with:x:@.dp/#
-         .:.hl
-      .lambda
-         hyper2lambda:x:@.dp/#/0
-            comments:true
-         set-value:x:@hyper2lambda/0
-            strings.concat
-               .:"Generate a Hyperlambda with authorization for 'guest' roles files that "
-               get-value:x:@hyper2lambda/0
-         lambda2hyper:x:@hyper2lambda/*
-            comments:true
-         io.file.save:x:@.dp/#
-            get-value:x:@lambda2hyper
-remove-nodes:x:@signal/*
+execute:magic.workflows.actions.execute
+   name:authenticate
+   filename:/modules/registration/workflows/actions/authenticate.hl
+   arguments
+      username:x:@.arguments/*/username
+      password:x:@.arguments/*/password
+
+/*
+ * Returns all extra fields for the specified [username].
+ * 
+ * Notice, will return incomplete values if you want to reference return values in consecutive actions.
+ */
+execute:magic.workflows.actions.execute
+   name:extras-get
+   filename:/modules/registration/workflows/actions/extras-get.hl
+   arguments
+      username:x:@.arguments/*/username
+
+// Returning result to caller.
+
+/*
+ * Transforms the result of multiple actions/arguments into a new object.
+ * 
+ * This is useful if you need a lambda object that's aggregated from the
+ * returned lambda objects from multiple (other) actions.
+ */
+execute:magic.workflows.actions.execute
+   name:transform
+   filename:/misc/workflows/actions/misc/transform.hl
+   arguments
+      params
+         ticket:x:--/execute/=authenticate/*/ticket
+         extra:x:--/execute/=extras-get/*
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

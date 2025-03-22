@@ -1,9 +1,12 @@
-// Returns a list of programming languages using return-nodes
-slots.create:get.languages
-   return-nodes
-      languages
-         .:Python
-         .:JavaScript
-         .:Go
+// Delete an item by ID with authorization, specifying a short timeout
+http.delete:"https://api.example.com/items/123"
 
-execute:get.languages
+   // attach query parameters instead of hardcoding them in URL
+   query
+      category:cars
+
+   // include Bearer token for auth if required by the API
+   token:XYZ_SECRET_TOKEN_123
+
+   // abort if no response within 5 seconds
+   timeout:int:5

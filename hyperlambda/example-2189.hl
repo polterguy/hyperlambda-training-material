@@ -1,8 +1,2 @@
-// Access previous sibling's value
-.day1:Monday
-.day2:Tuesday
-.result
-set-value:x:@.result
-   get-value:x:@.day2/-
-
-// Sets the result node to Monday
+// Connects to bar database using foo connection string from our configuration
+data.connect:[foo|bar]

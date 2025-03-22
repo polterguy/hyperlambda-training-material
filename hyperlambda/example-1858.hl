@@ -1,5 +1,6 @@
 
-// Example: URL-decode an email address.
-strings.url-decode:user%40example.com
+// Example: String consisting entirely of trim characters (result is empty).
 
-// Result: "user@example.com"
+// Result: "" (empty string)
+strings.trim-end:xxx
+   .:x

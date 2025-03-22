@@ -1,8 +1,6 @@
 
-// Generate a Hyperlambda snippet that simulates a database call using [fork].
+// Example: Check if a string starts with a substring that is not at the beginning.
 
-// Demonstrates a simulated database call in a fork.
-fork
-   sleep:2000
-   log.info:Database query completed
-log.info:Processing user request...
+// Returns false
+strings.starts-with:HelloWorld
+   .:World

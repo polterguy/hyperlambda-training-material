@@ -1,6 +1,22 @@
-// Creates a new record in table1 with field1 and field2 having values
-sql.create
-   table:table1
-   values
-      field1:howdy
-      field2:world
+
+// Provide a Hyperlambda example where a boolean status is evaluated using a switch case with a default option.
+
+// Switch case comparison for boolean values.
+.status:bool:true
+.result
+switch:x:@.status
+   case:bool:true
+
+      // If status is true.
+      set-value:x:@.result
+         .:Status is active
+   case:bool:false
+
+      // If status is false.
+      set-value:x:@.result
+         .:Status is inactive
+   default
+
+      // If the value does not match true/false.
+      set-value:x:@.result
+         .:Invalid status

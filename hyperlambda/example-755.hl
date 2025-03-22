@@ -1,11 +1,9 @@
-// Create and update a task
-tasks.create:foo-bar-task-4
-   .lambda
 
-      log.info:Executing foo-bar-task-1
-
-tasks.update:foo-bar-task-4
-   description:This is the foo bar task
-   .lambda
-
-      log.info:Another log entry now!
+// Create a Hyperlambda DELETE endpoint that accepts an 'id' argument and returns a 200 status with a confirmation message.
+.arguments
+   id:int
+response.status.set
+   .:200
+yield
+   message:Record deleted
+   id:x:@.arguments/*/id

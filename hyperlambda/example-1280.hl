@@ -1,39 +1,48 @@
 
-// Create a Hyperlambda script to read or list records from a specified table in a database with optional filtering arguments.
+// Write a Hyperlambda script to return a specified CSS file to the caller.
 .arguments
+   file:string
 
-   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
-   limit:long
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/file
 
-   // Offset into the dataset of where to start retrieving records
-   offset:long
+// Checking if custom CSS file exists.
+.result
+strings.concat
+   .:/etc/system/openai/css/search/
+   get-value:x:@.arguments/*/file
+   .:.css
+if
+   io.file.exists:x:@strings.concat
+   .lambda
 
-   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
-   order:string
+      // Custom template file.
+      set-value:x:@.result
+         io.file.load:x:@strings.concat
+else
 
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   direction:string
+   // Checking if system CSS file exists.
+   strings.concat
+      .:/system/openai/front.files/search/
+      get-value:x:@.arguments/*/file
+      .:.css
+   if
+      io.file.exists:x:@strings.concat
+      .lambda
 
-// Meta data description for endpoint
+         // Generic template file.
+         set-value:x:@.result
+            io.file.load:x:@strings.concat
+   else
 
-// Type of endpoint
-.type:crud-read
+      // Oops, no such file exists.
+      throw:No such AI chat template file exists
+         public:bool:true
+         status:400
 
-// Opening up our database connection.
-data.connect:{database}
-   database-type:{database-type}
+// Making sure we return correct Content-Type to caller, and applying some cache.
+response.headers.set
+   Content-Type:text/css
 
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:{database-type}
-      table:{table}
-      columns
-      where
-         and
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+// Returning result to caller.
+return:x:@.result

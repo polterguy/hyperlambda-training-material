@@ -1,21 +1,35 @@
 
-// Hyperlambda authenticate endpoint
-.arguments
-   username:string
-   password:string
+// Lists all database in your MySQL instance.
+slots.create:magic.db.mssql.databases
 
-/*
- * Authenticates the user with the specified [username] and [password].
- * 
- * Returns a JWT Bearer token that can be used for consecutive requests authorizing user according
- * to his or her roles.
- */
-execute:magic.workflows.actions.execute
-   name:authenticate
-   filename:/modules/auth/workflows/actions/authenticate.hl
-   arguments
-      username:x:@.arguments/*/username
-      password:x:@.arguments/*/password
+   // Opens up our connection
+   .connection:master
+   if
+      and
+         exists:x:@.arguments/*/connection-string
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               .:master]
+   mssql.connect:x:@.connection
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+      // Runs our query
+      mssql.select:select name from master.dbo.sysdatabases where has_dbaccess(name) = 1
+
+      // Renaming "Database" nodes.
+      set-name:x:@mssql.select/*/*
+         .:db
+
+      // Returns the remaining databases to caller.
+      return-nodes:x:@mssql.select/*

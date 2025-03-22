@@ -1,8 +1,8 @@
-/*
- * Example: Use another slot's output as part of the concatenation.
- */
-.prefix:"Value: "
-strings.concat
-   get-value:x:@.prefix
-   strings.to-upper:example
-// Result: "Value: EXAMPLE"
+
+// Example: Trim specific characters from both ends.
+
+// The character "?" at both ends will be removed
+strings.trim:??hello??
+   .:?
+
+// Result: "hello"

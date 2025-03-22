@@ -1,15 +1,6 @@
+// Execute Hyperlambda from a string that creates a log item
+.hl:@"log.info:""This was logged from a piece of text"""
 
-// Generate a Hyperlambda snippet that counts users in the 'auth_db' database from the 'users' table.
+hyper2lambda:x:-
 
-// Counts users in the "auth_db" database from the "users" table.
-data.connect:auth_db
-   database-type:mysql
-
-   // Counting total users.
-   data.read
-      database-type:mysql
-      table:users
-      columns
-         count(*)
-            as:count
-      limit:long:1
+eval:x:-

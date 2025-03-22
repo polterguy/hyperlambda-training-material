@@ -1,2 +1,5 @@
-// This snippet defines a node with an unsigned long (UInt64) value.
-.veryBigNumber:ulong:1234567890123456789
+// String format the value of [.foo]
+format:x:@.foo
+   pattern:"{0:00000}"
+
+// This works similarly to C# `string.Format`

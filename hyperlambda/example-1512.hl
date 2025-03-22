@@ -1,20 +1,42 @@
 
-// Create a Hyperlambda action to set specified HTTP headers in a response. Use 'headers' as a key-value input to determine which headers to set.
+// Create a Hyperlambda script for a CRUD update endpoint that updates an existing item in the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
-   headers
-      type:key-value
-      mandatory:bool:true
-.icon:http
+   name:string
+   description:string
+.type:crud-update
 
-/*
- * Iterating through each header from above invocation and checking if caller is interested in it,
- * and if caller wants this particular header, we make sure we return it below.
- */
-for-each:x:@.arguments/*/headers/*
+// Verifying user is authorized to access endpoint.
+validators.mandatory:x:@.arguments/*/name
+auth.ticket.verify:root
 
-   // Adding currently iterated HTTP header.
-   add:x:../*/response.headers.set
-      get-nodes:x:@.dp/#
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-// Invoking slot responsible for setting response HTTP headers.
-response.headers.set
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
+
+   // Invoking our update slot.
+   data.update
+      table:roles
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning success to caller.
+   response.status.set:202
+   unwrap:x:+/*
+   return
+      affected:x:@data.update

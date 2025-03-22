@@ -1,19 +1,21 @@
 
-// Delete one record from your Artist table in your chinook database
+// Delete one record from your roles table in your cms database
 .arguments
 
    // Primary key of record to delete, mandatory argument
-   ArtistId:long
+   id:long
+
+// Meta data description for endpoint
 
 // Type of endpoint
 .type:crud-delete
 
 // Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/ArtistId
+auth.ticket.verify:guest
+validators.mandatory:x:@.arguments/*/id
 
 // Opening up our database connection.
-data.connect:[generic|chinook]
+data.connect:[generic|cms]
    database-type:sqlite
 
    // Parametrising our delete invocation.
@@ -23,9 +25,15 @@ data.connect:[generic|chinook]
    // Deleting item from database.
    data.delete
       database-type:sqlite
-      table:Artist
+      table:roles
       where
          and
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.roles.delete
+      args
 
    // Returning result of above invocation to caller.
    unwrap:x:+/*

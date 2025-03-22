@@ -1,5 +1,3 @@
-// Example: Create a slot that returns [return-value] being integer of 57
-slots.create:foo
-   return-value:int:57
+// How do you declare a short integer variable in Hyperlambda?
 
-slots.get:foo
+.age:short:45

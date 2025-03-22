@@ -1,16 +1,40 @@
 
-// Generate a Hyperlambda snippet that checks every second while [.time_left] is above 0.
+// Create one record in your MediaType table in your chinook database.
+.arguments
 
-// Checks every second while [.time_left] is above 0.
-.time_left:int:5
-while
-   gt
-      get-value:x:@.time_left
-      .:int:0
-   .lambda
+   // MediaTypeId column value
+   MediaTypeId:long
 
-      // Logging remaining time.
-      log.info:Time remaining
+   // Name column value
+   Name:string
 
-      // Decrement time.
-      math.decrement:x:@.time_left
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:MediaType
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

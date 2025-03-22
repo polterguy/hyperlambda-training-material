@@ -1,4 +1,8 @@
-// Throws the specified exception with the specified HTTP status code, making it public
-throw:Whatever error message here
-   status:398
-   public:true
+
+// Example: Extract a substring given a start index and length.
+.text:HelloWorld
+strings.substring:x:@.text
+   .:5
+   .:3
+
+// Result: "Wor"

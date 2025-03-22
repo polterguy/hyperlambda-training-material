@@ -1,5 +1,6 @@
-// Setting a node value
-.data
-   name:
-set-value:x:@.data/*/name
-   .:John Doe
+// HTTP endpoint that ensures specified age parameter is valid and person is at least 18 years of age
+.arguments
+   age:int
+validators.integer:x:@.arguments/*/age
+   min:18
+   max:130

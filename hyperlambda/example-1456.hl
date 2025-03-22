@@ -1,2 +1,2 @@
-// Retrieves the value of the second child in .list
-.second-child-name:x:@.list/1
+// How do I URL decode email argument?
+strings.url-decode:x:@.arguments/*/email

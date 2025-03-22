@@ -1,35 +1,18 @@
 
-// Gets a company with the specified name
-.arguments
-   query:string
-.type:public
+// Create a slot 'join-strings' that joins all arguments separated by ' ' character.
+slots.create:join-strings
+   strings.join:x:@.arguments/*
+      .:" "
+   return-value:x:-
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/query
+// Invoke 'join-strings' using execute with expressions as arguments
+.arg:is cool!
+execute:join-strings
+   text1:Hyperlambda
+   text2:x:@.arg
 
-// Connecting to database.
-data.connect:[finovo|finovo]
-   database-type:pgsql
+// The expressions are evaluated before invocation, so inside 'join-strings':
 
-   // Retrieving items.
-   data.read
-      database-type:pgsql
-      table:basic
-      columns
-         org_number
-         company_name
-      where
-         and
-            legalgroup_code.eq:AB
-            company_name.ilike:x:@.arguments/*/query
-      limit:1
+// text2 becomes "is cool!",
 
-   // Checking we've got data.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         return
-            result:No results were found
-
-   // Returning result to caller.
-   return-nodes:x:@data.read/*/*
+// and the returned value is "Hyperlambda is cool".

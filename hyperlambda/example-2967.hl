@@ -1,5 +1,8 @@
+// Define a slot that returns both a value and additional nodes
+slots.create:retBoth  
+   return:All Good  
+      status:ok  
+      code:int:200
 
-// Create a function that returns a list of animals to the caller.
-auth.ticket.verify:guest, root, admin
-io.file.load:/modules/hub/magic.startup/misc/animals.json
-return:x:-
+signal:retBoth  
+// Result: value "All Good", with child nodes [status = "ok", code = 200]

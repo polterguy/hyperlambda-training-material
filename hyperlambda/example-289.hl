@@ -1,41 +1,21 @@
 
-// Delete one record from your roles table in your cms database
+// Create a Hyperlambda script that returns arguments the specified file can handle, ensuring the user is authorized.
 .arguments
-
-   // Primary key of record to delete, mandatory argument
-   id:long
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-delete
+   file:string
 
 // Verifying user is authorized to access endpoint.
-auth.ticket.verify:guest
-validators.mandatory:x:@.arguments/*/id
+auth.ticket.verify:root
 
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
+/*
+ * Loading action file and transforming Hyperlambda to lambda and making sure
+ * we return [.arguments] collection as [input].
+ * 
+ * This becomes our input arguments to our action.
+ */
+load-file:x:@.arguments/*/file
+hyper2lambda:x:@load-file
+add:x:./*/return
+   get-nodes:x:@hyper2lambda/*/.arguments/*
 
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:roles
-      where
-         and
-
-   // Publishing socket message.
-   add:x:./*/sockets.signal/*/args
-      get-nodes:x:@.arguments/*
-   sockets.signal:cms.roles.delete
-      args
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Returning arguments to caller.
+return

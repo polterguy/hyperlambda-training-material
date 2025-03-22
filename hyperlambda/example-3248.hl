@@ -1,8 +1,7 @@
-// Dynamically add multiple nodes to a destination
+/*
+ * Whitespace is still considered a value so this becomes false.
+ */
 
-.dest
-add:x:../*/.dest
-   .
-      keyA:valueA
-      keyB:valueB
-      keyC:valueC
+.data
+   foo:"  "
+null:x:@.data/*/foo

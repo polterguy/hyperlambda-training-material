@@ -1,7 +1,19 @@
+/*
+ * Hyperlambda file taking arguments that invokes a dynamic slot with dynamic parameters.
+ */
+.arguments
+   slot:string
+   params:*
+validators.mandatory:x:@.arguments/*/slot
 
-// Create a Hyperlambda script to demonstrate waiting for multiple threads to finish parallel execution using join and fork.
-join
-   fork
-      http.get:"https://gaiasoul.com"
-   fork
-      http.get:"https://servergardens.com"
+// Forwards all arguments to [invoke].
+add:x:./*/invoke
+   get-nodes:x:@.arguments/*/params/*
+
+// Invoke the slot dynamically
+invoke:x:@.arguments/*/slot
+
+// Returning result
+add:x:./*/return
+   get-nodes:x:@invoke/*
+return

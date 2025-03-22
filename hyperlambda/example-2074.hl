@@ -1,2 +1,16 @@
-// This snippet defines a node with an unsigned int (UInt32) value.
-.uAmount:uint:1000
+
+// Write a Hyperlambda script to return a specified log item based on its ID.
+.arguments
+   id:string
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+
+// Invoking slot responsible for returning item.
+log.get:x:@.arguments/*/id
+
+// Returning result of above invocation to caller.
+return-nodes:x:-/*

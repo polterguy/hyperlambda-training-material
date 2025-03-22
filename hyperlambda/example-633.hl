@@ -1,4 +1,6 @@
-// String validation where length must be between 5 and 15
-validators.string:x:@.some-arg
-   min:5
-   max:15
+
+// neq returns true if two values are different
+.src:int:5
+neq
+   get-value:x:@.src
+   .:int:10

@@ -1,7 +1,14 @@
-/*
- * Example: Extract from index 0 (beginning of string).
- */
-strings.substring:"HelloWorld"
-   .:0
-   .:5
-// Result: "Hello"
+// Evaluates specified [.lambda] if condition evaluates to true.
+if
+   or
+      eq:x:@SOME_EXPRESSION
+         .:SOME_VALUE
+      eq:x:@SOME_OTHER_EXPRESSION
+         .:SOME_OTHER_VALUE
+   .lambda
+
+      // Lambda evaluates if condition is true.
+
+else
+
+   // Lambda evaluated if condition is NOT true.

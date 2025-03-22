@@ -1,7 +1,14 @@
-// Example: Forward all [.args]'s nodes to the slot invocation
-.args
-   foo1:bar1
-   foo2:bar2
-execute:whatever-slot
-   arg1:x:@.args/*/foo1
-   arg2:x:@.args/*/foo2
+// Transfers all metrics dynamically from .input/stats into .output using key names
+.input
+   stats
+      cpu:int:70
+      ram:int:4096
+      disk:int:512
+.output
+   cpu
+   ram
+   disk
+for-each:x:@.input/*/stats/*
+   get-name:x:@.dp/#
+   set-value:x:@.output/*/{@get-name}
+      get-value:x:@.dp/#

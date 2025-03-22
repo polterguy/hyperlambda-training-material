@@ -1,14 +1,11 @@
-
-// Create a Hyperlambda file concatenating two strings
-.arguments
-   arg1:string
-   arg2:int
-strings.concat
-   get-value:x:@.arguments/*/arg1
-   .:" - "
-   get-value:x:@.arguments/*/arg2
-
-// Unwrap must be used here or [return] would return the expression and not its result
-unwrap:x:+/*
-return
-   result:x:@strings.concat
+// This snippet uses the '!xxx' iterator to get all descendants except those of a certain name.
+.root
+   include1:A
+   remove:B
+   include2
+      nested:C
+      remove:D
+for-each:x:@.root/!remove  
+   set-value:x:@.dp/#
+      :kept
+// The expression @.root/!remove traverses all descendants of .root but skips any node named "remove" (and its subtree). The loop sets the remaining nodes' values to "kept".

@@ -1,35 +1,40 @@
 
-// Write a Hyperlambda script to create a log item using specified arguments like type, content, and meta information.
+// Delete one record from your media table in your cms database
 .arguments
-   type:string
-   content:string
-   meta:*
 
-/*
- * Ensures user is authorized to access endpoint.
- * Notice, we only allow authenticated users to access this endpoint.
- * What roles they belong to is not important, as long as they're authenticated.
- */
-auth.ticket.verify
+   // Primary key of record to delete, mandatory argument
+   id:long
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
-validators.mandatory:x:@.arguments/*/content
-validators.enum:x:@.arguments/*/type
-   .:info
-   .:error
-   .:debug
-   .:fatal
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/id
 
-// Creating a log entry using the specified type of logger.
-add:x:../*/log-invocation
-   get-nodes:x:@.arguments/*/meta/*
-set-name:x:../*/log-invocation
-   strings.concat
-      .:log.
-      get-value:x:@.arguments/*/type
-log-invocation:x:@.arguments/*/content
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
 
-// Returning success to caller.
-return
-   result:success
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:media
+      where
+         and
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   add:x:./*/sockets.signal
+      get-nodes:x:@auth.ticket.verify
+   set-name:x:./*/sockets.signal/*/auth.ticket.verify
+      .:roles
+   sockets.signal:cms.media.delete
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

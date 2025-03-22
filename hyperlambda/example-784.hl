@@ -1,2 +1,9 @@
-// Example: Return the value of the '#text' node, making sure we escape '#' being special character.
-get-value:x:@xml2lambda/**/PRICE/*/\#text
+
+// Write a Hyperlambda GET endpoint that returns server information like IP, host, and request IP.
+server.ip
+request.ip
+request.host
+yield
+   server-ip:x:@server.ip
+   request-ip:x:@request.ip
+   host:x:@request.host

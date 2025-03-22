@@ -1,35 +1,41 @@
 
-// CRUD Hyperlambda file that deletes one record from your comments table in your cms database
-.arguments
+// Lists all tables in your MySQL instance.
+slots.create:magic.db.mysql.tables
 
-   // Primary key of record to delete, mandatory argument
-   id:long
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/database
 
-// Meta data description for endpoint
+   // Opens up our connection
+   .connection:[information_schema]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               get-value:x:@.arguments/*/database
+               .:]
+   else
+      set-value:x:@.connection
+         strings.concat
+            .:[generic|
+            get-value:x:@.arguments/*/database
+            .:]
+   mysql.connect:x:@.connection
 
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/id
-
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:comments
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+      // Runs our query
+      mysql.select:"show full tables where Table_Type = 'BASE TABLE'"
+      remove-nodes:x:@mysql.select/*/*/Table_type
+      set-name:x:@mysql.select/*/*
+         .:table
+      return-nodes:x:@mysql.select/*

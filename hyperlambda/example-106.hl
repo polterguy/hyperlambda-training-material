@@ -1,3 +1,4 @@
 
-// Logs a fatal error
-log.fatal:Fatal error we cannot recover from
+// Example: Create a slot
+slots.create:foo
+   return-value:int:57

@@ -1,10 +1,5 @@
-// Execute an action if at least one condition is true
 
-.result
-if
-   or
-      .:bool:false
-      .:bool:true
-   .lambda
-      set-value:x:../*/.result
-         .:OK
+// Returns the operating system to caller
+system.os
+
+// Results in (for Mac); Darwin 23.1.0 Darwin Kernel Version 23.1.0: Mon Oct  9 21:32:11 PDT 2023; root:xnu-10002.41.9~7/RELEASE_ARM64_T6030

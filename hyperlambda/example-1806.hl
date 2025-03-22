@@ -1,10 +1,40 @@
-/*
- * This Hyperlambda snippet checks if a non-existent node is null.
- *
- * 1. The `.data` node exists but has no `missing` child.
- * 2. The `null` slot checks if `missing` is null.
- * 3. The expected output is `true`.
- */
 
-.data
-null:x:@.data/*/missing
+// Create endpoint inserting one record into your crawl_urls table in your scraper database.
+.arguments
+
+   // url column value
+   url:string
+
+   // type column value
+   type:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:crawl_urls
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

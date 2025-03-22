@@ -1,64 +1,44 @@
 
-// Create a Hyperlambda action to execute a SQL statement with specified 'database-type', 'connection-string', 'database', and 'sql'. Include optional 'params'. Validate mandatory fields and enums.
+// Removes the specified [extra] field(s) from the specified [username].
 .arguments
-   database-type
-      type:enum
-      mandatory:bool:true
-      values
-         .:sqlite
-         .:mssql
-         .:mysql
-         .:pgsql
-   connection-string
+   username
       type:string
       mandatory:bool:true
-   database
-      type:string
+   extra
+      type:array
       mandatory:bool:true
-   sql
-      type:sql
-      mandatory:bool:true
-   params
-      type:key-value
-      mandatory:bool:false
-.icon:backup
+.icon:supervisor_account
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/sql
-validators.enum:x:@.arguments/*/database-type
-   .:sqlite
-   .:mssql
-   .:mysql
-   .:pgsql
-
-// Applying defaults.
-validators.default:x:@.arguments
-   connection-string:generic
-   database-type:sqlite
-   database:magic
-
-// Connection string to actually use as we connect.
-.connection-string
-
-// Caller supplied an explicit [connection-string] argument.
-set-value:x:@.connection-string
-   strings.concat
-      .:[
-      get-value:x:@.arguments/*/connection-string
-      .:|
-      get-value:x:@.arguments/*/database
-      .:]
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/extra
 
 // Connecting to database.
-data.connect:x:@.connection-string
-   database-type:x:@.arguments/*/database-type
+data.connect:[generic|magic]
 
-   // Parametrizing SQL.
-   add:x:./*/data.execute
-      get-nodes:x:@.arguments/*/params/*
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
 
-   // Executing SQL.
-   data.execute:x:@.arguments/*/sql
-      database-type:x:@.arguments/*/database-type
-   yield
-      affected:x:@data.execute
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Removing extra fields from user.
+   for-each:x:@.arguments/*/extra/*
+      data.delete
+         table:users_extra
+         where
+            and
+               user.eq:x:@.arguments/*/username
+               type.eq:x:@.dp/#

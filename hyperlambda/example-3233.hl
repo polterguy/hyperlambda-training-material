@@ -1,6 +1,11 @@
+/*
+ * This Hyperlambda snippet checks if a node is null.
+ *
+ * 1. The `.data` node has a child `foo` with a `null` value.
+ * 2. The `null` slot checks if `foo`'s value is `null`.
+ * 3. The expected output is `true`.
+ */
 
-// Fetch a few film titles and release years using a raw SQL query
-data.connect:sakila
-   data.select:SELECT title, release_year FROM film LIMIT 3
-
-   // Executes the SQL directly on the database and returns up to 3 rows
+.data
+   foo
+null:x:@.data/foo

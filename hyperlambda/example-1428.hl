@@ -1,16 +1,52 @@
 
-// Write a Hyperlambda snippet that handles file read errors using a try/catch/finally block.
+// Counts clients that are affiliated with the currently authenticated client.
+.arguments
 
-// Handles file read errors inside a try/catch/finally block
-try
+// Verifying user has access to endpoint.
+auth.ticket.verify:root, admin, guest
 
-   // Attempting to read a non-existent file
-   file.read:/invalid/path/to/file.txt
-.catch
+// Retrieving currently authenticated user to parametrise invocation towards database.
+auth.ticket.get
 
-   // Logging the error
-   log.error:x:@.arguments/*/message
-.finally
+// Counting users affiliated with currently authenticated user.
+data.connect:[generic|magic]
 
-   // Logging completion
-   log.info:File read attempt finished
+   // Retrieving affiliate percent for user.
+   data.read
+      table:users_extra
+      columns
+         value
+      where
+         and
+            type.eq:affiliate_percent
+            user.eq:x:@auth.ticket.get
+   if
+      not-exists:x:@data.read/*/*/value
+      .lambda
+
+         // Oops ...!!
+         log.error:User is not affiliate
+            username:x:@auth.ticket.get
+         throw:You are not an affiliate
+            public:true
+            status:400
+
+   // Invoking read slot to count users affiliated with currently authenticated user.
+   data.read
+      table:users_extra
+      columns
+         count(*)
+            as:count
+      where
+         and
+            type.eq:affiliate
+            value.eq:x:@auth.ticket.get
+
+   // Applying some HTTP caching since endpoint is kind of expensive to invoke.
+   response.headers.set
+      Cache-Control:private, max-age=3600
+
+   // Returning result to caller.
+   unwrap:x:+/*
+   return
+      count:x:@data.read/*/*/count

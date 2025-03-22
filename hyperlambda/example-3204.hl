@@ -1,6 +1,16 @@
-/*
- * Example: Starts-with check is case-sensitive.
- */
-// Returns false
-strings.starts-with:Hello
-   .:hello
+
+// Create a Hyperlambda script that overrides the exception handler to ensure information is returned to root users, logging errors and returning status, field, and message.
+.arguments
+   status:int
+   field:string
+   message:string
+   path:string
+   stack:string
+log.error:x:@.arguments/*/message
+   url:x:@.arguments/*/path
+   exception:x:@.arguments/*/stack
+add:x:+
+   get-nodes:x:@.arguments/*/status
+   get-nodes:x:@.arguments/*/field
+   get-nodes:x:@.arguments/*/message
+return

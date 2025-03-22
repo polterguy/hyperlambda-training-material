@@ -1,4 +1,6 @@
-
-// Return specified lambda from Hyperlambda file or endpoint
-return
-   result:Hello from Magic Backend
+// Checks if not exists
+.src1
+   foo
+.src2
+not-exists:x:@.src1/*
+not-exists:x:@.src2/*

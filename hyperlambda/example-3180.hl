@@ -1,9 +1,6 @@
-/*
- * Example: Concatenate all strings stored as children of a list node.
- */
-.items
-   .:Red
-   .:Green
-   .:Blue
-strings.concat:x:@.items/*
-// Result: "RedGreenBlue"
+
+// Example: Use a variable as the input to uppercase.
+.text:make me upper
+
+// Result: "MAKE ME UPPER"
+strings.to-upper:x:@.text

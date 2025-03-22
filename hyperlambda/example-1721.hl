@@ -1,21 +1,6 @@
 /*
- * Save this file as `/modules/math/endpoints/add.hl`
- * This exposes an HTTP POST endpoint at `/math/add`
- *
- * It requires both `a` and `b` arguments, adds them,
- * and returns the result.
+ * Example: Use a variable for the string to encode.
  */
-
-.arguments
-   a:int
-   b:int
-
-validators.mandatory:x:@.arguments/*/a
-validators.mandatory:x:@.arguments/*/b
-
-math.add
-   get-value:x:@.arguments/*/a
-   get-value:x:@.arguments/*/b
-
-yield
-   result:x:@math.add
+.text:"key=value&flag=true"
+// Result: "key%3Dvalue%26flag%3Dtrue"
+strings.url-encode:x:@.text

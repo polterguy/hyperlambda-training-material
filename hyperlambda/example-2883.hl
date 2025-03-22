@@ -1,31 +1,51 @@
-// Hyperlambda endpoint that takes two arguments, calculates the modulo, and then returns true if it's 0, otherwise false
+
+// Counts items from your Customers table in your northwind database
 .arguments
-   arg1:int
-   arg2:int
+   Customers.CustomerID.like:string
+   Customers.CustomerID.eq:string
+   Customers.CompanyName.like:string
+   Customers.CompanyName.eq:string
+   Customers.ContactName.like:string
+   Customers.ContactName.eq:string
+   Customers.ContactTitle.like:string
+   Customers.ContactTitle.eq:string
+   Customers.Address.like:string
+   Customers.Address.eq:string
+   Customers.City.like:string
+   Customers.City.eq:string
+   Customers.Region.like:string
+   Customers.Region.eq:string
+   Customers.PostalCode.like:string
+   Customers.PostalCode.eq:string
+   Customers.Country.like:string
+   Customers.Country.eq:string
+   Customers.Phone.like:string
+   Customers.Phone.eq:string
+   Customers.Fax.like:string
+   Customers.Fax.eq:string
 
-.type:public
-.accept:application/json
+// Meta data description for endpoint
+.description:Counts items from your Customers table in your northwind database
 
-// Sanity checking invocation
-validators.mandatory:x:@.arguments/*/arg1
-validators.mandatory:x:@.arguments/*/arg2
+// Type of endpoint
+.type:crud-count
 
-// Calculating modulo
-math.modulo
-   get-value:x:@.arguments/*/arg1
-   get-value:x:@.arguments/*/arg2
+// Opening up our database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
 
-// Checking if modulo result is 0
-if
-   eq:x:@math.modulo
-      .:int:0
-   .lambda
-      set-value:x:../*/return/*/result
-         .:bool:true
-else
-   set-value:x:../*/return/*/result
-      .:bool:false
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Customers
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
 
-// Returning result to caller
-return
-   result
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

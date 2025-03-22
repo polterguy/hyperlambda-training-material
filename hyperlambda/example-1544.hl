@@ -1,80 +1,17 @@
 
-/*
- * Searches for a company
- * 
- * Will search for a company having a name containing the specified query.
- */
-.arguments
-   query:string
-   limit:long
-   offset:long
-.type:public
+// Generate a Hyperlambda snippet with string variables, demonstrating special character handling, multi-line strings, and alternative quoting.
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/query
-validators.default:x:@.arguments
-   limit:long:10
-   offset:long:0
+// String without special characters, no need for quotes
+.simpleText:hello
 
-// Connecting to database.
-data.connect:[finovo|finovo]
-   database-type:pgsql
+// String with a colon, requires quotes
+.colonText:"hello:world"
 
-   /*
-    * Parametrising invocations below.
-    *
-    * Notice, we're parametrising both count and get items invocations here!
-    */
-   .query
-   set-value:x:@.query
-      strings.concat
-         .:%
-         get-value:x:@.arguments/*/query
-         .:%
-   unwrap:x:+/*/*
-   add:x:./*/data.read/*/where/*/and
-      .
-         company_name.ilike:x:@.query
+// Multi-line string using @ notation
+.multiLineText:"line1\nline2"
 
-   // Applying paging if existing.
-   add:x:@data.connect/*/data.read/[0,1]
-      get-nodes:x:@.arguments/*/limit
-      get-nodes:x:@.arguments/*/offset
+// Using single quotes as an alternative
+.altQuoteText:example
 
-   // Retrieving items.
-   data.read
-      database-type:pgsql
-      table:basic
-      columns
-         org_number
-         company_name
-      where
-         and
-            legalgroup_code.eq:AB
-
-   // Checking we've got data.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         return
-            result:No results were found
-
-   // Making sure we return company information related to the account.
-   add:x:./*/yield/*/companies
-      get-nodes:x:@data.read/*
-
-   // Retrieving items.
-   data.read
-      database-type:pgsql
-      table:basic
-      columns
-         count(*)
-            as:count
-      where
-         and
-            legalgroup_code.eq:AB
-
-   // Returning result to caller.
-   yield
-      companies
-      total_companies:x:@data.read/0/0
+// Escaping a newline character
+.escapedNewlineText:"hello\nworld"

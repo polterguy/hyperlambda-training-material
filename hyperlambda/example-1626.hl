@@ -1,9 +1,10 @@
-// Hyperlambda [get-value]
-.parent
-   child:42
-get-value:x:@.parent/*/child
 
-// Results in:
-.parent
-   child:42
-get-value:42
+// Example: Use variables for the string, start index, and length.
+.text:Magic
+.start:int:1
+.len:int:3
+strings.substring:x:@.text
+   get-value:x:@.start
+   get-value:x:@.len
+
+// Result: "agi"

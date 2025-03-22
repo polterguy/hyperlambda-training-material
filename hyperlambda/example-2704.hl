@@ -1,10 +1,10 @@
 
-// Returns the username of the currently authenticated user.
-.icon:shield
-
-// Retrieving username.
-auth.ticket.get
-
-// Returning username to caller.
-yield
-   username:x:@auth.ticket.get
+// Hyperlambda Example 2: If with variable condition
+.status:active
+.message
+if
+   eq:x:@.status
+      .:active
+   .lambda
+      set-value:x:@.message
+         .:System is running

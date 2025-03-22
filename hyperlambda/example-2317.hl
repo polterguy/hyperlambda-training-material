@@ -1,11 +1,7 @@
+// Create a task, then schedule it for invocation at a specific date
+tasks.create:foo-bar-task-3
+   .lambda
+      log.info:Executing foo-bar-task-3
 
-// Write a Hyperlambda snippet that opens a connection to 'warehouse_db' and gets recent inventory changes.
-
-// Opens a connection to "warehouse_db" and gets recent inventory changes.
-.result
-data.connect:warehouse_db
-   database-type:sqlite
-   data.select:select * from inventory_changes order by modified_at desc limit 15
-      database-type:sqlite
-   add:x:@.result
-      get-nodes:x:@data.select/*
+tasks.schedule:foo-bar-task-3
+   due:date:"2025-12-24T17:00"

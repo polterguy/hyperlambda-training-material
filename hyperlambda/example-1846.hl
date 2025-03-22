@@ -1,61 +1,27 @@
 
-// Write a Hyperlambda script to import a list of training snippets, using prompt and completion, with optional URI, filename, and type.
-slots.create:magic.ai.import-snippets
+// Create a Hyperlambda endpoint to return the arguments required by specified Hyperlambda code.
+.arguments
+   hyperlambda:string
+.type:internal
 
-   // Connecting to database.
-   data.connect:[generic|magic]
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-      // Looping through each record specified in [snippets] collection.
-      for-each:x:@.arguments/*/snippets/*
+// Transforming Hyperlambda to lambda object.
+hyper2lambda:x:@.arguments/*/hyperlambda
 
-         // Verifying prompt is not null.
-         if:x:@.dp/#/*/prompt
+// Making sure we "normalize" arguments.
+for-each:x:@hyper2lambda/*/.arguments/*
+   if
+      and
+         not-exists:x:@.dp/#/*/type
+         not-null:x:@.dp/#
+      .lambda
+         unwrap:x:+/*/*
+         add:x:@.dp/#
+            .
+               type:x:@.dp/#
+         set-value:x:@.dp/#
 
-            // Verifying user can create more snippets.
-            add:x:+
-               get-nodes:x:@.arguments/*/type
-            try-signal:magic.ai.can-create-snippet
-
-            // Creating a unique URI based upon the prompt unless the file contains a URI.
-            .uri
-            set-value:x:@.uri
-               get-first-value
-                  get-value:x:@.dp/#/*/uri
-                  .:
-
-            // Using type from arguments unless file contains a type declaration.
-            .type
-            if
-               and
-                  exists:x:@.arguments/*/type
-                  not-null:x:@.arguments/*/type
-                  neq:x:@.arguments/*/type
-                     .:
-               .lambda
-                  set-value:x:@.type
-                     get-value:x:@.arguments/*/type
-            else-if
-               exists:x:@.dp/#/*/type
-               .lambda
-                  set-value:x:@.type
-                     get-value:x:@.dp/#/*/type
-            else
-               set-value:x:@.type
-                  .:default
-
-            // Checking if we've got a filename value.
-            if
-               exists:x:@.dp/#/*/filename
-               .lambda
-                  add:x:@for-each/*/data.create/*/values
-                     get-nodes:x:@.dp/#/*/filename
-
-            // Inserting into database.
-            data.create
-               table:ml_training_snippets
-               values
-                  type:x:@.type
-                  uri:x:@.uri
-                  prompt:x:@.dp/#/*/prompt
-                  completion:x:@.dp/#/*/completion
-                  meta:imported
+// Returning arguments Hyperlambda requires to caller.
+return-nodes:x:@hyper2lambda/*/.arguments/*

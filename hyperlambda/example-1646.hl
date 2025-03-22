@@ -1,7 +1,5 @@
-
-// Write a Hyperlambda script to create the system-message folder in the user's /etc/ folder unless it already exists.
-if
-   not
-      io.folder.exists:/etc/system/openai/system-messages/
+// Create a scheduled task that logs "Task was here" that is scheduled to repeat once every 5 seconds
+tasks.create:log-task
+   repeats:5.seconds
    .lambda
-      io.folder.create:/etc/system/openai/system-messages/
+      log.info:Task was here

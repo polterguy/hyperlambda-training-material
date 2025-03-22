@@ -1,50 +1,27 @@
 
-// Create one record in your category table in your sakila database without authorization. Log invocation.
+// Write a Hyperlambda script to log lines of code (LOC) generated, including the type and name of the code.
 .arguments
-
-   // name column value
+   loc:int
+   type:string
    name:string
 
-   // last_update column value
-   last_update:date
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/loc
+validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/name
+validators.enum:x:@.arguments/*/type
+   .:backend
+   .:frontend
 
-// Meta data description for endpoint
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Type of endpoint
-.type:crud-create
+// Creating a log entry with LOC that was generated.
+log.info:LOC generated
+   loc:x:@.arguments/*/loc
+   type:x:@.arguments/*/type
+   name:x:@.arguments/*/name
 
-// Logging invocation.
-auth.ticket.get
-lambda2hyper:x:@.arguments/*
-log.info:sakila.category entry created
-   username:x:@auth.ticket.get
-   arguments:x:@lambda2hyper
-
-// Opening up database connection.
-data.connect:[generic|sakila]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:category
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Publishing socket message.
-   add:x:./*/sockets.signal/*/args
-      get-nodes:x:@.arguments/*
-   sockets.signal:sakila.category.post
-      args
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+// Returning success to caller.
+return
+   result:success

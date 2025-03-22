@@ -1,2 +1,4 @@
-// Load a binary file and returns content as raw bytes
-io.file.load.binary:/whatever-path.png
+// Perform HTTP GET request to fetch todos
+http.get:"https://jsonplaceholder.typicode.com/todos"
+   headers
+      Accept: application/json

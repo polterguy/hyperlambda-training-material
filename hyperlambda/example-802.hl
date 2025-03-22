@@ -1,13 +1,16 @@
 
-// Write a Hyperlambda script to list all folders in a specified folder.
-.arguments
-   folder:string
+// Write a Hyperlambda snippet that determines if [.toggle] is true and executes [.lambda].
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Determines if [.toggle] is true and executes [.lambda].
+.toggle:bool:true
+if
+   eq:x:@.toggle
+      .:bool:true
+   .lambda
 
-// Listing all folders in specified folder.
-io.folder.list:x:@.arguments/*/folder
+      // Executes when [.toggle] is true.
+      log.info:[.toggle] is on
+else
 
-// Returning results of above invocation to caller.
-return-nodes:x:@io.folder.list/*
+   // Executes when [.toggle] is false.
+   log.info:[.toggle] is off

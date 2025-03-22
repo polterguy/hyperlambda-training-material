@@ -1,44 +1,14 @@
 
-// Counts items from your spice_urls table in your scraper database.
-.arguments
+// Divide a number by a dynamic value and then by a static value
+.dividend:int:24
+.divisor:int:4
+math.divide
 
-   // spice_urls table spice_url_id column equality exact match filtering
-   spice_urls.spice_url_id.eq:long
+   // fetches 24
+   get-value:x:@.dividend
 
-   // spice_urls table url column wildcard filtering with SQL like '%' comparison
-   spice_urls.url.like:string
+   // divides 24 by 4 -> result 6
+   get-value:x:@.divisor
 
-   // spice_urls table url column equality exact match filtering
-   spice_urls.url.eq:string
-
-   // spice_urls table type column wildcard filtering with SQL like '%' comparison
-   spice_urls.type.like:string
-
-   // spice_urls table type column equality exact match filtering
-   spice_urls.type.eq:string
-
-// Type of endpoint
-.type:crud-count
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up our database connection.
-data.connect:[generic|scraper]
-   database-type:sqlite
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:spice_urls
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+   // divides 6 by 2 -> result 3
+   .:int:2

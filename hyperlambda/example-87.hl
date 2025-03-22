@@ -1,6 +1,18 @@
+// Loop inside a process node
 
-// Set all inactive users to have NULL last_login
-data.connect:authDB
-   data.execute:UPDATE users SET last_login = NULL WHERE active = 0
+// This node will not be executed by default since it starts with a "." character
+.process
+   .i:int:0
+   .list
+   while
+      lt
+         get-value:x:@.i
+         .:int:3
+      .lambda
+         add:x:@.list
+            .
+               item
+         math.increment:x:@.i
 
-   // Executes the UPDATE; number of affected records returned
+// Now we're executing lambda object explicitly
+eval:x:@.process

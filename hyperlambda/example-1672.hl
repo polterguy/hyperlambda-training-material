@@ -1,16 +1,17 @@
 /*
- * This Hyperlambda snippet demonstrates retrieving the first available value from multiple nodes.
+ * FILE: /modules/api/products/available.hl
  *
- * 1. The `.data` node has three children with values (`bar1`, `bar2`, `bar3`).
- * 2. The `get-first-value` slot is given three possible `get-value` calls.
- * 3. The second `get-value` retrieves `bar2`, which is returned.
+ * DESCRIPTION:
+ * Lists available products in stock using raw SQL.
+ * Demonstrates basic filtering logic using SQL inside [data.select].
+ *
+ * HOW TO CREATE THIS ENDPOINT:
+ * Save to `/modules/api/products/available.hl`, and it becomes available at:
+ *     GET /api/products/available
  */
 
-.data
-   foo1:bar1
-   foo2:bar2
-   foo3:bar3
-get-first-value
-   get-value:x:@.data/1
-   get-value:x:@.data/0
-   get-value:x:@.data/2
+data.connect:shop
+   data.select:SELECT name, quantity FROM products WHERE quantity > 0
+
+yield
+   result:x:@data.connect/*/data.select/*

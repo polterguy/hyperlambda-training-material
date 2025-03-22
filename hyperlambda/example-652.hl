@@ -1,16 +1,78 @@
-// Creates a Hyperlambda endpoint to fetch all records from the 'item' table in the erp database.
+
+// Write a Hyperlambda script to export the specified SQL to a module folder.
 .arguments
+   databaseType:string
+   module:string
+   sql:string
 
-// Making sure the endpoint is publicly visible
-.type:public
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-data.connect:erp
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/sql
+validators.mandatory:x:@.arguments/*/module
+validators.mandatory:x:@.arguments/*/databaseType
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:sqlite
+   .:mssql
+   .:pgsql
 
-   // Selecting data.
-   data.select:select * from item
+// Ensuring folders exists.
+strings.concat
+   .:/modules/
+   get-value:x:@.arguments/*/module
+   .:/
+if
+   not
+      io.folder.exists:x:@strings.concat
+   .lambda
+      io.folder.create:x:@strings.concat
+strings.concat
+   .:/modules/
+   get-value:x:@.arguments/*/module
+   .:/magic.startup/
+if
+   not
+      io.folder.exists:x:@strings.concat
+   .lambda
+      io.folder.create:x:@strings.concat
 
-   // Returning results to caller.
-   yield
-      rows:x:@data.select/*
+// Saving file.
+strings.concat
+   .:/modules/
+   get-value:x:@.arguments/*/module
+   .:/magic.startup/
+   get-value:x:@.arguments/*/module
+   .:.
+   get-value:x:@.arguments/*/databaseType
+   .:.sql
+io.file.save:x:@strings.concat
+   get-value:x:@.arguments/*/sql
 
-// Save this code as for instance '/modules/erp/item.get.hl'
+// Creating ensure database Hyperlambda file.
+.lambda
+
+   /*
+    * Runs during startup of Magic, and basically just ensures the module's database exists,
+    * and is updated by running migration scripts after attempting to create the database.
+    * 
+    * If the database doesn't exist, this script will create it by executing the SQL in the file
+    */
+   signal:magic.modules.ensure-database
+      module:module
+      database:module
+set-value:x:@.lambda/**/=module
+   get-value:x:@.arguments/*/module
+lambda2hyper:x:@.lambda/*
+   comments:true
+strings.concat
+   .:/modules/
+   get-value:x:@.arguments/*/module
+   .:/magic.startup/ensure-database.hl
+io.file.save:x:@strings.concat
+   get-value:x:@lambda2hyper
+
+// Returning result to caller.
+return
+   result:success

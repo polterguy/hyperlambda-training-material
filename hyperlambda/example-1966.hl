@@ -1,12 +1,7 @@
-// Increment first, then add item
-.i:int:0
-.list
-while
-   lt
-      get-value:x:@.i
-      .:int:3
-   .lambda
-      math.increment:x:@.i
-      add:x:@.list
-         .
-            item
+// Extrapolated expression example doing value comparison
+.arg1:thomas
+.data
+   foo1:john
+   foo2:thomas
+   foo3:peter
+get-name:x:@.data/*/={@.arg1}

@@ -1,2 +1,16 @@
-// Clear all cache items starting out with 'foo.bar' as their key
-cache.clear:foo.bar
+
+// Generate a Hyperlambda snippet that loops until [.requests] reach 10.
+
+// Loops until [.requests] reach 10.
+.requests:int:1
+while
+   lt
+      get-value:x:@.requests
+      .:int:10
+   .lambda
+
+      // Handling request.
+      log.info:Processing request
+
+      // Incrementing request counter.
+      math.increment:x:@.requests

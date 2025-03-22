@@ -1,13 +1,9 @@
+/*
+ * This Hyperlambda snippet retrieves records where `column1` is NULL.
+ */
 
-// Generate a Hyperlambda snippet that fetches a photo title from an API.
-
-// Fetches a photo title.
-http.get:"https://jsonplaceholder.typicode.com/photos/1"
-
-   // Converts response.
-   convert:true
-
-// Stores the photo title in [.photo_title]
-.photo_title
-set-value:x:@.photo_title
-   get-value:x:@http.get/*/content/*/title
+data.read
+   table:table1
+   where
+      and
+         column1.eq:null

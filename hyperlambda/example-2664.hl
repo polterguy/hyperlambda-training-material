@@ -1,23 +1,14 @@
-/*
- * Hyperlambda action that returns artists and count of records per artist, sorted by artist having the most albums.
- */
-.arguments
 
-   // Notice, action syntax
-   filter
-      type:string
-      mandatory:bool:true
+// Creates a try/catch/finally block
+try
 
-// This becomes the icon used to show the activity in your toolbox
-.icon:home
+   // Perform your unsafe operation here.
+   throw:Some error is thrown here
+.catch
 
-data.connect:chinook
-   data.select:@"
-select ar.Name, count(*) as count
-   from Album al, Artist ar where al.ArtistId = ar.ArtistId
-   and ar.Name like @filter
-   group by al.ArtistId
-   order by count desc
-   limit 25"
-      @filter:x:@.arguments/*/filter
-   return:x:-/*
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:x:@.arguments/*/message
+.finally
+
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:Try finished evaluating

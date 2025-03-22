@@ -1,5 +1,4 @@
 
-// Example: Embed multiple inline expressions in a single string.
-strings.mixin:"Sum {{\nmath.add\n   .:int:1\n   .:int:2\nreturn:x:-\n}} and Product {{\nmath.multiply\n   .:int:3\n   .:int:4\nreturn:x:-}}"
-
-// Result: "Sum 3 and Product 12"
+// Hyperlambda file containing version and module name information for sqlite-northwind.
+version:v1.0.0
+module_name:sqlite-northwind

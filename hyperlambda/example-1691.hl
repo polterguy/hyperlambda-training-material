@@ -1,21 +1,14 @@
-/**
- * This example creates a stacked bar chart with two groups.
- * The chart is saved to a file named "/stacked-chart.png".
- */
-image.chart:stacked
-   width:int:600
-   height:int:400
-   filename:/stacked-chart.png
-   bars
-      Q1
-         Apples:30
-         Bananas:40
-         Cherries:20
-      Q2
-         Apples:25
-         Bananas:35
-         Cherries:30
-   legend
-      Apples
-      Bananas
-      Cherries
+
+// Create a Hyperlambda action to transform specified markdown into HTML and return the HTML content.
+.arguments
+   markdown
+      type:string
+      mandatory:bool:true
+.icon:pageview
+
+// Transforming Markdown to HTML.
+markdown2html:x:@.arguments/*/markdown
+
+// Returning resulting HTML to caller.
+yield
+   html:x:@markdown2html

@@ -1,13 +1,12 @@
 
-// Provide a Hyperlambda example where a comment's body is retrieved from an API.
+// Create a Hyperlambda script to evaluate a lambda if a condition is true, with an else clause for when the condition is not true.
+if
+   // Replace with actual expressions leading to a single node!
+   eq:x:@SOME_EXPRESSION
+      .:SOME_VALUE
+   .lambda
 
-// Invokes an HTTP GET endpoint to fetch a comment's body.
-http.get:"https://jsonplaceholder.typicode.com/comments/1"
+      // Lambda evaluates if condition is true.
+else
 
-   // Converts JSON to lambda.
-   convert:true
-
-// Stores the comment body in [.comment_body]
-.comment_body
-set-value:x:@.comment_body
-   get-value:x:@http.get/*/content/*/body
+   // Lambda evaluated if condition is NOT true.

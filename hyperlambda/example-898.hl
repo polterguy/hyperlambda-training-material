@@ -1,17 +1,28 @@
 
-// Generate a Hyperlambda snippet that retrieves records from the sales database and its transactions table.
+// Write a Hyperlambda script to return the JavaScript required to embed a ChatGPT-based chatbot on a website, with various customization options.
+.arguments
+   type:string
+   header:string
+   button:string
+   rtl:bool
+   color:string
+   start:string
+   end:string
+   link:string
+   theme:string
+   references:bool
+   file:string
+   placeholder:string
+   position:string
+   clear_button:bool
+   copyButton:bool
+   follow_up:bool
+   new_tab:bool
+   popup:string
 
-// Retrieves records from the sales database and its transactions table.
-data.connect:sales_db
-
-   // Using MySQL as the database type.
-   database-type:mysql
-
-   // Fetching data from the database.
-   data.read
-      database-type:mysql
-      table:transactions
-      limit:20
-      sort
-         transaction_date
-      direction:asc
+   // Not used, but allows embedders to do a hard refresh to reload JavaScript.
+   v:string
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/system/openai/include-chatbot.js.get.hl
+return:x:-

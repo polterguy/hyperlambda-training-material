@@ -1,131 +1,143 @@
 
-// Create a function that returns unique and distinct values from the SubscriptionPlan table in the saas database based on specified conditions.
+// Write a Hyperlambda script to import a specified CSV file as a URL set by scraping all URLs found in the file.
 .arguments
+   type:string
+   feedback-channel:string
+   vectorize:bool
+   file:*
+.type:internal
+.accept:multipart/form-data
 
-   // Name of column to return unique and distinct values for. Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
-   distinct_column:string
-
-   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
-   limit:long
-
-   // Offset into the dataset of where to start retrieving records
-   offset:long
-
-   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
-   order:string
-
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   direction:string
-
-   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
-   operator:string
-   SubscriptionPlan.PlanId.mt:long
-   SubscriptionPlan.PlanId.lt:long
-   SubscriptionPlan.PlanId.mteq:long
-   SubscriptionPlan.PlanId.lteq:long
-   SubscriptionPlan.PlanId.neq:long
-   SubscriptionPlan.PlanId.eq:long
-   SubscriptionPlan.PlanName.like:string
-   SubscriptionPlan.PlanName.mt:string
-   SubscriptionPlan.PlanName.lt:string
-   SubscriptionPlan.PlanName.mteq:string
-   SubscriptionPlan.PlanName.lteq:string
-   SubscriptionPlan.PlanName.neq:string
-   SubscriptionPlan.PlanName.eq:string
-   SubscriptionPlan.MonthlyPrice.mt:decimal
-   SubscriptionPlan.MonthlyPrice.lt:decimal
-   SubscriptionPlan.MonthlyPrice.mteq:decimal
-   SubscriptionPlan.MonthlyPrice.lteq:decimal
-   SubscriptionPlan.MonthlyPrice.neq:decimal
-   SubscriptionPlan.MonthlyPrice.eq:decimal
-   SubscriptionPlan.MonthlyQuota.mt:long
-   SubscriptionPlan.MonthlyQuota.lt:long
-   SubscriptionPlan.MonthlyQuota.mteq:long
-   SubscriptionPlan.MonthlyQuota.lteq:long
-   SubscriptionPlan.MonthlyQuota.neq:long
-   SubscriptionPlan.MonthlyQuota.eq:long
-   SubscriptionPlan.Features.like:string
-   SubscriptionPlan.Features.mt:string
-   SubscriptionPlan.Features.lt:string
-   SubscriptionPlan.Features.mteq:string
-   SubscriptionPlan.Features.lteq:string
-   SubscriptionPlan.Features.neq:string
-   SubscriptionPlan.Features.eq:string
-
-// Sanity checking that distinct column was passed in.
-validators.mandatory:x:@.arguments/*/distinct_column
-
-// Sanity checking distinct column's name.
-validators.enum:x:@.arguments/*/distinct_column
-   .:SubscriptionPlan.PlanId
-   .:SubscriptionPlan.PlanName
-   .:SubscriptionPlan.MonthlyPrice
-   .:SubscriptionPlan.MonthlyQuota
-   .:SubscriptionPlan.Features
-
-// Adding Cache-Control HTTP header.
-response.headers.set
-   Cache-Control:private, max-age=50
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:admin
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
 // Sanity checking invocation.
-validators.enum:x:@.arguments/*/operator
-   .:or
-   .:and
+validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/file
+validators.mandatory:x:@.arguments/*/file/*/name
+validators.mandatory:x:@.arguments/*/file/*/stream
 
-/*
- * Checking if user supplied an [operator] argument, and if so
- * changing the boolean operator for comparison operations.
- */
+// Applying defaults.
+validators.default:x:@.arguments
+   vectorize:bool:false
+
+// Reading file data from stream.
+io.stream.read:x:@.arguments/*/file/*/stream
+
+// Converting file to lambda object.
+csv2lambda:x:@io.stream.read
+
+// Sanity checking file.
 if
-   exists:x:@.arguments/*/operator
+   or
+      mt
+         get-count:x:@csv2lambda/0/*
+         .:int:1
+      and
+         not
+            strings.starts-with:x:@csv2lambda/0/0
+               .:"http://"
+         not
+            strings.starts-with:x:@csv2lambda/0/0
+               .:"https://"
    .lambda
 
-      // User provided a boolean comparison [operator] argument.
-      set-name:x:../*/data.connect/*/data.read/*/where/0
-         get-value:x:@.arguments/*/operator
-      remove-nodes:x:@.arguments/*/operator
+      // Oops, bogus file!
+      log.info:URL list file not in correct format
+         filename:x:@.arguments/*/file/*/name
+      sockets.signal:x:@.arguments/*/feedback-channel
+         args
+            message:File not valid. A URL list file must have only one column, and contain only URLs in its single column.
+            type:error
+      return
+         result:error
 
-// Opening up our database connection.
-data.connect:[generic|saas]
-   database-type:sqlite
+// Doing some basic logging.
+get-count:x:@csv2lambda/*
+log.info:URL list successfully uploaded
+   count:x:@get-count
+   type:x:@.arguments/*/type
 
-   // Making sure we're using correct function.
-   set-name:x:./*/data.read/*/columns/*/distinct_functor
-      strings.concat
-         .:distinct(
-         get-value:x:@.arguments/*/distinct_column
-         .:)
+// Scraping on a background thread.
+add:x:./*/fork/*/.urls
+   get-nodes:x:@csv2lambda/*
+insert-before:x:./*/fork/0
+   get-nodes:x:@.arguments
+fork
 
-   // Removing distinct argument to simplify adding other arguments.
-   remove-nodes:x:@.arguments/*/distinct_column
+   // Buffer containing all URLs we've got.
+   .urls
 
-   // Adding [limit] and [offset] arguments
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/limit
-      get-nodes:x:@.arguments/*/offset
-      get-nodes:x:@.arguments/*/order
-      get-nodes:x:@.arguments/*/direction
-   remove-nodes:x:@.arguments/*/order
-   remove-nodes:x:@.arguments/*/direction
-   remove-nodes:x:@.arguments/*/limit
-   remove-nodes:x:@.arguments/*/offset
+   // Looping through each URL in our list of URLs.
+   for-each:x:@.urls/*/*
 
-   // Adding filtering arguments.
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
+      // Making sure we catch exceptions.
+      try
 
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:SubscriptionPlan
-      columns
-         distinct_functor
-            as:.
-      where
-         and
+         /*
+          * Invoking crawl implementation file, now with explicit list of links,
+          * informing invocation that we do NOT want to process links.
+          */
+         execute:magic.ai.url.scrape
+            url:x:@.dp/#
+            type:x:@.arguments/*/type
+            feedback-channel:x:@.arguments/*/feedback-channel
+            lists:bool:false
+            images:bool:false
+            code:bool:false
+         sockets.signal:x:@.arguments/*/feedback-channel
+            args
+               message:------------------------------------------------------------------------------------------------------------------------
+               type:info
+      .catch
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+         // Informing user of what went wrong.
+         sockets.signal:x:@.arguments/*/feedback-channel
+            args
+               message:x:@.arguments/*/message
+               type:warning
+
+   /*
+    * Crawling is done.
+    * 
+    * Making sure we notify client that we're done and do some logging.
+    */
+   sockets.signal:magic.backend.message
+      roles:root
+      args
+         message:Done creating OpenAI training data from URL list
+         type:success
+
+   // Checking if we're supposed to vectorize model.
+   if
+      eq:x:@.arguments/*/vectorize
+         .:bool:true
+      .lambda
+
+         // Vectorizing model.
+         execute:magic.ai.vectorise
+            type:x:@.arguments/*/type
+            feedback-channel:x:@.arguments/*/feedback-channel
+            .onafter
+
+               // Signaling frontend.
+               sockets.signal:x:@.arguments/*/feedback-channel
+                  args
+                     message:Done!
+                     type:success
+   else
+
+      // Signaling frontend.
+      sockets.signal:x:@.arguments/*/feedback-channel
+         args
+            message:Done!
+            type:success
+
+   // Basic logging.
+   log.info:OpenAI training data successfully created from URL list
+      type:x:@.arguments/*/type
+
+// Returning success to caller.
+yield
+   result:success
+   count:x:@get-count

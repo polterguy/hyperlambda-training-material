@@ -1,5 +1,14 @@
 
-// Return the HTTP verb of the current request
-request.verb
+// Create a Hyperlambda script to demonstrate a try/catch/finally block with logging.
+try
 
-// Result ==> One of get, post, put, patch, or delete
+   // Perform your unsafe operation here.
+   throw:Some error is thrown here
+.catch
+
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:x:@.arguments/*/message
+.finally
+
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:Try finished evaluating

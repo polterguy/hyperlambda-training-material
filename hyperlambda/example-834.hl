@@ -1,11 +1,13 @@
+/*
+ * Conditionally updates [.status] to "OK" if the node named "health" 
+ * after it has a value of "good". This uses `@.health` to access named sibling.
+ */
 
-// Add children from multiple sources into multiple destinations
-.dest1
-.dest2
-.src1
-   foo1:bar1
-.src2
-   foo2:bar2
-add:x:../*/.dest*
-   get-nodes:x:@.src1/*
-   get-nodes:x:@.src2/*
+.status
+.health:good
+if
+   eq:x:@.health
+      .:good
+   .lambda
+      set-value:x:@.status
+         .:OK

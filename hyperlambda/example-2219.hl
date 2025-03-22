@@ -1,14 +1,9 @@
+// Returns ALL items (limit is -1) from table1 where field1 equals 'howdy' or field2 equals 'world'
+sql.read
+   table:table1
+   limit:-1
+   where
 
-// Create a Hyperlambda script to demonstrate a try/catch/finally block with logging.
-try
-
-   // Perform your unsafe operation here.
-   throw:Some error is thrown here
-.catch
-
-   // If an exception is triggered, this lambda will be evaluated.
-   log.info:x:@.arguments/*/message
-.finally
-
-   // If an exception is triggered, this lambda will be evaluated.
-   log.info:Try finished evaluating
+      or
+         field1.eq:howdy
+         field2.eq:world

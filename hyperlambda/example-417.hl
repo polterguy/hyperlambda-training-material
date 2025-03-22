@@ -1,2 +1,3 @@
-// Create a folder
-io.folder.create:/misc/foo/
+// Increments a value by 1 using lambda expressions
+.counter:int:5
+math.increment:x:@.counter

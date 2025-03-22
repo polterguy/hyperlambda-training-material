@@ -1,32 +1,33 @@
 
-// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the users_extra table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+// Delete one record from your Customers table in your northwind database
 .arguments
-   type:string
-   value:string
-   user:string
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Primary key of record to delete, mandatory argument
+   CustomerID:string
 
-// Sanity checking invocation.
-validators.regex:x:@.arguments/*/type
-   regex:^[a-zA-Z0-9-_]+$
+// Meta data description for endpoint
+.description:Delete one record from your Customers table in your northwind database
 
-// Opening up database connection.
-data.connect:[generic|magic]
+// Type of endpoint
+.type:crud-delete
+validators.mandatory:x:@.arguments/*/CustomerID
 
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
+// Opening up our database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
       get-nodes:x:@.arguments/*
 
-   // Creating our record.
-   data.create
-      table:users_extra
-      return-id:bool:false
-      values
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Customers
+      where
+         and
 
-   // Returning result of above invoction to caller.
-   response.status.set:201
+   // Returning result of above invocation to caller.
    unwrap:x:+/*
    return
-      result:success
+      affected:x:@data.delete

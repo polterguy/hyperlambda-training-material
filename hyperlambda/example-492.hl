@@ -1,3 +1,14 @@
-// Change the value of [.dest] to the value of [.src]
-set-value:x:@.dest
-   get-value:x:@.src
+
+// Provide a Hyperlambda example where error logs are retrieved from the logging database and its error_logs table.
+
+// Retrieves logs from the logging database and its error_logs table.
+data.connect:logging_db
+
+   // Database type is Microsoft SQL Server.
+   database-type:mssql
+
+   // Fetching error log data.
+   data.read
+      database-type:mssql
+      table:error_logs
+      limit:50

@@ -1,17 +1,21 @@
 
-// Create a Hyperlambda action to retrieve a specified cookie by 'name'. Validate the mandatory field and return the cookie's value.
+// Creates a withdrawal transaction in our Stripe module.
 .arguments
-   name
-      type:string
-      mandatory:bool:true
-.icon:http
+   amount:long
+   affiliate:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/name
+// Verifying user has access to endpoint.
+auth.ticket.verify:root, admin
 
-// Retrieving cookie.
-request.cookies.get:x:@.arguments/*/name
-
-// Returning cookie's value to caller.
-yield
-   result:x:@request.cookies.get
+// Opening up Stripe database and creating our transaction.
+guid.new
+convert:x:-
+   type:string
+data.connect:[generic|stripe]
+   data.create
+      table:transactions
+      values
+         transaction:x:@convert
+         amount:x:@.arguments/*/amount
+         username:x:@.arguments/*/affiliate
+         type:withdrawal

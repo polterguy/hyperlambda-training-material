@@ -1,40 +1,10 @@
 
-// Create a Hyperlambda script that returns all dynamic HTTP endpoints in the system with their associated verbs and roles, caching the results for efficiency.
+// Handling a signal with arguments
+.data
+   first-name:John
+   last-name:Doe
+execute:user.full-name
+   first-name:x:@.data/*/first-name
+   last-name:x:@.data/*/last-name
 
-// Declares how many seconds the operation should be cached.
-.cache-seconds:int:300
-
-/*
- * Invokes [endpoints.list], making sure we cache the results, since it's a
- * fairly expensive operation.
- */
-cache.try-get:magic.auth.endpoints
-   expiration:x:@.cache-seconds
-   .lambda
-
-      // Cache miss, retrieving endpoints, and returning to caller.
-      .result
-      endpoints.list
-      for-each:x:@endpoints.list/*
-         if
-            exists:x:@.dp/#/*/auth/*
-            .lambda
-               add:x:+/*/*
-                  get-nodes:x:@.dp/#/*/auth/*
-               add:x:@if/+/+/*/*
-                  .
-                     auth
-         unwrap:x:+/*/*/*
-         add:x:@.result
-            .
-               .
-                  path:x:@.dp/#/*/path
-                  verb:x:@.dp/#/*/verb
-      lambda2hyper:x:@.result/*
-      return:x:-
-
-// Returning results of above invocation to caller.
-hyper2lambda:x:@cache.try-get
-add:x:../*/return
-   get-nodes:x:@hyper2lambda/*
-return
+// Above the expressions will be evaluated passing in the values of [first-name] and [last-name] to the slot

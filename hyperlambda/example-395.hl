@@ -1,2 +1,4 @@
-// Create a Blowfish hashed password
-crypto.password.hash:YourPasswordHere
+// Format an integer with leading zeros (width 5)
+.num:int:57
+format:x:@.num
+   pattern:"{0:00000}"

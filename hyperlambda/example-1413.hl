@@ -1,20 +1,6 @@
-// Converts from XML to lambda
-.xml:@"<customers>
-   <customer>
-      <name>John Doe</name>
-      <email>john@doe.com</email>
-   </customer>
-</customers>"
-xml2lambda:x:-
+// Evaluating an inline declared lambda object
 
-/*
-Result:
-xml2lambda
-   customers
-      customer
-         name
-            #text:John Doe
-         email
-            #text:john@doe.com
-
- */
+.src
+eval:x:@.src
+   set-value:x:@.src
+      .:OK

@@ -1,102 +1,167 @@
 
-// Counts items from your address table in your sakila database without authorization
+// Create a Hyperlambda script that verifies an OpenID Connect JWT token and returns a valid application JWT token, handling nonce and issuer verification.
 .arguments
-
-   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
-   operator:string
-   address.address_id.mt:long
-   address.address_id.lt:long
-   address.address_id.mteq:long
-   address.address_id.lteq:long
-   address.address_id.neq:long
-   address.address_id.eq:long
-   address.address.like:string
-   address.address.mt:string
-   address.address.lt:string
-   address.address.mteq:string
-   address.address.lteq:string
-   address.address.neq:string
-   address.address.eq:string
-   address.address2.like:string
-   address.address2.mt:string
-   address.address2.lt:string
-   address.address2.mteq:string
-   address.address2.lteq:string
-   address.address2.neq:string
-   address.address2.eq:string
-   address.district.like:string
-   address.district.mt:string
-   address.district.lt:string
-   address.district.mteq:string
-   address.district.lteq:string
-   address.district.neq:string
-   address.district.eq:string
-   address.city_id.mt:long
-   address.city_id.lt:long
-   address.city_id.mteq:long
-   address.city_id.lteq:long
-   address.city_id.neq:long
-   address.city_id.eq:long
-   address.postal_code.like:string
-   address.postal_code.mt:string
-   address.postal_code.lt:string
-   address.postal_code.mteq:string
-   address.postal_code.lteq:string
-   address.postal_code.neq:string
-   address.postal_code.eq:string
-   address.phone.like:string
-   address.phone.mt:string
-   address.phone.lt:string
-   address.phone.mteq:string
-   address.phone.lteq:string
-   address.phone.neq:string
-   address.phone.eq:string
-   address.last_update.mt:date
-   address.last_update.lt:date
-   address.last_update.mteq:date
-   address.last_update.lteq:date
-   address.last_update.neq:date
-   address.last_update.eq:date
-
-// Type of endpoint
-.type:crud-count
-
-// Sanity checking invocation.
-validators.enum:x:@.arguments/*/operator
-   .:or
-   .:and
+   token:string
 
 /*
- * Checking if user supplied an [operator] argument, and if so
- * changing the boolean operator for comparison operations.
+ * Verifying token.
+ * 
+ * Notice, this will throw an exception if token is not valid.
  */
+auth.token.verify
+   token:x:@.arguments/*/token
+
+// Verifying nonce from token to avoid replay attacks.
+cache.get:x:@auth.token.verify/*/nonce
 if
-   exists:x:@.arguments/*/operator
+   neq:x:@cache.get
+      get-value:x:@auth.token.verify/*/issuer
    .lambda
 
-      // User provided a boolean comparison [operator] argument.
-      set-name:x:../*/data.connect/*/data.read/*/where/0
-         get-value:x:@.arguments/*/operator
-      remove-nodes:x:@.arguments/*/operator
+      // Oops ...!!
+      throw:Nonce is not valid!
+         status:int:400
+         public:bool:true
 
-// Opening up our database connection.
-data.connect:[generic|sakila]
-   database-type:sqlite
+// Removing nonce from cache to avoid replay attacks.
+cache.set:x:@auth.token.verify/*/nonce
 
-   // Adding filtering arguments.
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
+// Verifying issuer is active.
+.active:bool:false
+execute-file:/system/auth/openid-providers.get.hl
+   createNonce:bool:false
+for-each:x:@execute-file/*
+   if
+      eq:x:@.dp/#/*/issuer
+         get-value:x:@auth.token.verify/*/issuer
+      .lambda
+         set-value:x:@.active
+            .:bool:true
+if
+   eq:x:@.issuer
+      .:bool:false
+   .lambda
 
-   // Reading data from database.
+      // Oops ...!
+      throw:Not a recognized OpenID provider
+         status:400
+         public:bool:true
+
+// Buffer for extra information.
+.extra
+
+// External OpenID provider has been verified, now we need to check to see if user exists in local database.
+data.connect:magic
+
+   // Checking if user exists.
    data.read
-      database-type:sqlite
-      table:address
-      columns
-         count(*)
-            as:count
+      table:users
       where
          and
-      limit:long:1
+            username.eq:x:@auth.token.verify/*/email
+   if
+      exists:x:@data.read/*
+      .lambda
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+         /*
+          * User has been previously created.
+          * 
+          * Invoking [magic.auth.authenticate] that does the heavy lifting, and creates our JWT token,
+          * making sure we return that token to caller.
+          * 
+          * Notice, we ignore the password!
+          */
+         execute:magic.auth.authenticate
+            password-check:bool:false
+            username:x:@auth.token.verify/*/email
+
+         // Retrieving extra information.
+         data.connect:magic
+            data.read
+               table:users_extra
+               where
+                  and
+                     user.eq:x:@auth.token.verify/*/email
+                     or
+                        type.eq:name
+                        type.eq:email
+            for-each:x:@data.read/*
+               set-name:x:./*/add/*/*
+                  get-value:x:@.dp/#/*/type
+               set-value:x:./*/add/*/*
+                  get-value:x:@.dp/#/*/value
+               add:x:@.extra
+                  .
+                     .
+
+         // Returns the authentication JWT ticket created above to caller.
+         yield
+            ticket:x:@execute/*/ticket
+            extra:x:@.extra/*
+
+   // First time login, creating a new user with username being email address.
+   data.create
+      table:users
+      values
+         username:x:@auth.token.verify/*/email
+         password:openid-connect
+
+   // Associating user with "guest" role.
+   data.create
+      table:users_roles
+      values
+         user:x:@auth.token.verify/*/email
+         role:guest
+
+   // Storing email as extra field.
+   data.create
+      table:users_extra
+      values
+         user:x:@auth.token.verify/*/email
+         type:email
+         value:x:@auth.token.verify/*/email
+
+   // Checking to see if we've got a name value, and if we do we associate it with the user we create.
+   if
+      exists:x:@auth.token.verify/*/name
+      .lambda
+
+         // We've got name, storing it.
+         data.create
+            table:users_extra
+            values
+               user:x:@auth.token.verify/*/email
+               type:name
+               value:x:@auth.token.verify/*/name
+
+   // Retrieving extra information.
+   data.connect:magic
+      data.read
+         table:users_extra
+         where
+            and
+               user.eq:x:@auth.token.verify/*/email
+               or
+                  type.eq:name
+                  type.eq:email
+      for-each:x:@data.read/*
+         set-name:x:./*/add/*/*
+            get-value:x:@.dp/#/*/type
+         set-value:x:./*/add/*/*
+            get-value:x:@.dp/#/*/value
+         add:x:@.extra
+            .
+               .
+
+/*
+ * Invoking [magic.auth.authenticate] that does the heavy lifting, and creates our JWT token,
+ * making sure we return that token to caller.
+ */
+execute:magic.auth.authenticate
+   username:x:@auth.token.verify/*/email
+   password-check:bool:false
+
+// Returns the authentication JWT ticket created above to caller.
+yield
+   ticket:x:@execute/*/ticket
+   extra:x:@.extra/*

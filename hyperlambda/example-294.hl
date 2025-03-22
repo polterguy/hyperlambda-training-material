@@ -1,19 +1,11 @@
-// How do I set headers dynamically based on file type using [switch]?
-.fileType:string:json
-switch:x:@.fileType
-   case:pdf
-      response.headers.set
-         Content-Type:application/pdf
-         Content-Disposition:@"attachment; filename=""document.pdf"""
-   case:zip
-      response.headers.set
-         Content-Type:application/zip
-         Content-Disposition:@"attachment; filename=""archive.zip"""
-   case:txt
-      response.headers.set
-         Content-Type:text/plain
-         Content-Disposition:@"attachment; filename=""notes.txt"""
-   default
-      response.headers.set
-         Content-Type:application/octet-stream
-         Content-Disposition:@"attachment; filename=""file.bin"""
+/*
+ * This example sets [.result] to the value of the first node named "email"
+ * found as a child of [.contact-info].
+ */
+
+.result
+.contact-info
+   name:John Doe
+   email:john@example.com
+set-value:x:@.result
+   .:x:@.contact-info/*/email

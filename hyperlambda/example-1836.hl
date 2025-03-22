@@ -1,9 +1,6 @@
-// This code connects to the 'ecommerce' database and updates the price of a product in the 'products' table.
-pgsql.connect:ecommerce
-   pgsql.update
-      table:products
-      values
-         price:decimal:19.99
-      where
-         and
-            product_id:int:202
+
+// Sets the value of [.res] to the number of records we've got in our table1 table in our foo database
+.res
+data.connect:foo
+   set-value:x:@.res
+      data.scalar:select count(*) from table1

@@ -1,13 +1,6 @@
 /*
- * This Hyperlambda snippet checks if a node containing other nodes is null.
- *
- * 1. The `.data` node contains a child node `container`, which has children.
- * 2. The `null` slot checks if `container` has a value.
- * 3. Since `container` has children but no value, the expected output is `true`.
+ * Retrieves the `title` node from a referenced article object.
+ * Each `.results/*/ref` node contains a reference (value) to another node structure.
+ * The `#` dereferences that value, and `/*/title` navigates to its child node named `title`.
  */
-
-.data
-   container
-      child1:42
-      child2:99
-null:x:@.data/*/container
+.article-title:x:@.results/*/ref/#/*/title

@@ -1,2 +1,10 @@
-// Creates a date from Unix timestamp
-date.from-unix:1674132584
+
+// Generate a Hyperlambda snippet that dynamically concatenates a first and last name.
+
+// Example of concatenating first and last name dynamically.
+.first_name:Alice
+.last_name:Johnson
+strings.concat
+   get-value:x:@.first_name
+   .:" "
+   get-value:x:@.last_name

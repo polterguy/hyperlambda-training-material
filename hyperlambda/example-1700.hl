@@ -1,6 +1,6 @@
-// This code loads a markdown documentation file, replaces the heading "# Getting Started" with "# Introduction", and saves the result back to the same file.
-io.file.load:/docs/introduction.md
-io.file.save:/docs/introduction.md
-   strings.replace:x:@io.file.load
-      .:# Getting Started
-      .:# Introduction
+/*
+ * Example: String consisting entirely of trim characters (result is empty).
+ */
+// Result: "" (empty string)
+strings.trim-start:"xxx"
+   .:"x"

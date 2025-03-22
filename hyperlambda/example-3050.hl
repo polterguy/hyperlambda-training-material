@@ -1,16 +1,5 @@
 
-// Create a Hyperlambda snippet that keeps checking until [.tries] reaches 5.
+// Returns the operating system to caller
+system.os
 
-// Keeps checking until [.tries] reaches 5.
-.tries:int:0
-while
-   lt
-      get-value:x:@.tries
-      .:int:5
-   .lambda
-
-      // Attempting operation.
-      log.info:Retrying operation
-
-      // Incrementing tries counter.
-      math.increment:x:@.tries
+// Results in (for Mac); Darwin 23.1.0 Darwin Kernel Version 23.1.0: Mon Oct  9 21:32:11 PDT 2023; root:xnu-10002.41.9~7/RELEASE_ARM64_T6030

@@ -1,7 +1,18 @@
-/**
- * This example resizes an image by specifying only the height (500 pixels).
- * The width is automatically adjusted to maintain the aspect ratio.
- */
-image.resize
-   file:/input.jpg
-   height:int:500
+
+// Returns all plans that exist.
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
+
+// Returns all plans in the system.
+execute:magic.workflows.actions.execute
+   name:hub-plans-get
+   filename:/modules/hub/workflows/actions/hub-plans-get.hl
+   arguments
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

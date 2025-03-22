@@ -1,5 +1,14 @@
-// Updates all records in table1, setting field1 to howdy
-sql.update
-   table:table1
-   values
-      field1.eq:howdy
+
+// Write a Hyperlambda snippet demonstrating multiple [fork] calls with different delays.
+
+// Demonstrates multiple [fork] calls with different delays.
+fork
+   sleep:700
+   log.info:Executed after 700ms
+fork
+   sleep:1500
+   log.info:Executed after 1500ms
+fork
+   sleep:300
+   log.info:Executed after 300ms
+log.info:Main execution continues...

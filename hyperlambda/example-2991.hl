@@ -1,8 +1,9 @@
+// Hyperlambda [get-value]
+.data:Hello World
 
-// Create a Hyperlambda script to return hyperlinks from a DuckDuckGo search.
-unwrap:x:+/*
-signal:magic.http.html2markdown-links
-   url:"https://html.duckduckgo.com/html/?q=Pixar"
-   class:result__a
-   max:int:10
-   query:uddg
+// Returns the value of the previous node
+get-value:x:-
+
+// Results in:
+.data:Hello World
+get-value:Hello World

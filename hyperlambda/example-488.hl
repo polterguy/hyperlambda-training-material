@@ -1,2 +1,10 @@
-// Convert a large integer to its word representation
-int2words:1200050
+
+// Create a Hyperlambda action to ensure a specified 'arg' is given. Validate the mandatory field.
+.arguments
+   arg
+      type:string
+      mandatory:bool:true
+.icon:shield
+
+// Invoking validator.
+validators.mandatory:x:@.arguments/*/arg

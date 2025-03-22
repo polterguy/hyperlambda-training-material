@@ -1,6 +1,14 @@
-
-// Create a Hyperlambda script to demonstrate using strings.concat to concatenate multiple strings.
+// Example: Concatenate 6 strings, one being an expression reference
+.bar:Bar
 strings.concat
-   .:foo
-   .:-
-   .:bar
+   .:Thomas
+   .:" "
+   .:Hansen
+   .:" "
+   .:Foo
+   .:" "
+   get-value:x:@.bar
+
+/*
+ * Resulting in "Thomas Hansen Foo Bar" after invocation.
+ */

@@ -1,16 +1,6 @@
-// Sends an email using specific SMTP settings
-mail.smtp.send
-   server
-      host:foo.com
-      port:123
-      secure:true
-      username:xxx
-      password:yyy
-   message
-      to
-         John Doe:john@doe.com
-      from
-         Jane Doe:jane@doe.com
-      subject:Subject line
-      entity:text/plain
-         content:Body content
+
+// Example: Pass arguments to the inline Hyperlambda code.
+strings.mixin:"2 + val equals {{\nmath.add\n   .:int:2\n   get-value:x:@.arguments/*/val\nreturn:x:-\n}}"
+   val:int:5
+
+// Result: "2 + val equals 7"

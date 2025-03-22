@@ -1,8 +1,4 @@
-// Evaluates specified [.lambda] if condition evaluates to true.
-if:x:@SOME_EXPRESSION
+// Return the HTTP verb of the current request
+request.verb
 
-   // Lambda evaluates if condition is true.
-
-else
-
-   // Lambda evaluated if condition is NOT true.
+// Result ==> One of get, post, put, patch, or delete

@@ -1,6 +1,5 @@
-/*
- * Invalid: Uses `@.foo` but the `.foo` node doesn't exist in the current node hierarchy.
- * Returns null.
- */
-
-get-value:x:@.foo
+// Create a cache item and counts items after
+cache.set:cache-item-key
+   expiration:5
+   value:Howdy world
+cache.count

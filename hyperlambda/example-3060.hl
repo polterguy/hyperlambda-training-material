@@ -1,5 +1,5 @@
-
-// [and] returns true only if all arguments are true
-and
-   .:bool:true
-   .:bool:true
+/**
+ * This example tries to delete "/system/kernel.img".
+ * If the file is protected, an error will occur.
+ */
+io.file.delete:/system/kernel.img

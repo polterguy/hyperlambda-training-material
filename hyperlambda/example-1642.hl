@@ -1,7 +1,17 @@
-/*
- * Loads a Hyperlambda file from disk, parses it into a lambda tree, then executes it.
- * Requires a file named /files/foo.hl to exist.
- */
-io.file.load:/foo.hl
-hyper2lambda:x:-
-eval:x:-
+
+// Generate a Hyperlambda snippet that handles database connection failures using a try/catch/finally block.
+
+// Handles database connection failures inside a try/catch/finally block
+try
+
+   // Attempting to connect to an invalid database
+   data.connect:invalid_database
+      database-type:mysql
+.catch
+
+   // Logging the error
+   log.error:x:@.arguments/*/message
+.finally
+
+   // Logging completion
+   log.info:Database connection attempt finished

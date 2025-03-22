@@ -1,17 +1,14 @@
+// Mark a specific order as shipped
+data.connect:shopDB
 
-// Create a Hyperlambda endpoint that saves the specified configuration object to appsettings.json, ensuring the user is authorized.
-.arguments:*
+   // Using CRUD update slot
+   data.update
+      table:orders
+      values
+         status:"shipped"
+      where
 
-// Ensuring user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Converting input arguments to JSON.
-lambda2json:x:@.arguments/*
-   format:true
-
-// Saving the specified config object to the 'appsettings.json' file.
-config.save:x:@lambda2json
-
-// Returning success to caller.
-return
-   result:success
+         // Only update the order with ID 12345
+         and
+            order_id.eq:12345
+   // Without a WHERE clause, all orders would be updated!

@@ -1,17 +1,19 @@
 
-// Sends an email using specific SMTP settings
-mail.smtp.send
-   server
-      host:foo.com
-      port:123
-      secure:true
-      username:xxx
-      password:yyy
-   message
-      to
-         John Doe:john@doe.com
-      from
-         Jane Doe:jane@doe.com
-      subject:Subject line
-      entity:text/plain
-         content:Body content
+// Switching based on a value inside an anonymous lambda object, returning true if it's a workday.
+.lambda
+
+   // Switching with multiple cases
+   switch:x:@.arguments/*/day
+      case:monday
+      case:tuesday
+      case:wednesday
+      case:thursday
+      case:friday
+         return:bool:true
+      case:saturday
+      case:sunday
+         return:bool:false
+      default
+         .result:Invalid day
+invoke:x:@.lambda
+   day:monday

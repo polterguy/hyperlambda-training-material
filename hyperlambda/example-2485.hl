@@ -1,17 +1,18 @@
 
-// Generate a Hyperlambda snippet with string variables, demonstrating special character handling, multi-line strings, and alternative quoting.
+// Create a Hyperlambda snippet that executes [.lambda] if [.status] does not equal Ready.
 
-// String without special characters, no need for quotes
-.simpleText:hello
+// Executes [.lambda] if [.status] does not equal Ready.
+.status:Ready
+if
 
-// String with a colon, requires quotes
-.colonText:"hello:world"
+   // [neq] checks inequality.
+   neq:x:@.status
+      .:Ready
+   .lambda
 
-// Multi-line string using @ notation
-.multiLineText:"line1\nline2"
+      // Executes when [.status] is not Ready.
+      log.info:[.status] is NOT Ready
+else
 
-// Using single quotes as an alternative
-.altQuoteText:example
-
-// Escaping a newline character
-.escapedNewlineText:"hello\nworld"
+   // Executes when [.status] is Ready.
+   log.info:[.status] is Ready

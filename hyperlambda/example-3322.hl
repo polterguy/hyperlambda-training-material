@@ -1,25 +1,5 @@
+// This example connects to the 'kingdom' database and retrieves the oldest castle age from the 'castles' table.
+// The result is returned as a single scalar value representing the age of the oldest castle.
 
-// Returns all plans that exists
-
-/*
- * Ensures user is authorized to access endpoint.
- * 
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
-
-// Returns all plans in the system.
-execute:magic.workflows.actions.execute
-   name:hub-plans-get
-   filename:/modules/hub/workflows/actions/hub-plans-get.hl
-   arguments
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+sqlite.connect:kingdom
+   sqlite.scalar:select min(age) from castles

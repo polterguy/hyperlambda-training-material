@@ -1,8 +1,16 @@
-/*
- * Example: Extract entire string by using its full length.
- */
-.subject:"Test"
-strings.substring:x:@.subject
-   .:0
-   .:4
-// Result: "Test"
+
+// Vectorizing the specified [type].
+.arguments
+   type
+      type:string
+      mandatory:bool:true
+.icon:chat_bubble
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+
+// Vectorizing model.
+unwrap:x:+/*/*
+fork
+   signal:magic.ai.vectorise
+      type:x:@.arguments/*/type

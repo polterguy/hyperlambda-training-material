@@ -1,14 +1,8 @@
-
-// Create a Hyperlambda action to ensure a specified 'arg' matches a specified 'regex'. Validate mandatory fields.
-.arguments
-   arg
-      type:string
-      mandatory:bool:true
-   regex
-      type:string
-      mandatory:bool:true
-.icon:shield
-
-// Invoking validator.
-validators.regex:x:@.arguments/*/arg
-   regex:x:@.arguments/*/regex
+// Creates a semaphore
+semaphore:foo-bar
+   /*
+    * Only one thread will be allowed entrance into this piece of
+    * code at the same time, ensuring synchronized access, for cases
+    * where you cannot allow more than one thread to enter at the
+    * same time.
+    */

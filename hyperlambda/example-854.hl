@@ -1,4 +1,10 @@
+// How the named sibling node works
+.data:value
+get-value:x:@.data
 
-// Count files in specified folder
-io.file.list:/etc/your_folder/
-get-count:x:-/*
+/*
+ * The above named sibling iterator traverses the node hierarchy from the identity node and upwards,
+ * until it finds a node with the name specified. In the example above the name is `.data`.
+ *
+ * After execution, the value of the [get-value] slot will become 'value'
+ */

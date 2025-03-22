@@ -1,2 +1,5 @@
-// Combines root and named selection to fetch .foo node being child of root node
-.rooted-selection:x:@../*/.foo
+
+// Create a Hyperlambda script to change the value of specified nodes to a given value.
+.destination
+set-value:x:@.destination
+   .:value

@@ -1,5 +1,12 @@
-// This example connects to the 'kingdom' database and retrieves the oldest castle age from the 'castles' table.
-// The result is returned as a single scalar value representing the age of the oldest castle.
 
-sqlite.connect:kingdom
-   sqlite.scalar:select min(age) from castles
+// Create a Hyperlambda script to delete an item from a specified database and table using SQLite, with a specific ID.
+data.connect:DATABASE_NAME
+   database-type:sqlite
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:TABLE_NAME
+      where
+         and
+            id.eq:x:@WHATEVER_ID_HERE

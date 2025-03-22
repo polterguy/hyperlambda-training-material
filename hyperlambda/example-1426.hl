@@ -1,32 +1,16 @@
 
-// Write a Hyperlambda script to vectorize all training snippets in a specified model/type.
-.arguments
-   type:string
-   feedback-channel:string
+// Create a Hyperlambda snippet that keeps checking until [.tries] reaches 5.
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Keeps checking until [.tries] reaches 5.
+.tries:int:0
+while
+   lt
+      get-value:x:@.tries
+      .:int:5
+   .lambda
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+      // Attempting operation.
+      log.info:Retrying operation
 
-// Doing some basic logging.
-log.info:Started vectorising model
-   model:x:@.arguments/*/type
-
-// Creating a thread and invoking file doing the heavy lifting.
-insert-before:x:./*/fork/0
-   get-nodes:x:@.arguments
-fork
-   add:x:./*/signal
-      get-nodes:x:@.arguments/*
-   signal:magic.ai.vectorise
-      .onafter
-         sockets.signal:x:@.arguments/*/feedback-channel
-            args
-               message:Done!
-               type:success
-
-// Returning success to caller.
-return
-   result:success
+      // Incrementing tries counter.
+      math.increment:x:@.tries

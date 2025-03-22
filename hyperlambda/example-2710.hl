@@ -1,20 +1,33 @@
 
-// Deletes the specified [username] from the system.
+// Counts items from your CustomerDemographics table in your northwind database
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-.icon:supervisor_account
+   CustomerDemographics.CustomerTypeID.like:string
+   CustomerDemographics.CustomerTypeID.eq:string
+   CustomerDemographics.CustomerDesc.like:string
+   CustomerDemographics.CustomerDesc.eq:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
+// Meta data description for endpoint
+.description:Counts items from your CustomerDemographics table in your northwind database
 
-// Opens up database connection.
-data.connect:[generic|magic]
+// Type of endpoint
+.type:crud-count
 
-   // Deleting user from database.
-   data.delete
-      table:users
+// Opening up our database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:CustomerDemographics
+      columns
+         count(*)
+            as:count
       where
          and
-            username.eq:x:@.arguments/*/username
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

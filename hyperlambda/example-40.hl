@@ -1,17 +1,29 @@
 
-// Partially update an item's price using HTTP PATCH with a custom header
-http.patch:"https://api.example.com/items/123"
-   headers
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the users_roles table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
+.arguments
+   role:string
+   user:string
+.type:crud-delete
 
-      // specify JSON content type since custom header overrides defaults
-      Content-Type:application/json
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+validators.mandatory:x:@.arguments/*/role
+validators.mandatory:x:@.arguments/*/user
 
-      // example of a custom header for authentication
-      X-API-Key:MY_API_KEY_ABC123
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-   // attach query parameters instead of hardcoding them in URL
-   query
-      ID:5
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
 
-   // JSON snippet with the fields to update
-   payload:"{\"price\": 25.00}"
+   // Deleting item from database.
+   data.delete
+      table:users_roles
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

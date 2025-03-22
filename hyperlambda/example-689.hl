@@ -1,7 +1,11 @@
-// Returns all items where field1 is NOT 'xxx'
-sql.read
-   table:foo
-   where
 
-      and
-         field1.neq:xxx
+// Write a Hyperlambda snippet that waits for multiple file operations to finish.
+
+// An example of waiting for multiple file operations to finish.
+join
+   fork
+      io.file.read:/var/logs/app.log
+   fork
+      io.file.read:/var/logs/system.log
+   fork
+      io.file.read:/var/logs/security.log

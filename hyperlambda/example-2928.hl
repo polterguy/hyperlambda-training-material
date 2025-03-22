@@ -1,7 +1,5 @@
-
-// Create a Hyperlambda script to insert nodes after a specified destination expression's node.
-.destination
-   foo1
-insert-after:x:@.destination/*/foo1
-   .
-      foo2:bar
+// Set a node's value based on another node's value
+.src:Hello
+.dest
+set-value:x:@.dest
+   get-value:x:@.src

@@ -1,16 +1,18 @@
-
-// Create a Hyperlambda snippet that loops while [.stock] is above 0.
-
-// Loops while [.stock] is above 0.
-.stock:int:5
-while
-   gt
-      get-value:x:@.stock
-      .:int:0
+// Hyperlambda [if] with not equal condition
+.status:pending
+.action-required
+if
+   neq:x:@.status
+      .:complete
    .lambda
+      set-value:x:@.action-required
+         .:bool:true
 
-      // Logging stock status.
-      log.info:Stock available
+/* JavaScript equivalent of Hyperlambda [if] with not equal condition
+const status = "pending";
+let actionRequired;
 
-      // Decrementing stock.
-      math.decrement:x:@.stock
+if (status !== "complete") {
+  actionRequired = true;
+}
+*/

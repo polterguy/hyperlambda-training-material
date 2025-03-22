@@ -1,35 +1,84 @@
 
-// Delete one record from your Genre table in your chinook database.
+// Create a Hyperlambda action to export columns from a specified database table. Include 'database-type', 'connection-string', 'database', 'table', and optional 'limit', 'offset', 'columns'. Validate mandatory fields and enums.
 .arguments
+   database-type
+      type:enum
+      mandatory:bool:true
+      default:sqlite
+      values
+         .:sqlite
+         .:mssql
+         .:mysql
+         .:pgsql
+   connection-string
+      type:string
+      mandatory:bool:true
+      default:generic
+   database
+      type:string
+      mandatory:bool:true
+   table
+      type:string
+      mandatory:bool:true
+   limit
+      type:int
+      mandatory:bool:false
+   offset
+      type:int
+      mandatory:bool:false
+   columns
+      type:array
+      mandatory:bool:false
+.icon:cloud_download
 
-   // Primary key of record to delete, mandatory argument
-   GenreId:long
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/database-type
+validators.mandatory:x:@.arguments/*/connection-string
+validators.mandatory:x:@.arguments/*/database
+validators.mandatory:x:@.arguments/*/table
+validators.enum:x:@.arguments/*/database-type
+   .:sqlite
+   .:mssql
+   .:mysql
+   .:pgsql
+validators.default:x:@.arguments
+   limit:int:-1
 
-// Meta data description for endpoint
+// Connection string to actually use as we connect.
+.connection-string
 
-// Type of endpoint
-.type:crud-delete
+// Caller supplied an explicit [connection-string] argument.
+set-value:x:@.connection-string
+   strings.concat
+      .:[
+      get-value:x:@.arguments/*/connection-string
+      .:|
+      get-value:x:@.arguments/*/database
+      .:]
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:admin,basic
-validators.mandatory:x:@.arguments/*/GenreId
+// Connecting to database.
+data.connect:x:@.connection-string
+   database-type:x:@.arguments/*/database-type
 
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
+   // Parametrizing SQL.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
 
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
+   // Checking if caller wants to only return specific columns.
+   if:x:@.arguments/*/columns/0
+      add:x:@data.connect/*/data.read
+         .
+            columns
+      for-each:x:@.arguments/*/columns/*
+         set-name:x:+/*/*
+            get-value:x:@.dp/#
+         add:x:@data.connect/*/data.read/*/columns
+            .
+               foo
 
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:Genre
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+   // Executing SQL.
+   data.read:x:@.arguments/*/sql
+      database-type:x:@.arguments/*/database-type
+      table:x:@.arguments/*/table
+   return-nodes:x:@data.read/*

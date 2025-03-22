@@ -1,11 +1,9 @@
 /*
- * This Hyperlambda snippet checks if a node is null.
+ * Accesses a setting from a user-specific preferences section.
  *
- * 1. The `.data` node has a child `foo` with a `null` value.
- * 2. The `null` slot checks if `foo`'s value is `null`.
- * 3. The expected output is `true`.
+ * The expression dynamically resolves the user's ID from `.arguments/*/userId`,
+ * turning the path into something like: `@.preferences/*/u123/*/theme`
+ *
+ * Ideal for multi-user preference handling with per-user customization.
  */
-
-.data
-   foo
-null:x:@.data/foo
+.user-preference:x:@.preferences/*/{@.arguments/*/userId}/*/theme

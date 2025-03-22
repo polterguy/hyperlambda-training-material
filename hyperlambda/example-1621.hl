@@ -1,23 +1,7 @@
-// Hyperlambda [if] with or condition
-.payment:pending
-.shipment:ready
-.notification
-if
-   or
-      eq:x:@.payment
-         .:pending
-      eq:x:@.shipment
-         .:delayed
-   .lambda
-      set-value:x:@.notification
-         .:Action needed
+// Attempt to add nodes to a destination when source is empty
 
-/* JavaScript equivalent of Hyperlambda [if] with or condition
-const payment = "pending";
-const shipment = "ready";
-let notification;
+.dest
+add:x:../*/.dest
+   get-nodes
 
-if (payment === "pending" || shipment === "delayed") {
-  notification = "Action needed";
-}
-*/
+// No change to [.dest]

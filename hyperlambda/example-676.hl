@@ -1,4 +1,14 @@
-// Example: Split the value of [.foo] by ' '
-.foo:some input string
-strings.split:x:-
-   .:' '
+
+// Create a Hyperlambda snippet demonstrating parallel execution with multiple [fork] calls.
+
+/*
+ * Demonstrates parallel execution with [fork].
+ * The logs are executed in separate threads.
+ */
+fork
+   sleep:500
+   log.info:First async log
+fork
+   sleep:1000
+   log.info:Second async log
+log.info:Main thread log

@@ -1,14 +1,16 @@
-// Copies template field defaults into matching form inputs
-.template
-   fields
-      name:John Doe
-      age:int:40
-      email:john@example.com
-.form
-   name
-   age
-   email
-for-each:x:@.template/*/fields/*
-   get-name:x:@.dp/#
-   set-value:x:@.form/*/{@get-name}
-      get-value:x:@.dp/#
+// Sends an email using specific SMTP settings
+mail.smtp.send
+   server
+      host:foo.com
+      port:123
+      secure:true
+      username:xxx
+      password:yyy
+   message
+      to
+         John Doe:john@doe.com
+      from
+         Jane Doe:jane@doe.com
+      subject:Subject line
+      entity:text/plain
+         content:Body content

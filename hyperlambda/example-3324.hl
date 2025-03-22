@@ -1,6 +1,17 @@
+// Executing the following Hyperlambda results in the following
 
-// Example: Pass arguments to the inline Hyperlambda code.
-strings.mixin:"2 + val equals {{\nmath.add\n   .:int:2\n   get-value:x:@.arguments/*/val\nreturn:x:-\n}}"
-   val:int:5
+// When executing the following Hyperlambda
+data.connect:magic
+   database-type:sqlite
+   data.create
+      database-type:sqlite
+      table:log_entries
+      values
+         content:Foo bar log content
+         type:info
 
-// Result: "2 + val equals 7"
+// We end up with this result
+data.connect
+   data.create:long:75152
+
+// Notice how lists are declared with nodes having names of "." or even sometimes ""

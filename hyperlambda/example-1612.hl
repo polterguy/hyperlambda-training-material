@@ -1,18 +1,6 @@
-// Hyperlambda [if] with boolean value
-.is-logged-in:bool:true
-.welcome-message
-if
-   eq:x:@.is-logged-in
-      .:bool:true
-   .lambda
-      set-value:x:@.welcome-message
-         .:Welcome back!
-
-/* JavaScript equivalent of Hyperlambda [if] with boolean value
-const isLoggedIn = true;
-let welcomeMessage;
-
-if (isLoggedIn === true) {
-  welcomeMessage = "Welcome back!";
-}
-*/
+/*
+ * Example: Check if a string starts with a specific substring (positive case).
+ */
+// Returns true
+strings.starts-with:HelloWorld
+   .:Hello

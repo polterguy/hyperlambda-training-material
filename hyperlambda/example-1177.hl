@@ -1,10 +1,11 @@
-// Evaluate an inline Hyperlambda expression
-
-.src
+// Inline lambda execution by providing the lambda body as children
+.res
 eval
+   set-value:x:@.res
+      .:Inline
 
-   // Next two nodes are ignored
-   """"
-   .
-   set-value:x:@.src
-      .:OK
+// Result
+.res:Inline
+eval
+   set-value:x:@.res
+      .:Inline

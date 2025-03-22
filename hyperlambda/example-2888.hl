@@ -1,41 +1,69 @@
 
-// Create a Hyperlambda script for a CRUD update endpoint that updates an existing item in the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+// Write a Hyperlambda script to import a specified CSV file as training data for a specified model.
 .arguments
-   name:string
-   description:string
+   type:string
+   file:*
+.type:internal
+.accept:multipart/form-data
 
-// Verifying user is authorized to access endpoint.
-validators.mandatory:x:@.arguments/*/name
+// Ensures user is authorized to access endpoint.
 auth.ticket.verify:root
 
-// Opening up our database connection.
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/file
+validators.mandatory:x:@.arguments/*/file/*/name
+validators.mandatory:x:@.arguments/*/file/*/stream
+
+// Reading file data from stream.
+io.stream.read:x:@.arguments/*/file/*/stream
+
+// Converting file to lambda object.
+csv2lambda:x:@io.stream.read
+
+// Opening database connection.
 data.connect:[generic|magic]
 
-   // Parametrising our invocation.
-   add:x:./*/data.update/*/values
-      get-nodes:x:@.arguments/*/[1,1000]
-   add:x:./*/data.update/*/where/*/and
-      get-nodes:x:@.arguments/*/[0,1]
+   // Iterating through each record in file.
+   for-each:x:@csv2lambda/*
 
-   // Invoking our update slot.
-   data.update
-      table:roles
-      values
-      where
-         and
+      // Creating our completion.
+      .prompt:
+      .completion:
+      set-value:x:@.prompt
+         strings.concat
+            get-name:x:@.dp/#/0
+            .:": "
+            get-value:x:@.dp/#/0
+      for-each:x:@.dp/#/*/[1,1000]
+         if
+            and
+               not-null:x:@.dp/#
+               neq:x:@.dp/#
+                  .:
+            .lambda
+               set-value:x:@.completion
+                  strings.concat
+                     get-value:x:@.completion
+                     .:"\n"
+                     .:"\n"
+                     get-name:x:@.dp/#
+                     .:": "
+                     get-value:x:@.dp/#
+      set-value:x:@.completion
+         strings.trim:x:@.completion
 
-   // Verifying record exists.
-   if
-      eq
-         get-value:x:@data.update
-         .:int:0
-      .lambda
-         response.status.set:404
-         return
-            result:Record not found
+      // Importing item into database.
+      data.create
+         table:ml_training_snippets
+         values
+            type:x:@.arguments/*/type
+            prompt:x:@.prompt
+            completion:x:@.completion
+            meta:x:@.arguments/*/file/*/name
 
-   // Returning success to caller.
-   response.status.set:202
-   unwrap:x:+/*
-   return
-      affected:x:@data.update
+// Returning success to caller.
+get-count:x:@csv2lambda/*
+yield
+   result:success
+   count:x:@get-count

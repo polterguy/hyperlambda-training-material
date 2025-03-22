@@ -1,16 +1,27 @@
 
-// Provide a Hyperlambda example where a value increases until [.value] is greater than 15.
-
-// Increases value until [.value] is greater than 15.
-.value:int:5
-while
-   lt
-      get-value:x:@.value
-      .:int:15
-   .lambda
-
-      // Logging current value.
-      log.info:Increasing value
-
-      // Incrementing value.
-      math.increment:x:@.value
+// Create a Hyperlambda script to generate a stacked chart image with specified dimensions, bar values, ticks, and legend.
+image.chart:stacked
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   ticks
+      .:Spring
+      .:Summer
+      .:Autumn
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets

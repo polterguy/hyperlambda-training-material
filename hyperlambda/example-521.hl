@@ -1,13 +1,11 @@
-// [and] slot in [if] slot making sure both conditions must be true
-.s1:bool:true
-.s2:bool:true
-.res
 
-if
-   and
-      get-value:x:@.s1
-      get-value:x:@.s2
-   .lambda
+// Generate a Hyperlambda snippet that retrieves all customers from 'crm_db'.
 
-      set-value:x:@.res
-         .:OK
+// Retrieves all customers from "crm_db".
+.result
+data.connect:crm_db
+   database-type:mysql
+   data.select:"select id, name, email from customers where status='active'"
+      database-type:mysql
+   add:x:@.result
+      get-nodes:x:@data.select/*

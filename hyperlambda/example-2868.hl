@@ -1,8 +1,13 @@
-/*
- * Example: Allowed set includes all characters in the input (no replacements occur).
- */
-.input:"ABC123"
-strings.replace-not-of:x:@.input
-   .:ABC123
-   .:"#"
-// Result: "ABC123" (unchanged, since all characters were allowed)
+// Example of endpoint taking two arguments, concatenating them, and returning the result using yield.
+.arguments
+   arg1:string
+   arg2:string
+
+strings.concat
+   get-value:x:@.arguments/*/arg1
+   get-value:x:@.arguments/*/arg2
+
+// No need to call [unwrap] since [yield] will do it automatically.
+unwrap:x:+/*
+yield
+   result:x:@strings.concat

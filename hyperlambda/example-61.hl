@@ -1,4 +1,13 @@
-/* 
- * This example shows a file-level multi-line comment above code 
- */
-foo:bar
+
+// Loops for 5 iterations, adding a static node each iteration
+.no:int:0
+.res
+while
+   lt
+      get-value:x:@.no
+      .:int:5
+   .lambda
+      add:x:@.res
+         .
+            foo
+      math.increment:x:@.no

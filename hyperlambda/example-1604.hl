@@ -1,6 +1,9 @@
-// Creates a new Hyperlambda slot.
-slots.create:meaning-of-life
-   return-value:int:57
+/*
+ * Example: Use variables to supply the string and suffix to check.
+ */
+.text:"Goodbye"
+.suffix:"bye"
 
-// Invoking slot we created above.
-signal:meaning-of-life
+// Returns true
+strings.ends-with:x:@.text
+   get-value:x:@.suffix

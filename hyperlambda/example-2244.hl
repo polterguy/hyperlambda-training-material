@@ -1,10 +1,11 @@
-
-// Generate a Hyperlambda snippet that embeds multiple structured data entries into a given storage node.
-
-// Embeds multiple structured data entries into a given storage node.
-.storage
-add:x:@.storage
-   .
-      itemAlpha:detailAlpha
-      itemBeta:detailBeta
-      itemGamma:detailGamma
+// Sends a multipart email with file attachment
+mail.smtp.send
+   message
+      to
+         Jane Doe:jane@doe.com
+      subject:Subject line
+      entity:multipart/mixed
+         entity:text/plain
+            content:Body content
+         entity:text/plain
+            filename:/files/foo.txt

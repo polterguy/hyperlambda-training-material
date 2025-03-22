@@ -1,4 +1,9 @@
-// Return the smallest number of 5 and 7
-math.min
-   .:int:5
-   .:int:7
+
+// Create a Hyperlambda snippet that inserts a new status node after 'pending' inside '.statuses'.
+
+// Inserts a new status node after "pending" inside ".statuses".
+.statuses
+   pending
+insert-after:x:@.statuses/*/pending
+   .
+      approved:Status updated

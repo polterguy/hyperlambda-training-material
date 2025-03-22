@@ -1,5 +1,5 @@
-// Set the value of multiple target nodes at once
-.foo
-.foo
-set-value:x:../*/.foo
-   .:Done
+/*
+ * Example: Capitalize only the very first character of a multi-word string.
+ */
+// Result: "Hello world"
+strings.capitalize:"hello world"

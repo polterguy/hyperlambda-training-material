@@ -1,135 +1,41 @@
 
-// Write a Hyperlambda script to upload and install a specified ZIP file module.
+// Delete one record from your comments table in your cms database
 .arguments
-   file:*
 
-// Declaring MIME type endpoint accepts
-.accept:multipart/form-data
+   // Primary key of record to delete, mandatory argument
+   id:long
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Meta data description for endpoint
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
-validators.mandatory:x:@.arguments/*/file/*/name
-validators.mandatory:x:@.arguments/*/file/*/stream
-validators.regex:x:@.arguments/*/file/*/name
-   regex:[a-z0-9_-]+
-strings.split:x:@.arguments/*/file/*/name
-   .:.
-if
-   not
-      eq
-         get-value:x:@strings.split/0/-
-         .:zip
-   .lambda
+// Type of endpoint
+.type:crud-delete
 
-      // Oops, not a ZIP file ...
-      throw:You can only install ZIP files
-         public:true
-         status:415
-if
-   not
-      eq
-         get-count:x:@strings.split/*
-         .:int:2
-   .lambda
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+validators.mandatory:x:@.arguments/*/id
 
-      // Oops, not a valid module name.
-      throw:That is not a valid module name
-         public:true
-         status:400
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
 
-// Figuring out full path to use for ZIP file.
-.full-path
-set-value:x:@.full-path
-   strings.concat
-      .:/modules/
-      get-value:x:@.arguments/*/file/*/name
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
 
-// Checking if ZIP file already exists, at which point we delete it.
-if
-   io.file.exists:x:@.full-path
-   .lambda
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:comments
+      where
+         and
 
-      // File with specified filename already exists.
-      io.file.delete:x:@.full-path
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.comments.delete
+      args
 
-// Saving stream to file.
-io.stream.save-file:x:@.full-path
-   get-value:x:@.arguments/*/file/*/stream
-
-// Figuring out folder name to use.
-.folder
-set-value:x:@.folder
-   strings.concat
-      .:/modules/
-      get-value:x:@strings.split/0
-      .:/
-
-// Deleting previously existing folder with same name.
-if
-   io.folder.exists:x:@.folder
-   .lambda
-
-      // Module already exists, deleting it.
-      io.folder.delete:x:@.folder
-
-// Creating folder.
-io.folder.create:x:@.folder
-
-// Unzipping file.
-io.file.unzip:x:@.full-path
-   folder:x:@.folder
-
-// Deleting ZIP file.
-io.file.delete:x:@.full-path
-
-// Defaulting module name to name of zip file.
-.module-name
-set-value:x:@.module-name
-   get-value:x:@strings.split/0
-
-// Figuring out manifest name and checking if it exists.
-.manifest
-set-value:x:@.manifest
-   strings.concat
-      get-value:x:@.folder
-      .:manifest.hl
-if
-   io.file.exists:x:@.manifest
-   .lambda
-
-      // Checking manifest file to see if we need to rename module.
-      io.file.load:x:@.manifest
-      hyper2lambda:x:-
-      if
-         neq
-            get-value:x:@.module-name
-            get-value:x:@hyper2lambda/*/module_name
-         .lambda
-
-            // We'll need to rename folder for module according to manifest.
-            strings.concat
-               .:/modules/
-               get-value:x:@hyper2lambda/*/module_name
-               .:/
-            if
-               io.folder.exists:x:@strings.concat
-               .lambda
-
-                  // Folder already exists, deleting it.
-                  io.folder.delete:x:@strings.concat
-
-            // Renaming folder according to manifest information.
-            io.folder.move:x:@.folder
-               get-value:x:@strings.concat
-            set-value:x:@.module-name
-               get-value:x:@hyper2lambda/*/module_name
-
-// Installing module.
-unwrap:x:+/*
-signal:magic.modules.install-module
-   module:x:@.module-name
-return-nodes
-   result:Success
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

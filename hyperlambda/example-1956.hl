@@ -1,8 +1,2 @@
-
-// Execute Hyperlambda file with arguments
-.args
-   foo1:bar1
-   foo2:bar2
-execute-file:/whatever-file.hl
-   arg1:x:@.args/*/foo1
-   arg2:x:@.args/*/foo2
+// Example: Try signaling a slot without throwing exception if it doesn't exist
+try-signal:foo

@@ -1,16 +1,7 @@
-
-// Write a Hyperlambda snippet that queries inventory data from the warehouse database and items table.
-
-// Queries inventory data from the warehouse database and items table.
-data.connect:warehouse_db
-
-   // SQLite database used.
-   database-type:sqlite
-
-   // Fetching item records.
-   data.read
-      database-type:sqlite
-      table:items
-      sort
-         updated_at
-      direction:desc
+// Create a MIME message
+mime.create:multipart/mixed
+   structured:false
+   entity:text/plain
+      content:this is the body text     
+   entity:text/plain
+      content:this is another body text

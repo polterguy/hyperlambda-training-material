@@ -1,14 +1,8 @@
+// Compute the remainder of 10 divided by 3
+math.modulo
 
-// Create a Hyperlambda action to load a specified file and return its content.
-.arguments
-   file
-      type:string
-      mandatory:bool:true
-.icon:insert_drive_file
+   // base value 10
+   .:int:10
 
-// Loads the specified file.
-load-file:x:@.arguments/*/file
-
-// Returning result of above invocation to caller.
-yield
-   content:x:@load-file
+   // 10 mod 3 = 1 (final result)
+   .:int:3

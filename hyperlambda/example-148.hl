@@ -1,54 +1,36 @@
 
-// Update one record in your CustomerDemographics table in your northwind database
+/*
+ * Hyperlambda endpoint taking arguments. This SQL query selects media types and their aggregate counts, ordering the results by count in descending order, filtered by a specified name pattern.
+ * 
+ * The SQL code is executed within a SQLite database connection to the Chinook database. It performs an inner join between the MediaType and Track tables to count the occurrences of each media type. The query filters media types based on a provided pattern using the LIKE operator, groups the results by MediaTypeId, and orders them by the count of tracks associated with each media type in descending order. This allows users to retrieve media type information and their usage frequency, filtered by a specific name pattern, from the Chinook database.
+ * 
+ * All arguments are mandatory.
+ */
 .arguments
+   filter:string
 
-   // CustomerTypeID column value being primary key of record to update, mandatory argument
-   CustomerTypeID:string
-
-   // CustomerDesc column's new value
-   CustomerDesc:string
-
-// Meta data description for endpoint
-.description:Update one record in your CustomerDemographics table in your northwind database
-
-// Type of endpoint
-.type:crud-update
-
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/CustomerTypeID
-
-// Opening up our database connection.
-data.connect:[generic|northwind]
+// Connecting to database.
+data.connect:chinook
    database-type:sqlite
 
-   // Parametrising our invocation.
-   add:x:./*/data.update/*/values
-      get-nodes:x:@.arguments/*/[1,1000]
-   add:x:./*/data.update/*/where/*/and
-      get-nodes:x:@.arguments/*/[0,1]
+   // Parametrizing [data.select].
+   add:x:./*/data.select
+      get-nodes:x:@.arguments/*
 
-   // Invoking our update slot.
-   data.update
+   // Executing [data.select] slot with our SQL.
+   data.select:@"
+/*
+ * Selects media types and aggregate of counts, and orders by count descending.
+ * Make sure you select the chinook database before execxuting the script.
+ */
+select mt.Name, count(mt.MediaTypeId) as Amount 
+  from MediaType mt
+    inner join Track t on mt.MediaTypeId = t.MediaTypeId
+  where mt.Name like @filter
+  group by mt.MediaTypeId
+  order by Amount desc;
+"
       database-type:sqlite
-      table:CustomerDemographics
-      values
-      where
-         and
 
-   // Verifying record exists.
-   if
-      eq
-         get-value:x:@data.update
-         .:int:0
-      .lambda
-         response.status.set:404
-         return
-            result:Record not found
-
-   // Returning the correct status code.
-   response.status.set:202
-
-   // Returning success to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.update
+   // Returning a result of above invocation to caller.
+   return-nodes:x:@data.select/*

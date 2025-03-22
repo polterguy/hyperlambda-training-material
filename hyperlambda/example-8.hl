@@ -1,8 +1,11 @@
+// Concatenating strings for each node in the list
+.car-parts
+   engine
+   wheel
+   door
 
-// Example: Remove a substring by replacing it with an empty string.
-.sentence:Apples and oranges
-strings.replace:x:@.sentence
-   .:"and "
-   .:
-
-// Result: "Apples oranges" (removed "and ")
+for-each:x:@.car-parts/*
+   set-value:x:@.dp/#
+      strings.concat
+         get-name:x:@.dp/#
+         .:" is checked"

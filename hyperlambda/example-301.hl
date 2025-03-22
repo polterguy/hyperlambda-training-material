@@ -1,7 +1,5 @@
-// Negate an equality check using not
 
-.foo1:OK
-not
-   eq
-      get-value:x:../*/.foo1
-      .:OK
+// Example: Convert an already lowercase string (no change).
+
+// Result: "hello"
+strings.to-lower:hello

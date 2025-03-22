@@ -1,16 +1,8 @@
 
-// Generate a Hyperlambda snippet that logs messages while [.count] is less than 10.
+// Example: Remove a substring by replacing it with an empty string.
+.sentence:Apples and oranges
+strings.replace:x:@.sentence
+   .:"and "
+   .:
 
-// Logs messages while [.count] is less than 10.
-.count:int:0
-while
-   lt
-      get-value:x:@.count
-      .:int:10
-   .lambda
-
-      // Logging iteration message.
-      log.info:Iteration running
-
-      // Incrementing counter.
-      math.increment:x:@.count
+// Result: "Apples oranges" (removed "and ")

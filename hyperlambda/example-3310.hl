@@ -1,8 +1,13 @@
-
-// Create a Hyperlambda script that returns the reCAPTCHA key if required, otherwise returns null or an empty string.
-
-// Retrieving key configuration setting and returning to caller.
-config.get:"magic:auth:recaptcha:key"
-unwrap:x:+/*
-return-nodes
-   result:x:@config.get
+// This example connects to the 'forest' database and reads records from the 'trees' table.
+sqlite.connect:forest
+   sqlite.read
+      table:trees
+      columns
+         species
+         height
+      where
+         and
+            height.mt:int:50
+      order:height
+      direction:desc
+      limit:int:7

@@ -1,17 +1,52 @@
 
-// Write a Hyperlambda code snippet showcasing string handling, multi-line strings, and different quoting styles.
+// Write a Hyperlambda script to return all available template snippets from the backend, including prompt and completion details.
+.arguments
+   private:bool
 
-// No special characters, no quotes required
-.variableOne:data
+// Making sure user has access to invoked endpoint.
+auth.ticket.verify:root
 
-// Contains a colon, requires double quotes
-.variableTwo:"key:value"
+// Contains list of templates we find.
+.result
 
-// Multi-line string using @ notation
-.variableThree:"alpha\nbeta"
+// Listing files recursively.
+io.file.list-recursively:/modules/
+io.file.list-recursively:/system/
+for-each:x:../*/io.file.list-recursively/*
 
-// Single-quote alternative
-.variableFour:Hyperlambda
+   // Checking if this is a template file.
+   if
+      and
+         strings.ends-with:x:@.dp/#
+            .:.md
+         strings.contains:x:@.dp/#
+            .:/ts-templates/
+      .lambda
 
-// Escaping newline character in text
-.variableFive:"code\nsnippet"
+         /*
+          * This is a template file.
+          * 
+          * Figuring out its prompt and completion.
+          */
+         load-file:x:@.dp/#
+         strings.split:x:@load-file
+            .:"\n"
+         .prompt
+         set-value:x:@.prompt
+            strings.trim:x:@strings.split/0
+         .completion
+         remove-nodes:x:@strings.split/0
+         set-value:x:@.completion
+            strings.join:x:@strings.split/*
+               .:"\n"
+         set-value:x:@.completion
+            strings.trim:x:@.completion
+         unwrap:x:+/*/*/*
+         add:x:@.result
+            .
+               .
+                  prompt:x:@.prompt
+                  completion:x:@.completion
+
+// Returning result to caller.
+return-nodes:x:@.result/*

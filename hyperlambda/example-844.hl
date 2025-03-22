@@ -1,48 +1,55 @@
 
-// Read or list records from your pages table in your cms database
-.arguments
+// Lists all foreign keys in the specified SQLite table.
+slots.create:magic.db.sqlite.foreign_keys
 
-   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/database
+   validators.mandatory:x:@.arguments/*/table
 
-   // Offset into the dataset of where to start retrieving records
+   // Opens up our connection
+   .connection:
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               get-value:x:@.arguments/*/database
+               .:]
+   else
+      set-value:x:@.connection
+         strings.concat
+            .:[generic|
+            get-value:x:@.arguments/*/database
+            .:]
+   sqlite.connect:x:@.connection
+      strings.concat
+         .:"pragma foreign_key_list('"
+         get-value:x:@.arguments/*/table
+         .:"')"
+      sqlite.select:x:@strings.concat
 
-   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
-
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   pages.id.eq:long
-   pages.title.like:string
-   pages.title.eq:string
-   pages.content.like:string
-   pages.content.eq:string
-   pages.created_at.eq:date
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-read
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:guest
-
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:pages
-      columns
-         pages.id
-         pages.title
-         pages.content
-         pages.created_at
-      where
-         and
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+      /*
+       * Creating our return value, by projecting it into
+       * a generic form, that does not rely upon SQLite's syntactic
+       * details.
+       */
+      for-each:x:@sqlite.select/*
+         unwrap:x:+/*/*/*
+         add:x:../*/return-nodes
+            .
+               .
+                  column:x:@.dp/#/*/from
+                  foreign_table:x:@.dp/#/*/table
+                  foreign_column:x:@.dp/#/*/to
+   return-nodes

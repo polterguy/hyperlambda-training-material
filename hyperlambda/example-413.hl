@@ -1,25 +1,15 @@
+// Subtract a computed sum and another number from a base value
+math.subtract:int:30
 
-// Create a Hyperlambda script that returns the specified URL to the caller with a 5-minute server-side cache to avoid re-fetching the URL too frequently.
-slots.create:magic.http.get-with-cache
+   // compute a sum to subtract
+   math.add
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/url
-   validators.url:x:@.arguments/*/url
+      // first addend
+      .:int:5
 
-   // Checking cache.
-   unwrap:x:+/*/.lambda/*/.url
-   cache.try-get:x:@.arguments/*/url
-      expiration:300
-      .lambda
+      // second addend (5 + 3 = 8)
+      .:int:3
 
-         // Forward evaluated above.
-         .url:x:@.arguments/*/url
-         http.get:x:@.url
-            headers
-               User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36
-               Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-               Accept-Language:en-GB,en-US;q=0.9,en;q=0.8,no;q=0.7
-         return:x:-/*/content
-
-   // Returning result of above invocation to caller.
-   return:x:@cache.try-get
+   // subtract 2 after subtracting the above sum
+   .:int:2
+   // Step-by-step: 30 - 8 = 22, then 22 - 2 = 20

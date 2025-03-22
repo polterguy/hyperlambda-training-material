@@ -1,9 +1,9 @@
-/*
- * Retrieving the name of a deeply nested node.
- * Results in `"child"` being returned
- */
-
-.data
-   parent
-      child:42
-get-name:x:@.data/*/*
+// How to apply caching headers conditionally for GET requests?
+request.verb
+if
+   eq
+      get-value:x:@request.verb
+      .:get
+   .lambda
+      response.headers.set
+         Cache-Control:public, max-age=3600

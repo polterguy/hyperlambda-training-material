@@ -1,16 +1,13 @@
-// Switch lambda
-.val:fooXX
-.result
-switch:x:@.val
 
-   case:bar
-      set-value:x:@.result
-         .:Oops
+// Create a Hyperlambda snippet that retrieves access logs from the security database and access_logs table.
 
-   case:foo
-      set-value:x:@.result
-         .:Oops2.0
+// Retrieves access logs from the security database and access_logs table.
+data.connect:security_db
 
-   default
-      set-value:x:@.result
-         .:Success!
+   // PostgreSQL database used.
+   database-type:pgsql
+
+   // Querying access logs without sorting or limiting.
+   data.read
+      database-type:pgsql
+      table:access_logs

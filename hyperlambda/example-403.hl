@@ -1,3 +1,5 @@
 
-// Returns maximum legal value for a date object ==> 9999-12-31T23:59:59.999
-date.max
+// How to use Hyperlambda's [lambda2hyper]
+.hl
+   log.info:This is some example logging invocation
+lambda2hyper:x:-/*

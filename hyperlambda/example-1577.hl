@@ -1,19 +1,7 @@
-/*
- * Hyperlambda file taking arguments that invokes a dynamic slot with dynamic parameters.
- */
-.arguments
-   slot:string
-   params:*
-validators.mandatory:x:@.arguments/*/slot
+// Add children nodes from source to destination
 
-// Forwards all arguments to [invoke].
-add:x:./*/invoke
-   get-nodes:x:@.arguments/*/params/*
-
-// Invoke the slot dynamically
-invoke:x:@.arguments/*/slot
-
-// Returning result
-add:x:./*/return
-   get-nodes:x:@invoke/*
-return
+.dest
+add:x:../*/.dest
+   .
+      foo1:bar1
+      foo2:bar2

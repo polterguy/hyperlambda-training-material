@@ -1,14 +1,17 @@
-// Open a database and use crud slots to select top 15 records, from crm database, and contacts table, where email address is gmail
 
-// Opens up database connection
-data.connect:[generic|crm]
-   database-type:sqlite
+// Provide a Hyperlambda example with string variables, covering cases of colons, multi-line strings, and escaped characters.
 
-   // Invokes [data.read] slot to select data.
-   data.read
-      database-type:sqlite
-      table:contacts
-      limit:long:15
-      where
-         and
-            email.like:%gmail.com
+// No special characters, so no quotes required
+.text1:sample
+
+// Contains a colon, requiring quotes
+.text2:"sample:value"
+
+// Multi-line string, using @ notation
+.text3:"lineA\nlineB"
+
+// Alternative quoting with single quotes
+.text4:test
+
+// Escaped newline within a string
+.text5:"first\nsecond"

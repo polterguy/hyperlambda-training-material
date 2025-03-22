@@ -1,2 +1,5 @@
-// Selects all children from a root-resolved expression
-.all-from-root:x:@../*/settings/*
+
+// Convert a numeric string to an integer type
+.str:42
+convert:x:@.str
+   type:int

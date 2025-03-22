@@ -1,2 +1,4 @@
-// How to return a 201 status after creating a new user?
-response.status.set:201
+
+// Convert from YAML to lambda and back again
+yaml2lambda:x:@.yaml
+lambda2yaml:x:-/*

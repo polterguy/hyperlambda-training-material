@@ -1,50 +1,46 @@
 
-// Returns all roles [username] belongs to.
+// Read or list records from your categories table in your cms database
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-.icon:supervisor_account
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
 
-// Connecting to database.
-data.connect:[generic|magic]
+   // Offset into the dataset of where to start retrieving records
 
-   // Verifying user exists.
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   categories.id.eq:long
+   categories.name.like:string
+   categories.name.eq:string
+   categories.description.like:string
+   categories.description.eq:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-read
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
    data.read
-      table:users
+      database-type:sqlite
+      table:categories
       columns
-         username
+         categories.id
+         categories.name
+         categories.description
       where
          and
-            username.eq:x:@.arguments/*/username
 
-   // Verifying above invocation returned something.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-
-         // Oops ...!!
-         throw:No such user
-            username:x:@.arguments/*/username
-
-   // Selecting all roles user belongs to.
-   data.read
-      table:users_roles
-      columns
-         role
-      where
-         and
-            user.eq:x:@.arguments/*/username
-
-   // Parametrizing [return] invocation below.
-   for-each:x:@data.read/*
-      unwrap:x:+/*/*
-      add:x:../*/return
-         .
-            .:x:@.dp/#/*/role
-
-// Returning roles to user.
-return
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

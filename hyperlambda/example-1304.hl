@@ -1,16 +1,11 @@
+// Getting the customer's name
+.customers
+   .
+      name:John Doe
+      email:john@doe.com
+   .
+      name:Peter Jensen
+      email:peter@jensen.com
 
-// Provide a Hyperlambda example where [.lambda] runs based on the boolean value of [.flag].
-
-// Runs [.lambda] based on the boolean value of [.flag].
-.flag:bool:true
-if
-   eq:x:@.flag
-      .:bool:true
-   .lambda
-
-      // Runs when [.flag] is set to true.
-      log.info:[.flag] is enabled
-else
-
-   // Runs when [.flag] is false.
-   log.info:[.flag] is disabled
+// Retrieving the second customer's name
+get-value:x:@.customers/1/*/name

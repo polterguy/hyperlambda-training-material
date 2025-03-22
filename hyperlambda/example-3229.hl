@@ -1,10 +1,12 @@
 /*
- * Example: Use variables for the regex pattern and replacement string.
+ * This Hyperlambda snippet demonstrates an error when multiple nodes match.
+ *
+ * 1. The `.data` node has multiple children.
+ * 2. The `get-value` slot is used with a wildcard selector `*`, which returns multiple nodes.
+ * 3. This will cause a HyperlambdaException because `get-value` expects exactly one node.
  */
-.pattern:"\\d"
-.replacement:"X"
-.source:"a1b2c3"
-strings.regex-replace:x:@.source
-   get-value:x:@.pattern
-   get-value:x:@.replacement
-// Result: "aXbXcX"
+
+.data
+   foo1:bar1
+   foo2:bar2
+get-value:x:@.data/*

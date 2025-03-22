@@ -1,3 +1,8 @@
-// How do you declare a 32-bit integer in Hyperlambda?
+// Create a task, then schedule it
+tasks.create:task-id-567
+   .lambda
 
-.page-views:int:1048576
+      log.info:It is Saturday or Sunday, and the time is 22PM.
+
+tasks.schedule:task-id-567
+   repeats:saturday|SUNDAY.22.00.00

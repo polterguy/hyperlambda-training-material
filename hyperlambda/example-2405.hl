@@ -1,9 +1,9 @@
+/*
+ * Retrieves the value of a specific child node.
+ */
 
-// Generate a Hyperlambda snippet that inserts a new node before 'item1' inside '.list'.
-
-// Inserts a new node before "item1" inside ".list".
-.list
-   item1
-insert-before:x:@.list/*/item1
-   .
-      item0:Inserted before item1
+.data
+   item1:john
+   item2:thomas
+   item3:peter
+get-value:x:@.data/*/item2

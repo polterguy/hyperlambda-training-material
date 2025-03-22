@@ -1,12 +1,24 @@
 
-// Retrieve orders that are either pending OR processing
-data.connect:shopDB
-   data.read
-      table:orders
-      limit:-1
-      where
+// Ensures user is authorized to access endpoint.
+.arguments
+   roles
+      type:array
+      mandatory:bool:false
+.icon:shield
 
-         // Either status equals "pending" OR department not equal "hr"
-         or
-            status.eq:pending
-            department.neq:hr
+/*
+ * Checking if we've got a [roles] argument,
+ * and if so, joining all roles into a comma separated string of roles.
+ */
+.roles
+if
+   exists:x:@.arguments/*/roles/*
+   .lambda
+
+      // Creating comma separated list of roles.
+      set-value:x:@.roles
+         strings.join:x:@.arguments/*/roles/*
+            .:,
+
+// Making sure user is authenticated, and optionally authorised.
+auth.ticket.verify:x:@.roles

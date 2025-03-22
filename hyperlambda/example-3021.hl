@@ -1,19 +1,18 @@
+// Hyperlambda [if] checking substring
+.filename:document.pdf
+.file-type
+if
+   strings.ends-with:x:@.filename
+      .:pdf
+   .lambda
+      set-value:x:@.file-type
+         .:pdf
 
-// Returns a single plan based on size.
-.arguments
-   size
-      type:string
-      mandatory:bool:true
+/* JavaScript equivalent of Hyperlambda [if] checking substring
+const filename = "document.pdf";
+let fileType;
 
-// Returning correct price_reference according to size
-switch:x:@.arguments/*/size
-   case:small
-      return
-         price_reference:price_1OfS7kCoiv3SyDZGr1droJZF
-   case:large
-      return
-         price_reference:price_1OfS8NCoiv3SyDZGCyJh8X62
-   default
-
-      // Oops ...!!
-      throw:I can only handle small and large size
+if (filename.endsWith("pdf")) {
+  fileType = "pdf";
+}
+*/

@@ -1,14 +1,26 @@
-// The oracle decides whether a number is worthy.
 
-.verdict
-.number-of-trials:int:42
+// Create a Hyperlambda script to create one record in a specified table in a database with optional filtering arguments.
+.arguments
 
-if
-   gt
-      get-value:x:@.number-of-trials
-      .:int:40
-   .lambda
-      set-value:x:@.verdict
-         .:You are worthy!
+// Opening up database connection.
+data.connect:{database}
+   database-type:{database-type}
 
-// If trials exceed 40, the verdict will be "You are worthy!".
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:{database-type}
+      table:{table}
+      return-id:{return-id}
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

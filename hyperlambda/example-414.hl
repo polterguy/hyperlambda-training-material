@@ -1,13 +1,14 @@
-// Create HTTP POST invocation as MIME
-http.post:"http://localhost:5000/magic/modules/foo/foo"
-   headers
-      Content-Type:multipart/form-data
-   payload
-      entity:text/plain
-         headers
-            Content-Disposition:"form-data; name=\"foo\""
-         content:Foo bar
-      entity:text/plain
-         headers
-            Content-Disposition:"form-data; filename=\"README.md\""
-         filename:/README.md
+// Applies env variable values into the system configuration
+.env
+   vars
+      port:int:8080
+      debug:bool:true
+      region:eu-west
+.system
+   port
+   debug
+   region
+for-each:x:@.env/*/vars/*
+   get-name:x:@.dp/#
+   set-value:x:@.system/*/{@get-name}
+      get-value:x:@.dp/#

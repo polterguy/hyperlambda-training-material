@@ -1,19 +1,18 @@
-/*
- * Save this file as `/modules/files/endpoints/read.hl`
- * This exposes an HTTP POST endpoint at `/files/read`
- *
- * It requires a `filename` argument to be passed,
- * and returns the file contents if valid.
- */
 
+// Create a Hyperlambda action to join specified 'values' into a single string with an optional 'separator'. Return the joined result.
 .arguments
-   filename
+   values
+      type:array
+      mandatory:bool:true
+   separator
+      type:string
+      mandatory:bool:false
+.icon:settings
 
-validators.mandatory:x:@.arguments/*/filename
+// Joining strings.
+strings.join:x:@.arguments/*/values/*
+   get-value:x:@.arguments/*/separator
 
-.result
-set-value:x:@.result
-   io.file.load:x:@.arguments/*/filename
-
+// Returning result to caller.
 yield
-   file:x:@.result
+   result:x:@strings.join

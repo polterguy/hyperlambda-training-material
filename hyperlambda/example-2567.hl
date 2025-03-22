@@ -1,34 +1,11 @@
 
-// Create a Hyperlambda script to update an existing task according to specified arguments.
+// Write a Hyperlambda script to return all possible LLMs the system supports.
 .arguments
-   id:string
-   description:string
-   hyperlambda:string
 
-// Ensures user is authorized to access endpoint.
+// Making sure user is authenticate to access endpoint
 auth.ticket.verify:root
 
-// Converting Hyperlambda to lambda.
-.lambda
-if
-   and
-      exists:x:@.arguments/*/hyperlambda
-      not
-         eq
-            get-value:x:@.arguments/*/hyperlambda
-            .
-      not
-         eq
-            get-value:x:@.arguments/*/hyperlambda
-            .:
-   .lambda
-      add:x:@.lambda/@.lambda
-         hyper2lambda:x:@.arguments/*/hyperlambda
-      add:x:../*/tasks.update
-         get-nodes:x:@.lambda/@.lambda
-tasks.update:x:@.arguments/*/id
-   description:x:@.arguments/*/description
-
-// Returning success to caller.
-return
-   result:success
+// Retrieving possible candidates.
+slots.vocabulary:magic.ai.chat
+yield
+   llms:x:@slots.vocabulary/*

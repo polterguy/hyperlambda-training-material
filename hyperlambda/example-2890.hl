@@ -1,3 +1,2 @@
-
-// This example shows a file-level multi-line comment above code
-foo:bar
+// Load a binary file and returns content as raw bytes
+io.file.load.binary:/whatever-path.png

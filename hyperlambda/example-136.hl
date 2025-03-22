@@ -1,78 +1,37 @@
 
-// Create a Hyperlambda script that returns all workflow actions to the caller, ensuring the user is authorized.
-auth.ticket.verify:root
+// Delete endpoint deleting one record from your crawl_urls table in your scraper database.
+.arguments
 
-// Buffer for all actions in the system.
-.result
+   // Primary key of record to delete
+   crawl_url_id:long
 
-// Retrieving all system actions.
-add:x:@.result
-   io.file.list-recursively:/misc/workflows/actions/
+// Meta data description for endpoint
 
-// Retrieving all custom actions.
-if
-   io.folder.exists:/etc/workflows/actions/
-   .lambda
-      add:x:@.result
-         io.file.list-recursively:/etc/workflows/actions/
+// Type of endpoint
+.type:crud-delete
 
-// Then iterating through each installed module, and retrieving all module actions.
-io.folder.list:/modules/
-for-each:x:@io.folder.list/*
-   strings.concat
-      get-value:x:@.dp/#
-      .:workflows/actions/
-   if
-      io.folder.exists:x:@strings.concat
-      .lambda
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
 
-         // Module has custom actions.
-         insert-before:x:@.result/0
-            io.file.list-recursively:x:@strings.concat
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/crawl_url_id
 
-// Filtering out everything not ending with '.hl'.
-for-each:x:@.result/*
-   if
-      strings.ends-with:x:@.dp/#
-         .:.hl
-      .lambda
+// Opening up our database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
 
-         // Loading file to add meta data.
-         load-file:x:@.dp/#
-         hyper2lambda:x:-
-            comments:true
-         if
-            eq
-               get-name:x:@hyper2lambda/0
-               .:..
-            .lambda
-               unwrap:x:+/*/*
-               add:x:@.lambda/@.lambda/0/-/*/*
-                  .
-                     description:x:@hyper2lambda/0
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
 
-         // Decorating return value.
-         unwrap:x:+/*/*
-         add:x:@.lambda/0/-/*/*
-            .
-               icon:x:@hyper2lambda/*/.icon
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:crawl_urls
+      where
+         and
 
-         // Creating a name for action by using filename.
-         strings.split:x:@.dp/#
-            .:/
-         strings.split:x:-/0/-
-            .:.
-         remove-nodes:x:@strings.split/0/-
-         strings.join:x:@strings.split/0
-            .:.
-
-         // Returning result to caller.
-         unwrap:x:+/*/*/*
-         add:x:../*/return
-            .
-               .
-                  name:x:@strings.join
-                  filename:x:@.dp/#
-
-// Returning result to caller.
-return
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

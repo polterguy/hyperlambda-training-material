@@ -1,11 +1,6 @@
 
-// Example: Split a comma-separated string.
-strings.split:a,b,c
-   .:,
+// Fetch a few film titles and release years using a raw SQL query
+data.connect:sakila
+   data.select:SELECT title, release_year FROM film LIMIT 3
 
-/*
- * Resulting parts:
- * .:a
- * .:b
- * .:c
- */
+   // Executes the SQL directly on the database and returns up to 3 rows

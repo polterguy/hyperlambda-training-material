@@ -1,8 +1,13 @@
-/**
- * This example removes 30 pixels from the left and 70 pixels from the right.
- * The height remains unchanged.
- */
-image.crop
-   file:/input.jpg
-   left:int:30
-   right:int:70
+
+// Create a Hyperlambda endpoint taking age and name, concatenates these, and returns the result with a greeting.
+.arguments
+   name:string
+   age:int
+strings.concat
+   .:"Hello "
+   get-value:x:@.arguments/*/name
+   .:", you are "
+   get-value:x:@.arguments/*/age
+   .:" years old"
+yield
+   result:x:@strings.concat

@@ -1,32 +1,21 @@
-/*
- * This Hyperlambda snippet accepts a file path and a target word as arguments.
- * It reads the content of the file, splits the content into words,
- * counts how many words are NOT equal to the specified word, and returns the count.
- */
+// Use else as a fallback if no conditions match
 
-.arguments
-   file-path:string
-   word:string
-
-// Load the text file's content
-io.file.load:x:@.arguments/*/file-path
-
-// Split the content into words based on spaces
-strings.split:x:@io.file.load
-   .:' '
-
-// Initialize counter
-.counter:int:0
-
-// Iterate through each word and compare to target
-for-each:x:@strings.split/*
-   if
-      not
-         eq:x:@.dp/#
-            .:x:@.arguments/*/word
-      .lambda
-         math.increment:x:@.counter
-
-// Return the result
-yield
-   word-count:x:@.counter
+.result
+.src:int:3
+if
+   eq
+      get-value:x:@.src
+      .:int:1
+   .lambda
+      set-value:x:../*/.result
+         .:OK
+else-if
+   eq
+      get-value:x:@.src
+      .:int:2
+   .lambda
+      set-value:x:../*/.result
+         .:ERROR
+else
+   set-value:x:../*/.result
+      .:DEFAULT

@@ -1,11 +1,8 @@
+// Create a task, then schedule it to run once every 3650 days
+tasks.create:task-id-qwerty123
+   .lambda
 
-// Create a Hyperlambda snippet that fetches recent orders from 'ecommerce_db'.
+      log.info:Executing seldomly repeating task once every 10 year
 
-// Fetches recent orders from "ecommerce_db".
-.result
-data.connect:ecommerce_db
-   database-type:pgsql
-   data.select:"select order_id, user_id, total from orders where order_status='shipped' order by order_date desc limit 30"
-      database-type:pgsql
-   add:x:@.result
-      get-nodes:x:@data.select/*
+tasks.schedule:task-id-qwerty123
+   repeats:3650.days

@@ -1,6 +1,7 @@
-/*
- * Example: Check if a string contains a given substring (present case).
- */
-// Returns true
-strings.contains:MagicLambda
-   .:Lambda
+// Iterate over each child node and perform an operation
+.list
+   item1
+   item2
+for-each:x:@.list/*
+   set-value:x:@.dp/#
+      .:processed

@@ -1,4 +1,8 @@
-// Generate a cryptographically secure random string between 50 and 100 characters
-crypto.random
-   min:50
-   max:100
+/*
+ * Example: Mix in a slot that returns a string to be inserted.
+ */
+strings.mixin:@"Hello, {{
+strings.to-upper:world
+return:x:-
+}}!"
+// Result: "Hello, WORLD!"

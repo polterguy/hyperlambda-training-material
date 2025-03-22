@@ -1,27 +1,23 @@
-/*
- * FILE: /modules/api/employees/search.hl
- *
- * DESCRIPTION:
- * Accepts a `name` parameter and performs a SQL `LIKE` search.
- * This is useful for autocomplete or fuzzy search.
- *
- * HOW TO CREATE THIS ENDPOINT:
- * 1. Save as `/modules/api/employees/search.hl`.
- * 2. Endpoint becomes available at:
- *     GET /api/employees/search?name=Joh
- *
- * SECURITY:
- * - Uses parameterized SQL to prevent SQL injection.
- */
 
+// Search the web
 .arguments
-   name:string
 
-validators.mandatory:x:@.arguments/*/name
+   // Mandatory argument being the actual query to submit to DuckDuckGo.
+   query:string
 
-data.connect:sakila
-   data.select:SELECT first_name, last_name FROM actor WHERE first_name LIKE @filter
-      @filter:x:@.arguments/*/name
+   // Optional argument being the maximum number of tokens to return.
+   max_tokens:int
 
-   yield
-      results:x:@data.select/*
+// Public endpoints can also be used as AI functions
+.type:public
+
+// Returns [max_tokens] context for the specified [query] by searching DuckDuckGo.
+execute:magic.workflows.actions.execute
+   name:openai-context-from-search
+   filename:/modules/openai/workflows/actions/openai-context-from-search.hl
+   arguments
+      query:x:@.arguments/*/query
+      max_tokens:x:@.arguments/*/max_tokens
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

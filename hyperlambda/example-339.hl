@@ -1,6 +1,5 @@
-// eq should throw an error when given more than two values
 
-eq
-   .:foo1
-   .:foo2
-   .:foo3
+// Example: Convert a string with letters and numbers to lowercase.
+
+// Result: "mixedcase123"
+strings.to-lower:MixedCase123

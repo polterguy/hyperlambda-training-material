@@ -1,13 +1,43 @@
-// Executing the following Hyperlambda results in the following
 
-// When executing the following Hyperlambda
-cache.set:foo
-   value:some cache value
-cache.get:foo
+// Create one record in your Album table in your chinook database
+.arguments
 
-// We end up with this result
-cache.set:foo
-   value:some cache value
-cache.get:some cache value
+   // AlbumId column value
+   AlbumId:long
 
-// Notice how the cached value is returned
+   // Title column value
+   Title:string
+
+   // ArtistId column value
+   ArtistId:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:Album
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

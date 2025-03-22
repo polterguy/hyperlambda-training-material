@@ -1,6 +1,6 @@
 /*
- * Example: Use a variable to provide the input string.
+ * If `.data` exists but has no children, `get-nodes` should return nothing.
  */
-.text:"Test"
-// Returns 4
-strings.length:x:@.text
+
+.data
+get-nodes:x:@.data/*

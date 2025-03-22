@@ -1,33 +1,79 @@
-/*
- * Hyperlambda file that can be executed with arguments.
- * Prepares a password reset email by replacing the {{user}} and {{reset_link}} placeholders.
- */
+
+// Develop a function to create a Stripe payment link using a specified price reference, quantity, and success URL. The function should validate mandatory arguments, apply a default quantity of 1, and handle metadata. It should retrieve the Stripe API token and make a POST request to create the payment link. Handle any errors by logging and throwing exceptions, and return the payment link URL to the caller upon successful creation.
 .arguments
-   user:string
-   reset_link:string
-.email-template:@"
-Hi {{user}},
+   price_reference
+      type:string
+      mandatory:bool:true
+   quantity
+      type:int
+      mandatory:bool:false
+   success_url
+      type:string
+      mandatory:bool:true
+   metadata
+      type:key-value
+.icon:payment
 
-We received a request to reset your password.
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/price_reference
+validators.mandatory:x:@.arguments/*/success_url
 
-Click the link below to proceed:
-{{reset_link}}
+// Applying default values.
+validators.default:x:@.arguments
+   quantity:int:1
 
-If you didn't request this, please ignore this message.
+// Adding metadata
+for-each:x:@.arguments/*/metadata/*
+   set-name:x:./0/-/*/*
+      strings.concat
+         .:metadata[
+         get-name:x:@.dp/#
+         .:]
+   unwrap:x:./0/-/*/*
+   add:x:../*/http.post/*/payload
+      .
+         name:x:@.dp/#
 
-Thanks,
-Support Team"
+// Retrieving Stripe token from configuration.
+.token
+set-value:x:@.token
+   strings.concat
+      .:"Bearer "
+      config.get:"magic:stripe:token"
 
-.reset-email
-set-value:x:@.reset-email
-   strings.replace:x:@.email-template
-      .:{{user}}
-      get-value:x:@.arguments/*/user
+// Invoking Stripe to create payment link here.
+http.post:"https://api.stripe.com/v1/payment_links"
+   convert:true
+   headers
+      Authorization:x:@.token
+      Content-Type:application/x-www-form-urlencoded
+   payload
+      line_items[0][price]:x:@.arguments/*/price_reference
+      line_items[0][quantity]:int:1
+      after_completion[type]:redirect
+      after_completion[redirect][url]:x:@.arguments/*/success_url
 
-set-value:x:@.reset-email
-   strings.replace:x:@.reset-email
-      .:{{reset_link}}
-      get-value:x:@.arguments/*/reset_link
+// Sanity checking above invocation.
+if
+   not
+      and
+         mte:x:@http.post
+            .:int:200
+         lt:x:@http.post
+            .:int:300
+   .lambda
 
+      // Oops, error - Logging error and returning status 500 to caller.
+      lambda2hyper:x:@http.post
+      log.error:Something went wrong while invoking Stripe, could not create payment link
+         message:x:@http.post/*/content/*/error/*/message
+         status:x:@http.post
+         error:x:@lambda2hyper
+      throw:Something went wrong while invoking Stripe, could not create payment link
+         message:x:@http.post/*/content/*/error/*/message
+         status:x:@http.post
+         error:x:@lambda2hyper
+
+// Returning payment link to caller.
 yield
-   email:x:@.reset-email
+   purchase_link:x:@http.post/*/content/*/url

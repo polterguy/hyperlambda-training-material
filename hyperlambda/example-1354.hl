@@ -1,5 +1,6 @@
-
-// Example: Get the length of a string with multi-byte characters.
-
-// Returns 2
-strings.length:你好
+// How to use [data.read] and have it only return field1 and field2
+sql.read
+   table:table1
+   columns
+      field1
+      field2

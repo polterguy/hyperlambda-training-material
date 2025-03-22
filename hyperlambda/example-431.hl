@@ -1,7 +1,11 @@
-// Execute Hyperlambda file with arguments
-.args
-   foo1:bar1
-   foo2:bar2
-execute-file:/whatever-file.hl
-   arg1:x:@.args/*/foo1
-   arg2:x:@.args/*/foo2
+
+// Generate a Hyperlambda snippet that copies nodes from [.input] and appends them into [.output].
+
+// Copies nodes from [.input] and appends into [.output]
+.input
+   itemA:dataA
+   itemB:dataB
+   itemC:dataC
+.output
+add:x:@.output
+   get-nodes:x:@.input/*

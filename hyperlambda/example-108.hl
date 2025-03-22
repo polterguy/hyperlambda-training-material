@@ -1,8 +1,17 @@
 
-// Executes any Hyperlambda segments found in string, passing in arguments, and substitutes Hyperlambda segment with result of execution
-.mixin:"The sum of your arguments is {{\nmath.add\n   get-value:x:@.arguments/*/arg1\n   get-value:x:@.arguments/*/arg2\n// Whatever we return here substitutes the mixin in the result\nreturn:x:-}}"
-strings.mixin:x:-
-   arg1:int:2
-   arg2:int:3
+// Write a Hyperlambda snippet that adds a new employee in 'hr_db' database and its 'employees' table.
 
-// Result ==> "The sum of your arguments is 5"
+// Adds a new employee in "hr_db" database and its "employees" table.
+data.connect:hr_db
+   database-type:sqlite
+
+   // Creating employee record.
+   data.create
+      database-type:sqlite
+      table:employees
+      values
+         employee_id:int:301
+         name:Alice Smith
+         department:Finance
+         salary:decimal:55000.00
+         hire_date:date:"2020-07-15T00:00:00.000"

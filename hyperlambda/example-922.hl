@@ -1,30 +1,13 @@
+// Creates a try/catch/finally block
+try
 
-// Write a Hyperlambda script to upload a specified backup file.
-.arguments
-   file:*
-.type:internal
-.accept:multipart/form-data
+   // Perform your unsafe operation here.
+   throw:Some error is thrown here
+.catch
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:x:@.arguments/*/message
+.finally
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
-validators.mandatory:x:@.arguments/*/file/*/name
-validators.mandatory:x:@.arguments/*/file/*/stream
-validators.regex:x:@.arguments/*/file/*/name
-   regex:"\\.db$"
-
-// Saves the file to the specified folder.
-.full-path
-set-value:x:@.full-path
-   strings.concat
-      .:/data/
-      get-value:x:@.arguments/*/file/*/name
-io.stream.save-file:x:@.full-path
-   get-value:x:@.arguments/*/file/*/stream
-
-// Flushing SQLite, and returning success to caller.
-sqlite.connections.flush
-return
-   result:success
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:Try finished evaluating

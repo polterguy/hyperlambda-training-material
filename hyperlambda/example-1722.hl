@@ -1,16 +1,5 @@
 /*
- * Save this file as `/modules/users/endpoints/assign-role.hl`
- * This exposes an HTTP POST endpoint at `/users/assign-role`
- *
- * The endpoint requires a `userId` and `role` to proceed with role assignment.
+ * Example: URL-decode a simple percent-encoded string.
  */
-
-.arguments
-   userId
-   role
-
-validators.mandatory:x:@.arguments/*/userId
-validators.mandatory:x:@.arguments/*/role
-
-yield
-   message:Role assigned (simulated)
+strings.url-decode:hello%20world
+// Result: "hello world"

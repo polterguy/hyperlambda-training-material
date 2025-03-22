@@ -1,6 +1,16 @@
 
-// Example: Use a variable to provide the input string.
-.text:Test
+// Provide a Hyperlambda example where a counter counts down from 10.
 
-// Returns 4
-strings.length:x:@.text
+// Counts down from 10.
+.counter:int:10
+while
+   gt
+      get-value:x:@.counter
+      .:int:0
+   .lambda
+
+      // Logging countdown.
+      log.info:Counting down
+
+      // Decrementing counter.
+      math.decrement:x:@.counter

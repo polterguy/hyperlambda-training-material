@@ -1,18 +1,9 @@
-// Use else-if to check multiple value comparisons
+// Create a new customer with only a name field
+data.connect:shopDB
 
-.result
-.src:int:2
-if
-   eq
-      get-value:x:@.src
-      .:int:1
-   .lambda
-      set-value:x:../*/.result
-         .:OK
-else-if
-   eq
-      get-value:x:@.src
-      .:int:2
-   .lambda
-      set-value:x:../*/.result
-         .:ERROR
+   data.create
+      table:customers
+      values
+
+         // Insert "Alice" into the name column
+         name:"Alice"

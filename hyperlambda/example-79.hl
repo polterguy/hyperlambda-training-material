@@ -1,4 +1,16 @@
-// Converting a string to integer
-.data:42
-convert:x:@.data
-   type:int
+
+// Write a Hyperlambda script to return the number of log items in the database based on a query.
+.arguments
+   query:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Invoking slot responsible for returning count.
+log.count:x:@.arguments/*/query
+
+// Returning result of above invocation to caller.
+unwrap:x:+/*
+return
+   count:x:@log.count

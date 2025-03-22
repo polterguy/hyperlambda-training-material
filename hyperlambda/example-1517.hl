@@ -1,8 +1,15 @@
 
-// Example: Replace all digits in a string with asterisks.
-.text:ID 0987
-strings.regex-replace:x:@.text
-   .:"\\d"
-   .:*
+// Create a Hyperlambda snippet that counts transactions in the 'finance_db' database from the 'transactions' table.
 
-// Result: "ID ****"
+// Counts transactions in the "finance_db" database from the "transactions" table.
+data.connect:finance_db
+   database-type:pgsql
+
+   // Counting total transactions.
+   data.read
+      database-type:pgsql
+      table:transactions
+      columns
+         count(*)
+            as:count
+      limit:long:1

@@ -1,8 +1,13 @@
-// Composing a dynamic node expression from parts
-compose
-   .:..
-   .:*
-   .:.data
-   .:*
+.data
+   hello
+      some-node
+         some-other-node
+            foo
+      howdy
+         foo
+   foo
+      bar
 
-// The above will construct an expression resembling the following :x:../*/.data/*
+// Change value of all "foo" nodes
+set-value:x:@.data/**/foo
+   .:New Value!

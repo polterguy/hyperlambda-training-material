@@ -1,14 +1,9 @@
+// Looping through a collection with [for-each]
+.items
+   item1:Apple
+   item2:Banana
+   item3:Cherry
+for-each:x:@.items/*
 
-// Converts lambda object to CSV string, preserving types
-.data
-   .
-      name:Thomas Hansen
-      age:int:47
-   .
-      name:John Doe
-      age:int:67
-lambda2csv:x:-/*
-add:x:+/*/types
-   get-nodes:x:@lambda2csv/*
-csv2lambda:x:@lambda2csv
-   types
+   // Logs each item value
+   log.info:x:@.dp/#

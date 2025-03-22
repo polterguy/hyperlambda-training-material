@@ -1,3 +1,5 @@
+// Getting a list of all cached items.
 
-// Create HTTP GET invocation
-http.get:"https://docs.ainiro.io"
+cache.list
+
+// Returns a list of all stored cache keys.

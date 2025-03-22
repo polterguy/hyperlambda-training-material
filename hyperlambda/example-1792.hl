@@ -1,5 +1,6 @@
-/*
- * If no nodes match, `get-nodes` should return nothing.
- */
+// eq should throw an error when given more than two values
 
-get-nodes:x:@.nonexistent
+eq
+   .:foo1
+   .:foo2
+   .:foo3

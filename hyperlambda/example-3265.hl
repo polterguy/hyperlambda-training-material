@@ -1,8 +1,4 @@
-/*
- * Example: Use variables for the string and characters to trim.
- */
-.text:"xyzyx"
-.chars:"xy"
-// Result: "z"
-strings.trim:x:@.text
-   get-value:x:@.chars
+// Set all inactive users to have NULL last_login
+data.connect:authDB
+   data.execute:UPDATE users SET last_login = NULL WHERE active = 0
+   // Executes the UPDATE; number of affected records returned

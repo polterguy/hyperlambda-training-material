@@ -1,3 +1,13 @@
-// How do you declare a byte value in Hyperlambda?
+// Use else-if to check multiple conditions in sequence
 
-.max-byte:byte:200
+.result
+if
+   .:bool:false
+   .lambda
+      set-value:x:../*/.result
+         .:failure
+else-if
+   .:bool:true
+   .lambda
+      set-value:x:../*/.result
+         .:OK

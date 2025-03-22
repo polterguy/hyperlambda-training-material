@@ -1,3 +1,8 @@
-// Create HTTP PUT
-http.put:"https://some_website.com/your-put-endpoint"
-   payload:@"{""foo"": ""bar""}"
+
+// Create a Hyperlambda snippet that appends child nodes into a given destination.
+
+// Appends child nodes into a given destination.
+.result
+add:x:@.result
+   .
+      data:info

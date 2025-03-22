@@ -1,11 +1,10 @@
-// Use an if statement with eq to compare values
 
-.result
-.src:int:1
-if
-   eq
-      get-value:x:@.src
-      .:int:1
-   .lambda
-      set-value:x:../*/.result
-         .:OK
+// Handling a signal with arguments
+.data
+   first-name:John
+   last-name:Doe
+execute:user.full-name
+   first-name:x:@.data/*/first-name
+   last-name:x:@.data/*/last-name
+
+// Above the expressions will be evaluated passing in the values of [first-name] and [last-name] to the slot

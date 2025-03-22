@@ -1,2 +1,3 @@
-// List files
-io.file.list:/misc/
+// How do you declare a string variable in Hyperlambda?
+
+.username:string:john_doe_92

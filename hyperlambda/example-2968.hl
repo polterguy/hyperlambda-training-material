@@ -1,48 +1,91 @@
 
-// Create a function that authenticates a user with a username and password, returning a JWT Bearer token and user extra fields.
+// Read or list records from your Customers table in your northwind database
 .arguments
-   username:string
-   password:string
 
-/*
- * Authenticates the user with the specified [username] and [password].
- * 
- * Returns a JWT Bearer token that can be used for consecutive requests authorizing user according
- * to his or her roles.
- */
-execute:magic.workflows.actions.execute
-   name:authenticate
-   filename:/modules/registration/workflows/actions/authenticate.hl
-   arguments
-      username:x:@.arguments/*/username
-      password:x:@.arguments/*/password
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   limit:long
 
-/*
- * Returns all extra fields for the specified [username].
- * 
- * Notice, will return incomplete values if you want to reference return values in consecutive actions.
- */
-execute:magic.workflows.actions.execute
-   name:extras-get
-   filename:/modules/registration/workflows/actions/extras-get.hl
-   arguments
-      username:x:@.arguments/*/username
+   // Offset into the dataset of where to start retrieving records
+   offset:long
 
-// Returning result to caller.
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+   order:string
 
-/*
- * Transforms the result of multiple actions/arguments into a new object.
- * 
- * This is useful if you need a lambda object that's aggregated from the
- * returned lambda objects from multiple (other) actions.
- */
-execute:magic.workflows.actions.execute
-   name:transform
-   filename:/misc/workflows/actions/misc/transform.hl
-   arguments
-      params
-         ticket:x:--/execute/=authenticate/*/ticket
-         extra:x:--/execute/=extras-get/*
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
+   Customers.CustomerID.like:string
+   Customers.CustomerID.eq:string
+   Customers.CompanyName.like:string
+   Customers.CompanyName.eq:string
+   Customers.ContactName.like:string
+   Customers.ContactName.eq:string
+   Customers.ContactTitle.like:string
+   Customers.ContactTitle.eq:string
+   Customers.Address.like:string
+   Customers.Address.eq:string
+   Customers.City.like:string
+   Customers.City.eq:string
+   Customers.Region.like:string
+   Customers.Region.eq:string
+   Customers.PostalCode.like:string
+   Customers.PostalCode.eq:string
+   Customers.Country.like:string
+   Customers.Country.eq:string
+   Customers.Phone.like:string
+   Customers.Phone.eq:string
+   Customers.Fax.like:string
+   Customers.Fax.eq:string
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// Meta data description for endpoint
+.description:Read or list records from your Customers table in your northwind database
+
+// Type of endpoint
+.type:crud-read
+
+// Columns with custom handling as frontend is generated.
+.handling
+   Customers.Phone:phone
+
+// Opening up our database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+
+   // Parametrising our read invocation with ordering arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+
+   // Parametrising our read invocation with paging arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Customers
+      columns
+         Customers.CustomerID
+         Customers.CompanyName
+         Customers.ContactName
+         Customers.ContactTitle
+         Customers.Address
+         Customers.City
+         Customers.Region
+         Customers.PostalCode
+         Customers.Country
+         Customers.Phone
+         Customers.Fax
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

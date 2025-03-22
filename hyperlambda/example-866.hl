@@ -1,34 +1,16 @@
-
-// Lists all database in your MySQL instance.
-slots.create:magic.db.mysql.databases
-
-   // Opens up our connection
-   .connection:[information_schema]
-   if
-      and
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .:
-      .lambda
-         set-value:x:@.connection
-            strings.concat
-               .:[
-               get-value:x:@.arguments/*/connection-string
-               .:|
-               .:information_schema]
-   mysql.connect:x:@.connection
-
-      // Runs our query
-      mysql.select:show databases
-
-      // Renaming "Database" nodes.
-      set-name:x:@mysql.select/*/*
-         .:db
-
-      // Returns the remaining databases to caller.
-      return-nodes:x:@mysql.select/*
+// Sends a contact form via POST and checks for a successful response
+.contact.status:unknown
+http.post:"https://somewhere.com/api/v1/contacts"
+   convert:true
+   payload
+      name:Thomas
+      email:thomas@ainiro.io
+if
+   and
+      mte:x:@http.post
+         .:int:200
+      lt:x:@http.post
+         .:int:300
+   .lambda
+      set-value:x:@.contact.status
+         .:Success

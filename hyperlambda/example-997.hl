@@ -1,7 +1,10 @@
-/**
- * This example moves "/exports/report.csv" to "/archives/report.csv".
- * If the destination file exists, it will be replaced.
- */
-io.file.move
-   from:/exports/report.csv
-   to:/archives/report.csv
+
+// Returns the username of the currently authenticated user.
+.icon:shield
+
+// Retrieving username.
+auth.ticket.get
+
+// Returning username to caller.
+yield
+   username:x:@auth.ticket.get

@@ -1,6 +1,11 @@
-// Example: Create a slot, invoke it, then invokes a non-existing slot (throws!)
-slots.create:foo
-   return-value:Blah, blah, blah ...
 
-slots.exists:foo
-slots.exists:DOES-NOT-EXISTS
+// Write a Hyperlambda snippet that opens a connection to 'warehouse_db' and gets recent inventory changes.
+
+// Opens a connection to "warehouse_db" and gets recent inventory changes.
+.result
+data.connect:warehouse_db
+   database-type:sqlite
+   data.select:select * from inventory_changes order by modified_at desc limit 15
+      database-type:sqlite
+   add:x:@.result
+      get-nodes:x:@data.select/*

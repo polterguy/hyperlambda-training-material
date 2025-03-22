@@ -1,13 +1,23 @@
+// Hyperlambda [if] with else branch
+.status:inactive
+.display-class
+if
+   eq:x:@.status
+      .:active
+   .lambda
+      set-value:x:@.display-class
+         .:green
+else
+   set-value:x:@.display-class
+      .:red
 
-// Show me Hyperlambda that lists all files from '/modules/chinook/', check if they're Hyperlambda files, and if yes, adds the file path to a [.result] node
-.result
-io.file.list:/modules/chinook/
-for-each:x:@io.file.list/*
-   if
-      strings.ends-with:x:@.dp/#
-         .:.hl
-      .lambda
-         unwrap:x:+/*/*
-         add:x:@.result
-            .
-               .:x:@.dp/#
+/* JavaScript equivalent of Hyperlambda [if] with else branch
+const status = "inactive";
+let displayClass;
+
+if (status === "active") {
+  displayClass = "green";
+} else {
+  displayClass = "red";
+}
+*/

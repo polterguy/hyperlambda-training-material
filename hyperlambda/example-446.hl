@@ -1,14 +1,13 @@
-
-// Evaluates specified [.lambda] if condition evaluates to true.
-if
-   or
-      eq:x:@SOME_EXPRESSION
-         .:SOME_VALUE
-      eq:x:@SOME_OTHER_EXPRESSION
-         .:SOME_OTHER_VALUE
-   .lambda
-
-      // Lambda evaluates if condition is true.
+/*
+ * This example demonstrates implicit conversion for non-null object to
+ * boolean. If an object is not bool, but it is non-null, during boolean
+ * conversion it will automatically be defined as "true".
+ */
+.result
+.foo:whatever
+if:x:-
+   set-value:x:@.result
+      .:Yup!
 else
-
-   // Lambda evaluated if condition is NOT true.
+   set-value:x:@.result
+      .:Nope!

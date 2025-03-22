@@ -1,27 +1,34 @@
 
-// Generate a Hyperlambda snippet that evaluates payment methods using a switch case with a default option.
+// Lists all database in your MySQL instance.
+slots.create:magic.db.mysql.databases
 
-// Switch case comparison for payment methods.
-.payment_method:PayPal
-.result
-switch:x:@.payment_method
-   case:CreditCard
+   // Opens up our connection
+   .connection:[information_schema]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               .:information_schema]
+   mysql.connect:x:@.connection
 
-      // If payment method is CreditCard.
-      set-value:x:@.result
-         .:Paid with Credit Card
-   case:PayPal
+      // Runs our query
+      mysql.select:show databases
 
-      // If payment method is PayPal.
-      set-value:x:@.result
-         .:Paid with PayPal
-   case:Crypto
+      // Renaming "Database" nodes.
+      set-name:x:@mysql.select/*/*
+         .:db
 
-      // If payment method is Crypto.
-      set-value:x:@.result
-         .:Paid with Cryptocurrency
-   default
-
-      // If the payment method is unknown.
-      set-value:x:@.result
-         .:Unknown payment method
+      // Returns the remaining databases to caller.
+      return-nodes:x:@mysql.select/*

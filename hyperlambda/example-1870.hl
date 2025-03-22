@@ -1,13 +1,9 @@
-// This example connects to the 'universe' database and reads records from the 'stars' table.
-sqlite.connect:universe
-   sqlite.read
-      table:stars
-      columns
-         name
-         luminosity
-      where
-         and
-            luminosity.mt:long:1000
-      order:luminosity
-      direction:desc
-      limit:int:8
+// Executing the Hyperlambda changes the node hierarchy
+
+// This Hyperlambda
+.no:int:0
+math.increment:x:@.no
+
+// Creates this result
+.no:int:1
+math.increment:x:@.no

@@ -1,20 +1,26 @@
-
-// Returns number of registrations for the last 14 days grouped by day.
-.arguments
-
-// Making sure user is authorised to invoke endpoint.
-auth.ticket.verify:root, admin, guest
-config.get:"magic:databases:default"
-switch:x:@config.get
-   case:mysql
-   case:sqlite
-      strings.concat
-         .:/modules/hub/affiliates/db.overrides/
-         get-value:x:@config.get
-         .:.affiliate-registrations.get.hl
-      add:x:+
-         get-nodes:x:@.arguments/*
-      io.file.execute:x:@strings.concat
-      return-nodes:x:-/*
-   default
-      throw:Unsupport database type for Hub
+// Creates a new stacked chart
+image.chart:stacked
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   ticks
+      .:Spring
+      .:Summer
+      .:Autumn
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets

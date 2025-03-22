@@ -1,13 +1,12 @@
-/*
- * This Hyperlambda snippet demonstrates basic exception handling.
- * The `try` block attempts to throw an exception.
- * The `catch` block catches the exception and sets `.throws` to `true`.
- * Expected behavior: `.throws` should be `true` after execution.
- */
-
-.throws:bool:false
-try
-   throw:foo
-.catch
-   set-value:x:@.throws
-      .:bool:true
+// How can I check if the current user is in the 'admin' role or the 'root' role?
+.result
+if
+   or
+      auth.ticket.in-role:admin
+      auth.ticket.in-role:root
+   .lambda
+      set-value:x:@.result
+         .:Welcome, admin!
+else
+   set-value:x:@.result
+      .:Access denied

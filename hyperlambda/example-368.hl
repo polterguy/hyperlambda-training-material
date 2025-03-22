@@ -1,24 +1,17 @@
 /*
- * Posts an order ID to the order system to fetch order details.
- * If the request is successful (2xx), the full response content is returned.
+ * Sends an email with an attachment. The 'to', 'subject', and 'body' are static,
+ * and the attachment is specified with a file path.
  */
 
-.arguments
-   id:int
+mail.smtp.send
+   message
+      to
+         recipient:john.doe@example.com
+      subject:Email with Attachment
 
-http.post:"https://orders.api.example.com/get-order"
-   convert:true
-   payload
-      order_id:x:@.arguments/*/id
-
-if
-   and
-      mte:x:@http.post
-         .:int:200
-      lt:x:@http.post
-         .:int:300
-   .lambda
-      yield
-         result:x:@http.post/*/content/*
-else
-   throw:Failed to fetch order
+      // This is how we declare a multipart MIME message of type `mixed`
+      entity:multipart/mixed
+         entity:text/plain
+            content:Please find the attachment.
+         entity:text/plain
+            filename:/path/to/attachment.txt

@@ -1,23 +1,93 @@
 
-// Develop a helper action for a Stripe webhook to extract essential information from charge events. The function should accept a mandatory node reference argument, which is forwarded by Stripe. It should convert the amount to a decimal by dividing by 100 and return the customer ID, amount, currency, receipt URL, event type, and metadata. The event type could be one of several charge-related statuses, such as 'charge.succeeded', 'charge.failed', etc. This setup allows efficient handling of Stripe webhook events.
+// Create a Hyperlambda script that returns the Hyperlambda required to execute an action or snippet, ensuring the user is authorized.
 .arguments
-   node_reference
-      type:string
-      mandatory:bool:true
-      default:":x:@.arguments"
-.icon:payment
+   filename:string
+   args:*
 
-// Converting amount to decimal and dividing by 100.
-math.divide
-   convert:x:@.arguments/*/node_reference/#/*/data/*/object/*/amount
-      type:decimal
-   .:decimal:100
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Returning result to caller.
-yield
-   customer_id:x:@.arguments/*/node_reference/#/*/data/*/object/*/customer
-   amount:x:@math.divide
-   currency:x:@.arguments/*/node_reference/#/*/data/*/object/*/currency
-   receipt_url:x:@.arguments/*/node_reference/#/*/data/*/object/*/receipt_url
-   type:x:@.arguments/*/node_reference/#/*/type
-   metadata:x:@.arguments/*/node_reference/#/*/data/*/object/*/metadata/*
+// Loading action/snippet Hyperlambda file and transforming to lambda object.
+load-file:x:@.arguments/*/filename
+
+// Checking if this is a action template.
+if
+   strings.contains:x:@.arguments/*/filename
+      .:/workflows/actions/
+   .lambda
+
+      /*
+       * This is an action template type of snippet.
+       * Parametrizing accordingly.
+       */
+      .action
+      add:x:@.action
+         hyper2lambda:x:@load-file
+            comments:true
+
+      // Creating our action invocation.
+      .invocation
+         execute:magic.workflows.actions.execute
+            name
+            filename
+            arguments
+      set-value:x:@.invocation/*/execute/*/name
+         get-value:x:@.arguments/*/args/*/action_name
+      remove-nodes:x:@.arguments/*/args/*/action_name
+      set-value:x:@.invocation/*/execute/*/filename
+         get-value:x:@.arguments/*/filename
+
+      // Creating our action comment.
+      if
+         eq
+            get-name:x:@.action/0
+            .:..
+         .lambda
+            unwrap:x:+/*/*
+            insert-before:x:@.invocation/0
+               .
+                  ..:x:@.action/0
+
+      // Making sure we correctly convert arguments according to type declaration.
+      for-each:x:@.arguments/*/args/**
+         if
+            strings.starts-with:x:@.dp/#
+               .:":x:"
+            .lambda
+               strings.substring:x:@.dp/#
+                  .:int:3
+               set-x:x:@.dp/#
+                  convert:x:@strings.substring
+                     type:x
+         else
+            get-name:x:@.dp/#
+            switch:x:@.action/*/.arguments/*/{@get-name}/*/type
+               case:long
+               case:decimal
+               case:int
+               case:float
+               case:double
+                  set-value:x:@.dp/#
+                     convert:x:@.dp/#
+                        type:x:@.action/*/.arguments/*/{@get-name}/*/type
+               case:hyperlambda
+                  add:x:@.dp/#
+                     hyper2lambda:x:@.dp/#
+                        comments:true
+                  set-value:x:@.dp/#
+
+      // Decorating action arguments according to [.arguments]/[args].
+      add:x:@.invocation/*/execute/*/arguments
+         get-nodes:x:@.arguments/*/args/*
+
+      // Returning result to caller as Hyperlambda.
+      lambda2hyper:x:@.invocation/*
+         comments:true
+      yield
+         result:x:@lambda2hyper
+else
+
+   // This is a template snippet, returning as is.
+   unwrap:x:+/*
+   return
+      result:x:@load-file

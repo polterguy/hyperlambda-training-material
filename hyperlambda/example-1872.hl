@@ -1,8 +1,29 @@
-/*
- * This example connects to the 'galaxy' database and retrieves the total number of planets from the 'planets' table.
- * It uses the sqlite.scalar slot to execute a SQL query that counts the number of records in the 'planets' table.
- * The result is returned as a single scalar value representing the total count of planets.
- */
 
-sqlite.connect:galaxy
-   sqlite.scalar:select count(*) from planets
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the users_extra table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
+.arguments
+   type:string
+   user:string
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/user
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      table:users_extra
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

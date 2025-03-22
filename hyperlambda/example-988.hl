@@ -1,35 +1,50 @@
 
-// CRUD endpoint that counts items from your Categories table in your northwind database
+// Returns all roles [username] belongs to.
 .arguments
-   Categories.CategoryID.eq:long
-   Categories.CategoryName.like:string
-   Categories.CategoryName.eq:string
-   Categories.Description.like:string
-   Categories.Description.eq:string
-   Categories.Picture.like:string
-   Categories.Picture.eq:string
+   username
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Meta data description for endpoint
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
 
-// Type of endpoint
-.type:crud-count
+// Connecting to database.
+data.connect:[generic|magic]
 
-// Opening up our database connection.
-data.connect:[generic|northwind]
-   database-type:sqlite
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
+   // Verifying user exists.
    data.read
-      database-type:sqlite
-      table:Categories
+      table:users
       columns
-         count(*)
-            as:count
+         username
       where
          and
-      limit:long:1
+            username.eq:x:@.arguments/*/username
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Selecting all roles user belongs to.
+   data.read
+      table:users_roles
+      columns
+         role
+      where
+         and
+            user.eq:x:@.arguments/*/username
+
+   // Parametrizing [return] invocation below.
+   for-each:x:@data.read/*
+      unwrap:x:+/*/*
+      add:x:../*/return
+         .
+            .:x:@.dp/#/*/role
+
+// Returning roles to user.
+return

@@ -1,20 +1,8 @@
+// How to use [data.select] and have it return multiple result sets
 
-// Hyperlambda [if] checking for empty value
-.user-input:
-.validation-message
-if
-   eq:x:@.user-input
-      .:
-   .lambda
-      set-value:x:@.validation-message
-         .:Input required
+// ALWAYS open your database connection before trying to execute SQL
+data.connect:warehouse
 
-/*
- * JavaScript equivalent of Hyperlambda [if] checking for empty value
- * const userInput = "";
- * let validationMessage;
- * 
- * if (userInput === "") {
- * validationMessage = "Input required";
- * }
- */
+   // This executes the specified SQL
+   // This SQL contains a special character and must therefore be quoted using for instance double quotes
+   data.select:"select * from table1; select * from table2;"

@@ -1,17 +1,29 @@
 
-// Multiply an inline base by a static factor and the result of an addition
-math.multiply:int:4
+// Write a Hyperlambda script to delete a specified connection string.
+.arguments
+   databaseType:string
+   name:string
 
-   // multiplies base 4 by 3 -> intermediate result 12
-   .:int:3
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // nested addition as another factor
-   math.add
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/databaseType
+validators.mandatory:x:@.arguments/*/name
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:pgsql
+   .:mssql
 
-      // first term of addition
-      .:int:1
+// Loading config file such that we can delete connection string from current configuration.
+config.load
+json2lambda:x:-
 
-      // second term of addition (1 + 1 = 2)
-      .:int:1
+// Deleting actual connection string from section.
+remove-nodes:x:"@json2lambda/*/magic/*/databases/*/\"{@.arguments/*/databaseType}\"/*/\"{@.arguments/*/name}\""
+lambda2json:x:@json2lambda/*
+config.save:x:-
 
-   // The intermediate result 12 is then multiplied by 2 (from nested add) -> 24
+// Success, connetion string deleted.
+return
+   result:success

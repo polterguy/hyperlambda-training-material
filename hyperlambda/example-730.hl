@@ -1,40 +1,18 @@
-/*
- * Compiles a snippet of C# code down to a library,
- * for then to dynamically load it as a plugin.
- */
-system.compile
-   references
-      .:netstandard
-      .:System.Runtime
-      .:System.Private.CoreLib
-      .:magic.node
-      .:magic.node.extensions
-      .:magic.signals.contracts
-   code:@"
 
-// Example C# code creating a Hyperlambda slot.
-using System;
-using magic.node;
-using magic.node.extensions;
-using magic.signals.contracts;
+// Generate a Hyperlambda snippet that handles division by zero using a try/catch/finally block.
 
-// Our slot class.
-[Slot(Name = ""foo"")]
-public class Foo : ISlot
-{
-   public void Signal(ISignaler signaler, Node input)
-   {
-      input.Value = $""Hi {input.GetEx<string>()}, how may I assist you?"";
-   }
-}"
-   assembly-name:foo.dll
+// Handles division by zero inside a try/catch/finally block
+try
 
-// Loading assembly from raw bytes now that we've created it.
-system.plugin.load:x:@system.compile
+   // Attempting division by zero
+   math.divide
+      .:int:10
+      .:int:0
+.catch
 
-// Executing [foo] slot now dynamically injected into AppDomain.
-.name:John Doe
-foo:x:@.name
+   // Logging the error
+   log.error:x:@.arguments/*/message
+.finally
 
-// Unloading plugin.
-system.plugin.unload:foo.dll
+   // Final block executed after try/catch
+   log.info:Completed division attempt

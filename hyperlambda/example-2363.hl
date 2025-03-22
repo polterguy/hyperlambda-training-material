@@ -1,16 +1,41 @@
 
-// Provide a Hyperlambda example where a counter counts down from 10.
+// Delete one record from your pages table in your cms database
+.arguments
 
-// Counts down from 10.
-.counter:int:10
-while
-   gt
-      get-value:x:@.counter
-      .:int:0
-   .lambda
+   // Primary key of record to delete, mandatory argument
+   id:long
 
-      // Logging countdown.
-      log.info:Counting down
+// Meta data description for endpoint
 
-      // Decrementing counter.
-      math.decrement:x:@.counter
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+validators.mandatory:x:@.arguments/*/id
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:pages
+      where
+         and
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.pages.delete
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

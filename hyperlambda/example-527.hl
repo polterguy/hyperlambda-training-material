@@ -1,9 +1,11 @@
-// Adds the specified list of nodes to [.dest]
-.dest
-add:x:@.dest
-   .
-      foo1:howdy
-      foo2:world
-   .
-      bar1:hello
-      bar2:world
+
+// Generate a Hyperlambda snippet that retrieves product inventory from 'inventory_db'.
+
+// Retrieves product inventory from "inventory_db".
+.result
+data.connect:inventory_db
+   database-type:mysql
+   data.select:select product_id, name, stock, price from products where stock > 0 order by stock asc
+      database-type:mysql
+   add:x:@.result
+      get-nodes:x:@data.select/*

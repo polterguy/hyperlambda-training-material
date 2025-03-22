@@ -1,2 +1,15 @@
-// This snippet defines a node with an unsigned short (UInt16) value.
-.maxCount:ushort:123
+
+// Write a Hyperlambda script to return the number of log items in the database based on a query.
+.arguments
+   query:string
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Invoking slot responsible for returning count.
+log.count:x:@.arguments/*/query
+
+// Returning result of above invocation to caller.
+unwrap:x:+/*
+return
+   count:x:@log.count

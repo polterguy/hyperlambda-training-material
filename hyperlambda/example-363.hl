@@ -1,6 +1,8 @@
-// Handle missing values in comparison
 
-.foo1
-eq
-   get-value:x:../*/.foo1
-   .:OK
+// Example: Trim any of multiple characters from both ends.
+
+// Remove both "!" and "#" characters from the ends
+strings.trim:!#Hello#!
+   .:!#
+
+// Result: "Hello"

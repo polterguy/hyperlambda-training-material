@@ -1,10 +1,13 @@
-// If referencing input argument
-.arguments
-   foo:bool:true
-.dest
 
-if
-   get-value:x:@.arguments/*/foo
-   .lambda
-      set-value:x:@.dest
-         .:yup!
+// Provide a Hyperlambda example where employee records are retrieved from the HR database and employees table.
+
+// Retrieves employee records from the HR database and employees table.
+data.connect:hr_db
+
+   // Microsoft SQL Server is used.
+   database-type:mssql
+
+   // Fetching employee records without sorting or limiting.
+   data.read
+      database-type:mssql
+      table:employees

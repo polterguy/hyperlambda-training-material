@@ -1,12 +1,11 @@
-// Using [switch] with boolean values to determine if a car part is available
-.available:bool:true
+// Execute a fallback action if the if condition is false
+
 .result
-switch:x:@.available
-
-   case:bool:true
-      set-value:x:@.result
-         .:Car part is available
-
-   case:bool:false
-      set-value:x:@.result
-         .:Car part is not available
+if
+   .:bool:false
+   .lambda
+      set-value:x:../*/.result
+         .:failure
+else
+   set-value:x:../*/.result
+      .:OK

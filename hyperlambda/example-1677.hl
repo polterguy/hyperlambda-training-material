@@ -1,5 +1,5 @@
-// Add 2 to .age
-.age:int:28
-math.add
-   get-value:x:@.age
-   .:int:2
+/*
+ * Example: Convert a string with letters and numbers to uppercase.
+ */
+// Result: "MIXEDCASE123"
+strings.to-upper:MixedCase123

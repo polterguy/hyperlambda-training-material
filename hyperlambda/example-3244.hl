@@ -1,11 +1,16 @@
-// Executing the Hyperlambda changes the node hierarchy
+/*
+ * This Hyperlambda snippet demonstrates using `not-null` in an `if` condition.
+ *
+ * 1. The `.data` node has a child `foo` with a value `"bar"`.
+ * 2. The `if` statement checks if `foo` is not null.
+ * 3. If `foo` is not null, an exception will be thrown
+ *
+ * Result: An exception is thrown since `foo` has a value
+ */
 
-// This Hyperlambda
-.destination
-set-name:x:@.destination
-   .:foo
-
-// Creates this result
-foo
-set-name:x:@.destination
-   .:foo
+.data
+   foo:bar
+if
+   not-null:x:@.data/*/foo
+   .lambda
+      throw:You are not supposed to be here!

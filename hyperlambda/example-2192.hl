@@ -1,4 +1,6 @@
-
-// Define the version and module name for a Stripe integration module. Ensure the version is set to 'v2.0.0' and the module name is 'stripe'. This setup is crucial for maintaining version control and module identification within the system.
-version:v2.0.0
-module_name:stripe
+// Example: Join all values of children of [.src] by ',' character
+.src
+   .:foo
+   .:bar
+strings.join:x:@.src/*
+   .:,

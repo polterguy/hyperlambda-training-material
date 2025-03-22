@@ -1,2 +1,9 @@
-// Convert Markdown to HTML
-markdown2html:x:@.md
+
+// Generate a Hyperlambda snippet that inserts a 'second' element after 'first' inside '.elements'.
+
+// Inserts a "second" element after "first" inside ".elements".
+.elements
+   first
+insert-after:x:@.elements/*/first
+   .
+      second:Added dynamically

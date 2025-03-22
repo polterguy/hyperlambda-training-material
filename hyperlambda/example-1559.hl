@@ -1,4 +1,6 @@
-// Getting configuration setting and assigning the value to [.result]
-.result
-set-value:x:@.result
-   config.get:"magic:smtp:host"
+
+// Example: Use a variable as the input to lowercase.
+.text:LOWER ME
+
+// Result: "lower me"
+strings.to-lower:x:@.text

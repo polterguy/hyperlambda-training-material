@@ -1,4 +1,8 @@
-// Shorthand mte with an expression as the left-hand side
-.val:int:7
-mte:x:@.val
-   .:int:5
+
+// Store a value in context and retrieve it inside a nested execution
+.result
+context:foo
+   value:bar
+   .lambda
+      set-value:x:@.result
+         get-context:foo

@@ -1,24 +1,17 @@
-/*
- * The following code compiles the "/etc/foo.cs" file and saves it as an assembly
- * in "/etc/foo.dll".
- */
-io.file.load:/etc/foo.cs
-system.compile
-   references
-      .:netstandard
-      .:System.Runtime
-      .:System.Console
-      .:System.Private.Uri
-      .:System.ComponentModel
-      .:System.Private.CoreLib
-      .:System.Net.Primitives
-      .:magic.node
-      .:magic.node.extensions
-      .:magic.library
-      .:magic.signals.contracts
-   code:x:@io.file.load
-   assembly-name:foo.dll
 
-// Saving our compiled CLR assembly to '/etc/foo.dll'.
-io.file.save.binary:/etc/foo.dll
-   get-value:x:@system.compile
+// Generate a Hyperlambda snippet with string variables, demonstrating special character handling, multi-line strings, and alternative quoting.
+
+// String without special characters, no need for quotes
+.simpleText:hello
+
+// String with a colon, requires quotes
+.colonText:"hello:world"
+
+// Multi-line string using @ notation
+.multiLineText:"line1\nline2"
+
+// Using single quotes as an alternative
+.altQuoteText:example
+
+// Escaping a newline character
+.escapedNewlineText:"hello\nworld"

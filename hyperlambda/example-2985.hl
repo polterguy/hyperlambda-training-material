@@ -1,56 +1,32 @@
 
-// Resizes the specified image.
-if
-   not
-      strings.starts-with:x:@.arguments/*/img
-         .:/assets/images/
-   .lambda
-      throw:Not an image
+// Write a Hyperlambda script to vectorize all training snippets in a specified model/type.
+.arguments
+   type:string
+   feedback-channel:string
 
-// Figuring out path of image.
-.path
-set-value:x:@.path
-   strings.concat
-      .:/etc/www
-      get-value:x:@.arguments/*/img
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Returning correct MIME type.
-response.headers.set
-   Content-Type:image/webp
-   Cache-Control:public, max-age=31536000
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
 
-// Checking if image is cached on disc.
-.cache-file-name
-lambda2hyper:x:@.arguments
-crypto.hash.sha1:x:@lambda2hyper
-set-value:x:@.cache-file-name
-   strings.concat
-      .:/etc/hub/image-cache/
-      get-value:x:@crypto.hash.sha1
-if
-   io.file.exists:x:@.cache-file-name
-   .lambda
-      io.stream.open-file:x:@.cache-file-name
-      return:x:-
+// Doing some basic logging.
+log.info:Started vectorising model
+   model:x:@.arguments/*/type
 
-// Checking if user did not provide any [width] or [height] arguments, at which point we simply convert it to webp.
-if
-   and
-      not-exists:x:@.arguments/*/width
-      not-exists:x:@.arguments/*/height
-   .lambda
-      add:x:+
-         get-nodes:x:@.arguments/*/type
-      image.convert:x:@.path
-      return:x:-
+// Creating a thread and invoking file doing the heavy lifting.
+insert-before:x:./*/fork/0
+   get-nodes:x:@.arguments
+fork
+   add:x:./*/signal
+      get-nodes:x:@.arguments/*
+   signal:magic.ai.vectorise
+      .onafter
+         sockets.signal:x:@.arguments/*/feedback-channel
+            args
+               message:Done!
+               type:success
 
-// Loading image
-add:x:./*/image.resize
-   get-nodes:x:@.arguments/*/width
-   get-nodes:x:@.arguments/*/height
-   get-nodes:x:@.arguments/*/type
-image.resize:x:@.path
-io.stream.save-file:x:@.cache-file-name
-   get-value:x:@image.resize
-io.stream.open-file:x:@.cache-file-name
-return:x:-
+// Returning success to caller.
+return
+   result:success

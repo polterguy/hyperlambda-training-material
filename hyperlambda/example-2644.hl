@@ -1,43 +1,24 @@
-
-// Create a Hyperlambda action to validate a Magic CAPTCHA token with optional 'workload' and 'age'. Only validate if the user is not in the 'root' role. Default 'workload' to 3 and 'age' to 10000 milliseconds.
-.arguments
-   token
-      type:string
-      mandatory:bool:true
-   workload
-      type:int
-      mandatory:bool:false
-      default:int:3
-   age
-      type:int
-      mandatory:bool:false
-      default:int:10000
-.icon:shield
-
-// Notice, we only validate token if user is not root.
+/**
+ * This example checks if a log file "/logs/errors.log" and its parent folder "/logs/" exist.
+ * If the log file exists, it is deleted.
+ * If the log file does not exist but the folder exists, it logs a message.
+ * If neither exist, it creates the folder.
+ */
+.result
 if
-   not
-      auth.ticket.in-role:root
+   io.file.exists:/logs/errors.log
    .lambda
+      io.file.delete:/logs/errors.log
+      set-value:x:@.result
+         .:Log file deleted.
 
-      // [token] is a mandatory field.
-      validators.mandatory:x:@.arguments/*/token
+else-if
+   io.folder.exists:/logs/
+   .lambda
+      set-value:x:@.result
+         .:Log folder exists but no log file found.
 
-      // Defaulting [workload] to 3 and age to 10 seconds.
-      validators.default:x:@.arguments
-         workload:int:3
-         age:int:10000
-
-      // Converting to correct types.
-      set-value:x:@.arguments/*/workload
-         convert:x:@.arguments/*/workload
-            type:int
-      set-value:x:@.arguments/*/age
-         convert:x:@.arguments/*/age
-            type:int
-
-      // Validating token with specified [workload] and [age].
-      execute:magic.auth.captcha-verify
-         token:x:@.arguments/*/token
-         workload:x:@.arguments/*/workload
-         age:x:@.arguments/*/age
+else
+   io.folder.create:/logs/
+   set-value:x:@.result
+      .:Log folder did not exist, so it was created.

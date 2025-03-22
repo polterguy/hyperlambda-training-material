@@ -1,42 +1,47 @@
 
-// Delete one record from your Customer table in your chinook database.
-.arguments
+// Lists all foreign keys in some MySQL table.
+slots.create:magic.db.mysql.foreign_keys
 
-   // Primary key of record to delete, mandatory argument
-   CustomerId:long
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/database
+   validators.mandatory:x:@.arguments/*/table
 
-// Meta data description for endpoint
+   // Opens up our connection
+   .connection:[information_schema]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               get-value:x:@.arguments/*/database
+               .:]
+   else
+      set-value:x:@.connection
+         strings.concat
+            .:[generic|
+            get-value:x:@.arguments/*/database
+            .:]
+   mysql.connect:x:@.connection
 
-// Type of endpoint
-.type:crud-delete
+      // Dynamically creating our SQL.
+      mysql.select:"select\n   `column_name` as `column`, `referenced_table_name` as foreign_table, `referenced_column_name` as foreign_column, `constraint_name` as name\n   from `information_schema`.`key_column_usage`\n   where `constraint_schema` = schema() and\n      `table_name` = @table and\n      `referenced_column_name` is not null and\n      `constraint_schema` = @database\n   order by `column_name`"
+         @table:x:@.arguments/*/table
+         @database:x:@.arguments/*/database
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:admin,basic,enterprise
-validators.mandatory:x:@.arguments/*/CustomerId
-
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:Customer
-      where
-         and
-
-   // Publishing socket message.
-   add:x:./*/sockets.signal/*/args
-      get-nodes:x:@.arguments/*
-   sockets.signal:chinook.customer.delete
-      args
-      roles:enterprise,guest
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+      /*
+       * Creating our return value, by projecting it into
+       * a generic form, that does not rely upon MySQL's syntactic
+       * details.
+       */
+      return-nodes:x:@mysql.select/*

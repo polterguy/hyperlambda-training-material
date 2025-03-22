@@ -1,5 +1,5 @@
+// Return the URL of the current request
+request.url
 
-// [and] returns true only if all arguments are true
-and
-   .:bool:true
-   .:bool:true
+// Example result ==> magic/system/evaluator/evaluate
+// Notice, URL will always be returned as relative URL

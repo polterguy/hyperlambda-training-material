@@ -1,8 +1,10 @@
-// Example: Create a dynamic slot, then invoke it
 
-// First we create a dynamic slot.
-slots.create:foo
-   return-value:int:57
+// Write a Hyperlambda snippet that pushes a collection of nodes into the specified container.
 
-// Then we invoke it.
-signal:foo
+// Pushes a collection of nodes into the specified container.
+.container
+add:x:@.container
+   .
+      fieldOne:contentOne
+      fieldTwo:contentTwo
+      fieldThree:contentThree

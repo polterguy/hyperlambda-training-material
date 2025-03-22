@@ -1,8 +1,33 @@
 
-// Hyperlambda Example 3: If with shorthand syntax
+// Create a Hyperlambda action to create a log entry with a specified 'type' (info, error, fatal, debug) and 'message'. Include optional 'args' for additional parameters.
 .arguments
-   enabled:bool:true
-.result
-if:x:@.arguments/*/enabled
-   set-value:x:@.result
-      .:Feature enabled
+   type
+      type:enum
+      mandatory:bool:true
+      values
+         .:info
+         .:error
+         .:fatal
+         .:debug
+   message
+      type:string
+      mandatory:bool:true
+   args
+      type:key-value
+      mandatory:bool:false
+.icon:account_balance
+
+// Lambda object actually creating our log entry.
+.invoke-log
+   name:x:@.arguments/*/message
+
+// Parametrising invocation.
+set-name:x:@.invoke-log/*/name
+   strings.concat
+      .:log.
+      get-value:x:@.arguments/*/type
+add:x:@.invoke-log/*
+   get-nodes:x:@.arguments/*/args/*
+
+// Invoking lambda object responsible for creating our log entry.
+eval:x:@.invoke-log

@@ -1,12 +1,6 @@
-// While loop increments counter and adds items
-.list
-.i:int:0
-while
-   lt
-      get-value:x:@.i
-      .:int:3
-   .lambda
-      math.increment:x:@.i
-      add:x:@.list
-         .
-            item
+
+// Create a Hyperlambda script that forks a new thread and logs a message from the new thread.
+fork
+
+   // This executes on a different thread.
+   log.info:Hello from another thread

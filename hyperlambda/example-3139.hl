@@ -1,31 +1,16 @@
+/*
+ * Save this file as `/modules/auth/endpoints/register.hl`
+ * This exposes an HTTP POST endpoint at `/auth/register`
+ *
+ * Requires `email` to be present and match a valid email regex.
+ */
 
-// Changes the specified [username]'s password to [password].
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-   password
-      type:string
-      mandatory:bool:true
-.icon:supervisor_account
+   email
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/password
-validators.string:x:@.arguments/*/password
-   min:12
+validators.mandatory:x:@.arguments/*/email
+validators.regex:x:@.arguments/*/email
+   .:^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$
 
-// Hashing specified [password].
-crypto.password.hash:x:@.arguments/*/password
-
-// Opens up database connection.
-data.connect:[generic|magic]
-
-   // Updating user's password.
-   data.update
-      table:users
-      values
-         password:x:@crypto.password.hash
-      where
-         and
-            username.eq:x:@.arguments/*/password
+yield
+   result:Email is valid

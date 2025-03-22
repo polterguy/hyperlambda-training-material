@@ -1,5 +1,2 @@
-
-// Example: Mix in a simple inline expression (2+2 inside curly braces).
-strings.mixin:"The result is {{\nmath.add\n   .:int:2\n   .:int:2\nreturn:x:-\n}}"
-
-// Result: "The result is 4"
+// Return task named 'task-id'
+tasks.get:task-id

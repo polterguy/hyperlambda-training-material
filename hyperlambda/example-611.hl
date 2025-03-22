@@ -1,45 +1,101 @@
 
-// Counts items from your plugins table in your cms database
+// Write a Hyperlambda script to create a migration script of specified SQL for a specified module.
 .arguments
+   databaseType:string
+   module:string
+   sql:string
 
-   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // Offset into the dataset of where to start retrieving records
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/sql
+validators.mandatory:x:@.arguments/*/module
+validators.mandatory:x:@.arguments/*/databaseType
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:sqlite
+   .:mssql
+   .:pgsql
 
-   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+// Ensuring folders exists.
+strings.concat
+   .:/modules/
+   get-value:x:@.arguments/*/module
+   .:/
+if
+   not
+      io.folder.exists:x:@strings.concat
+   .lambda
+      io.folder.create:x:@strings.concat
+strings.concat
+   .:/modules/
+   get-value:x:@.arguments/*/module
+   .:/magic.startup/
+if
+   not
+      io.folder.exists:x:@strings.concat
+   .lambda
+      io.folder.create:x:@strings.concat
+strings.concat
+   .:/modules/
+   get-value:x:@.arguments/*/module
+   .:/magic.startup/db-migrations/
+if
+   not
+      io.folder.exists:x:@strings.concat
+   .lambda
+      io.folder.create:x:@strings.concat
+strings.concat
+   .:/modules/
+   get-value:x:@.arguments/*/module
+   .:/magic.startup/db-migrations/
+   get-value:x:@.arguments/*/databaseType
+   .:/
+if
+   not
+      io.folder.exists:x:@strings.concat
+   .lambda
+      io.folder.create:x:@strings.concat
 
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   plugins.id.eq:long
-   plugins.name.like:string
-   plugins.name.eq:string
-   plugins.description.like:string
-   plugins.description.eq:string
-   plugins.is_active.eq:long
+// Figuring out filename for next migration script file.
+.no:int:1
+io.file.list:x:@strings.concat
+for-each:x:-/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.sql
+      .lambda
+         strings.split:x:@.dp/#
+            .:/
+         strings.split:x:-/0/-
+            .:-
+         convert:x:-/0
+            type:int
+         if
+            mte:x:@convert
+               get-value:x:@.no
+            .lambda
+               set-value:x:@.no
+                  math.add:x:@convert
+                     .:int:1
 
-// Meta data description for endpoint
+// Figuring out complete filename for migration script file.
+strings.concat
+   .:/modules/
+   get-value:x:@.arguments/*/module
+   .:/magic.startup/db-migrations/
+   get-value:x:@.arguments/*/databaseType
+   .:/
+   format:x:@.no
+      pattern:"{0:D4}"
+   .:-migration-script.sql
 
-// Type of endpoint
-.type:crud-count
+// Saving migration script.
+io.file.save:x:-
+   get-value:x:@.arguments/*/sql
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:guest
-
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:plugins
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+// Returning result to caller.
+unwrap:x:+/*
+return
+   result:success

@@ -1,9 +1,13 @@
-// Using variables with the [and] slot to check multiple conditions
-.condition1:bool:true
-.condition2:bool:false
-
-and
-   get-value:x:@.condition1
-   get-value:x:@.condition2
-
-// Above [and] becomes false
+// Create HTTP POST invocation as MIME
+http.post:"http://localhost:5000/magic/modules/foo/foo"
+   headers
+      Content-Type:multipart/form-data
+   payload
+      entity:text/plain
+         headers
+            Content-Disposition:"form-data; name=\"foo\""
+         content:Foo bar
+      entity:text/plain
+         headers
+            Content-Disposition:"form-data; filename=\"README.md\""
+         filename:/README.md

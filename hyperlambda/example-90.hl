@@ -1,21 +1,13 @@
-// Use else as a fallback if no conditions match
+// Create a new product with name and price fields
+data.connect:shopDB
+   data.create
+      table:products
+      values
+         name:"Coffee Mug"
 
-.result
-.src:int:3
-if
-   eq
-      get-value:x:@.src
-      .:int:1
-   .lambda
-      set-value:x:../*/.result
-         .:OK
-else-if
-   eq
-      get-value:x:@.src
-      .:int:2
-   .lambda
-      set-value:x:../*/.result
-         .:ERROR
-else
-   set-value:x:../*/.result
-      .:DEFAULT
+         // Use decimale
+         price:decimal:9.99
+
+         // Use bool type for a boolean column
+         in_stock:bool:true
+   // After execution, the node's value will contain the new record's ID (if available)

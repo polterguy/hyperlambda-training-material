@@ -1,3 +1,10 @@
-// Move folder
-io.folder.move:/misc/source-folder/
-   .:/misc/destination-folder/
+
+// Generate a Hyperlambda snippet that adds multiple nodes into the specified target's children collection.
+
+// Adds multiple nodes into the specified target's children collection.
+.target
+add:x:@.target
+   .
+      entry1:data1
+      entry2:data2
+      entry3:data3

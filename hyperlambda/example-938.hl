@@ -1,6 +1,11 @@
 
-// Example: Use a variable to provide the input string.
-.text:Test
+// Example: Split using a multi-character delimiter.
+strings.split:foo||bar||baz
+   .:||
 
-// Returns 4
-strings.length:x:@.text
+/*
+ * Resulting parts:
+ * .:foo
+ * .:bar
+ * .:baz
+ */

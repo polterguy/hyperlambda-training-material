@@ -1,13 +1,8 @@
-
-// Generate a Hyperlambda snippet that fetches a todo item from an API.
-
-// Fetches a todo item from an API.
-http.get:"https://jsonplaceholder.typicode.com/todos/1"
-
-   // Converts response.
+// Adds a product to a user's shopping cart
+.cart-id:abc123
+http.post:"https://store.example.com/api/cart/add"
    convert:true
-
-// Sets [.task] to the todo title
-.task
-set-value:x:@.task
-   get-value:x:@http.get/*/content/*/title
+   payload
+      cart_id:x:@.cart-id
+      product_id:sku-55421
+      quantity:int:2

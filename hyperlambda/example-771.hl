@@ -1,8 +1,17 @@
-// Create a task, then schedule it
-tasks.create:task-id
-   .lambda
 
-      log.info:It is the 5th or the 15th of January or February, and the time is 5AM at night.
+// Show another example of Hyperlambda string assignments, ensuring various formatting methods are covered.
 
-tasks.schedule:task-id
-   repeats:01|02.5|15.05.00.00
+// Regular text
+.valueA:simpleData
+
+// Needs quotes for special characters
+.valueB:"index:field"
+
+// Multi-line usage
+.valueC:"data1\ndata2"
+
+// Alternative quoting with single quotes
+.valueD:something-new
+
+// Escape sequence in a string
+.valueE:"row\ncolumn"

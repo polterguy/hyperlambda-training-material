@@ -1,17 +1,35 @@
-// Fetches random user data and checks response status
-.user
-   first-name
-   last-name
-http.get:"https://randomuser.me/api/"
-   convert:true
-if
-   and
-      mte:x:@http.get
-         .:int:200
-      lt:x:@http.get
-         .:int:300
-   .lambda
-      set-value:x:@.user/*/first-name
-         get-value:x:@http.get/*/content/*/results/0/name/first
-      set-value:x:@.user/*/last-name
-         get-value:x:@http.get/*/content/*/results/0/name/last
+
+// Create a Hyperlambda endpoint for a CRUD create endpoint that creates an item in the users table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+.arguments
+   username:string
+   password:string
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
+eval:x:+
+signal:transformers.hash-password
+   reference:x:@.arguments/*/password
+
+// Opening up database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      table:users
+      return-id:bool:false
+      values
+
+   // Returning result of above invoction to caller.
+   response.status.set:201
+   unwrap:x:+/*
+   return
+      result:success

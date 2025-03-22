@@ -1,4 +1,7 @@
-// [or] returns true if at least one argument is true
-or
-   .:bool:false
-   .:bool:true
+
+// Create a Hyperlambda script to return context data from the 'ainiro_io' type using a specified prompt, threshold, and max tokens.
+signal:magic.ai.get-context
+   type:ainiro_io
+   prompt:"DuckDuckGo \"Pixar\""
+   threshold:float:0.6
+   max_tokens:int:2000

@@ -1,5 +1,5 @@
-// Convert a string to a DateTime object
 
-.src:"2020-12-30T23:59:11Z"
-convert:x:-
-   type:date
+// Example: Convert an already uppercase string (no change).
+
+// Result: "HELLO"
+strings.to-upper:HELLO

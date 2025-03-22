@@ -1,13 +1,21 @@
+
+// Hyperlambda [if] with not operator
+.is-weekend:bool:false
+.schedule
+if
+   not
+      eq:x:@.is-weekend
+         .:bool:true
+   .lambda
+      set-value:x:@.schedule
+         .:Work day
+
 /*
- * Example: Use variables to supply the string and delimiter.
- */
-.text:"x|y|z"
-.delim:"|"
-strings.split:x:@.text
-   get-value:x:@.delim
-/*
- * Resulting parts:
- * .:x
- * .:y
- * .:z
+ * JavaScript equivalent of Hyperlambda [if] with not operator
+ * const isWeekend = false;
+ * let schedule;
+ * 
+ * if (!isWeekend) {
+ * schedule = "Work day";
+ * }
  */

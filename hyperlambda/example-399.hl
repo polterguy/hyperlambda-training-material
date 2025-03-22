@@ -1,16 +1,14 @@
 
-// Generate a Hyperlambda snippet that evaluates specified [.check] if condition evaluates to true.
+// Create a Hyperlambda script to demonstrate a try/catch/finally block with logging.
+try
 
-// Evaluates specified [.check] if condition evaluates to true.
-.check:bool:true
-if
-   eq:x:@.check
-      .:bool:true
-   .lambda
+   // Perform your unsafe operation here.
+   throw:Some error is thrown here
+.catch
 
-      // Lambda evaluates if condition is true.
-      log.info:[.check] is true
-else
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:x:@.arguments/*/message
+.finally
 
-   // Lambda evaluated if condition is NOT true.
-   log.info:[.check] is false
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:Try finished evaluating

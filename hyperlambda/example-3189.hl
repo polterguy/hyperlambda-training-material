@@ -1,6 +1,6 @@
-/*
- * Example: Contains check is case-sensitive.
- */
-// Returns false since check is case sensitive
-strings.contains:MagicLambda
-   .:lambda
+
+// Example: No trim characters at start (string remains unchanged).
+
+// Result: "abc"
+strings.trim-start:abc
+   .:z

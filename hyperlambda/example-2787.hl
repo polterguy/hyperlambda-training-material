@@ -1,5 +1,8 @@
-// How to verify a Magic CAPTCHA in Hyperlambda?
-execute:magic.auth.captcha-verify
-   token:x:@.arguments/*/token
 
-// Notice, requires the auth plugin to be installed.
+// Example: Remove all digits from a string using a regex.
+.original:abc123xyz
+strings.regex-replace:x:@.original
+   .:"\\d+"
+   .:
+
+// Result: "abcxyz"

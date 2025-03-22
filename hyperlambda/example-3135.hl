@@ -1,8 +1,7 @@
-// Update resource with HTTP PUT
-http.put:"https://jsonplaceholder.typicode.com/todos/1"
-   headers
-      Content-Type: application/json
-   payload
-      value:foo
-         title:Updated title
-         completed:true
+// How to use string builder in Hyperlambda
+strings.builder
+   strings.builder.append:Hello
+   strings.builder.append:" "
+   strings.builder.append:world
+
+// Results in; Hello world

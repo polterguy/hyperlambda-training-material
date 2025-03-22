@@ -1,11 +1,7 @@
 /*
- * Example: Split a string by spaces.
+ * If a node exists but has no value, `get-value` should return null.
  */
-strings.split:"one two three"
-   .:' '
-/*
- * Resulting parts:
- * .:one
- * .:two
- * .:three
- */
+
+.data
+   foo
+get-value:x:@.data/*/foo

@@ -1,71 +1,69 @@
 
-// Returns items from your cloudlets table in your [generic|hub] database according to the specified arguments.
+// Create one record in your Customers table in your northwind database
 .arguments
-   limit:long
-   offset:long
-   order:string
-   direction:string
-   operator:string
-   cloudlets.id.eq:long
-   cloudlets.created.eq:date
-   cloudlets.name.like:string
-   cloudlets.name.eq:string
-   cloudlets.plan.like:string
-   cloudlets.plan.eq:string
-   cloudlets.cluster.like:string
-   cloudlets.cluster.eq:string
-   cloudlets.user.like:string
-   cloudlets.user.eq:string
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+   // CustomerID column value
+   CustomerID:string
 
-// Sanity checking invocation.
-validators.enum:x:@.arguments/*/operator
-   .:or
-   .:and
+   // CompanyName column value
+   CompanyName:string
 
-/*
- * Checking if user supplied an [operator] argument, and if so
- * changing the boolean operator for comparison operations.
- */
-if
-   exists:x:@.arguments/*/operator
-   .lambda
+   // ContactName column value
+   ContactName:string
 
-      // User provided a boolean comparison [operator] argument.
-      set-name:x:../*/data.connect/*/data.read/*/where/*
-         get-value:x:@.arguments/*/operator
+   // ContactTitle column value
+   ContactTitle:string
 
-// Opening up our database connection.
-data.connect:[generic|hub]
+   // Address column value
+   Address:string
 
-   // Parametrising our read invocation.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/limit
-      get-nodes:x:@.arguments/*/offset
-      get-nodes:x:@.arguments/*/order
-      get-nodes:x:@.arguments/*/direction
-   remove-nodes:x:@.arguments/*/operator
-   remove-nodes:x:@.arguments/*/limit
-   remove-nodes:x:@.arguments/*/offset
-   remove-nodes:x:@.arguments/*/order
-   remove-nodes:x:@.arguments/*/direction
-   add:x:./*/data.read/*/where/*
+   // City column value
+   City:string
+
+   // Region column value
+   Region:string
+
+   // PostalCode column value
+   PostalCode:string
+
+   // Country column value
+   Country:string
+
+   // Phone column value
+   Phone:string
+
+   // Fax column value
+   Fax:string
+
+// Meta data description for endpoint
+.description:Create one record in your Customers table in your northwind database
+
+// Type of endpoint
+.type:crud-create
+
+// Columns with custom handling as we generate a frontend
+.handling
+   Phone:phone
+
+// Opening up database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
       get-nodes:x:@.arguments/*
 
-   // Reading data from database.
-   data.read
-      table:cloudlets
-      columns
-         cloudlets.id
-         cloudlets.created
-         cloudlets.name
-         cloudlets.plan
-         cloudlets.cluster
-         cloudlets.user
-      where
-         and
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:Customers
+      return-id:bool:false
+      values
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

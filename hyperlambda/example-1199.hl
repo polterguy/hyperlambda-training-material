@@ -1,10 +1,8 @@
 /*
- * Compares three integer test scores and returns the highest one.
+ * Example: Allowed set includes all characters in the input (no replacements occur).
  */
-.result
-math.max
-   .:int:78
-   .:int:92
-   .:int:85
-set-value:x:@.result
-   .:x:@math.max
+.input:"ABC123"
+strings.replace-not-of:x:@.input
+   .:ABC123
+   .:"#"
+// Result: "ABC123" (unchanged, since all characters were allowed)

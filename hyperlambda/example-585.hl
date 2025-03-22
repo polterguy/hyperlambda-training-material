@@ -1,6 +1,19 @@
-// Check if a value is less than or equal to another
 
-.foo1:int:5
-lte
-   get-value:x:../*/.foo1
-   .:int:5
+// Write a Hyperlambda script to save an SQL template file according to specified arguments.
+.arguments
+   databaseType:string
+   filename:string
+   content:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Saving file.
+strings.concat
+   .:/etc/
+   get-value:x:@.arguments/*/databaseType
+   .:/templates/
+   get-value:x:@.arguments/*/filename
+io.file.save:x:-
+   get-value:x:@.arguments/*/content

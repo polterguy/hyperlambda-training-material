@@ -1,34 +1,8 @@
-
-// Ingests products from Shopify using Shopify API.
-.arguments
-   shop
-      type:string
-      mandatory:bool:true
-   type
-      type:string
-      mandatory:bool:true
-   base_url
-      type:string
-      mandatory:bool:true
-   secret
-      type:string
-      mandatory:bool:true
-   meta
-      type:bool
-      default:true
-.icon:shopping_cart
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/shop
-validators.mandatory:x:@.arguments/*/type
-validators.mandatory:x:@.arguments/*/base_url
-validators.mandatory:x:@.arguments/*/secret
-validators.url:x:@.arguments/*/base_url
-
-// Ingesting products using Shopify slot.
-execute:shopify.products.ingest
-   shop:x:@.arguments/*/shop
-   type:x:@.arguments/*/type
-   base_url:x:@.arguments/*/base_url
-   secret:x:@.arguments/*/
-   meta:x:@.arguments/*/meta
+// Update resource with HTTP PUT
+http.put:"https://jsonplaceholder.typicode.com/todos/1"
+   headers
+      Content-Type: application/json
+   payload
+      value:foo
+         title:Updated title
+         completed:true

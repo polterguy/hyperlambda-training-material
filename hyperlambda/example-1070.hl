@@ -1,5 +1,5 @@
-// lt returns true if the left value is less than the right value
-.x:int:4
-lt
-   get-value:x:@.x
-   .:int:5
+
+// Ensures the module's database exists and is updated by running migration scripts.
+signal:magic.modules.ensure-database
+   module:shopify
+   database:shopify

@@ -1,18 +1,5 @@
-// Hyperlambda [if] checking substring
-.filename:document.pdf
-.file-type
-if
-   strings.ends-with:x:@.filename
-      .:pdf
-   .lambda
-      set-value:x:@.file-type
-         .:pdf
-
-/* JavaScript equivalent of Hyperlambda [if] checking substring
-const filename = "document.pdf";
-let fileType;
-
-if (filename.endsWith("pdf")) {
-  fileType = "pdf";
-}
-*/
+/*
+ * Example: Get the length of a numeric string.
+ */
+// Returns 5
+strings.length:"12345"

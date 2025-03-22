@@ -1,3 +1,22 @@
-// Connects to saklia and executes the specified SQL
-data.connect:sakila
-   data.select:select first_name, last_name from actor limit 5
+
+// Create a Hyperlambda snippet that evaluates numeric values using a switch case without a default option.
+
+// Switch case comparison for numeric values.
+.value:int:10
+.result
+switch:x:@.value
+   case:int:5
+
+      // If value is 5.
+      set-value:x:@.result
+         .:Value is five
+   case:int:10
+
+      // If value is 10.
+      set-value:x:@.result
+         .:Value is ten
+   case:int:20
+
+      // If value is 20.
+      set-value:x:@.result
+         .:Value is twenty

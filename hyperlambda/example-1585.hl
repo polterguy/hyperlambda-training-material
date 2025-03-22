@@ -1,13 +1,10 @@
-/*
- * This Hyperlambda snippet demonstrates formatting a decimal number using a specific culture.
- *
- * 1. The `.foo` node is defined as a decimal with a value of `57`.
- * 2. The `format` slot applies the pattern `"{0:0.00}"`, ensuring two decimal places.
- * 3. The `culture` parameter is set to `"nb-NO"` (Norwegian culture).
- * 4. The result will be `"57,00"` because Norwegian culture uses a comma as the decimal separator.
- */
+// Construct a GET endpoint that fetches all user records from the database.
+// Filename - /modules/admin/users.get.hl
+// Access is restricted to users with the `admin` role.
 
-.foo:decimal:57
-format:x:-
-   pattern:"{0:0.00}"
-   culture:nb-NO
+auth.ticket.verify:admin
+
+data.connect:[generic|users]
+   data.read
+      table:users
+   return-nodes:x:@data.read/*

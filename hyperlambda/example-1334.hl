@@ -1,27 +1,23 @@
 
-// Generate a Hyperlambda snippet that evaluates specified [.lambda] if both conditions are true.
+// Returns all clusters in system.
 
-// Evaluates specified [.lambda] if both conditions are true.
-.result
-.value1:int:3
-.value2:int:10
-if
-   and
+// Adding 30 seconds of public caching to avoid DOS attacks from exhausting server.
+response.headers.set
+   Cache-Control:public, max-age=30
 
-      // [lt] implies "less than"
-      lt:x:@.value1
-         .:int:4
+// Opening up our database connection.
+data.connect:[generic|hub]
 
-      // [mt] implies "more than"
-      mt:x:@.value2
-         .:int:9
-   .lambda
+   // Reading data from database.
+   data.read
+      table:clusters
+      columns
+         id
+         country
+         name
+      where
+         and
+            enabled.eq:bool:true
 
-      // Changing the value of [.result] to true
-      set-value:x:@.result
-         .:bool:true
-else
-
-   // Changing the value of [.result] to false
-   set-value:x:@.result
-      .:bool:false
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

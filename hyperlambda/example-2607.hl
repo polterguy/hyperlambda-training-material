@@ -1,17 +1,35 @@
+// Attempts to register a user, throws on 500, fallback message on other errors, and return success to caller if the invocation was a success
 
-// Hyperlambda endpoint taking arguments. The SQL aggregates and returns the top 25 artists with the most albums from the chinook database.
 .arguments
 
-// Making sure user is authorized to invoke endpoint.
-auth.ticket.verify:root,admin
+// Status to return
+.register.status
 
-// Connecting to database.
-data.connect:chinook
-   database-type:sqlite
+// Invoking GET
+http.post:"https://api.example.com/users/register"
+   convert:true
+   payload
+      username:alice
+      email:alice@example.com
+      password:Secure123!
+if
+   and
+      mte:x:@http.post
+         .:int:200
+      lt:x:@http.post
+         .:int:300
+   .lambda
+      set-value:x:@.register.status
+         .:Registration successful
+else-if
+   eq:x:@http.post
+      .:int:500
+   .lambda
+      throw
+         .:Internal server error during registration (500)
+else
+   set-value:x:@.register.status
+      .:Registration failed
 
-   // Executing [data.select] slot with our SQL.
-   data.select:"\n/*\n * Script to aggregate records for each artist in chinook database.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect ar.Name, count(*) as count\n  from Album al, Artist ar where al.ArtistId = ar.ArtistId\n  group by al.ArtistId\n  order by count desc\n  limit 25\n"
-      database-type:sqlite
-
-   // Returning a result of above invocation to caller.
-   return-nodes:x:@data.select/*
+yield
+   result:x:@.register.status

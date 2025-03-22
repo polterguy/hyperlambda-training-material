@@ -1,3 +1,2 @@
-
-// Lists all cookies in current request
-request.cookies.list
+// This snippet defines a node with a float value (alias of single).
+.pi:float:3.14

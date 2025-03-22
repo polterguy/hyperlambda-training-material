@@ -1,8 +1,21 @@
 
-// Example: Use variables to supply the string and suffix to check.
-.text:Goodbye
-.suffix:bye
+// Removes the specified [item_id] from your shopping cart.
+.arguments
+   item_id:int
+   _session:string
+.type:public
 
-// Returns true
-strings.ends-with:x:@.text
-   get-value:x:@.suffix
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
+
+   // Removing item.
+   data.delete
+      table:items
+      where
+         and
+            item_id.eq:x:@.arguments/*/item_id
+            session_id.eq:x:@.arguments/*/_session
+
+// Returning success to caller.
+return
+   result:success

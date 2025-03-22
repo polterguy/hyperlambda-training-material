@@ -1,8 +1,6 @@
-// This example connects to the 'restaurant' database and inserts a new menu item into the 'menu' table.
-sqlite.connect:restaurant
-   sqlite.create
-      table:menu
-      values
-         dish_name:Margherita Pizza
-         price:decimal:8.50
-         category:Pizza
+// Encrypt a message using AES algorithm, for then to decrypt it
+.message:This is a secret message
+crypto.aes.encrypt:x:-
+   password:some-secret-password
+crypto.aes.decrypt:x:-
+   password:some-secret-password

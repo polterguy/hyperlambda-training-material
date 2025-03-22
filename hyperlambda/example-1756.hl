@@ -1,6 +1,8 @@
 
-// Example: Use a variable as the input to lowercase.
-.text:LOWER ME
+// Example: Concatenate a string and a number (the number is converted to a string).
+.number:int:42
+strings.concat
+   .:"Answer: "
+   get-value:x:@.number
 
-// Result: "lower me"
-strings.to-lower:x:@.text
+// Result: "Answer: 42"

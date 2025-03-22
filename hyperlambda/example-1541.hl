@@ -1,47 +1,10 @@
 
-// Create one record in your Genre table in your chinook database.
-.arguments
-
-   // GenreId column value
-   GenreId:long
-
-   // Name column value
-   Name:string
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:partner
-
-// Logging invocation.
-auth.ticket.get
-lambda2hyper:x:@.arguments/*
-log.info:chinook.Genre entry created
-   username:x:@auth.ticket.get
-   arguments:x:@lambda2hyper
-
-// Opening up database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:Genre
-      return-id:bool:false
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      result:success
+// Create a Hyperlambda script that overrides the exception handler to ensure information is returned to root users, logging errors and returning status, field, and message.
+log.error:x:@.arguments/*/message
+   url:x:@.arguments/*/path
+   exception:x:@.arguments/*/stack
+add:x:+
+   get-nodes:x:@.arguments/*/status
+   get-nodes:x:@.arguments/*/field
+   get-nodes:x:@.arguments/*/message
+return

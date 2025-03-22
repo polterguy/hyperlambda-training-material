@@ -1,20 +1,55 @@
 
-// Create a Hyperlambda if/else-if/else condition that checks two variables, 'var1' and 'var2'. Log a message if the first condition is true, another message if the second condition is true, and a default message if neither condition is true.
-if
-   eq:x:@.arguments/*/var1
-      .:bool:true
-   .lambda
+// Searches through your training data for records matching a filtering condition
+.arguments
+   _type:string
 
-      // First condition is true.
-      log.info:First condition is true
-else-if
-   eq:x:@.arguments/*/var2
-      .:bool:true
-   .lambda
+   // Mandatory argument and becomes an SQL LIKE type of condition snippets must match to be considered.
+   query:string
 
-      // Second condition is true.
-      log.info:Second condition is true
-else
+   // Maximum number of tokens to return.
+   max_tokens:int
+.type:public
 
-   // Both above conditions are false.
-   log.info:Both conditions are false
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/_type
+validators.mandatory:x:@.arguments/*/query
+
+// Applying defaults.
+validators.default:x:@.arguments
+   max_tokens:int:4000
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Creating our filter string
+   .filter
+   set-value:x:@.filter
+      strings.concat
+         .:%
+         get-value:x:@.arguments/*/query
+         .:%
+   data.read
+      table:ml_training_snippets
+      columns
+         id
+         prompt
+         completion
+         uri
+      where
+         or
+            prompt.like:x:@.filter
+            completion.like:x:@.filter
+   .cont:bool:true
+   while:x:@.cont
+      lambda2hyper:x:@data.read/*
+      if
+         lt
+            openai.tokenize:x:@lambda2hyper
+            convert:x:@.arguments/*/max_tokens
+               type:int
+         .lambda
+            set-value:x:@.cont
+               .:bool:false
+      else
+         remove-nodes:x:@data.read/0/-
+   return-nodes:x:@data.read/*

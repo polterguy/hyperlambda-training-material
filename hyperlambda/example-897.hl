@@ -1,26 +1,11 @@
+// Named sibling not finding its node
+.data
+   not-found:value
+get-value:x:@not-found
 
-// Write a Hyperlambda script to return a specified TXT training data file to the client.
-.arguments
-   file:string
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
-
-// Figuringout full path of file.
-strings.concat
-   .:/etc/system/openai/pdf/
-   get-value:x:@.arguments/*/file
-
-// Getting our response HTTP headers sorted out.
-strings.concat
-   .:"attachment; filename=\""
-   get-value:x:@.arguments/*/file
-   .:"\""
-response.headers.set
-   Content-Type:text/plain
-   Content-Disposition:x:@strings.concat
-   Access-Control-Expose-Headers:Content-Disposition
-
-// Returning file to caller.
-io.stream.open-file:x:@strings.concat/@strings.concat
-return:x:-
+/*
+ * The above named sibling iterator will NOT find the [not-found] node, since
+ * it is not a direct ancestor or sibling of its direct ancestors.
+ *
+ * Value of [get-value] will be null after executing the above code
+ */

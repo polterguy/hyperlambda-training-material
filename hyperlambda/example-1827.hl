@@ -1,8 +1,24 @@
-// This code connects to the 'university' database and inserts a new student record into the 'students' table.
-mysql.connect:university
-   mysql.create
-      table:students
-      values
-         student_id:int:12345
-         name:John Doe
-         major:Computer Science
+/*
+ * Posts an order ID to the order system to fetch order details.
+ * If the request is successful (2xx), the full response content is returned.
+ */
+
+.arguments
+   id:int
+
+http.post:"https://orders.api.example.com/get-order"
+   convert:true
+   payload
+      order_id:x:@.arguments/*/id
+
+if
+   and
+      mte:x:@http.post
+         .:int:200
+      lt:x:@http.post
+         .:int:300
+   .lambda
+      yield
+         result:x:@http.post/*/content/*
+else
+   throw:Failed to fetch order

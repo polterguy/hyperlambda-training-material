@@ -1,5 +1,6 @@
-// How to use [data.execute]
 
-// Opening database
-data.connect:sakila
-   data.execute:delete from non_existing_table
+// Example: Check if a string ends with itself.
+
+// Returns true
+strings.ends-with:Test
+   .:Test

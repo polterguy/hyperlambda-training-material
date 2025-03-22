@@ -1,2 +1,2 @@
-// This snippet defines a node with a boolean value.
-.isActive:bool:true
+// Example: Return all dynamic slots existing in system
+slots.vocabulary

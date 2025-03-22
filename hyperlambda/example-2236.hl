@@ -1,33 +1,35 @@
 
-/*
- * This file returns all companies that the specified director is associated with
- * 
- * director_id is an integer and a mandatory object
- */
+// Write a Hyperlambda script to save an OpenAI API key to the configuration object.
 .arguments
-   director_id:long
-   limit:long
-   offset:long
+   key:string
 
-// Opening database connection.
-data.connect:[finovo|finovo]
-   database-type:pgsql
+// Making sure user has access to invoked endpoint.
+auth.ticket.verify:root
 
-   // Reading from directors.
-   data.select:"\nselect d1.org_number, b.company_name, d1.role_name\n   from directors d1\n      inner join basic b on b.org_number = d1.org_number\n      inner join directors d2 on d1.director_nbr = d2.director_nbr\n   where d2.director_id = @id and d1.org_number != d2.org_number\n   limit @limit offset @offset"
-      database-type:pgsql
-      @id:x:@.arguments/*/director_id
-      @limit:x:@.arguments/*/limit
-      @offset:x:@.arguments/*/offset
-   if
-      mte
-         get-count:x:@data.select/*
-         .:int:10
-      .lambda
+// Sanity checking invocation
+validators.mandatory:x:@.arguments/*/key
+validators.string:x:@.arguments/*/key
+   min:20
+   max:500
 
-         // Making sure we inform caller that there might exist additional companies.
-         add:x:@data.connect/*/yield
-            .
-               notice:The director is probably associated with more companies
-   yield
-      companies:x:@data.select/*
+// Loading configuration.
+config.load
+json2lambda:x:@config.load
+
+// Removing existing API key.
+remove-nodes:x:@json2lambda/*/magic/*/openai
+
+// Adding specified key to configuration.
+unwrap:x:+/*/*/*
+add:x:@json2lambda/*/magic
+   .
+      openai
+         key:x:@.arguments/*/key
+
+// Transforming to JSON and saving configuration.
+lambda2json:x:@json2lambda/*
+config.save:x:@lambda2json
+
+// Returning success to caller.
+return
+   result:success

@@ -1,6 +1,8 @@
 
-// Connect using a named connection string "foo" and database "bar", then count records
-data.connect:[foo|bar]
-   data.scalar:select count(*) from users
+// How to use string builder in Hyperlambda
+strings.builder
+   strings.builder.append:Hello
+   strings.builder.append:" "
+   strings.builder.append:world
 
-   // [foo|bar] uses connection string "foo" and database "bar" from configuration
+// Results in; Hello world

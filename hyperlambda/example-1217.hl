@@ -1,6 +1,8 @@
 /*
- * Opens a database connection and executes some arbitrary SQL,
- * returning results as a record set.
+ * Example: Extract entire string by using its full length.
  */
-mysql.connect:magic
-   mysql.select:select * from roles
+.subject:"Test"
+strings.substring:x:@.subject
+   .:0
+   .:4
+// Result: "Test"

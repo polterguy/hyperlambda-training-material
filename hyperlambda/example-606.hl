@@ -1,14 +1,13 @@
 
-// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table.
+// Write a Hyperlambda snippet that retrieves a post's body content from an API.
 
-// Queries messages from the messaging database and chat_logs table.
-data.connect:messaging_db
+// Retrieves a post's body content.
+http.get:"https://jsonplaceholder.typicode.com/posts/2"
 
-   // Using SQLite.
-   database-type:sqlite
+   // Converts response.
+   convert:true
 
-   // Fetching chat history.
-   data.read
-      database-type:sqlite
-      table:chat_logs
-      limit:100
+// Sets [.post_body] to the post's body
+.post_body
+set-value:x:@.post_body
+   get-value:x:@http.get/*/content/*/body

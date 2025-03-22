@@ -1,5 +1,8 @@
-// Convert a value to a decimal number
 
-.src:5
-convert:x:-
-   type:decimal
+// Example: Extract entire string by using its full length.
+.subject:Test
+strings.substring:x:@.subject
+   .:0
+   .:4
+
+// Result: "Test"

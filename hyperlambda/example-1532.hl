@@ -1,8 +1,11 @@
-/**
- * This example tries to crop an image by removing too many pixels,
- * causing an error since the total crop size exceeds the image dimensions.
- */
-image.crop
-   file:/input.jpg
-   left:int:500
-   right:int:500
+
+// Loop for 20 iterations, logs a message each time
+.no:int:0
+while
+   lt:x:@.no
+      .:int:20
+   .lambda
+
+      // Logging iteration message
+      log.info:Howdy from while loop
+      math.increment:x:@.no

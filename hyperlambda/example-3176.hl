@@ -1,10 +1,13 @@
 /*
- * Example: Concatenate multiple strings with spaces included as separate parts.
+ * This Hyperlambda snippet retrieves the name of a specific indexed node.
+ *
+ * 1. The `.data` node has three children: `foo1`, `foo2`, and `foo3`.
+ * 2. The `get-name` slot retrieves the name of the second child (`foo2`).
+ * 3. The expected output is `"foo2"`.
  */
-strings.concat
-   .:I
-   .:" "
-   .:love
-   .:" "
-   .:Hyperlambda
-// Result: "I love Hyperlambda"
+
+.data
+   foo1:bar1
+   foo2:bar2
+   foo3:bar3
+get-name:x:@.data/1

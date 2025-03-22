@@ -1,4 +1,7 @@
-// This example hashes a string using SHA256 and returns the hash in fingerprint format.
-.data:Hello World
-crypto.hash.sha256:x:@.data
-   format:fingerprint
+// Include a generated subtree into each node matched by the expression
+.data
+   item1:foo
+   item2:bar
+include:x:@.data/*
+   return
+      child:added

@@ -1,7 +1,16 @@
-// Define a sample slot 'sample'
-slots.create:sample  
-   return-value:Done
 
-// Retrieve the Hyperlambda definition of 'sample'
-slots.get:sample  
-// The result is the lambda nodes of 'sample', e.g. a child node [return-value] with value "Done".
+// Create a Hyperlambda snippet that adds a new product to the 'inventory_db' database and its 'products' table.
+
+// Adds a new product to the "inventory_db" database and its "products" table.
+data.connect:inventory_db
+   database-type:pgsql
+
+   // Creating a product entry.
+   data.create
+      database-type:pgsql
+      table:products
+      values
+         product_id:int:2005
+         name:Laptop
+         price:decimal:999.99
+         stock:int:50

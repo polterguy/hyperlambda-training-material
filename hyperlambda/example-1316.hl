@@ -1,18 +1,43 @@
 
-// Provide a Hyperlambda example where [.lambda] runs when [.message] is different from Welcome Home.
+// Create a function that deletes one record from the SubscriptionPlan table in the saas database using the primary key.
+.arguments
 
-// Runs [.lambda] when [.message] is different from Welcome Home.
-.message:Welcome Home
-if
+   // Primary key of record to delete, mandatory argument
+   PlanId:long
 
-   // Condition ensures inequality.
-   neq:x:@.message
-      .:Welcome Home
-   .lambda
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
 
-      // Runs when [.message] is different.
-      log.info:[.message] is NOT Welcome Home
-else
+// Logging invocation.
+auth.ticket.get
+lambda2hyper:x:@.arguments/*
+log.info:saas.SubscriptionPlan entry deleted
+   username:x:@auth.ticket.get
+   arguments:x:@lambda2hyper
+validators.mandatory:x:@.arguments/*/PlanId
 
-   // Runs when [.message] is exactly Welcome Home.
-   log.info:[.message] is Welcome Home
+// Opening up our database connection.
+data.connect:[generic|saas]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:SubscriptionPlan
+      where
+         and
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:saas.SubscriptionPlan.delete
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

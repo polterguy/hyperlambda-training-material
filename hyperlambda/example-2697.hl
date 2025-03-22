@@ -1,43 +1,41 @@
 
-// Associates the specified [username] with the specified [roles] roles.
+// Write a Hyperlambda script for an OpenAI AI search endpoint returning only references to matching training snippets.
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-   roles
-      type:array
-      mandatory:bool:true
-.icon:supervisor_account
+   prompt:string
+   type:string
+   recaptcha_response:string
+   max:int
+.type:public
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/roles
+// Invoking slot containing commonalities for all endpoints.
+insert-before:x:../*/signal/*/.callback
+   get-nodes:x:@.arguments/*
+signal:magic.ai.endpoint-common
+   .callback
 
-// Connecting to database.
-data.connect:[generic|magic]
+      // Invoking slot responsible for returning URLs to us.
+      add:x:+
+         get-nodes:x:@.arguments/*
+      signal:magic.ai.search
 
-   // Verifying user exists.
-   data.read
-      table:users
-      columns
-         username
-      where
-         and
-            username.eq:x:@.arguments/*/username
+      // Returning results of above invocation to caller.
+      add:x:./*/return-nodes/*/snippets
+         get-nodes:x:@signal/*/snippets/*
+      add:x:./*/return-nodes
+         get-nodes:x:@signal/*/db_time
+      return-nodes
+         snippets
 
-   // Verifying above invocation returned something.
-   if
-      not-exists:x:@data.read/*
-      .lambda
+/*
+ * Applying some HTTP caching to avoid invoking OpenAI again with
+ * the same question before some minimum amount of time has passed.
+ * 
+ * Notice, we can apply more "aggressive" caching here than in our
+ * chat endpoints, since the same query will mostly always return
+ * the same result, since there is no room for "creativity" here.
+ */
+response.headers.set
+   Cache-Control:max-age=300
 
-         // Oops ...!!
-         throw:No such user
-            username:x:@.arguments/*/username
-
-   // Associating user with specified [roles].
-   for-each:x:@.arguments/*/roles/*
-      data.create
-         table:users_roles
-         values
-            user:x:@.arguments/*/username
-            role:x:@.dp/#
+// Returning result of worker slot to caller.
+return-nodes:x:@signal/*

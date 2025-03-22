@@ -1,6 +1,8 @@
-// This code loads an environment config file, replaces the placeholder "YOUR_API_KEY_HERE" with an actual API key, and writes it back to the same file.
-io.file.load:/config/api.env
-io.file.save:/config/api.env
-   strings.replace:x:@io.file.load
-      .:YOUR_API_KEY_HERE
-      .:sk-1234567890abcdef
+/*
+ * Example: Use variables for string and trim characters (start only).
+ */
+.text:"...Hello"
+.trimchars:"."
+// Result: "Hello"
+strings.trim-start:x:@.text
+   get-value:x:@.trimchars

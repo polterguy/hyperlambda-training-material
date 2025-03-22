@@ -1,10 +1,3 @@
-// Opens a database connection and executes some arbitrary SQL,  returning results as a record set
-data.connect:DATABASE_NAME_HERE
+// How do you declare a signed byte value in Hyperlambda?
 
-   // Explicitly using SQLite database type
-   database-type:sqlite
-
-   data.select:select * from TABLE_NAME_HERE
-
-      // We must use the same database type as we're using in [data.connect]
-      database-type:sqlite
+.offset:sbyte:-42

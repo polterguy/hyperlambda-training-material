@@ -1,11 +1,11 @@
-
-// Create a Hyperlambda endpoint to return all slots registered in the system.
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Retrieving all system slots.
-vocabulary
-
-// Returning results of the above to caller.
-return-nodes:x:@vocabulary/*
+// How to validate if a SaaS subscription is active and paid?
+.isActive:bool:true
+.isPaid:bool:true
+.subscriptionStatus
+if
+   and
+      get-value:x:@.isActive
+      get-value:x:@.isPaid
+   .lambda
+      set-value:x:@.subscriptionStatus
+         .:Subscription valid

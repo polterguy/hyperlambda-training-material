@@ -1,13 +1,13 @@
 
-// Provide a Hyperlambda example where a user's phone number is fetched from an API.
+// Create a Hyperlambda snippet that invokes an HTTP GET endpoint to fetch a post title.
 
-// Fetches a user's phone number.
-http.get:"https://jsonplaceholder.typicode.com/users/3"
+// Invokes an HTTP GET endpoint to fetch a post title.
+http.get:"https://jsonplaceholder.typicode.com/posts/1"
 
-   // Converts JSON response.
+   // Converts response from JSON to lambda.
    convert:true
 
-// Stores the phone number in [.phone]
-.phone
-set-value:x:@.phone
-   get-value:x:@http.get/*/content/*/phone
+// Sets [.title] to the post's title
+.title
+set-value:x:@.title
+   get-value:x:@http.get/*/content/*/title

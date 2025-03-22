@@ -1,63 +1,15 @@
 
-// Write a Hyperlambda script to upload, unzip, and overwrite a specified folder.
-.arguments
-   file:*
-   folder:string
+// What are lambda expressions?
 
-// Endpoint can accept form-data
-.accept:multipart/form-data
+/*
+ * Lambda expressions in Hyperlambda are used to reference any node within the currently executing graph object.
+ * They allow for dynamic access to nodes, enabling you to express relationships and hierarchies in the nodes effectively.
+ * They are similar to XPath expressions found in other technologies.
+ */
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Example of a simple lambda expression referencing the [.person] node.
+.person:John
+set-value:x:@.person
+   .:Jane
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
-validators.mandatory:x:@.arguments/*/file/*/name
-validators.mandatory:x:@.arguments/*/file/*/stream
-validators.mandatory:x:@.arguments/*/folder
-
-// Making sure specified file is a ZIP file.
-strings.split:x:@.arguments/*/file/*/name
-   .:.
-if
-   not
-      eq
-         get-value:x:@strings.split/0/-
-         .:zip
-   .lambda
-
-      // Oops, not a ZIP file ...
-      throw:You can only upload ZIP files
-         public:true
-         status:415
-
-// Emptying folder.
-io.folder.list:x:@.arguments/*/folder
-   display-hidden:true
-for-each:x:-/*
-   io.folder.delete:x:@.dp/#
-io.file.list:x:@.arguments/*/folder
-   display-hidden:true
-for-each:x:-/*
-   io.file.delete:x:@.dp/#
-
-// Figuring out full path of ZIP file as it should be saved.
-.filename
-set-value:x:@.filename
-   strings.concat
-      get-value:x:@.arguments/*/folder
-      get-value:x:@.arguments/*/file/*/name
-
-// Saving stream to file.
-io.stream.save-file:x:@.filename
-   get-value:x:@.arguments/*/file/*/stream
-
-// Unzipping file.
-io.file.unzip:x:@.filename
-
-// Deleting ZIP file.
-io.file.delete:x:@.filename
-
-// Returning success to caller.
-return-nodes
-   result:Success
+// In this case, @.person is a lambda expression that points to the .person node, and the [set-value] slot changes its value.

@@ -1,29 +1,34 @@
-// Hyperlambda endpoint returning true if invoked by Thomas being 50 years old
+
+// Ingests products from Shopify using Shopify API.
 .arguments
-   name:string
-   age:int
+   shop
+      type:string
+      mandatory:bool:true
+   type
+      type:string
+      mandatory:bool:true
+   base_url
+      type:string
+      mandatory:bool:true
+   secret
+      type:string
+      mandatory:bool:true
+   meta
+      type:bool
+      default:true
+.icon:shopping_cart
 
-.type:public
-.accept:application/json
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/shop
+validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/base_url
+validators.mandatory:x:@.arguments/*/secret
+validators.url:x:@.arguments/*/base_url
 
-// Sanity checking invocation
-validators.mandatory:x:@.arguments/*/name
-validators.mandatory:x:@.arguments/*/age
-
-// Checking if name is Thomas and age is 50
-if
-   and
-      eq:x:@.arguments/*/name
-         .:Thomas
-      eq:x:@.arguments/*/age
-         .:int:50
-   .lambda
-      set-value:x:../*/return/*/result
-         .:bool:true
-else
-   set-value:x:../*/return/*/result
-      .:bool:false
-
-// Returning result to caller
-return
-   result
+// Ingesting products using Shopify slot.
+execute:shopify.products.ingest
+   shop:x:@.arguments/*/shop
+   type:x:@.arguments/*/type
+   base_url:x:@.arguments/*/base_url
+   secret:x:@.arguments/*/
+   meta:x:@.arguments/*/meta

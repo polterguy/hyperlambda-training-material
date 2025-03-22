@@ -1,21 +1,14 @@
+// Divide a number by a dynamic value and then by a static value
+.dividend:int:24
+.divisor:int:4
 
-// Create a Hyperlambda script that returns arguments the specified file can handle, ensuring the user is authorized.
-.arguments
-   file:string
+math.divide
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+   // fetches 24
+   get-value:x:@.dividend
 
-/*
- * Loading action file and transforming Hyperlambda to lambda and making sure
- * we return [.arguments] collection as [input].
- * 
- * This becomes our input arguments to our action.
- */
-load-file:x:@.arguments/*/file
-hyper2lambda:x:@load-file
-add:x:./*/return
-   get-nodes:x:@hyper2lambda/*/.arguments/*
+   // divides 24 by 4 -> result 6
+   get-value:x:@.divisor
 
-// Returning arguments to caller.
-return
+   // divides 6 by 2 -> result 3
+   .:int:2

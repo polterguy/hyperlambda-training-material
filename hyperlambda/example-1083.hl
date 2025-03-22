@@ -1,39 +1,45 @@
 
-// Delete one record from your PlaylistTrack table in your chinook database.
-.arguments
+// Moves SQL scripts to the correct folder and creates the Northwind database file if it doesn't exist.
+io.file.list:/modules/sqlite-northwind/magic.startup/
+for-each:x:-/*
+   strings.split:x:@.dp/#
+      .:/
+   if
+      strings.ends-with:x:@.dp/#
+         .:.sql
+      .lambda
+         strings.concat
+            .:/etc/sqlite/templates/
+            get-value:x:@strings.split/0/-
+         if
+            not
+               io.file.exists:x:@strings.concat
+            .lambda
 
-   // Primary key of record to delete, mandatory argument
-   PlaylistId:long
+               // File doesn't exists, hence moving it.
+               io.file.move:x:@.dp/#
+                  .:/etc/sqlite/templates/
+               log.info:SQL script moved into etc folder
+                  filename:x:@.dp/#
 
-   // Primary key of record to delete, mandatory argument
-   TrackId:long
+// Creates the Northwind database file.
+if
+   not
+      io.file.exists:/data/northwind.db
+   .lambda
 
-// Meta data description for endpoint
+      // Creating a default database file to store database in.
+      io.file.save:/data/northwind.db
+         .:
+      log.info:Northwind database file created
+         filename:/data/northwind.db
 
-// Type of endpoint
-.type:crud-delete
+      // Loads and executes the northwind.sql script.
+      io.file.load:/etc/sqlite/templates/northwind.sql
+      sqlite.connect:northwind
+         sqlite.execute:x:@io.file.load
+      log.info:The northwind database was successfully created
+         filename:/etc/sqlite/templates/northwind.sql
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/PlaylistId
-validators.mandatory:x:@.arguments/*/TrackId
-
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:PlaylistTrack
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+      // Evicting cache item related to SQLite.
+      cache.set:magic.sql.databases.sqlite.generic

@@ -1,6 +1,8 @@
-// How to use [data.read] and have it only return field1 and field2
-sql.read
-   table:table1
-   columns
-      field1
-      field2
+
+// Example: Use variables to supply the string and prefix to check.
+.text:Sample
+.prefix:Sam
+
+// Returns true
+strings.starts-with:x:@.text
+   get-value:x:@.prefix

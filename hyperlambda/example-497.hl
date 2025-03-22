@@ -1,8 +1,3 @@
-// Simplified [if] referencing input argument
-.arguments
-   foo:bool:true
-.dest
+// How do you declare an unsigned short variable in Hyperlambda?
 
-if:x:@.arguments/*/foo
-   set-value:x:@.dest
-      .:yup!
+.ticket-count:ushort:65530

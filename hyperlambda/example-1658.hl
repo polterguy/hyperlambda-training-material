@@ -1,10 +1,8 @@
-// Using a double-quoted string with an escaped newline character
-.message:"Hello\nWorld"
-
-// Using a single-quoted string (literal, escapes are not processed)
-.text:'Hello\nWorld'
-
-// Using @ prefix for a multi-line string (preserves line breaks)
-.multi_line:@"First line
-Second line
-Third line"
+/*
+ * Example: Remove a substring by replacing it with an empty string.
+ */
+.sentence:"Apples and oranges"
+strings.replace:x:@.sentence
+   .:"and "
+   .:""
+// Result: "Apples oranges" (removed "and ")

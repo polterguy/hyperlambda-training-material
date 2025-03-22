@@ -1,2 +1,2 @@
-// This snippet defines a node with a single character value.
-.initial:char:Z
+// Remove [foo2]
+remove-nodes:x:@.data/*/foo2

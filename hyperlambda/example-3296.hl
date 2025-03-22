@@ -1,7 +1,7 @@
-// Use a variable condition in an if statement
-
-.result
-.condition:bool:true
-if:x:@.condition
-   set-value:x:../*/.result
-      .:OK
+// This example connects to the 'library' database and deletes a book record from the 'books' table where the title is '1984'.
+sqlite.connect:library
+   sqlite.delete
+      table:books
+      where
+         and
+            title.eq:1984

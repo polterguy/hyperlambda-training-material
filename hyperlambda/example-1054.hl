@@ -1,6 +1,5 @@
 
-// Example: Check if a string ends with itself.
-
-// Returns true
-strings.ends-with:Test
-   .:Test
+// Ensures the module's database exists and is updated by running migration scripts.
+signal:magic.modules.ensure-database
+   module:shopping-cart-demo
+   database:shopping-cart-demo

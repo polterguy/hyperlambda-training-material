@@ -1,18 +1,46 @@
-/*
- * This example attempts to connect to a non-existent database.
- * It demonstrates how to handle connection failures gracefully by catching exceptions
- * and logging an error message.
- */
 
-try
-   data.connect:non_existent_database
-      data.select:SELECT * FROM non_existent_table
-.catch
-   log.error:Failed to connect to the database or execute the query.
+// How does CRUD slots in Hyperlambda
 
-// Notice, the [data.connect] slot will not fail, since the default database
-// is SQLite, which will simply create a new database file with the
-// path of '/data/non_existent_database.db' - But since this database
-// is initialised as an empty database, without any tables, the
-// [data.select] invocation will still fail, since it doesn't have
-// the 'non_existent_table' table.
+// Hyperlambda has 4 basic CRUD slots, you can examples of these below.
+
+// [data.create]
+data.create
+   table:table1
+   values
+      column1:value1
+      column2:value2
+      column3:value3
+
+// Read
+data.read
+   table:table1
+
+   // Optional
+   limit:5
+
+   // Optional
+   offset:5
+
+   // Optional
+   order
+      column1
+      column2
+
+   // Optional
+   direction:desc
+
+// Update
+data.update
+   table:table1
+   values
+      column1:new-value
+   where
+      and
+         id.eq:PRIMARY-KEY-OF-RECORD-TO-UPDATE
+
+// Delete
+data.delete
+   table:table1
+   where
+      and
+         id.eq:PRIMARY-KEY-OF-RECORD-TO-UPDATE

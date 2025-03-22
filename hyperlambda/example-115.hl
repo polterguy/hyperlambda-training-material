@@ -1,8 +1,10 @@
-// Custom endpoint or Hyperlambda file taking mandatory two arguments
-.arguments
-   arg1:string
-   arg2:date
 
-validators.mandatory:x:@.arguments/*/arg1
-validators.mandatory:x:@.arguments/*/arg2
-// If either of the arguments don't exists, the above will throw an exception
+// Evaluate all lambda objects under the current node sequentially (result becomes 'Second')
+.res:
+.lambda
+   set-value:x:@.res
+      .:First
+.lambda
+   set-value:x:@.res
+      .:Second
+eval:x:../*/.lambda

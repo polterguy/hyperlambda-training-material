@@ -1,50 +1,37 @@
 
-// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the ml_requests table in the magic database, filtering which item to update with ID and updating type, prompt, completion, and finish_reason fields, ensuring authentication and authorization for root roles.
+// Returns Stripe charges.
 .arguments
-   id:long
-   type:string
-   prompt:string
-   completion:string
-   finish_reason:string
-   cached:int
-.type:crud-update
+   limit:int
+   starting_after:string
+   customer_id:string
 
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/id
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+/*
+ * Retrieves charges from Stripe.
+ * 
+ * Will use your Stripe API token found from your settings as it's interacting
+ * with the Stripe API.
+ */
+execute:magic.workflows.actions.execute
+   name:stripe-charges-get
+   filename:/modules/stripe/workflows/actions/stripe-charges-get.hl
+   arguments
+      limit:x:@.arguments/*/limit
+      starting_after:x:@.arguments/*/starting_after
+      customer_id:x:@.arguments/*/customer_id
 
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Parametrising our invocation.
-   add:x:./*/data.update/*/values
-      get-nodes:x:@.arguments/*/[1,1000]
-   add:x:./*/data.update/*/where/*/and
-      get-nodes:x:@.arguments/*/[0,1]
-
-   // Invoking our update slot.
-   data.update
-      table:ml_requests
-      values
-      where
-         and
-
-   // Verifying record exists.
-   if
-      eq
-         get-value:x:@data.update
-         .:int:0
-      .lambda
-         response.status.set:404
-         return
-            result:Record not found
-
-   // Returning the correct status code.
-   response.status.set:202
-
-   // Returning success to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.update
+// Returns the result of your last action.
+return-nodes:x:@execute/*

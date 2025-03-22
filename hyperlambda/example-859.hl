@@ -1,9 +1,14 @@
-// Counting txt files in folder
-io.file.list:/etc/hyperlambda-training-material/hyperlambda/
-.no:int:0
-for-each:x:@io.file.list/*
-   if
-      strings.ends-with:x:@.dp/#
-         .:.txt
-      .lambda
-         math.increment:x:@.no
+
+// Create a Hyperlambda action to transform specified items into CSV format and return the CSV content.
+.arguments
+   items
+      type:*
+      mandatory:bool:true
+.icon:input
+
+// Transforming [items] to CSV content.
+lambda2csv:x:@.arguments/*/items/*
+
+// Returning resulting HTML to caller.
+yield
+   csv:x:@lambda2csv

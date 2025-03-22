@@ -1,10 +1,7 @@
-/*
- * This Hyperlambda snippet checks if a node has no children.
- * 
- * 1. The `.dest` node is created without any children.
- * 2. The `exists` slot is used to check for child nodes.
- * 3. The result will be `false` since there are no children in `.dest`.
- */
-
-.dest
-exists:x:-/*
+// How to conditionally allow API execution based on 'dev' role?
+if
+   auth.ticket.in-role:dev
+   .lambda
+      response.status.set:200
+else
+   response.status.set:403

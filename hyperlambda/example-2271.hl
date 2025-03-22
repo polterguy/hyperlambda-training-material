@@ -1,18 +1,24 @@
+/*
+ * The following code compiles the "/etc/foo.cs" file and saves it as an assembly
+ * in "/etc/foo.dll".
+ */
+io.file.load:/etc/foo.cs
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.Console
+      .:System.Private.Uri
+      .:System.ComponentModel
+      .:System.Private.CoreLib
+      .:System.Net.Primitives
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.library
+      .:magic.signals.contracts
+   code:x:@io.file.load
+   assembly-name:foo.dll
 
-// Provide a Hyperlambda example where [.lambda] runs when [.message] is different from Welcome Home.
-
-// Runs [.lambda] when [.message] is different from Welcome Home.
-.message:Welcome Home
-if
-
-   // Condition ensures inequality.
-   neq:x:@.message
-      .:Welcome Home
-   .lambda
-
-      // Runs when [.message] is different.
-      log.info:[.message] is NOT Welcome Home
-else
-
-   // Runs when [.message] is exactly Welcome Home.
-   log.info:[.message] is Welcome Home
+// Saving our compiled CLR assembly to '/etc/foo.dll'.
+io.file.save.binary:/etc/foo.dll
+   get-value:x:@system.compile

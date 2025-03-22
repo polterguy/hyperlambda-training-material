@@ -1,3 +1,2 @@
-// Loads the /modules/foo.txt file and logs its content.
-io.file.load:/modules/foo.txt
-log.info:x:-
+// Gets all nodes in .env that have a value equal to "dev"
+.value-equals:x:@.env/*/=dev

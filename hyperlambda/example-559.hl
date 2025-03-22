@@ -1,8 +1,12 @@
-// Create a context object and referencing it in its scope
-.result
-context:foo
-   value:bar
-   .lambda
 
-      set-value:x:@.result
-         get-context:foo
+// Write a Hyperlambda snippet that loops through messages and logs them.
+
+// Loops through messages and logs them.
+.messages
+   message1:Welcome to our service!
+   message2:Your order has been shipped.
+   message3:Your payment was successful.
+for-each:x:@.messages/*
+
+   // Logging each message.
+   log.info:x:@.dp/#

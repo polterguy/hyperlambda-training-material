@@ -1,9 +1,8 @@
+/*
+ * This Hyperlambda snippet retrieves 10 records, skipping the first 20.
+ */
 
-// Write a Hyperlambda snippet that inserts a 'middle' node after 'start' inside '.sequence'.
-
-// Inserts a "middle" node after "start" inside ".sequence".
-.sequence
-   start
-insert-after:x:@.sequence/*/start
-   .
-      middle:Intermediate step
+data.read
+   table:orders
+   limit:10
+   offset:20

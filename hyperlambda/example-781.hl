@@ -1,2 +1,18 @@
-// Return configuration key named 'foo:bar'
-config.get:"foo:bar"
+/*
+ * Reads the file, splits by space, and returns the first 5 words.
+ */
+
+// Making sure the file cannot handle ANY arguments
+.arguments
+
+io.file.load:/README.md
+strings.split:x:@io.file.load
+   .:' '
+.words
+for-each:x:@strings.split/*/[0,5]
+   unwrap:x:+/*/*
+   add:x:@.words
+      .
+         .:x:@.dp/#
+yield
+   first-five:x:@.words/*

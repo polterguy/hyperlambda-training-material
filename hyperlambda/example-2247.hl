@@ -1,21 +1,73 @@
-// Executing the following Hyperlambda results in the following
 
-// When executing the following Hyperlambda
-.data
-   item1:Hello from Item1
-   item2:Hello from Item2
-   item3:Hello from Item3
-for-each:x:@.data/*
-   set-value:x:@.dp/#
-      .:visited
+// Read or list records from your CustomerCustomerDemo table in your northwind database
+.arguments
 
-// We end up with this result
-.data
-   item1:visited
-   item2:visited
-   item3:visited
-for-each:x:@.data/*
-   set-value:x:@.dp/#
-      .:visited
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   limit:long
 
-// Notice how the [.dp] expression iterator above allows us to de-reference the currently iterated pointer and apply change locally within the original hierarchy
+   // Offset into the dataset of where to start retrieving records
+   offset:long
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+   order:string
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
+   CustomerCustomerDemo.CustomerID.like:string
+   CustomerCustomerDemo.CustomerID.eq:string
+   CustomerCustomerDemo.CustomerTypeID.like:string
+   CustomerCustomerDemo.CustomerTypeID.eq:string
+
+// Meta data description for endpoint
+.description:Read or list records from your CustomerCustomerDemo table in your northwind database
+
+// Type of endpoint
+.type:crud-read
+.foreign-keys
+   .
+      column:CustomerID
+      table:Customers
+      foreign_column:CustomerID
+      foreign_name:CustomerID
+      long:bool:true
+   .
+      column:CustomerTypeID
+      table:CustomerDemographics
+      foreign_column:CustomerTypeID
+      foreign_name:CustomerTypeID
+      long:bool:true
+
+// Opening up our database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+
+   // Parametrising our read invocation with ordering arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+
+   // Parametrising our read invocation with paging arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:CustomerCustomerDemo
+      columns
+         CustomerCustomerDemo.CustomerID
+         CustomerCustomerDemo.CustomerTypeID
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

@@ -1,8 +1,3 @@
 
-// Example: Allowed set includes all characters in the input (no replacements occur).
-.input:ABC123
-strings.replace-not-of:x:@.input
-   .:ABC123
-   .:#
-
-// Result: "ABC123" (unchanged, since all characters were allowed)
+// Example: Try signaling a slot without throwing exception if it doesn't exist
+try-signal:foo

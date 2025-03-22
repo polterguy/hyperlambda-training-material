@@ -1,50 +1,16 @@
 
-// Returns a grouped chart image to caller. Values is a mandatory comma separated list of values.
-.arguments:*
-.type:public
+// Write a Hyperlambda snippet that handles file read errors using a try/catch/finally block.
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/legend
+// Handles file read errors inside a try/catch/finally block
+try
 
-// Creating our individual bars.
-.bars
-for-each:x:@.arguments/*
-   get-name:x:@.dp/#
-   if
-      not
-         strings.starts-with:x:@get-name
-            .:legend
-      .lambda
+   // Attempting to read a non-existent file
+   file.read:/invalid/path/to/file.txt
+.catch
 
-         // Adding primary node for bar.
-         set-name:x:+/*/*
-            get-value:x:@get-name
-         add:x:@.bars
-            .
-               .
+   // Logging the error
+   log.error:x:@.arguments/*/message
+.finally
 
-         // Adding values for individual cells.
-         add:x:@.bars/0/-
-            strings.split:x:@.dp/#
-               .:,
-
-// Creating our legend.
-add:x:../*/image.chart/*/legend
-   strings.split:x:@.arguments/*/legend
-      .:,
-
-// Parametrizing [image.chart] invocation.
-add:x:../*/image.chart/*/bars
-   get-nodes:x:@.bars/*
-image.chart:grouped
-   width:800
-   height:500
-   bars
-   legend
-
-// Applying correct HTTP header.
-response.headers.set
-   Content-Type:image/png
-
-// Returning chart to caller.
-return:x:@image.chart
+   // Logging completion
+   log.info:File read attempt finished

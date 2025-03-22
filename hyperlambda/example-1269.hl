@@ -1,35 +1,13 @@
 
-// Write a Hyperlambda script to save an OpenAI API key to the configuration object.
-.arguments
-   key:string
+// Provide a Hyperlambda example where a comment's body is retrieved from an API.
 
-// Making sure user has access to invoked endpoint.
-auth.ticket.verify:root
+// Invokes an HTTP GET endpoint to fetch a comment's body.
+http.get:"https://jsonplaceholder.typicode.com/comments/1"
 
-// Sanity checking invocation
-validators.mandatory:x:@.arguments/*/key
-validators.string:x:@.arguments/*/key
-   min:20
-   max:500
+   // Converts JSON to lambda.
+   convert:true
 
-// Loading configuration.
-config.load
-json2lambda:x:@config.load
-
-// Removing existing API key.
-remove-nodes:x:@json2lambda/*/magic/*/openai
-
-// Adding specified key to configuration.
-unwrap:x:+/*/*/*
-add:x:@json2lambda/*/magic
-   .
-      openai
-         key:x:@.arguments/*/key
-
-// Transforming to JSON and saving configuration.
-lambda2json:x:@json2lambda/*
-config.save:x:@lambda2json
-
-// Returning success to caller.
-return
-   result:success
+// Stores the comment body in [.comment_body]
+.comment_body
+set-value:x:@.comment_body
+   get-value:x:@http.get/*/content/*/body

@@ -1,9 +1,8 @@
-
-// Create a new customer with only a name field
-data.connect:shopDB
-   data.create
-      table:customers
+// This code connects to the 'university' database and inserts a new student record into the 'students' table.
+mysql.connect:university
+   mysql.create
+      table:students
       values
-
-         // Insert "Alice" into the name column
-         name:Alice
+         student_id:int:12345
+         name:John Doe
+         major:Computer Science

@@ -1,19 +1,49 @@
 
-// Hyperlambda endpoint taking arguments. The SQL query selects distinct email, first name, last name, and genre name of customers who listen to rock music from the Chinook database.\n\nThis SQL script is designed to retrieve a list of customers from the Chinook database who are associated with rock music. It performs a series of inner joins between the Customer, Invoice, InvoiceLine, Track, and Genre tables to filter and extract customer details based on the genre specified by the `@filter` parameter. The query ensures that only unique customer records are returned by using the `DISTINCT` keyword, and it orders the results by the customer's email address. This script is particularly useful for generating targeted marketing lists or analyzing customer preferences within the rock genre. The use of parameterization with `@filter` enhances security by preventing SQL injection attacks.\n\nAll arguments are mandatory.
-.arguments
-   filter:string
+// Lists all foreign keys in some SQL Server table.
+slots.create:magic.db.mssql.foreign_keys
 
-// Connecting to database.
-data.connect:chinook
-   database-type:sqlite
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/database
+   validators.mandatory:x:@.arguments/*/table
 
-   // Parametrizing [data.select].
-   add:x:./*/data.select
-      get-nodes:x:@.arguments/*
+   // Opens up our connection
+   .connection:[information_schema]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               get-value:x:@.arguments/*/database
+               .:]
+   else
+      set-value:x:@.connection
+         strings.concat
+            .:[generic|
+            get-value:x:@.arguments/*/database
+            .:]
+   mssql.connect:x:@.connection
 
-   // Executing [data.select] slot with our SQL.
-   data.select:"\n/*\n * Selects details from all customers that are listening to rock.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect distinct c.Email, c.FirstName, c.LastName, g.name\n  from Customer c\n    inner join Invoice i on c.CustomerId = i.CustomerId\n    inner join InvoiceLine ii on i.InvoiceId = ii.InvoiceId\n    inner join Track t ON ii.TrackId = t.TrackId\n    inner join Genre g ON t.GenreId = g.GenreId\n  where g.Name like @filter\n  order by c.Email\n"
-      database-type:sqlite
+      // Dynamically creating our SQL.
+      strings.split:x:@.arguments/*/table
+         .:.
+      mssql.select:"select\n   col1.name as [column], sch2.name + '.' + tab2.name as [foreign_table], col2.name as [foreign_column], obj.name as name\n   from sys.foreign_key_columns fkc\n      inner join sys.objects obj on obj.object_id = fkc.constraint_object_id\n      inner join sys.tables tab1 on tab1.object_id = fkc.parent_object_id\n      inner join sys.schemas sch on tab1.schema_id = sch.schema_id\n      inner join sys.columns col1 on col1.column_id = parent_column_id and col1.object_id = tab1.object_id\n      inner join sys.tables tab2 on tab2.object_id = fkc.referenced_object_id\n      inner join sys.schemas sch2 on tab2.schema_id = sch2.schema_id\n      inner join sys.columns col2 on col2.column_id = referenced_column_id and col2.object_id = tab2.object_id\n      inner join sys.[types] TY on\n         col1.[system_type_id] = TY.[system_type_id] and\n         col1.[user_type_id] = TY.[user_type_id] and\n         tab1.name = @table and\n         sch.name = @schema"
+         table:x:@strings.split/0/-
+         schema:x:@strings.split/0
 
-   // Returning a result of above invocation to caller.
-   return-nodes:x:@data.select/*
+      /*
+       * Creating our return value, by projecting it into
+       * a generic form, that does not rely upon MySQL's syntactic
+       * details.
+       */
+      return-nodes:x:@mssql.select/*

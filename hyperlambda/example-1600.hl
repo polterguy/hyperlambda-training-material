@@ -1,5 +1,6 @@
 /*
- * Demonstrates literal treatment of backslashes (e.g., for file paths).
- * No need to escape backslashes.
+ * Example: Check if a string ends with a substring that is not at the end.
  */
-.file-path:@"C:\Program Files\MyApp\logs"
+// Returns false
+strings.ends-with:HelloWorld
+   .:Universe

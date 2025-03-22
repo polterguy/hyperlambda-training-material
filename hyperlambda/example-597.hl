@@ -1,6 +1,25 @@
-// Check if a value is greater than or equal to another
 
-.foo1:int:7
-mte
-   get-value:x:../*/.foo1
-   .:int:5
+/*
+ * The following code compiles the "/etc/foo.cs" file and saves it as an assembly
+ * in "/etc/foo.dll".
+ */
+io.file.load:/etc/foo.cs
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.Console
+      .:System.Private.Uri
+      .:System.ComponentModel
+      .:System.Private.CoreLib
+      .:System.Net.Primitives
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.library
+      .:magic.signals.contracts
+   code:x:@io.file.load
+   assembly-name:foo.dll
+
+// Saving our compiled CLR assembly to '/etc/foo.dll'.
+io.file.save.binary:/etc/foo.dll
+   get-value:x:@system.compile

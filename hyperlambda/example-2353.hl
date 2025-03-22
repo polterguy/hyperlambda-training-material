@@ -1,9 +1,3 @@
-
-// Example: Concatenate all strings stored as children of a list node.
-.items
-   .:Red
-   .:Green
-   .:Blue
-strings.concat:x:@.items/*
-
-// Result: "RedGreenBlue"
+// Create HTTP GET with automatic conversion to JSON
+http.get:"https://jsonplaceholder.typicode.com/posts"
+   convert:bool:true

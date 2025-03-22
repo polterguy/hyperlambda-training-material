@@ -1,5 +1,11 @@
+// Check multiple conditions using or and variable values
 
-// Example: URL-encode a simple string (space and special characters become % codes).
-strings.url-encode:hello world
-
-// Result: "hello%20world"
+.result
+.value:bool:true
+if
+   or
+      .:bool:false
+      get-value:x:@.value
+   .lambda
+      set-value:x:../*/.result
+         .:OK

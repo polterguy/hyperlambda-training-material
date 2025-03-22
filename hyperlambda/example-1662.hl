@@ -1,8 +1,5 @@
-// Getting substring from a string
-.data:Hyperlambda is awesome
-.result
-strings.substring:x:@.data
-   .:int:0
-   .:int:11
-set-value:x:@.result
-   get-value:x:@strings.substring
+/*
+ * Example: Convert an uppercase string to lowercase.
+ */
+// Result: "hello"
+strings.to-lower:HELLO

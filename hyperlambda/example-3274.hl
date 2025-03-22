@@ -1,8 +1,9 @@
-/*
- * Example: Use variables for string and trim characters (start only).
- */
-.text:"...Hello"
-.trimchars:"."
-// Result: "Hello"
-strings.trim-start:x:@.text
-   get-value:x:@.trimchars
+// This code connects to the 'company' database and updates the salary of an employee in the 'employees' table.
+pgsql.connect:company
+   pgsql.update
+      table:employees
+      values
+         salary:decimal:75000
+      where
+         and
+            employee_id:int:303

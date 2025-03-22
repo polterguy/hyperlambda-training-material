@@ -1,9 +1,23 @@
-// Create a new RSA key pair and encrypt a message using its public key
-crypto.rsa.create-key
-   key-size:int:2048
 
-// Encrypt a message using RSA public key
-.message
-   content:Secret Message
-crypto.rsa.encrypt:x:@.message/*/content
-   public-key:x:@crypto.rsa.create-key/*/public
+// Create a Hyperlambda script to perform a complex read invocation joining two tables using semantic SQL. Requires the Sakila database.
+mysql.connect:sakila
+   mysql.read
+      columns
+         film.title
+         film.description
+         actor.last_name
+         actor.first_name
+      table:film
+         join:film_actor
+            type:inner
+            on
+               and
+                  film.film_id:film_actor.film_id
+            join:actor
+               type:inner
+               on
+                  and
+                     film_actor.actor_id:actor.actor_id
+      where
+         and
+            actor.first_name:NICK

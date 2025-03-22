@@ -1,9 +1,11 @@
-// Evaluates to false.
-or
-   .:bool:false
-   .:bool:false
 
-// Evaluates to true.
-or
-   .:bool:false
-   .:bool:true
+// Create a Hyperlambda snippet that fetches recent orders from 'ecommerce_db'.
+
+// Fetches recent orders from "ecommerce_db".
+.result
+data.connect:ecommerce_db
+   database-type:pgsql
+   data.select:"select order_id, user_id, total from orders where order_status='shipped' order by order_date desc limit 30"
+      database-type:pgsql
+   add:x:@.result
+      get-nodes:x:@data.select/*

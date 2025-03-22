@@ -1,14 +1,8 @@
 
-// Returns all plans in the system.
-data.connect:[generic|hub]
-   data.read
-      table:plans
-      columns
-         name
-         description
-         cpu
-         memory
-         storage
-         price
-         price_reference
-   return:x:-/*
+// Execute Hyperlambda file with arguments
+.args
+   foo1:bar1
+   foo2:bar2
+execute-file:/whatever-file.hl
+   arg1:x:@.args/*/foo1
+   arg2:x:@.args/*/foo2

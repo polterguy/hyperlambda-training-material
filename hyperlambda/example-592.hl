@@ -1,13 +1,19 @@
 
-// Create a Hyperlambda script to count items from a specified database and table using SQLite.
-data.connect:DATABASE_NAME
-   database-type:sqlite
+// Provide a Hyperlambda example where numbers are summed while the sum remains below 100.
 
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:TABLE_NAME
-      columns
-         count(*)
-            as:count
-      limit:long:1
+// Summing numbers while sum remains below 100
+.no:int:0
+.sum:int:0
+while
+   lt
+      get-value:x:@.sum
+      .:int:100
+   .lambda
+
+      // Adding to sum.
+      set-value:x:@.sum
+         math.add:x:@.sum
+            get-value:x:@.no
+
+      // Incrementing counter.
+      math.increment:x:@.no

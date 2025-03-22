@@ -1,7 +1,8 @@
-// Hyperlambda [math.increment]
-.counter:int:0
-math.increment:x:@.counter
-
-// Results in:
-.counter:int:1
-math.increment:x:@.counter
+/*
+ * Example: Perform a case-insensitive replacement.
+ */
+.input:"Yes yes YES"
+strings.regex-replace:x:@.input
+   .:"(?i)yes"
+   .:"no"
+// Result: "no no no"

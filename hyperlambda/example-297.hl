@@ -1,9 +1,9 @@
-// How can I check if the current user is in the 'admin' role?
-if
-   auth.ticket.in-role:admin
-   .lambda
-      set-value:x:@.result
-         .:Welcome, admin!
-else
-   set-value:x:@.result
-      .:Access denied
+// Retrieves the value of a sibling node using "+"
+.alpha:100
+.beta:int:42
+.result
+get-value:x:@.alpha/+
+set-value:x:@.result
+   .:x:@get-value
+
+// [.result] is set to the integer 42

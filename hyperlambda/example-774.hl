@@ -1,8 +1,10 @@
-// Create a task, then schedule it
-tasks.create:task-id-567
-   .lambda
 
-      log.info:It is Saturday or Sunday, and the time is 22PM.
-
-tasks.schedule:task-id-567
-   repeats:saturday|SUNDAY.22.00.00
+// Write a Hyperlambda endpoint that handles JSON payloads containing a 'user' and 'action' and returns a message.
+.arguments
+   user:string
+   action:string
+return
+   message:x:@strings.concat
+      get-value:x:@.arguments/*/user
+      .:" performed action: "
+      get-value:x:@.arguments/*/action

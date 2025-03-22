@@ -1,14 +1,12 @@
-
-// Create Hyperlambda file that returns true if a file specified as an argument exists on the server.
-.arguments
-   file:string
-   query:string
-io.file.load:x:@.arguments/*/file
-if
-   strings.contains:x:@io.file.load
-      .:x:@.arguments/*/query
+// Increment first, then add item
+.i:int:0
+.list
+while
+   lt
+      get-value:x:@.i
+      .:int:3
    .lambda
-      return
-         result:bool:true
-return
-   result:bool:false
+      math.increment:x:@.i
+      add:x:@.list
+         .
+            item

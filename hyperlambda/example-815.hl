@@ -1,9 +1,8 @@
-/*
- * This Hyperlambda snippet sorts results in descending order.
- */
+// How to create an expression that retrieves a single node from input arguments
 
-data.read
-   table:table1
-   order
-      column1
-   direction:desc
+get-name:x:@.arguments/*/SOME_NODE_HERE
+
+/*
+ * And expression is ALWAYS type declares as `:x:`, implying the following
+ * parts will be interpreted as an expression and parsed as such.
+ */

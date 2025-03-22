@@ -1,5 +1,13 @@
-// Convert a base64-encoded value to a string
+// eq returns false if values are not equal or types differ
+.a:5
+.b:int:5
+eq
+   get-value:x:@.a
+   get-value:x:@.b
 
-.src:bytes:ICA=
-convert:x:-
-   type:string
+// Result after execution
+.a:5
+.b:int:5
+eq:bool:false
+   get-value:5
+   get-value:int:5

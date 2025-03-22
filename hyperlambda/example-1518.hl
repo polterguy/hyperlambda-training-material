@@ -1,8 +1,11 @@
+// While loop for 20 iterations logging a message
+.no:int:0
+while
+   lt
+      get-value:@.no
+      .:int:20
+   .lambda
 
-// Example: Perform a case-insensitive replacement.
-.input:Yes yes YES
-strings.regex-replace:x:@.input
-   .:(?i)yes
-   .:no
-
-// Result: "no no no"
+      // Executing log inside the loop
+      log.info:"Howdy from while"
+      math.increment:@.no

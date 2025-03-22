@@ -1,27 +1,17 @@
 
-// Generate a Hyperlambda snippet that evaluates [.lambda] when at least one condition evaluates to true.
+// Generate a Hyperlambda snippet that formats a full name and age.
 
-// Evaluates [.lambda] when at least one condition evaluates to true.
-.result
-.factor1:int:1
-.factor2:int:20
-if
-   or
-
-      // Condition 1: Less than
-      lt:x:@.factor1
-         .:int:2
-
-      // Condition 2: More than
-      mt:x:@.factor2
-         .:int:19
-   .lambda
-
-      // Assigning true to [.result]
-      set-value:x:@.result
-         .:bool:true
-else
-
-   // Assigning false to [.result]
-   set-value:x:@.result
-      .:bool:false
+// Hyperlambda file that takes 3 arguments and formats a greeting message.
+.arguments
+   first_name:string
+   last_name:string
+   age:int
+strings.concat
+   get-value:x:@.arguments/*/first_name
+   .:" "
+   get-value:x:@.arguments/*/last_name
+   .:", you are "
+   get-value:x:@.arguments/*/age
+   .:" years old."
+yield
+   result:x:@strings.concat

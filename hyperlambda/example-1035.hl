@@ -1,63 +1,113 @@
 
-// Write a Hyperlambda script to create a system message from specified arguments, including URL, template, and instruction.
+/*
+ * Returns the count and sum of quotations
+ * 
+ * Optionally apply filtering or a date range as you see fit
+ */
 .arguments
-   url:string
-   template:string
-   instruction:string
-   channel:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/url
-validators.mandatory:x:@.arguments/*/channel
-validators.mandatory:x:@.arguments/*/template
-validators.mandatory:x:@.arguments/*/instruction
+   // Optional filtering argument allowing to filter items on No_, Description, etc.
+   filter:string
 
-// Prepending scheme to URL unless explicitly specified.
-if
-   and
-      not
-         strings.starts-with:x:@.arguments/*/url
-            .:"http://"
-      not
-         strings.starts-with:x:@.arguments/*/url
-            .:"https://"
-   .lambda
-      set-value:x:@.arguments/*/url
-         strings.concat
-            .:"https://"
-            get-value:x:@.arguments/*/url
+   // Optional minimum date. ISO formatted as follows "yyyy-MM-dd"
+   min_date:string
 
-// Sanity checking URL.
-validators.url:x:@.arguments/*/url
+   // Optional maximum date. ISO formatted as follows "yyyy-MM-dd"
+   max_date:string
 
-// Doing heavy lifting on a background thread to avoid 60 second timeouts.
-insert-before:x:./*/fork/0
-   get-nodes:x:@.arguments
-fork
-   try
+.type:public
 
-      // Creating our system message.
-      execute:magic.ai.create-system-message
-         url:x:@.arguments/*/url
-         template:x:@.arguments/*/template
-         instruction:x:@.arguments/*/instruction
+// Making sure user is authorised to access the workflow.
+auth.ticket.verify:mnhc-admin
 
-      // Invoking frontend with message.
-      unwrap:x:+/*/*/message
-      sockets.signal:x:@.arguments/*/channel
-         roles:root
-         args
-            message:x:@execute
-   .catch
+// Opening up database connection.
+mssql.connect:[production|MNDG_LSC18-1]
 
-      // Oops, signaling frontend that we experienced an error.
-      unwrap:x:+/*/*
-      sockets.signal:x:@.arguments/@.arguments/*/channel
-         roles:root
-         args
-            message:ERROR
-            extra:x:@.arguments/*/message
+   // Checking if we're filtering items.
+   if
+      and
+         exists:x:@.arguments/*/filter
+         not-null:x:@.arguments/*/filter
+         neq:x:@.arguments/*/filter
+            .:
+      .lambda
 
-// Returning result of invocation to caller.
-yield
-   result:success
+         // Creating our filtering condition. To filter on additional columns, add these columns here.
+         .fields
+            .:"No_"
+            .:"Location Code"
+            .:"Sell-to Customer No_"
+            .:"Bill-to Customer No_"
+            .:"Bill-to Name"
+            .:"Bill-to Address"
+            .:"Bill-to Address 2"
+            .:"Bill-to City"
+            .:"Bill-to Contact"
+            .:"Sell-to E-Mail"
+            .:"Document Date"
+            .:"Payment Terms Code"
+            .:"Salesperson Code"
+            .:"Assigned User ID"
+            .:"Item Category Code"
+            .:"Item_No"
+            .:"Description"
+            .:"Unit of Measure"
+            .:"Quantity"
+            .:"Unit Price"
+            .:"Amount"
+         for-each:x:@.fields/*
+            .condition
+               cond
+            set-name:x:@.condition/*
+               strings.concat
+                  get-value:x:@.dp/#
+                  .:.like
+            set-value:x:@.condition/*
+               strings.concat
+                  .:%
+                  get-value:x:@.arguments/*/filter
+                  .:%
+            add:x:@mssql.connect/*/mssql.read/*/where/*/or
+               get-nodes:x:@.condition/*
+
+   // Checking if we're filtering items on [min_date].
+   if
+      and
+         exists:x:@.arguments/*/min_date
+         not-null:x:@.arguments/*/min_date
+      .lambda
+         convert:x:@.arguments/*/min_date
+            type:date
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/mssql.read/*/where/*/and
+            .
+               Document Date.mt:x:@convert
+
+   // Checking if we're filtering items on [max_date].
+   if
+      and
+         exists:x:@.arguments/*/max_date
+         not-null:x:@.arguments/*/max_date
+      .lambda
+         convert:x:@.arguments/*/max_date
+            type:date
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/mssql.read/*/where/*/and
+            .
+               Document Date.lt:x:@convert
+
+   // Reading records.
+   mssql.read
+      table:addv_Cotizaciones
+      columns
+         count(distinct No_)
+            as:count
+         sum(Amount)
+            as:sum
+      where
+         or
+         and
+   
+   // Returning result of above invocation to caller.
+   yield
+      result:x:@mssql.read/*

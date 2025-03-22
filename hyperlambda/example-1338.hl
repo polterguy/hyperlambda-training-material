@@ -1,13 +1,10 @@
-/*
- * This Hyperlambda snippet demonstrates the use of `finally`.
- * The `finally` block executes regardless of whether an exception is caught.
- * Expected behavior: `.throws` should always be `true` after execution.
- */
-
-.throws:bool:false
-try
-   throw:foo
-.catch
-.finally
-   set-value:x:@.throws
-      .:bool:true
+// How can I check if the current user is in the 'admin' role?
+.result
+if
+   auth.ticket.in-role:admin
+   .lambda
+      set-value:x:@.result
+         .:Welcome, admin!
+else
+   set-value:x:@.result
+      .:Access denied

@@ -1,12 +1,13 @@
-// Delete an item by ID with authorization, specifying a short timeout
-http.delete:"https://api.example.com/items/123"
+// Retrieve orders that are either pending OR processing
+data.connect:shopDB
 
-   // attach query parameters instead of hardcoding them in URL
-   query
-      category:cars
+   // CRUD read ...
+   data.read
+      table:orders
+      limit:-1
+      where
 
-   // include Bearer token for auth if required by the API
-   token:XYZ_SECRET_TOKEN_123
-
-   // abort if no response within 5 seconds
-   timeout:int:5
+         // Either status equals "pending" OR department not equal "hr"
+         or
+            status.eq:"pending"
+            department.neq:"hr"

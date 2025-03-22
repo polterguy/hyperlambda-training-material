@@ -1,5 +1,2 @@
-
-// Example: Get the length of an empty string.
-
-// Returns 0
-strings.length:
+// How do I return a 404 status code when a resource is not found?
+response.status.set:404

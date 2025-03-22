@@ -1,3 +1,15 @@
-// How to retrieve the name of the previous node
-.foo
-get-name:x:-
+
+// Generate a Hyperlambda snippet that counts customers in the 'crm_db' database from the 'customers' table.
+
+// Counts customers in the "crm_db" database from the "customers" table.
+data.connect:crm_db
+   database-type:mysql
+
+   // Counting total customers.
+   data.read
+      database-type:mysql
+      table:customers
+      columns
+         count(*)
+            as:count
+      limit:long:1

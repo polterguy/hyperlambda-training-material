@@ -1,13 +1,9 @@
+// Executing the Hyperlambda changes the node hierarchy
 
-// Create a Hyperlambda if/else condition that checks a variable 'foo'. Log a message if the condition is true and a different message if the condition is false.
-if
-   eq:x:@.arguments/*/foo
-      .:bool:true
-   .lambda
+// This Hyperlambda
+math.add
+   .:int:20
+   .:int:7
 
-      // Condition is true.
-      log.info:Condition is true
-else
-
-   // Condition is false
-   log.info:Condition is false
+// Creates this result
+math.add:int:27

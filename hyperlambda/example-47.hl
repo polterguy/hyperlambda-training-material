@@ -1,11 +1,6 @@
-
-// Create a Hyperlambda script that verifies a JWT token and returns success if the token is valid, ensuring the user is authorized.
-
-// Ensures user is authorized to access endpoint.
-try
-   auth.ticket.verify
-   return
-      result:success
-.catch
-   return
-      result:failure
+/*
+ * Example snippet scraping some web page.
+ */
+signal:magic.http.scrape-url
+   url:"https://www.cnn.com/2023/06/18/golf/wyndham-clark-2023-us-open-winner-spt-intl/index.html"
+   semantics:bool:true

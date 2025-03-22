@@ -1,10 +1,5 @@
 
-// Create a Hyperlambda action to validate that a specified 'email' is a valid email address. Validate the mandatory field.
-.arguments
-   email
-      type:string
-      mandatory:bool:true
-.icon:shield
+// Example: URL-decode a string with reserved characters.
+strings.url-decode:100%2525%2520free%2520%2526%2520easy
 
-// Invoking validator.
-validators.email:x:@.arguments/*/email
+// Result: "100% free & easy"

@@ -1,21 +1,11 @@
-
-/*
- * Creates the default email templates if they don't already exist.
- */
-if
-   not
-      io.folder.exists:/etc/wl/
+// Creates 10 new child items of [.list]
+.i:long:0
+.list
+while
+   neq:x:@.i
+      .:long:10
    .lambda
-      io.folder.create:/etc/wl/
-if
-   not
-      io.file.exists:/etc/wl/bot-created.html
-   .lambda
-      io.file.copy:/modules/white-label/magic.startup/email-templates/bot-created.html
-         .:/etc/wl/bot-created.html
-if
-   not
-      io.file.exists:/etc/wl/plan-purchased.html
-   .lambda
-      io.file.copy:/modules/white-label/magic.startup/email-templates/plan-purchased.html
-         .:/etc/wl/plan-purchased.html
+      add:x:@.list
+         .
+            item
+      math.increment:x:@.i

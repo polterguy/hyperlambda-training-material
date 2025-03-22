@@ -1,2 +1,8 @@
-// List folders inside /misc/ folder
-io.folder.list:/misc/
+
+// Generate a Hyperlambda snippet that embeds structured data into a specific node's subtree.
+
+// Embeds structured data into a specific node's subtree.
+.storage
+add:x:@.storage
+   .
+      item:detail

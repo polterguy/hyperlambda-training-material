@@ -1,7 +1,14 @@
 
-// Example: Extract with length exceeding string bounds (returns till end).
-strings.substring:Hello
-   .:2
-   .:10
+// Create a Hyperlambda script to evaluate a lambda for as long as a condition is true, with a counter and logging.
+.no:int:0
+while
+   lt
+      get-value:x:@.no
+      .:int:20
+   .lambda
 
-// Result: "llo"
+      // Your lambda goes here.
+      log.info:Howdy from while
+
+      // Incrementing counter.
+      math.increment:x:@.no

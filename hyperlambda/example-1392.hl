@@ -1,31 +1,59 @@
-// Helper file to vectorize xplain training data.
+
+// Create a Hyperlambda script for a CRUD read endpoint that returns items from the users_roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
-   vectorize:bool
+   limit:long
+   offset:long
+   order:string
+   direction:string
+   operator:string
+   role.eq:string
+   user.eq:string
 
-// Applying defaults.
-validators.default:x:@.arguments
-   vectorize:bool:true
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Logging invocation.
-log.info:Started vectorizing training snippets from xplain-kennisbank-plus-caos model
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
-// Buffer for type name.
-.type:xplain-kennisbank-plus-caos 
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
 
-// Making sure we can handle exceptions.
-try
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
 
-   // Vectorising
-   if:x:@.arguments/*/vectorize
-      execute:magic.ai.vectorise
-         type:x:@.type
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-      // Logging.
-      log.info:Finished vectorizing training snippets from xplain-kennisbank-plus-caos model
+   // Parametrising our read invocation.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/operator
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
 
-.catch
+   // Reading data from database.
+   data.read
+      table:users_roles
+      columns
+         users_roles.role
+         users_roles.user
+      where
+         and
 
-   // Oops ...!!
-   log.error:Something went wrong as we tried to vectorize training snippets from xplain-kennisbank-plus-caos model
-      error:x:@.arguments/*/message
-      type:x:@.type
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

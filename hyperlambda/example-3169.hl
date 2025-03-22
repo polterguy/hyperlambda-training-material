@@ -1,16 +1,6 @@
 
-// Generate a Hyperlambda snippet that logs messages while [.count] is less than 10.
+// Example: Split on a substring that is not present.
+strings.split:hello
+   .:,
 
-// Logs messages while [.count] is less than 10.
-.count:int:0
-while
-   lt
-      get-value:x:@.count
-      .:int:10
-   .lambda
-
-      // Logging iteration message.
-      log.info:Iteration running
-
-      // Incrementing counter.
-      math.increment:x:@.count
+// Result: The string remains "hello" as a single part (no split)

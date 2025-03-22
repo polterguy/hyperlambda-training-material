@@ -1,8 +1,17 @@
-// Create a task, then schedule it
-tasks.create:task-id-qwqw
-   .lambda
 
-      log.info:Executing repeating task
+// Write a Hyperlambda snippet demonstrating string handling, escape sequences, and multi-line formatting.
 
-tasks.schedule:task-id-qwqw
-   repeats:50.seconds
+// Plain string assignment
+.textX:plain
+
+// Special character requires quotes
+.textY:"url:path"
+
+// Multi-line format
+.textZ:"start\nend"
+
+// Single-quoted alternative
+.textQ:custom-string
+
+// Escaping newlines in a string
+.textR:"value\nbreak"

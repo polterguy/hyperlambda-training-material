@@ -1,17 +1,51 @@
 
-// Create a Hyperlambda action to retrieve a specified cookie by 'name'. Validate the mandatory field and return the cookie's value.
+// Create one record in your media table in your cms database
 .arguments
-   name
-      type:string
-      mandatory:bool:true
-.icon:http
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/name
+   // post_id column value
+   post_id:long
 
-// Retrieving cookie.
-request.cookies.get:x:@.arguments/*/name
+   // file_path column value
+   file_path:string
 
-// Returning cookie's value to caller.
-yield
-   result:x:@request.cookies.get
+   // file_type column value
+   file_type:string
+
+   // created_at column value
+   created_at:date
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:enterprise,root
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:media
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   add:x:./*/sockets.signal
+      get-nodes:x:@auth.ticket.verify
+   set-name:x:./*/sockets.signal/*/auth.ticket.verify
+      .:roles
+   sockets.signal:cms.media.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

@@ -1,47 +1,15 @@
 
-/*
- * Returns all cloudlets in the system.
- *
- * [name] is an optional argument, and if specified, will return only cloudlets
- * having a matching name. [limit] and [offset] are optional paging arguments.
- */
-.arguments
-   name:string
-   limit:int
-   offset:int
+// Create a Hyperlambda script to update an item in a specified database and table using SQLite, with a specific ID and new values.
+data.connect:DATABASE_NAME
+   database-type:sqlite
 
-/*
- * Ensures user is authorized to access endpoint.
- * 
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
-
-/*
- * Returns the username of the currently authenticated user,
- * or null if user isn't authenticated.
- */
-execute:magic.workflows.actions.execute
-   name:username-get
-   filename:/misc/workflows/actions/security/username-get.hl
-   arguments
-
-// Returns all cloudlets in the system.
-execute:magic.workflows.actions.execute
-   name:hub-cloudlets-get
-   filename:/modules/hub/workflows/actions/hub-cloudlets-get.hl
-   arguments
-      username:x:--/execute/=username-get/*/username
-      name:x:@.arguments/*/name
-      limit:x:@.arguments/*/limit
-      offset:x:@.arguments/*/offset
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+   // Invoking our update slot.
+   data.update
+      database-type:sqlite
+      table:TABLE_NAME
+      values
+         column1:NEW_VALUE_HERE
+         column2:ANOTHER NEW_VALUE_HERE
+      where
+         and
+            id.eq:x:@WHATEVER_ID_HERE

@@ -1,27 +1,45 @@
-// Creating new nodes based on conditions in [for-each]
-.car-parts
-   engine:available
-   wheel:out-of-stock
-   door:available
 
-.results
+// Create a Hyperlambda script that invokes an HTTP endpoint using POST, passing in arguments as payload, ensuring the user is authorized.
+slots.create:magic.http.post
 
-for-each:x:@.car-parts/*
-   get-name:x:@.dp/#
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/url
+   validators.url:x:@.arguments/*/url
+
+   // Retrieving URL.
+   .url:x:@.arguments/*/url
+   unwrap:x:@.url
+   remove-nodes:x:@.arguments/*/url
+
+   // Decorating invocation.
+   unwrap:x:./*/http.post
+   add:x:./*/http.post/*/payload
+      get-nodes:x:@.arguments/*
+
+   // Invoking endpoint.
+   http.post:x:@.url
+      payload
+
+   // Verifying invocation was a success.
    if
-      eq:x:@.dp/#
-         .:available
+      and
+         mte:x:@http.post
+            .:int:200
+         lt:x:@http.post
+            .:int:300
       .lambda
-         unwrap:x:+/*/*/*/name
-         add:x:@.results
-            .
-               .
-                  name:x:@get-name
-                  status:checked
+
+         // Success!
+         add:x:./*/log.info
+            get-nodes:x:@.arguments/*
+         log.info:Webhook successfull invoked
+            url:x:@.url
    else
-      unwrap:x:+/*/*/*/name
-      add:x:@.results
-         .
-            .
-               name:x:@get-name
-               status:needs restocking
+
+      // Failure!
+      add:x:./*/log.info
+         get-nodes:x:@.arguments/*
+      lambda2hyper:x:@http.post/*/content
+      log.error:Webhook failed
+         url:x:@.url
+         content:x:@lambda2hyper

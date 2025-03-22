@@ -1,22 +1,22 @@
-/*
- * FILE: /modules/api/sql/multiple-results.hl
- *
- * DESCRIPTION:
- * Demonstrates how to use [data.select] with multiple SQL statements.
- * Returns multiple result sets as arrays.
- *
- * HOW TO CREATE THIS ENDPOINT:
- * Save the file as `/modules/api/sql/multiple-results.hl`.
- * Becomes accessible at:
- *     GET /api/sql/multiple-results
- *
- * NOTES:
- * - Be cautious when using raw SQL; it must be sanitized or parameterized in production use.
- */
 
-data.connect:sakila
-   data.select:"SELECT * FROM actor LIMIT 2; SELECT * FROM film LIMIT 2;"
-      multiple-result-sets:bool:true
+// Search the web and returns only the URLs found
+.arguments
 
-yield
-   results:x:@data.connect/*/data.select/*
+   // Mandatory argument being the actual query to submit to DuckDuckGo.
+   query:string
+
+   // Optional argument being how many URLs to return. Defaults to 10 if not specified.
+   max_urls:int
+
+.type:public
+
+// Returns [max_urls] for the specified [query] by searching DuckDuckGo.
+execute:magic.workflows.actions.execute
+   name:openai-urls-search
+   filename:/modules/openai/workflows/actions/openai-urls-search.hl
+   arguments
+      query:x:@.arguments/*/query
+      max_urls:x:@.arguments/*/max_urls
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

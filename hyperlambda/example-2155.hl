@@ -1,25 +1,15 @@
+// Use and to require multiple conditions to be true
 
-// Scrapes the specified URL and returns all hyperlinks found
-.arguments
-
-   // Mandatory argument and becomes the URL the function will scrape for hyperlinks to return.
-   url:string
-
-   // Optional argument that filters out any URLs not starting with the specified string.
-   starts_with:string
-
-   // Optional argument for how many URLs to return. If not specified the function will return all hyperlinks found.
-   max:int
-
-.type:public
-
-// Parametrising our slot invocation.
-add:x:./*/signal
-   get-nodes:x:@.arguments/*
-
-// Invoking slot doing the heavy lifting for us.
-signal:magic.http.html2markdown-links
-
-// Returning result to caller.
-yield
-   result:x:@signal
+.foo1:OK
+.foo2:OK
+if
+   and
+      eq
+         get-value:x:../*/.foo1
+         .:OK
+      eq
+         get-value:x:../*/.foo2
+         .:OK
+   .lambda
+      set-value:x:../*/.result
+         .:MATCH

@@ -1,4 +1,6 @@
 
-// Module version and name information.
-version:v0.5.0
-module_name:hub
+// Example: Starts-with check is case-sensitive.
+
+// Returns false
+strings.starts-with:Hello
+   .:hello

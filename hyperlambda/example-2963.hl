@@ -1,35 +1,13 @@
+/*
+ * This Hyperlambda snippet demonstrates formatting a decimal number using a specific culture.
+ *
+ * 1. The `.foo` node is defined as a decimal with a value of `57`.
+ * 2. The `format` slot applies the pattern `"{0:0.00}"`, ensuring two decimal places.
+ * 3. The `culture` parameter is set to `"nb-NO"` (Norwegian culture).
+ * 4. The result will be `"57,00"` because Norwegian culture uses a comma as the decimal separator.
+ */
 
-// Delete one record from your Track table in your chinook database
-.arguments
-
-   // Primary key of record to delete, mandatory argument
-   TrackId:long
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/TrackId
-
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:Track
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+.foo:decimal:57
+format:x:-
+   pattern:"{0:0.00}"
+   culture:nb-NO

@@ -1,9 +1,9 @@
-// Changes the value of all nodes in [.data]
-.data
-   foo1
-   foo2
 
-for-each:x:-/*
+// Example: Concatenate all strings stored as children of a list node.
+.items
+   .:Red
+   .:Green
+   .:Blue
+strings.concat:x:@.items/*
 
-   set-value:x:@.dp/#
-      .:hello
+// Result: "RedGreenBlue"

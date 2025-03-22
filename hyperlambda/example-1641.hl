@@ -1,7 +1,8 @@
-// Storing a message in the cache with a 10-second expiration time.
-
-cache.set:session.message
-   expiration:10
-   value:Welcome back, user!
-
-// This will store "Welcome back, user!" in cache under "session.message".
+/*
+ * Example: Replace all digits in a string with asterisks.
+ */
+.text:"ID 0987"
+strings.regex-replace:x:@.text
+   .:"\\d"
+   .:"*"
+// Result: "ID ****"

@@ -1,2 +1,14 @@
-// Retrieves the value of foo1 argument using expressions
-get-value:x:@.arguments/*/foo1
+
+// Create a Hyperlambda action to ensure a specified 'arg' matches a specified 'regex'. Validate mandatory fields.
+.arguments
+   arg
+      type:string
+      mandatory:bool:true
+   regex
+      type:string
+      mandatory:bool:true
+.icon:shield
+
+// Invoking validator.
+validators.regex:x:@.arguments/*/arg
+   regex:x:@.arguments/*/regex

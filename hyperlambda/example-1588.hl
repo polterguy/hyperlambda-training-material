@@ -1,7 +1,8 @@
-// Define a slot that returns a single string
-slots.create:giveAnswer  
-   return-value:Forty Two
-
-// Invoke 'giveAnswer'
-signal:giveAnswer  
-// The result is "Forty Two"
+/*
+ * Example: Concatenate a string and a number (the number is converted to a string).
+ */
+.number:int:42
+strings.concat
+   .:"Answer: "
+   get-value:x:@.number
+// Result: "Answer: 42"

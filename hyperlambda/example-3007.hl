@@ -1,5 +1,23 @@
+// Hyperlambda [if] checking multiple conditions
+.role:editor
+.content-type:premium
+.permission
+if
+   and
+      eq:x:@.role
+         .:editor
+      eq:x:@.content-type
+         .:premium
+   .lambda
+      set-value:x:@.permission
+         .:granted
 
-// Create a Hyperlambda script to scrape a specified web page and include semantics.
-signal:magic.http.scrape-url
-   url:"https://www.cnn.com/2023/06/18/golf/wyndham-clark-2023-us-open-winner-spt-intl/index.html"
-   semantics:bool:true
+/* JavaScript equivalent of Hyperlambda [if] checking multiple conditions
+const role = "editor";
+const contentType = "premium";
+let permission;
+
+if (role === "editor" && contentType === "premium") {
+  permission = "granted";
+}
+*/

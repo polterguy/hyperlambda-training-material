@@ -1,18 +1,10 @@
-// Hyperlambda [if] with greater than or equal
-.age:int:19
-.access-status
-if
-   mte:x:@.age
-      .:int:18
-   .lambda
-      set-value:x:@.access-status
-         .:allowed
-
-/* JavaScript equivalent of Hyperlambda [if] with greater than or equal
-const age = 18;
-let accessStatus;
-
-if (age >= 18) {
-  accessStatus = "allowed";
-}
-*/
+/*
+ * Example: Join multiple strings with a comma separator.
+ */
+.input
+   .:A
+   .:B
+   .:C
+strings.join:x:@.input/*
+   .:,
+// Result: "A,B,C"

@@ -1,8 +1,3 @@
-// Combining [and] with [or] to create complex conditions
-or
-   and
-      .:bool:true
-      .:bool:false
-   and
-      .:bool:true
-      .:bool:true
+// Example: Create a slot
+slots.create:foo
+   return-value:int:57

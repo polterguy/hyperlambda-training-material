@@ -1,5 +1,18 @@
-// Changing a node's name
-.data
-   old-name:some-value
-set-name:x:@.data/*/old-name
-   .:new-name
+
+// Use nested data.connect to interact with two databases in one snippet
+data.connect:MainDB
+   data.read
+
+      // Query orders from MainDB
+      table:orders
+
+   // Insert a log in LogsDB
+   data.connect:LogsDB
+      data.create
+         table:log_storage
+         values
+            message:Checked orders
+   data.read
+
+      // Back to MainDB connection (still open) to re-query orders
+      table:orders

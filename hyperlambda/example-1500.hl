@@ -1,25 +1,47 @@
 
-// Create a Hyperlambda script that returns the specified URL to the caller with a 5-minute server-side cache to avoid re-fetching the URL too frequently.
-slots.create:magic.http.get-with-cache
+// Create a Hyperlambda file for a CRUD update endpoint that updates an existing item in the users table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+.arguments
+   username:string
+   password:string
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/url
-   validators.url:x:@.arguments/*/url
+// Verifying user is authorized to access endpoint.
+validators.mandatory:x:@.arguments/*/username
+auth.ticket.verify:root
 
-   // Checking cache.
-   unwrap:x:+/*/.lambda/*/.url
-   cache.try-get:x:@.arguments/*/url
-      expiration:300
+// Sanity checking invocation
+validators.mandatory:x:@.arguments/*/username
+eval:x:+
+signal:transformers.hash-password
+   reference:x:@.arguments/*/password
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
+
+   // Invoking our update slot.
+   data.update
+      table:users
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
       .lambda
+         response.status.set:404
+         return
+            result:Record not found
 
-         // Forward evaluated above.
-         .url:x:@.arguments/*/url
-         http.get:x:@.url
-            headers
-               User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36
-               Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-               Accept-Language:en-GB,en-US;q=0.9,en;q=0.8,no;q=0.7
-         return:x:-/*/content
-
-   // Returning result of above invocation to caller.
-   return:x:@cache.try-get
+   // Returning success to caller.
+   response.status.set:202
+   unwrap:x:+/*
+   return
+      affected:x:@data.update

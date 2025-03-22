@@ -1,5 +1,18 @@
-// Example: Create a slot and then delete it
-slots.create:foo
-   return-value:int:57
+// Clones all fields from user1 to user2, adding all the same nodes to user2 as exists in user1
+.users
+   user1
+      name:Alice
+      role:admin
+      active:yes
+   user2
+for-each:x:@.users/*/user1/*
 
-slots.delete:foo
+   // Changing name of our [foo] node below
+   set-name:x:+/+/*/*
+      get-name:x:@.dp/#
+
+   // Evaluating expression in [foo] node
+   unwrap:x:+/*/*
+   add:x:@.users/*/user2
+      .
+         foo:x:@.dp/#

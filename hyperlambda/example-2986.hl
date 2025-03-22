@@ -1,57 +1,11 @@
+// Create a slot 'test' that returns a value
+slots.create:test  
+   return-value:OK
 
-// Counts items from your cloudlets table in your [generic|hub] database according to the specified arguments.
-.arguments
-   operator:string
-   cloudlets.id.eq:long
-   cloudlets.created.eq:date
-   cloudlets.name.like:string
-   cloudlets.name.eq:string
-   cloudlets.plan.like:string
-   cloudlets.plan.eq:string
-   cloudlets.cluster.like:string
-   cloudlets.cluster.eq:string
-   cloudlets.user.like:string
-   cloudlets.user.eq:string
+// Invoke 'test' safely (slot exists)
+try-signal:test  
+// The try-signal node's value is "OK"
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Sanity checking invocation.
-validators.enum:x:@.arguments/*/operator
-   .:or
-   .:and
-
-/*
- * Checking if user supplied an [operator] argument, and if so
- * changing the boolean operator for comparison operations.
- */
-if
-   exists:x:@.arguments/*/operator
-   .lambda
-
-      // User provided a boolean comparison [operator] argument.
-      set-name:x:../*/data.connect/*/data.read/*/where/*
-         get-value:x:@.arguments/*/operator
-
-// Opening up our database connection.
-data.connect:[generic|hub]
-
-   // Parametrising our read invocation.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/operator
-   remove-nodes:x:@.arguments/*/operator
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      table:cloudlets
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+// Invoke a non-existent slot 'missing' safely
+try-signal:missing  
+// No exception is thrown even though 'missing' is not defined (result is empty)

@@ -1,14 +1,49 @@
 
-// Divide a number by a dynamic value and then by a static value
-.dividend:int:24
-.divisor:int:4
-math.divide
+// Create a Hyperlambda script for an endpoint that counts items from the users_roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+.arguments
+   operator:string
+   role.eq:string
+   user.eq:string
 
-   // fetches 24
-   get-value:x:@.dividend
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // divides 24 by 4 -> result 6
-   get-value:x:@.divisor
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
-   // divides 6 by 2 -> result 3
-   .:int:2
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our read invocation.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/operator
+   remove-nodes:x:@.arguments/*/operator
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      table:users_roles
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

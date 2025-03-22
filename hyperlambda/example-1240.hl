@@ -1,16 +1,2 @@
-// Using a whitelist incorrectly should throw an exception
-
-.result
-add:x:-
-   whitelist
-      vocabulary
-         return
-         vocabulary
-      .lambda
-         .foo
-
-         // This will throw an exception (not whitelisted above)
-         set-value:x:@.foo
-            .:foo
-         vocabulary
-         return:x:-/*
+// How to return a 201 status after creating a new user?
+response.status.set:201

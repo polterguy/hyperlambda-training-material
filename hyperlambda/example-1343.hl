@@ -1,17 +1,29 @@
 
-// Write a Hyperlambda script to list all files in a specified folder recursively, with options to display hidden and system files.
-.arguments
-   folder:string
-   sys:bool
-.type:internal
+// Returns all types of cloudlets the system supports.
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Opening up our database connection.
+data.connect:[generic|hub]
 
-// Listing all file in specified folder.
-io.file.list-recursively:x:@.arguments/*/folder
-   display-hidden:bool:true
-   display-system:x:@.arguments/*/sys
+   // Reading data from database.
+   data.read
+      table:plans
+      columns
+         name
+         description
+         cpu
+         memory
+         storage
+         max_timeout
+         max_upload
+         price
+         price_reference
+         yearly_price
+         yearly_price_reference
+         frontend
+         bandwidth
+      where
+         and
+            enabled.eq:bool:true
 
-// Returning results of above invocation to caller.
-return-nodes:x:@io.file.list-recursively/*
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

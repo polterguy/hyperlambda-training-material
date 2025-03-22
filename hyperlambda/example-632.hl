@@ -1,3 +1,9 @@
-// Use regex to validate [foo] argument contains howdy
-validators.regex:x:@.arguments/*/foo
-   regex:howdy
+
+// Provide a Hyperlambda example where a new node is inserted before 'step1' inside '.process'.
+
+// Inserts a new node before "step1" inside ".process".
+.process
+   step1
+insert-before:x:@.process/*/step1
+   .
+      init:Initialization step

@@ -1,4 +1,8 @@
-// Perform HTTP GET request to fetch todos
-http.get:"https://jsonplaceholder.typicode.com/todos"
-   headers
-      Accept: application/json
+/*
+ * If all candidate nodes have null values, `get-first-value` returns null.
+ */
+
+.data
+   foo1
+   foo2
+get-first-value:x:@.data/*

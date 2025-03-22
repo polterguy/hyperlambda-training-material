@@ -1,6 +1,11 @@
-
-// Example: Use a variable to provide the input string.
-.text:Test
-
-// Returns 4
-strings.length:x:@.text
+// Hyperlambda endpoint with authorization returning items from contacts in crm database
+.arguments
+   limit:int
+   offset:int
+auth.ticket.verify:root, admin, user
+data.connect:crm
+   data.read
+      table:contacts
+      limit:x:@.arguments/*/limit
+      offset:x:@.arguments/*/offset
+   return-nodes:x:@data.read/*

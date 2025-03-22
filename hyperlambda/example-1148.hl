@@ -1,41 +1,24 @@
 
-// Delete one record from your comments table in your cms database
+// Creates a contact in HubSpot
 .arguments
+   email:string
+   first_name:string
+   last_name:string
+   phone:string
+   company:string
+   website:string
+   lifecyclestage:string
+.type:public
 
-   // Primary key of record to delete, mandatory argument
-   id:long
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/email
 
-// Meta data description for endpoint
+// Forwarding request to our HTTP POST Hyperlambda file.
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/modules/hubspot/contacts.post.hl
 
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:guest
-validators.mandatory:x:@.arguments/*/id
-
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:comments
-      where
-         and
-
-   // Publishing socket message.
-   add:x:./*/sockets.signal/*/args
-      get-nodes:x:@.arguments/*
-   sockets.signal:cms.comments.delete
-      args
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Returning whatever above invocation returned.
+add:x:./*/return
+   get-nodes:x:@execute-file/*
+return

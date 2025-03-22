@@ -1,31 +1,73 @@
 
-// Write a Hyperlambda script to install a specified module by executing all magic.startup Hyperlambda files inside it.
-slots.create:magic.modules.install-module
+// Count unique and distinct items from your media table in your cms database
+.arguments
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/module
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
+   distinct_column:string
 
-   /*
-    * Loops through all files recursively from within the module's
-    * "magic.startup" folder.
-    */
-   strings.concat
-      .:/modules/
-      get-value:x:@.arguments/*/module
-      .:/
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
 
-   // Executing all magic.startup Hyperlambda files inside module.
-   io.file.list-recursively:x:@strings.concat
-   for-each:x:@io.file.list-recursively/*
+   // Offset into the dataset of where to start retrieving records
 
-      // Checking if file is a startup Hyperlambda file.
-      if
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   media.id.eq:long
+   media.post_id.eq:long
+   media.file_path.like:string
+   media.file_path.eq:string
+   media.file_type.like:string
+   media.file_type.eq:string
+   media.created_at.eq:date
+   post_id.title.eq:string
+   post_id.title.like:string
+
+// Sanity checking that distinct column was passed in.
+validators.mandatory:x:@.arguments/*/distinct_column
+
+// Sanity checking distinct column's name.
+validators.enum:x:@.arguments/*/distinct_column
+   .:media.id
+   .:media.post_id
+   .:media.file_path
+   .:media.file_type
+   .:media.created_at
+   .:post_id.title
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:enterprise,root
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Making sure we're using correct function.
+   set-name:x:./*/data.read/*/columns/*/distinct_functor
+      strings.concat
+         .:"count(distinct "
+         get-value:x:@.arguments/*/distinct_column
+         .:)
+
+   // Removing distinct argument to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/distinct_column
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:media
+         join:posts
+            as:post_id
+            type:left
+            on
+               and
+                  media.post_id:post_id.id
+      columns
+         distinct_functor
+            as:count
+      where
          and
-            strings.contains:x:@.dp/#
-               .:/magic.startup/
-            strings.ends-with:x:@.dp/#
-               .:.hl
-         .lambda
 
-            // Executing file.
-            io.file.execute:x:@.dp/#
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

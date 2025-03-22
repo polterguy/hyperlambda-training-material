@@ -1,8 +1,15 @@
-// This example connects to the 'university' database and inserts a new student record into the 'students' table.
-sqlite.connect:university
-   sqlite.create
-      table:students
-      values
-         student_id:int:67890
-         name:Alice Johnson
-         major:Biology
+// Checks to see if user exists in magic database
+.arguments
+   username:string
+
+data.connect:magic
+   data.scalar:select count(*) from users where username = @username
+      @username:x:@.arguments/*/username
+   if
+      eq:x:@data.scalar
+         .:long:0
+      .lambda
+         return
+            result:User does not exist
+return
+   result:User exists

@@ -1,5 +1,7 @@
+// Returns all items where field1 is NOT 'xxx'
+sql.read
+   table:foo
+   where
 
-// How to use Hyperlambda's [lambda2hyper]
-.hl
-   log.info:This is some example logging invocation
-lambda2hyper:x:-/*
+      and
+         field1.neq:xxx

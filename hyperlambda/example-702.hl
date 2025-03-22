@@ -1,24 +1,44 @@
 
-// Write a Hyperlambda script to save a specified file in a specified folder.
+/*
+ * Returns Stripe customers.
+ * 
+ * [limit] and [starting_after] are optional arguments and [limit] is the number of customers
+ * to return, while [starting_after] is from which record to start returning charges.
+ * 
+ * [email] is an optional case sensitive filter that emails must match.
+ */
 .arguments
-   file:*
-   folder:string
-.accept:multipart/form-data
+   limit:int
+   starting_after:string
+   email:string
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
-validators.mandatory:x:@.arguments/*/file/*/name
-validators.mandatory:x:@.arguments/*/file/*/stream
-validators.mandatory:x:@.arguments/*/folder
+/*
+ * Retrieves charges from Stripe.
+ * 
+ * Will use your Stripe API token found from your settings as it's interacting
+ * with the Stripe API.
+ */
+execute:magic.workflows.actions.execute
+   name:stripe-customers-get
+   filename:/modules/stripe/workflows/actions/stripe-customers-get.hl
+   arguments
+      limit:x:@.arguments/*/limit
+      email:x:@.arguments/*/email
+      starting_after:x:@.arguments/*/starting_after
 
-// Saves the file to the specified folder.
-.full-path
-set-value:x:@.full-path
-   strings.concat
-      get-value:x:@.arguments/*/folder
-      get-value:x:@.arguments/*/file/*/name
-io.stream.save-file:x:@.full-path
-   get-value:x:@.arguments/*/file/*/stream
+// Returns the result of your last action.
+return-nodes:x:@execute/*

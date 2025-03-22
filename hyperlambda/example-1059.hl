@@ -1,8 +1,4 @@
-
-// Example: Use variables to supply the string and prefix to check.
-.text:Sample
-.prefix:Sam
-
-// Returns true
-strings.starts-with:x:@.text
-   get-value:x:@.prefix
+// [and] returns true only if all arguments are true
+and
+   .:bool:true
+   .:bool:true

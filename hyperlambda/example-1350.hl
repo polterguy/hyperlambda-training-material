@@ -1,14 +1,8 @@
-/*
- * This Hyperlambda snippet demonstrates nested `try` blocks with `finally`.
- * The inner `try` block throws an exception, but the `finally` block still executes.
- * Expected behavior: `.throws` should be `true`.
- */
-
-.throws:bool:false
-try
-   try
-      throw:foo
-   .finally
-      set-value:x:@.throws
-         .:bool:true
-.catch
+// How do I create a slot that checks if a user is in the 'editor' role and returns edit access?
+slots.create:user-in-role
+   if
+      auth.ticket.in-role:editor
+      .lambda
+         return:bool:true
+   else
+      return:bool:false

@@ -1,56 +1,12 @@
-
-// Write a Hyperlambda script to transcribe a specified file using OpenAI Whisper API.
-.arguments
-   file:*
-   type:string
-   mediaType:string
-   references:bool
-   chat:bool
-   recaptcha_response:string
-   user_id:string
-   session:string
-   stream:bool
-   data:string
-   referrer:string
-   whisper:*
-   language:string
-.type:internal
-
-// Retrieving token used to invoke OpenAI.
-config.get:"magic:openai:key"
-
-// Applying defaults.
-validators.default:x:@.arguments
-   mediaType:audio/mp4
-
-// Reading stream.
-io.stream.read:x:@.arguments/*/file/*/stream
-
-// Invoking Whisper to retrieve prompt.
-openai.whisper
-   key:x:@config.get
-   type:x:@.arguments/*/mediaType
-   language:x:@.arguments/*/language
-   content:x:@io.stream.read
-if
-   or
-      null:x:@openai.whisper
-      eq:x:@openai.whisper
-         .:
-   .lambda
-      throw:Nothing returned from Whisper
-         public:bool:true
-         status:int:400
-
-// Invoking main chat file.
-remove-nodes:x:@.arguments/*/file
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/chat.get.hl
-   prompt:x:@openai.whisper
-
-// Returning success to caller.
-add:x:+
-   get-nodes:x:@execute-file/*
-yield
-   prompt:x:@openai.whisper
+/*
+ * Retrieves temperature readings from multiple sensors and finds the lowest one.
+ */
+.sensors
+   t1:int:23
+   t2:int:18
+   t3:int:27
+.lowest
+math.min
+   get-value:x:@.sensors/*/t1
+   get-value:x:@.sensors/*/t2
+   get-value:x:@.sensors/*/t3

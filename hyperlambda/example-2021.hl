@@ -1,6 +1,6 @@
+// Not (inverting booleans)
+not
+   .:bool:true
 
-// Example: Use a variable to provide the input string.
-.text:Test
-
-// Returns 4
-strings.length:x:@.text
+not
+   .:bool:false

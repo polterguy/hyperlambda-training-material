@@ -1,10 +1,9 @@
 /*
- * Example: Join multiple strings with a comma separator.
+ * Retrieving the name of a deeply nested node.
+ * Results in `"child"` being returned
  */
-.input
-   .:A
-   .:B
-   .:C
-strings.join:x:@.input/*
-   .:,
-// Result: "A,B,C"
+
+.data
+   parent
+      child:42
+get-name:x:@.data/*/*

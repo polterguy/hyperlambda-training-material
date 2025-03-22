@@ -1,5 +1,16 @@
-// Return the URL of the current request
-request.url
+// Using a whitelist incorrectly should throw an exception
 
-// Example result ==> magic/system/evaluator/evaluate
-// Notice, URL will always be returned as relative URL
+.result
+add:x:-
+   whitelist
+      vocabulary
+         return
+         vocabulary
+      .lambda
+         .foo
+
+         // This will throw an exception (not whitelisted above)
+         set-value:x:@.foo
+            .:foo
+         vocabulary
+         return:x:-/*

@@ -1,8 +1,6 @@
-// Upload a file to replace an existing resource using HTTP PUT
-http.put:"https://api.example.com/upload/README"
 
-   // read file from /files/documents/README.md and send as request body
-   filename:/documents/README.md
+// Example: Use a variable for the string to encode.
+.text:key=value&flag=true
 
-   // set a 30-second timeout instead of default
-   timeout:int:30
+// Result: "key%3Dvalue%26flag%3Dtrue"
+strings.url-encode:x:@.text

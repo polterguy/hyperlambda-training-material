@@ -1,103 +1,61 @@
 
-// Write a Hyperlambda script to return all available workflows from the backend, including their names, descriptions, and arguments.
+/*
+ * Returns total discounts applied for quotes during period
+ * 
+ * Optionally apply limit, offset or filter as you see fit
+ */
 .arguments
-   private:bool
 
-// Making sure user has access to invoked endpoint.
-auth.ticket.verify:root
+   // Optional minimum date. ISO formatted as follows "yyyy-MM-dd"
+   min_date:string
 
-// Contains list of workflows we find.
-.result
+   // Optional maximum date. ISO formatted as follows "yyyy-MM-dd"
+   max_date:string
 
-// Listing files recursively.
-io.file.list-recursively:/modules/
-io.file.list-recursively:/system/
-for-each:x:../*/io.file.list-recursively/*
+.type:public
 
-   // Checking if this is a workflow file.
+// Making sure user is authorised to access the workflow.
+auth.ticket.verify:mnhc-admin
+
+// Opening up database connection.
+mssql.connect:[production|MNDG_LSC18-1]
+
+   // Checking if we're filtering items on [min_date].
    if
       and
-
-         // We're only dealing with Hyperlambda files.
-         strings.ends-with:x:@.dp/#
-            .:.hl
-
-         // Ignoring startup files.
-         not
-            strings.contains:x:@.dp/#
-               .:/magic.startup/
-
-         // Making sure this is a file of interest.
-         or
-
-            // If private is true, we return everything.
-            eq:x:@.arguments/*/private
-               .:bool:true
-
-            // Making sure we return workflow files
-            strings.contains:x:@.dp/#
-               .:/workflows/workflows/
-
-            // Making sure we return anything inside of modules.
-            strings.starts-with:x:@.dp/#
-               .:/modules/
-            and
-               strings.contains:x:@.dp/#
-                  .:/workflows/
-
-               // Ignoring actions
-               not
-                  strings.contains:x:@.dp/#
-                     .:/workflows/actions/
-
-               // Ignoring workflow HTTP endpoints.
-               not
-                  strings.starts-with:x:@.dp/#
-                     .:/system/workflows/
+         exists:x:@.arguments/*/min_date
+         not-null:x:@.arguments/*/min_date
       .lambda
+         convert:x:@.arguments/*/min_date
+            type:date
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/mssql.read/*/where/*/and
+            .
+               Document Date.mt:x:@convert
 
-         /*
-          * This is a workflow Hyperlambda file.
-          * 
-          * Figuring out its name, description, and arguments (if any).
-          */
-         strings.split:x:@.dp/#
-            .:/
-         strings.split:x:@strings.split/0/-
-            .:.
-         io.file.load:x:@.dp/#
-         hyper2lambda:x:@io.file.load
-            comments:true
+   // Checking if we're filtering items on [max_date].
+   if
+      and
+         exists:x:@.arguments/*/max_date
+         not-null:x:@.arguments/*/max_date
+      .lambda
+         convert:x:@.arguments/*/max_date
+            type:date
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/mssql.read/*/where/*/and
+            .
+               Document Date.lt:x:@convert
 
-         // Making sure we do NOT return "internal" workflow files.
-         if
-            and
-               eq
-                  get-name:x:@hyper2lambda/0
-                  .:..
-               or
-                  eq:x:@.arguments/*/private
-                     .:bool:true
-                  eq:x:@hyper2lambda/*/.type
-                     .:public
-                  strings.starts-with:x:@hyper2lambda/*/.type
-                     .:crud-
-            .lambda
-
-               // Removing comments for arguments.
-               remove-nodes:x:"@hyper2lambda/*/.arguments/*/\\.."
-
-               // Adding workflow to [.result].
-               add:x:+/+/*/*/*/arguments
-                  get-nodes:x:@hyper2lambda/*/.arguments/*
-               unwrap:x:+/*/*/*
-               add:x:@.result
-                  .
-                     .
-                        description:x:"@hyper2lambda/*/\\../[0,1]"
-                        name:x:@strings.split/0
-                        file:x:@.dp/#
-                        arguments
-
-// Returning result to caller.
-return-nodes:x:@.result/*
+   // Reading records.
+   mssql.read
+      table:addv_Cotizaciones
+      columns
+         sum((Quantity * [Unit Price]) - Amount)
+            as:TotalDiscountsApplied
+      where
+         and
+      limit:-1
+   
+   // Returning result of above invocation to caller.
+   yield
+      result:x:@mssql.read/*

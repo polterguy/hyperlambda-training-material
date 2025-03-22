@@ -1,10 +1,13 @@
 /*
- * Example: Join all strings stored as children of a list node.
+ * This Hyperlambda snippet retrieves all descendant nodes.
+ *
+ * 1. The `.data` node contains nested child nodes.
+ * 2. The `get-nodes` slot is used with `**` to retrieve all descendants.
+ * 3. The output will include all nested nodes.
  */
-.words
-   .:one
-   .:two
-   .:three
-strings.join:x:@.words/*
-   .:"|"
-// Result: "one|two|three"
+
+.data
+   parent
+      child1:val1
+      child2:val2
+get-nodes:x:@.data/**

@@ -1,8 +1,7 @@
-// Define a slot that returns both a value and additional nodes
-slots.create:retBoth  
-   return:All Good  
-      status:ok  
-      code:int:200
+// Create a new item by POSTing JSON data, with a Bearer token for authorization
+http.post:"https://api.example.com/items"
 
-signal:retBoth  
-// Result: value "All Good", with child nodes [status = "ok", code = 200]
+   // optional Bearer JWT token for auth
+   token:XYZ_SECRET_TOKEN_123
+   payload:@"{""name"": ""Sample Book"", ""price"": 19.99}"
+   // Use 'filename' instead of 'payload' for large files to stream from /files directory

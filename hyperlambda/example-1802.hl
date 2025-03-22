@@ -1,13 +1,34 @@
 
-// Create a Hyperlambda action to set the HTTP status code to a specified 'status'. Validate the mandatory field.
-.arguments
-   status
-      type:int
-      mandatory:bool:true
-.icon:http
+// Lists all database in your MySQL instance.
+slots.create:magic.db.pgsql.databases
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/status
+   // Opens up our connection
+   .connection:[postgres]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               .:postgres]
+   pgsql.connect:x:@.connection
 
-// Changing status code.
-response.status.set:x:@.arguments/*/status
+      // Runs our query
+      pgsql.select:select datname from pg_database
+
+      // Renaming "Database" nodes.
+      set-name:x:@pgsql.select/*/*
+         .:db
+
+      // Returns the remaining databases to caller.
+      return-nodes:x:@pgsql.select/*

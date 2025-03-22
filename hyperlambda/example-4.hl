@@ -1,6 +1,13 @@
+// Using [for-each] with conditional logic to update specific nodes
+.car-parts
+   engine:available
+   wheel:out-of-stock
+   door:available
 
-// Example: Split on a substring that is not present.
-strings.split:hello
-   .:,
-
-// Result: The string remains "hello" as a single part (no split)
+for-each:x:@.car-parts/*
+   if
+      eq:x:@.dp/#
+         .:available
+      .lambda
+         set-value:x:@.dp/#
+            .:checked

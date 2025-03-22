@@ -1,19 +1,19 @@
-// Build a PUT endpoint to update an existing contact's name and email address.
-// Filename: /modules/contacts/update.put.hl
-// The contact's ID is required along with the new data fields to apply the update.
 
+// Scrape the specified URL and returns the raw HTML
 .arguments
-   id:int
-   name:string
-   email:string
 
-data.connect:[generic|crm]
-   data.update
-      table:contacts
-      values
-         name:x:@.arguments/*/name
-         email:x:@.arguments/*/email
-      where
-         and
-            id:x:@.arguments/*/id
-   return-nodes:x:@data.update/*
+   // Mandatory argument and the actual URL to scrape.
+   url:string
+
+// Making endpoint public allows it to be consumed as an AI function
+.type:public
+
+// Invokes some HTTP GET resource.
+execute:magic.workflows.actions.execute
+   name:http-get
+   filename:/misc/workflows/actions/http/http-get.hl
+   arguments
+      url:x:@.arguments/*/url
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

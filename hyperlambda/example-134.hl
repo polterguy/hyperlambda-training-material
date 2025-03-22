@@ -1,66 +1,171 @@
 
-// Returns minimum, maximum, average or sum from your CustomerDemographics table in your northwind database
+/*
+ * Hyperlambda file / endpoint that counts occurrencise for a Distinct Keyword Search from hyperlambda table in fine-tune database.
+ * 
+ * This endpoint will return the number of records containing one or more of the keywords from the specified [query].
+ */
 .arguments
 
-   // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg
-   aggregate_function:string
-
-   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME.
-   aggregate_column:string
-   CustomerDemographics.CustomerTypeID.like:string
-   CustomerDemographics.CustomerTypeID.eq:string
-   CustomerDemographics.CustomerDesc.like:string
-   CustomerDemographics.CustomerDesc.eq:string
-
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your CustomerDemographics table in your northwind database
+   // Mandatory query for records to search for
+   query:string
 
 // Type of endpoint
-.type:crud-aggregate
+.type:crud-count
 
-// Sanity checking mandatory arguments.
-validators.mandatory:x:@.arguments/*/aggregate_function
-validators.mandatory:x:@.arguments/*/aggregate_column
+// Make sure the user has provided a query.
+validators.mandatory:x:@.arguments/*/query
 
-// Sanity checking name of aggregate function.
-validators.enum:x:@.arguments/*/aggregate_function
-   .:min
-   .:max
-   .:sum
-   .:avg
+// Split the user's query into individual keywords, separated by spaces.
+.words
+add:x:@.words
+   strings.split:x:@.arguments/*/query
+      .:" "
 
-// Sanity checking agggregate column name.
-validators.enum:x:@.arguments/*/aggregate_column
-   .:CustomerDemographics.CustomerTypeID
-   .:CustomerDemographics.CustomerDesc
+// Enforce lower characters for each keyword, and guard against SQL injection.
+.no:int:0
+for-each:x:@.words/*
+   set-value:x:@.dp/#
+      strings.to-lower:x:@.dp/#
 
-// Opening up our database connection.
-data.connect:[generic|northwind]
+// Specify which columns to search against.
+.columns
+   .:code
+   .:prompt
+
+// Connect to the specified database.
+data.connect:[generic|fine-tune]
    database-type:sqlite
 
-   // Making sure we're using correct aggregate function.
-   set-name:x:./*/data.read/*/columns/*/aggregate_functor
+   // Start building our SQL.
+   .sql:select count(*) as count, (
+
+   // Dynamically create the full text by concatenating all columns we want to search.
+   .fields
+   for-each:x:@.columns/*
       strings.concat
-         get-value:x:@.arguments/*/aggregate_function
-         .:(
-         get-value:x:@.arguments/*/aggregate_column
-         .:)
+         .:coalesce(
+         get-value:x:@.dp/#
+         .:", '')"
+      unwrap:x:+/*/*
+      add:x:@.fields
+         .
+            .:x:@strings.concat
+   set-value:x:@.fields
+      strings.join:x:@.fields/*
+         .:" || "
+   remove-nodes:x:@.fields/*
 
-   // Removing aggregate arguments to simplify adding other arguments.
-   remove-nodes:x:@.arguments/*/[0,2]
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
+   // Keyword density calculation
+   .no:int:0
+   for-each:x:@.words/*
 
-   // Reading data from database.
-   data.read
+      // Adding SQL parameter.
+      set-name:x:+/+/*/*
+         strings.concat
+            .:@p
+            get-value:x:@.no
+      unwrap:x:+/*/*
+      add:x:@data.connect/*/data.select
+         .
+            .:x:@.dp/#
+
+      // Modifying our SQL.
+      if
+         eq:x:@.no
+            .:int:0
+         .lambda
+
+            // First keyword => no leading plus
+            set-value:x:@.sql
+               strings.concat:x:@.sql
+                  get-value:x:@.sql
+                  .:" (length("
+                  get-value:x:@.fields
+                  .:) - length(replace(lower(
+                  get-value:x:@.fields
+                  .:), @p
+                  get-value:x:@.no
+                  .:", ''))) / length(@p"
+                  get-value:x:@.no
+                  .:)
+      else
+         set-value:x:@.sql
+            strings.concat:x:@.sql
+               get-value:x:@.sql
+               .:" + (length("
+               get-value:x:@.fields
+               .:) - length(replace(lower(
+               get-value:x:@.fields
+               .:), @p
+               get-value:x:@.no
+               .:", ''))) / length(@p"
+               get-value:x:@.no
+               .:)
+      math.increment:x:@.no
+   set-value:x:@.sql
+      strings.concat:x:@.sql
+         get-value:x:@.sql
+         .:) * 1.0 / length(
+         get-value:x:@.fields
+         .:) as keyword_density, (
+
+   // Distinct keyword count => For each keyword, 1 if present, 0 if not.
+   .no:int:0
+   for-each:x:@.words/*
+      if
+         eq:x:@.no
+            .:int:0
+         .lambda
+
+            // First keyword => no leading plus
+            set-value:x:@.sql
+               strings.concat:x:@.sql
+                  get-value:x:@.sql
+                  .:" CASE WHEN ((length("
+                  get-value:x:@.fields
+                  .:) - length(replace(lower(
+                  get-value:x:@.fields
+                  .:), @p
+                  get-value:x:@.no
+                  .:", ''))) / length(@p"
+                  get-value:x:@.no
+                  .:)) > 0 THEN 1 ELSE 0 END
+      else
+         set-value:x:@.sql
+            strings.concat:x:@.sql
+               get-value:x:@.sql
+               .:" + CASE WHEN ((length("
+               get-value:x:@.fields
+               .:) - length(replace(lower(
+               get-value:x:@.fields
+               .:), @p
+               get-value:x:@.no
+               .:", ''))) / length(@p"
+               get-value:x:@.no
+               .:)) > 0 THEN 1 ELSE 0 END
+      math.increment:x:@.no
+
+   // Finalize "keyword_count".
+   set-value:x:@.sql
+      strings.concat:x:@.sql
+         get-value:x:@.sql
+         .:) as keyword_count
+
+   // Finish SELECT + WHERE
+   set-value:x:@.sql
+      strings.concat:x:@.sql
+         get-value:x:@.sql
+         .:" from "
+         .:hyperlambda
+         .:" where keyword_count > 0"
+
+   // Execute the SQL
+   data.select:x:@.sql
       database-type:sqlite
-      table:CustomerDemographics
-      columns
-         aggregate_functor
-            as:result
-      where
-         and
-      limit:long:1
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+   // Remove helper fields if you don't want them in your final JSON
+   remove-nodes:x:@data.select/*/*/keyword_density
+   remove-nodes:x:@data.select/*/*/keyword_count
+
+   // Return the final result set
+   return-nodes:x:@data.select/*/*

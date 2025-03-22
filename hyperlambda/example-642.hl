@@ -1,4 +1,9 @@
-// Creates a log item with some additional fields
-log.info:Some log entry
-   username:foo
-   ip:123.123.123.123
+
+// Write a Hyperlambda snippet that inserts a 'log0' entry before 'log1' inside '.logs'.
+
+// Inserts a "log0" entry before "log1" inside ".logs".
+.logs
+   log1
+insert-before:x:@.logs/*/log1
+   .
+      log0:Previous log entry

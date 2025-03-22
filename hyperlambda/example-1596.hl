@@ -1,7 +1,6 @@
-// First, create a dynamic slot 'hello'
-slots.create:hello  
-   return-value:Hello
-
-// Invoke the 'hello' slot
-signal:hello  
-// The signal node now holds the value "Hello"
+/*
+ * Example: Contains check is case-sensitive.
+ */
+// Returns false since check is case sensitive
+strings.contains:MagicLambda
+   .:lambda

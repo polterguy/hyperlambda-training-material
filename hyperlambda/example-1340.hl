@@ -1,17 +1,13 @@
-/* This Hyperlambda snippet checks if the user's age is 18 or older.
-   If true, it updates the [status] node with "Adult". Otherwise, it sets it to "Minor". */
 
-.user
-   name:John Doe
-   age:int:22
-.status
-
-if
-   mte:x:@.user/*/age
-      .:int:18
-   .lambda
-      set-value:x:@.status
-         .:Adult
-else
-   set-value:x:@.status
-      .:Minor
+// Returns the specified release ZIP file to caller.
+validators.mandatory:x:@.arguments/*/release
+.file
+set-value:x:-
+   strings.concat
+      .:/etc/releases/
+      get-value:x:@.arguments/*/release
+response.headers.set
+   Content-Type:application/octet-stream
+   Content-Disposition:"form-data; filename=\"release.zip\""
+io.stream.open-file:x:@.file
+return:x:-

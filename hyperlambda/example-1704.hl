@@ -1,18 +1,29 @@
-// This code loads a Python script and replaces several variable names to improve readability.
-// Specifically, it replaces "tmp" with "temp" and "cfg" with "config" using dynamic replacement from the .data block.
-.data
-   .
-      what:tmp
-      with:temp
-   .
-      what:cfg
-      with:config
-.filename:/scripts/main.py
-.result
-set-value:x:-
-   io.file.load:x:@.filename
-for-each:x:@.data/*
-   set-value:x:@.result
-      strings.replace:x:@.result
-         get-value:x:@.dp/#/*/what
-         get-value:x:@.dp/#/*/with
+
+// Lists all available products.
+.arguments
+.type:public
+
+/*
+ * Invokes the SQL CRUD Read slot with the specified parameters.
+ * 
+ * Provide [connection-string], [database-type], [database], and [table] to inform the action of
+ * what database/table you want to execute your SQL towards, and add [and] or [or] arguments
+ * to filter your returns, in addition to [limit] and [offset] to apply paging. Use [order]
+ * and [direction] to sort either ascending or descending. Notice, you can only use one of [or]
+ * or [and], and not both.
+ */
+execute:magic.workflows.actions.execute
+   name:sql-read
+   filename:/misc/workflows/actions/sql/sql-read.hl
+   arguments
+      columns
+         .:name
+         .:description
+         .:sku
+         .:image_url
+         .:price
+      database:shopping-cart-demo
+      table:products
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

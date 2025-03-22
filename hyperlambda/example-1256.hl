@@ -1,3 +1,11 @@
-// A root node with a name and value, containing one child node
-root:"value"
-   child
+/*
+ * Example: Find all substrings matching a pattern in curly braces.
+ */
+.text:"{match1} and {match2} are here"
+strings.matches:x:@.text
+   .:"\\{.+?\\}"
+/*
+ * Resulting matches:
+ * .:{match1}
+ * .:{match2}
+ */

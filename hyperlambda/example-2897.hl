@@ -1,10 +1,16 @@
-/*
- * Example: Use variables for the string, start index, and length.
- */
-.text:"Magic"
-.start:int:1
-.len:int:3
-strings.substring:x:@.text
-   get-value:x:@.start
-   get-value:x:@.len
-// Result: "agi"
+
+// Generate a Hyperlambda snippet that loops until [.requests] reach 10.
+
+// Loops until [.requests] reach 10.
+.requests:int:1
+while
+   lt
+      get-value:x:@.requests
+      .:int:10
+   .lambda
+
+      // Handling request.
+      log.info:Processing request
+
+      // Incrementing request counter.
+      math.increment:x:@.requests

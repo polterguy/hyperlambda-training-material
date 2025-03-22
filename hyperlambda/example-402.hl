@@ -1,9 +1,5 @@
-// Executing the Hyperlambda changes the node hierarchy
-
-// This Hyperlambda
-.no:int:0
-math.increment:x:@.no
-
-// Creates this result
-.no:int:1
-math.increment:x:@.no
+// Sets the value of [.res] to the number of records we've got in our table1 table in our foo database
+.res
+data.connect:foo
+   set-value:x:@.res
+      data.scalar:select count(*) from table1

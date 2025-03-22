@@ -1,25 +1,14 @@
+/*
+ * ❌ Invalid: Uses `*` without a proper node context on the left-hand side.
+ * `*` expects an enumerable set of nodes to iterate over.
+ */
+
+set-value:x:*
+   .:oops
 
 /*
- * Compiles a snippet of C# code down to a library,
- * for then to dynamically load it as a plugin.
+ * The above will not throw an exception, but also not update any nodes.
+ * This is because the `*` iterator is used directly on the identity node,
+ * resulting in that it returns all children of [set-value] which would
+ * be considered a logical error.
  */
-system.compile
-   references
-      .:netstandard
-      .:System.Runtime
-      .:System.Private.CoreLib
-      .:magic.node
-      .:magic.node.extensions
-      .:magic.signals.contracts
-   code:"\n\n// Example C# code creating a Hyperlambda slot.\nusing System;\nusing magic.node;\nusing magic.node.extensions;\nusing magic.signals.contracts;\n\n// Our slot class.\n[Slot(Name = \"foo\")]\npublic class Foo : ISlot\n{\n   public void Signal(ISignaler signaler, Node input)\n   {\n      input.Value = $\"Hi {input.GetEx<string>()}, how may I assist you?\";\n   }\n}"
-   assembly-name:foo.dll
-
-// Loading assembly from raw bytes now that we've created it.
-system.plugin.load:x:@system.compile
-
-// Executing [foo] slot now dynamically injected into AppDomain.
-.name:John Doe
-foo:x:@.name
-
-// Unloading plugin.
-system.plugin.unload:foo.dll

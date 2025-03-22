@@ -1,8 +1,31 @@
-// I want to create a log item for every 'content' row found in my 'system' database and its 'log_records' table
-data.connect:system
-   data.read
-      table:log_records
-      columns
-         content
-   for-each:x:@data.select/*/*/content
-      log.info:x:@.dp/#
+
+// Changes the specified [username]'s password to [password].
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   password
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
+validators.string:x:@.arguments/*/password
+   min:12
+
+// Hashing specified [password].
+crypto.password.hash:x:@.arguments/*/password
+
+// Opens up database connection.
+data.connect:[generic|magic]
+
+   // Updating user's password.
+   data.update
+      table:users
+      values
+         password:x:@crypto.password.hash
+      where
+         and
+            username.eq:x:@.arguments/*/password

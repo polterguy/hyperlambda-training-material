@@ -1,16 +1,9 @@
 
-// Create a Hyperlambda script that refreshes the currently authenticated user's token and returns a new JWT token with a new expiration date, ensuring the user is authorized.
-.type:public
+// Generate a Hyperlambda snippet that inserts a 'first' element before 'second' inside '.elements'.
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify
-
-/*
- * Invokes [auth.ticket.refresh] that does the heavy lifting, and creates our JWT token,
- * making sure we return that token to caller.
- */
-auth.ticket.refresh
-
-// Returns the authentication JWT ticket created above to caller.
-yield
-   ticket:x:@auth.ticket.refresh
+// Inserts a "first" element before "second" inside ".elements".
+.elements
+   second
+insert-before:x:@.elements/*/second
+   .
+      first:Added dynamically before second

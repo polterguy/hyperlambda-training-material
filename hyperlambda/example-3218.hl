@@ -1,5 +1,5 @@
 /*
- * Example: Get the length of a string with multi-byte characters.
+ * If no nodes match, `get-nodes` should return nothing.
  */
-// Returns 2
-strings.length:"你好"
+
+get-nodes:x:@.nonexistent

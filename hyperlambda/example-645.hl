@@ -1,9 +1,7 @@
-// Creates a JWT token
-auth.ticket.create
-   username:foo
-   roles
-      .:howdy
-      .:world
-   claims
-      id:578
-      ssid:xyzqwerty67
+
+// Generate a Hyperlambda snippet that scrapes a BBC News article.
+
+// Example snippet scraping a BBC News article.
+signal:magic.http.scrape-url
+   url:"https://www.bbc.com/news/world-65973926"
+   semantics:bool:true

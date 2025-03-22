@@ -1,11 +1,11 @@
-
-// Example: Split a string by spaces.
-strings.split:one two three
-   .:" "
+// How the named sibling node works
+.data
+   .not-found:value
+get-value:x:@.not-found
 
 /*
- * Resulting parts:
- * .:one
- * .:two
- * .:three
+ * The above named sibling iterator traverses the node hierarchy from the identity node and upwards,
+ * until it finds a node with the name specified. In the example above the name is `.data`.
+ *
+ * After execution, the value of the [get-value] slot will become 'value'
  */

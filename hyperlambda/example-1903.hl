@@ -1,7 +1,8 @@
+// Example: Create a dynamic slot, then invoke it
 
-// Return the URL of the current request
-request.url
+// First we create a dynamic slot.
+slots.create:foo
+   return-value:int:57
 
-// Example result ==> magic/system/evaluator/evaluate
-
-// Notice, URL will always be returned as relative URL
+// Then we invoke it.
+signal:foo

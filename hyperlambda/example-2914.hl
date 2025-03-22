@@ -1,4 +1,5 @@
-
-// Module version and name
-version:v0.6.0
-module_name:netsuite
+/**
+ * This example saves the text "Hello, Hyperlambda!" to "/logs/app.log".
+ */
+io.file.save:/logs/app.log
+   .:Hello, Hyperlambda!

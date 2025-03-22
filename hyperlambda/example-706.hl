@@ -1,15 +1,12 @@
-// Sends a multipart email with attachment
-mail.smtp.send
-   message
-      to
-         .
-            email:someemail@whatever.com
-            name:John Doe
-      subject:Some subject line
-      entity:multipart/mixed
-         entity:text/plain
-            content:Some text content
-         entity:text/markdown
-            headers
-               Content-Disposition:@"attachment; filename=""README.md"""
-            content:Some Markdown content here
+/*
+ * This code finds all "setting" nodes that are direct children of the node
+ * named ".config", and sets each setting’s value to "reset".
+ */
+
+.config
+   setting:old-value
+   other:ignore
+   setting:another-value
+for-each:x:@.config/*/setting
+   set-value:x:@.dp/#
+      .:reset

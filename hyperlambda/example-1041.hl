@@ -1,5 +1,12 @@
-// Attempting to convert an invalid base64 value should throw an error
+// neq returns true if two values are different
+.src:int:5
+neq
+   get-value:x:@.src
+   .:int:10
 
-.src:int:555
-convert:x:-
-   type:from-base64
+// Result after execution
+.src:int:5
+neq:bool:true
+   get-value:int:5
+   .:int:10
+

@@ -1,2 +1,9 @@
-// Validates the [.some-url] node's value is a valid URL
-validators.url:x:@.some-url
+
+// Write a Hyperlambda snippet that inserts a 'start' node before 'middle' inside '.sequence'.
+
+// Inserts a "start" node before "middle" inside ".sequence".
+.sequence
+   middle
+insert-before:x:@.sequence/*/middle
+   .
+      start:Beginning of sequence

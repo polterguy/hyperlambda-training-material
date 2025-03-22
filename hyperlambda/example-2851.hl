@@ -1,8 +1,7 @@
-/*
- * Example: Replace a substring that exists in the text.
- */
-.original:"Hello world"
-strings.replace:x:@.original
-   .:world
-   .:there
-// Result: "Hello there"
+// Returns a configuration settings
+slots.create:generate.config
+   return-nodes
+      users:int:3
+      timeout:int:30
+
+execute:generate.config

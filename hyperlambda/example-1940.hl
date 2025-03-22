@@ -1,27 +1,27 @@
 
-// Generate a Hyperlambda snippet that evaluates specified [.lambda] if any condition evaluates to true.
+// Provide a Hyperlambda example where [.lambda] runs if any of the conditions hold true.
 
-// Evaluates specified [.lambda] if any condition evaluates to true.
-.result
-.value1:int:3
-.value2:int:10
+// Runs [.lambda] if any of the conditions hold true.
+.state
+.check1:int:2
+.check2:int:8
 if
    or
 
-      // [lt] implies "less than"
-      lt:x:@.value1
-         .:int:4
+      // First condition: Less than
+      lt:x:@.check1
+         .:int:3
 
-      // [mt] implies "more than"
-      mt:x:@.value2
-         .:int:9
+      // Second condition: More than
+      mt:x:@.check2
+         .:int:7
    .lambda
 
-      // Changing the value of [.result] to true
-      set-value:x:@.result
+      // Updating [.state] to true
+      set-value:x:@.state
          .:bool:true
 else
 
-   // Changing the value of [.result] to false
-   set-value:x:@.result
+   // Updating [.state] to false
+   set-value:x:@.state
       .:bool:false

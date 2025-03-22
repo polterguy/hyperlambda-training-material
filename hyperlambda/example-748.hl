@@ -1,2 +1,4 @@
-// Example: Convert a PDF file to text.
-pdf2text:/foo/bar.pdf
+
+// How can I list all HTTP request headers in a Hyperlambda endpoint?
+request.headers.list
+return:x:-

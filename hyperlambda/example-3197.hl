@@ -1,22 +1,8 @@
-// The following code will execute a Hyperlambda file called 'greet-user.hl'
-execute-file:/modules/my_module/greet-user.hl
-   name:Alice
-   age:int:30
 
-// Assumes a Hyperlambda file such as the following exists in '/modules/my_module/greet-user.hl'
-.arguments
-   name:string
-   age:int
+// Example: Remove all non-digit characters from a string (keep only digits).
+.mixed:"Phone: 555-1234!"
+strings.replace-not-of:x:@.mixed
+   .:0123456789
+   .:
 
-// Concatenating name and age into a greeting
-strings.concat
-   get-value:x:@.arguments/*/name
-   .:" is "
-   get-value:x:@.arguments/*/age
-   .:" years old."
-
-// Returning the greeting to caller.
-yield
-   greeting:x:@strings.concat
-
-// When executed the above Hyperlambda file will return 'Alice is 30 years old.'
+// Result: "5551234" (only digits remain)

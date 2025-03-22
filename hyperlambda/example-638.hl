@@ -1,5 +1,9 @@
-// Validates the [recaptcha_value] argument is a valid reCAPTCHA token
-validators.recaptcha:x:@.arguments/*/recaptcha_value
-   site-key:xyz
-   secret:qwerty
-   min:decimal:0.3
+
+// Create a Hyperlambda snippet that inserts a new department node before 'HR' inside '.departments'.
+
+// Inserts a new department node before "HR" inside ".departments".
+.departments
+   HR
+insert-before:x:@.departments/*/HR
+   .
+      IT:New department added before HR

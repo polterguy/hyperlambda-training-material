@@ -1,11 +1,12 @@
-/*
- * Compares duration (in minutes) from three different tasks and returns the shortest one.
- */
-.tasks
-   task1:int:60
-   task2:int:45
-   task3:int:90
-math.min
-   get-value:x:@.tasks/*/task1
-   get-value:x:@.tasks/*/task2
-   get-value:x:@.tasks/*/task3
+// Executing the following Hyperlambda results in the following
+
+// When executing the following Hyperlambda
+.destination
+add:x:@.destination
+   .
+      foo:bar
+
+// We end up with this result
+.destination
+   foo:bar
+add:x:@.destination

@@ -1,14 +1,6 @@
+// Create a task that logs
+tasks.create:foo-bar-task-1
+   .lambda
 
-// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table.
-
-// Queries messages from the messaging database and chat_logs table.
-data.connect:messaging_db
-
-   // Using SQLite.
-   database-type:sqlite
-
-   // Fetching chat history.
-   data.read
-      database-type:sqlite
-      table:chat_logs
-      limit:100
+      // Your task's lambda object goes here
+      log.info:Executing foo-bar-task-1

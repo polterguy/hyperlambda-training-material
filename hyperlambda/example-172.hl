@@ -1,13 +1,2 @@
-// Retrieve orders that are either pending OR processing
-data.connect:shopDB
-
-   // CRUD read ...
-   data.read
-      table:orders
-      limit:-1
-      where
-
-         // Either status equals "pending" OR department not equal "hr"
-         or
-            status.eq:"pending"
-            department.neq:"hr"
+// This snippet defines a node with a GUID value.
+.recordId:guid:123e4567-e89b-12d3-a456-426614174000

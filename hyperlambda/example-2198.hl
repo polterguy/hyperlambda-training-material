@@ -1,126 +1,229 @@
 
-// Design a function to create a checkout session for a specified price ID using Stripe. The function should require mandatory arguments for username, price, success URL, and mode (either 'payment' or 'subscription'). It should validate these arguments and retrieve the Stripe API token. The function should check if the customer already exists in Stripe to avoid duplicates, and reuse existing customer objects if possible. It should then create a checkout session using Stripe's API and return the session ID and URL to the caller. Handle any errors by logging and throwing exceptions.
+/*
+ * Returns the company with the specified org. number.
+ *
+ * This function will return company information such as the address, founding date, status, activity description, etc.
+ */
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-   price
-      type:string
-      mandatory:bool:true
-   success_url
-      type:string
-      mandatory:bool:true
-   mode
-      type:string
-      mandatory:bool:true
+   org_number:string
+.type:public
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/price
-validators.mandatory:x:@.arguments/*/success_url
-validators.mandatory:x:@.arguments/*/mode
-validators.enum:x:@.arguments/*/mode
-   .:payment
-   .:subscription
+validators.mandatory:x:@.arguments/*/org_number
+set-value:x:@.arguments/*/org_number
+   strings.replace-not-of:x:@.arguments/*/org_number
+      .:0123456789
+      .:
+validators.string:x:@.arguments/*/org_number
+   min:10
+   max:10
 
-// Retrieving token to use for invocations towards Stripe.
-.token
-set-value:x:-
-   strings.concat
-      .:"Bearer "
-      config.get:"magic:stripe:token"
+// Connecting to database.
+data.connect:[finovo|finovo]
+   database-type:pgsql
 
-/*
- * Checking is customer already exists in Stripe, at which point we reuse the same customer.
- * 
- * This avoids creating duplicate Stripe customer objects for each time the same user creates a
- * subscription, and will also reuse existing customer objects created manually in the Stripe dashboard.
- */
-.url
-strings.concat
-   .:"email:'"
-   get-value:x:@.arguments/*/username
-   .:"'"
-strings.url-encode:x:@strings.concat
-set-value:x:@.url
-   strings.concat
-      .:"https://api.stripe.com/v1/customers/search?query="
-      get-value:x:@strings.url-encode
+   // Retrieving items.
+   data.read
+      database-type:pgsql
+      table:basic
+      columns
+         org_number
+         complete_ef_pnr
+         company_name
+         post_co_street
+         post_street
+         post_zipcode
+         post_town
+         post_community_code
+         post_community_name
+         post_region_code
+         post_region_name
+         registered_co_street
+         registered_street
+         registered_zipcode
+         registered_town
+         registered_community_code
+         registered_community_name
+         registered_region_code
+         registered_region_name
+         visiting_street
+         visiting_zipcode
+         visiting_town
+         visiting_community_code
+         visiting_community_name
+         visiting_region_code
+         visiting_region_name
+         phone_number
+         fax_number
+         status_date
+         status_code
+         status_text_high
+         status_text_detailed
+         orgnr_status_affected
+         company_formed_date
+         registration_date
+         deregistration_date
+         legalgroup_code
+         legalgroup_text
+         f_tax_reg
+         f_tax_yes_no
+         f_tax_reg_spec
+         f_tax_start_date
+         f_tax_end_date
+         f_tax_dereg_reason_code
+         moms_reg
+         moms_yes_no
+         moms_start_date
+         moms_end_date
+         sni_code
+         sni_text
+         accountant_reservation
+         date_accountant_reservation
+         number_of_units
+         top_director_name
+         top_director_function
+         turnover_interval
+         nbr_employees_interval
+      where
+         and
+            legalgroup_code.eq:AB
+            org_number.eq:x:@.arguments/*/org_number
 
-// Invoking Stripe REST API to retrieve customers with the specified email, if any.
-http.get:x:@.url
-   headers
-      Authorization:x:@.token
-   convert:true
+   // Checking if we've got data.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+         return
+            result:No results were found
 
-// Sanity checking above invocation.
-if
-   mte
-      get-value:x:@http.get
-      .:int:400
-   .lambda
+   // Making sure we return basic company information.
+   add:x:../*/return-nodes/*/basic
+      get-nodes:x:@data.read/*
 
-      // Oops, something went wrong ...!!
-      lambda2hyper:x:@http.post
-      log.error:Something went wrong while invoking Stripe, could not list customers
-         result:x:@lambda2hyper
-         provider:Stripe
-      throw:Something went wrong while invoking Stripe, could not list customers
-         public:true
-         status:500
+   // Retrieving items.
+   data.read
+      database-type:pgsql
+      table:activity_text
+      columns
+         sequence
+         activity_text
+      where
+         and
+            org_number.eq:x:@.arguments/*/org_number
 
-/*
- * Checking if we've got an existing customer, at which point we reuse this customer
- * instead of creating a new one.
- */
-if
-   exists:x:@http.get/*/content/*/data/0/*/id
-   .lambda
+   // Making sure we return activity_text information, but only if existing
+   if
+      exists:x:@data.read/*
+      .lambda
 
-      // We already have this customer in our Stripe account.
-      unwrap:x:+/*/*
-      add:x:../*/http.post/*/payload
-         .
-            customer:x:@http.get/*/content/*/data/*/*/id
-else
+         // Making sure we return activity_text information.
+         add:x:+/*/*
+            get-nodes:x:@data.read/*
+         add:x:../*/return-nodes
+            .
+               activity_text
 
-   // No existing customer in Stripe matching this email address.
-   unwrap:x:+/*/*
-   add:x:../*/http.post/*/payload
-      .
-         customer_email:x:@.arguments/*/username
-         client_reference_id:x:@.arguments/*/username
+   // Retrieving items.
+   data.read
+      database-type:pgsql
+      table:accountant_comments
+      columns
+         account_period_start
+         account_period_end
+         account_not_approved_code
+         accountant_comment_code
+         accountant_comment_text
+         other_accountant_comment
+      where
+         and
+            accountant_comment_text.neq:
+            accountant_comment_text.neq
+            org_number.eq:x:@.arguments/*/org_number
 
-// Invoking Stripe REST API to create a checkout session.
-http.post:"https://api.stripe.com/v1/checkout/sessions"
-   headers
-      Authorization:x:@.token
-      Content-Type:application/x-www-form-urlencoded
-   payload
-      line_items[0][price]:x:@.arguments/*/price
-      line_items[0][quantity]:int:1
-      automatic_tax[enabled]:bool:true
-      success_url:x:@.arguments/*/success_url
-      mode:x:@.arguments/*/mode
-   convert:true
+   // Making sure we return accountant_comments information, but only if existing
+   if
+      exists:x:@data.read/*
+      .lambda
 
-// Sanity checking above invocation.
-if
-   mte
-      get-value:x:@http.post
-      .:int:400
-   .lambda
+         // Making sure we return accountant_comments information.
+         add:x:+/*/*
+            get-nodes:x:@data.read/*
+         add:x:../*/return-nodes
+            .
+               accountant_comment
 
-      // Oops, something went wrong ...!!
-      lambda2hyper:x:@http.post
-      log.error:Something went wrong while invoking Stripe, could not create checkout session
-         result:x:@lambda2hyper
-         provider:Stripe
-      throw:Something went wrong while invoking Stripe, could not create checkout session
-         public:true
-         status:500
+   // Retrieving items.
+   data.read
+      database-type:pgsql
+      table:company_sign
+      columns
+         company_sign_text
+      where
+         and
+            org_number.eq:x:@.arguments/*/org_number
+      order:sequence
 
-// Returning result to caller.
-yield
-   session:x:@http.post/*/content/*/id
-   url:x:@http.post/*/content/*/url
+   // Making sure we return company_sign information, but only if existing
+   if
+      exists:x:@data.read/*
+      .lambda
+
+         // Making sure we return company_sign information.
+         add:x:+/*/*
+            get-nodes:x:@data.read/*
+         add:x:../*/return-nodes
+            .
+               company_sign
+
+   // Retrieving items.
+   data.read
+      database-type:pgsql
+      table:group_structure
+      columns
+         company_name
+         company_country_code
+         company_country_name
+         owned_percent
+         company_level
+         closest_group_mother_orgnumber
+         group_mother_orgnumber
+         date_last_group_struct_update
+      where
+         and
+            org_number.eq:x:@.arguments/*/org_number
+
+   // Making sure we return company_sign information, but only if existing
+   if
+      exists:x:@data.read/*
+      .lambda
+
+         // Making sure we return company_sign information.
+         add:x:+/*/*
+            get-nodes:x:@data.read/*
+         add:x:../*/return-nodes
+            .
+               group_structure
+
+   // Figuring out who is the actual owner of the company
+   execute:finovo.get-actual-owner
+      org_number:x:@.arguments/*/org_number
+   if
+      exists:x:@execute/*
+      .lambda
+
+         // We have an actual owner of the company.
+         add:x:../*/return-nodes
+            .
+               actual_owners
+         for-each:x:@execute/*
+            unwrap:x:+/*/*/*
+            add:x:../*/return-nodes/*/actual_owners
+               .
+                  .
+                     name:x:@.dp/#/*/name
+                     ownership:x:@.dp/#/*/ownership
+                     control_text:x:@.dp/#/*/control_text
+                     director_id:x:@.dp/#/*/director_id
+
+return-nodes
+   basic

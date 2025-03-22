@@ -1,37 +1,21 @@
+// Example of [whitelist] execution, where only two slots are legal
+.result
+whitelist
 
-// Returns Stripe charges.
-.arguments
-   limit:int
-   starting_after:string
-   customer_id:string
+   vocabulary
+      set-value
+      return
 
-/*
- * Ensures user is authorized to access endpoint.
- * 
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
+   .lambda
 
-/*
- * Retrieves charges from Stripe.
- * 
- * Will use your Stripe API token found from your settings as it's interacting
- * with the Stripe API.
- */
-execute:magic.workflows.actions.execute
-   name:stripe-charges-get
-   filename:/modules/stripe/workflows/actions/stripe-charges-get.hl
-   arguments
-      limit:x:@.arguments/*/limit
-      starting_after:x:@.arguments/*/starting_after
-      customer_id:x:@.arguments/*/customer_id
+      // Inside of this [.lambda] object, we can only invoke [set-value], and no other slots!
+      set-value:x:@.result
+         .:foo
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+      // Notice, the next line will throw an exception if you remove its "." character,
+      // because [add] is not whitelisted in our above [vocabulary] declaration!
+      .add:x:@.result
+         .
+            foo:bar
+      return
+         result:success

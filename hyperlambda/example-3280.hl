@@ -1,8 +1,4 @@
-
-// Example: Use variables for string and trim characters (start only).
-.text:...Hello
-.trimchars:.
-
-// Result: "Hello"
-strings.trim-start:x:@.text
-   get-value:x:@.trimchars
+// This example hashes a string using SHA384 and returns the hash in fingerprint format.
+.data:Secure your data
+crypto.hash.sha384:x:@.data
+   format:fingerprint

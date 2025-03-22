@@ -1,8 +1,25 @@
-// Generate Hyperlambda endpoint that takes a file as text, and a filename, and saves to disc on server
-.arguments
-   file_content:string
-   file_path:string
-io.file.save:x:@.arguments/*/file_path
-   get-value:x:@.arguments/*/file_content
-yield
-   result:success!
+// If/else-if and else lambda object
+.src:int:3
+.dest
+if
+   eq
+      get-value:x:@.src
+      .:int:1
+   .lambda
+
+      set-value:x:@.dest
+         .:yup!
+
+else-if
+   eq
+      get-value:x:@.src
+      .:int:2
+   .lambda
+
+      set-value:x:@.dest
+         .:yup2.0!
+
+else
+
+   set-value:x:@.dest
+      .:nope

@@ -1,3 +1,11 @@
-// Move file
-io.file.move:/misc/README.md
-   .:/misc/backup/README-backup.md
+
+// Create a Hyperlambda snippet that retrieves nodes from [.source_data] and adds them into [.target_data].
+
+// Retrieves nodes from [.source_data] and adds them into [.target_data]
+.source_data
+   keyX:valX
+   keyY:valY
+   keyZ:valZ
+.target_data
+add:x:@.target_data
+   get-nodes:x:@.source_data/*

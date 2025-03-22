@@ -1,5 +1,9 @@
-// Subtract lost points from player score
-.player-score:int:88
-math.subtract
-   get-value:x:@.player-score
-   .:int:10
+
+// Create a new customer with only a name field
+data.connect:shopDB
+   data.create
+      table:customers
+      values
+
+         // Insert "Alice" into the name column
+         name:Alice

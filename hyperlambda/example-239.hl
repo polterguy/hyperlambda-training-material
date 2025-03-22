@@ -1,16 +1,40 @@
 
-// Generate a Hyperlambda snippet that copies nodes from [.input1] and [.input2] and appends them into [.output].
+// Create one record in your Playlist table in your chinook database.
+.arguments
 
-// Copies nodes from [.input1] and [.input2] and appends into [.output]
-.input1
-   itemA:dataA
-   itemB:dataB
-   itemC:dataC
-.input2
-   itemD:dataD
-   itemE:dataE
-   itemF:dataF
-.output
-add:x:@.output
-   get-nodes:x:@.input1/*
-   get-nodes:x:@.input2/*
+   // PlaylistId column value
+   PlaylistId:long
+
+   // Name column value
+   Name:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:Playlist
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

@@ -1,5 +1,7 @@
-// Generates a new JWT token for username 'thomas' and role 'root'
-auth.ticket.create
-   username:thomas
-   roles
-      .:root
+/*
+ * Changes the name of the specified node(s) to whatever the results of its
+ * parameter is.
+ */
+.destination
+set-name:x:@.destination
+   .:foo

@@ -1,8 +1,6 @@
 
-// Example: Use variables for string and trim characters (start only).
-.text:...Hello
-.trimchars:.
+// Example: Use a variable to provide the input string.
+.text:Test
 
-// Result: "Hello"
-strings.trim-start:x:@.text
-   get-value:x:@.trimchars
+// Returns 4
+strings.length:x:@.text

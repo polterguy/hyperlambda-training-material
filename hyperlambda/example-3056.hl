@@ -1,18 +1,11 @@
+// Show me Hyperlambda with data segment that joins all values of nodes being children of [.data]
+.data
+   foo1:bar1
+   foo2:bar2
+   foo3:bar3
 
-// Create a Hyperlambda switch/case condition that checks an 'input-value'. Log a message if the value is 'foo', another message if the value is 'bar', and a default message if the value is neither.
-switch:x:@.arguments/*/input-value
+// Concatenates all child values
+strings.join:x:@.data/*
 
-   case:foo
-
-      // [input-value] was equal to "foo".
-      log.info:Value was foo
-
-   case:bar
-
-      // [input-value] was equal to "bar".
-      log.info:Value was bar
-
-   default
-
-      // [input-value] was neither foo nor bar.
-      log.info:Value was neither foo nor bar
+   // Notice, comments MUST be on separate lines.
+   .:|

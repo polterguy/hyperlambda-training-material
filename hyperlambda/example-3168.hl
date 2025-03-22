@@ -1,27 +1,9 @@
+// Demonstrating an indented comment inside a code block
+.list
+   item1
+   item2
+for-each:x:@.list/*
 
-// Returns the training snippet with the specified [id] to the caller.
-.arguments
-
-   // Mandatory argument and the primary key and ID of the training snippet to return
-   id:int
-.type:public
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/id
-validators.integer:x:@.arguments/*/id
-   min:int:0
-
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Finding our snippet from the database.
-   data.read
-      table:ml_training_snippets
-      columns
-         prompt
-         completion
-         uri
-      where
-         and
-            id.eq:x:@.arguments/*/id
-   return-nodes:x:@data.read/*
+   // This comment describes the loop body and is indented correctly
+   set-value:x:@.dp/#
+      .:processed

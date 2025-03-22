@@ -1,26 +1,21 @@
 
-// Retrieves all URLs from sitemap on specified website.
-.url:"https://ainiro.io"
+// Connects to sakila with database transactions
+data.connect:sakila
+   data.transaction.create
+      data.execute:delete from film_actor
 
-// will contain all URLs from website
-.urls
+      /*
+       * If you uncomment the line below the
+       * transaction will be committed, resulting
+       * in that everything from your film_actor
+       * table will be deleted.
+       */
 
-// Retrieving main sitemap.
-strings.concat
-   get-value:x:@.url
-   .:"/sitemap.xml"
-http.get:x:@strings.concat
-xml2lambda:x:@http.get/*/content
+      // data.transaction.commit
+data.connect:sakila
 
-// Iterating through each URL referenced in main sitemap.
-for-each:x:@xml2lambda/*/sitemapindex/*/sitemap/*/loc/*/\#text
-
-   // Getting XML from currently iterated sitemap subset.
-   unwrap:x:+/*/*
-   http.get:x:@.dp/#
-   xml2lambda:x:@http.get/*/content
-   for-each:x:@xml2lambda/*/urlset/*/url/*/loc/*/\#text
-      unwrap:x:+/*/*
-      add:x:@.urls
-         .
-            .:x:@.dp/#
+   /*
+    * Notice, this still returns 5462 items, since
+    * transaction was implicitly rolled back above.
+    */
+   data.scalar:select count(*) from film_actor

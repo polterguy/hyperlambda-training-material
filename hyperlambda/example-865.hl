@@ -1,14 +1,13 @@
-
-// Create a Hyperlambda script to evaluate a lambda for as long as a condition is true, with a counter and logging.
-.no:int:0
-while
-   lt
-      get-value:x:@.no
-      .:int:20
+// Fetches a random dog image and checks if the request was successful
+.dog-image
+http.get:"https://dog.ceo/api/breeds/image/random"
+   convert:true
+if
+   and
+      mte:x:@http.get
+         .:int:200
+      lt:x:@http.get
+         .:int:300
    .lambda
-
-      // Your lambda goes here.
-      log.info:Howdy from while
-
-      // Incrementing counter.
-      math.increment:x:@.no
+      set-value:x:@.dog-image
+         get-value:x:@http.get/*/content/*/message

@@ -1,7 +1,13 @@
-// Example: Create a dynamic slot returning 2 nodes, then invoke it
-slots.create:foo
-   return-nodes
-      integer-value:int:57
-      string-value:Foo bar
 
-signal:foo
+// Generate a Hyperlambda snippet that retrieves customer data from the crm database and customers table.
+
+// Retrieves customer data from the crm database and customers table.
+data.connect:crm_db
+
+   // Using MySQL as the database type.
+   database-type:mysql
+
+   // Querying customers without sorting or limiting.
+   data.read
+      database-type:mysql
+      table:customers

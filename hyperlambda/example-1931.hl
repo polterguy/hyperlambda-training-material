@@ -1,15 +1,20 @@
+// Example: Create two slots, then execute a [whitelist] lambda object only allowing for 'foo1', to illustrate how an exception will be raise if we execute non-whitelisted slots
+slots.create:foo1
+   return-value:Safe
 
-// Create a Hyperlambda script to update an item in a specified database and table using SQLite, with a specific ID and new values.
-data.connect:DATABASE_NAME
-   database-type:sqlite
+slots.create:foo2
+   return-value:Unsafe
 
-   // Invoking our update slot.
-   data.update
-      database-type:sqlite
-      table:TABLE_NAME
-      values
-         column1:NEW_VALUE_HERE
-         column2:ANOTHER NEW_VALUE_HERE
-      where
-         and
-            id.eq:x:@WHATEVER_ID_HERE
+whitelist
+
+   vocabulary
+      signal
+      signal:foo1
+
+   .lambda
+
+      // Assuming you have a [foo1] slot created, this will work
+      signal:foo1
+
+      // This will throw, since [foo2] is not whitelisted
+      signal:foo2

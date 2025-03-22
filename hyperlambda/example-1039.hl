@@ -1,8 +1,47 @@
 
-// Example: Concatenate a string and a number (the number is converted to a string).
-.number:int:42
-strings.concat
-   .:"Answer: "
-   get-value:x:@.number
+// Create endpoint inserting one record into your products table in your shopping-cart-demo database.
+.arguments
 
-// Result: "Answer: 42"
+   // name column value
+   name:string
+
+   // description column value
+   description:string
+
+   // sku column value
+   sku:string
+
+   // price column value
+   price:decimal
+
+   // image_url column value
+   image_url:string
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:products
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

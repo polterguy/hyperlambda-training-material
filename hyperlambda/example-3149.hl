@@ -1,6 +1,5 @@
-// HTTP endpoint that ensures specified name parameter is between 5 and 100 characters in length
-.arguments
-   name:string
-validators.string:x:@.arguments/*/name
-   min:5
-   max:100
+// lte returns false if the left value is greater than the right
+.x:int:6
+lte
+   get-value:x:@.x
+   .:int:5

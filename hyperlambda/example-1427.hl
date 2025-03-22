@@ -1,5 +1,22 @@
 
-// Returns the operating system to caller
-system.os
+// Returns number of registrations for the last 14 days grouped by day.
 
-// Results in (for Mac); Darwin 23.1.0 Darwin Kernel Version 23.1.0: Mon Oct  9 21:32:11 PDT 2023; root:xnu-10002.41.9~7/RELEASE_ARM64_T6030
+// No arguments are allowed
+.arguments
+
+// Making sure user is authorised to invoke endpoint.
+auth.ticket.verify:root, admin, guest
+config.get:"magic:databases:default"
+switch:x:@config.get
+   case:mysql
+   case:sqlite
+      strings.concat
+         .:/modules/hub/affiliates/db.overrides/
+         get-value:x:@config.get
+         .:.affiliate-transactions.get.hl
+      add:x:+
+         get-nodes:x:@.arguments/*
+      io.file.execute:x:@strings.concat
+      return-nodes:x:-/*
+   default
+      throw:Unsupport database type for Hub

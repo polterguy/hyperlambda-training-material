@@ -1,27 +1,15 @@
 
-// Write a Hyperlambda script to return the JavaScript required to embed a ChatGPT-based chatbot on a website, with options for CSS, file, and various features.
-.arguments
-   css:string
-   file:string
-   type:string
-   header:string
-   button:string
-   render_button:bool
-   parent_node:string
-   search:bool
-   chat:bool
-   markdown:bool
-   speech:bool
-   rtl:bool
-   submit_button:bool
-   stream:bool
+// Provide a Hyperlambda example where employees are counted in the 'hr_db' database from the 'employees' table.
 
-   // Not used, but allows embedders to do a hard refresh to reload JavaScript.
-   v:string
+// Counts employees in the "hr_db" database from the "employees" table.
+data.connect:hr_db
+   database-type:mssql
 
-   // Legacy parameter, ignore, no longer in use.
-   gpt:bool
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/include-javascript.js.get.hl
-return:x:-
+   // Counting total employees.
+   data.read
+      database-type:mssql
+      table:employees
+      columns
+         count(*)
+            as:count
+      limit:long:1

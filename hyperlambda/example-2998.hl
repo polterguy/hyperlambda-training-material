@@ -1,28 +1,26 @@
 
-// Deletes one item from your clusters table in your [generic|hub] database matching the specified argument(s).
+// Write a Hyperlambda script to delete all existing vectors for a specified model.
 .arguments
-   id:string
+   type:string
+.type:internal
 
-// Verifying user is authorized to access endpoint.
+// Ensures user is authorized to access endpoint.
 auth.ticket.verify:root
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/id
+validators.mandatory:x:@.arguments/*/type
 
-// Opening up our database connection.
-data.connect:[generic|hub]
+// Connecting to database.
+data.connect:[generic|magic]
 
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
+   // Deleting VSS data.
+   data.execute:delete from vss_ml_training_snippets where rowid in (select id as rowid from ml_training_snippets where type = @type)
+      @type:x:@.arguments/*/type
 
-   // Deleting item from database.
-   data.delete
-      table:clusters
-      where
-         and
+   // Deleting embeddings.
+   data.execute:update ml_training_snippets set embedding = null where type = @type
+      @type:x:@.arguments/*/type
 
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Returning success to caller.
+return
+   result:success

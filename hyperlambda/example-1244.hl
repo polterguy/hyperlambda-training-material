@@ -1,6 +1,4 @@
-
-// Example: Check if a string contains a given substring that is not present.
-
-// Returns false
-strings.contains:ChatGPT
-   .:OpenAI
+// [and] returns false if any argument is false
+and
+   .:bool:true
+   .:bool:false

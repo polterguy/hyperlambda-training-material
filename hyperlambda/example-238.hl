@@ -1,25 +1,23 @@
 
-/*
- * The following code compiles the "/etc/foo.cs" file and saves it as an assembly
- * in "/etc/foo.dll".
- */
-io.file.load:/etc/foo.cs
-system.compile
-   references
-      .:netstandard
-      .:System.Runtime
-      .:System.Console
-      .:System.Private.Uri
-      .:System.ComponentModel
-      .:System.Private.CoreLib
-      .:System.Net.Primitives
-      .:magic.node
-      .:magic.node.extensions
-      .:magic.library
-      .:magic.signals.contracts
-   code:x:@io.file.load
-   assembly-name:foo.dll
+// Authenticates the user with the specified [username] and [password].
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   password
+      type:string
+      mandatory:bool:true
+.icon:shield
 
-// Saving our compiled CLR assembly to '/etc/foo.dll'.
-io.file.save.binary:/etc/foo.dll
-   get-value:x:@system.compile
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
+
+// Invokes slot responsible for authenticating caller.
+execute:magic.auth.authenticate
+   username:x:@.arguments/*/username
+   password:x:@.arguments/*/password
+
+// Returning resulting ticket/token to caller.
+yield
+   ticket:x:@execute/*/ticket

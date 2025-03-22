@@ -1,4 +1,13 @@
-// Adds a bunch of nodes into specified destination expression's children collection.
-add:x:@.destination
-   .
-      foo:bar
+/*
+ * Example: Use variables to supply the string and delimiter.
+ */
+.text:"x|y|z"
+.delim:"|"
+strings.split:x:@.text
+   get-value:x:@.delim
+/*
+ * Resulting parts:
+ * .:x
+ * .:y
+ * .:z
+ */

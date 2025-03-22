@@ -1,36 +1,22 @@
 
-// Create a Hyperlambda script to execute startup files, create the magic database, and apply default configuration settings.
-io.file.execute:/system/sql/magic.startup/mssql/magic.db.mssql.databases.hl
-io.file.execute:/system/sql/magic.startup/mysql/magic.db.mysql.databases.hl
-io.file.execute:/system/sql/magic.startup/pgsql/magic.db.pgsql.databases.hl
-io.file.execute:/system/sql/magic.startup/sqlite/magic.db.sqlite.databases.hl
+// Executing the following Hyperlambda results in the following
 
-// Creating our magic database.
-io.file.execute:/system/ensure-magic-database.hl
+// When executing the following Hyperlambda
+.result
+.foo:whatever
+if:x:-
+   set-value:x:@.result
+      .:Yup!
+else
+   set-value:x:@.result
+      .:Nope!
 
-// Executing all magic.startup Hyperlambda files.
-io.file.list-recursively:/system/
-io.file.list-recursively:/modules/
-for-each:x:./*/io.file.list-recursively/*
-
-   // Checking if file is a startup Hyperlambda file.
-   if
-      and
-         strings.contains:x:@.dp/#
-            .:/magic.startup/
-         strings.ends-with:x:@.dp/#
-            .:.hl
-      .lambda
-
-         // Executing file.
-         strings.concat
-            .:"Executing startup file '"
-            get-value:x:@.dp/#
-            .:.
-         console.log:x:-
-         try
-            io.file.execute:x:@.dp/#
-         .catch
-            log.error:Error while executing startup file
-               exception:x:@.arguments/*/message
-               file:x:@.dp/#
+// We end up with this result
+.result:Yup!
+.foo:whatever
+if:bool:true
+   set-value:x:@.result
+      .:Yup!
+else:bool:false
+   set-value:x:@.result
+      .:Nope!

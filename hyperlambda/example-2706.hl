@@ -1,25 +1,90 @@
 
-// Hyperlambda file that takes a lambda objects as an argument, and exceutes the lambda object from within the file, once for each role that exists in the system.
+// Read or list records from your Artist table in your chinook database
 .arguments
-   .execute:*
 
-// Retrieving roles from magic database
-data.connect:magic
-   data.read
-      table:roles
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   limit:long
 
-   // Iterating through each role, executing [.execute] lambda object once for each role.
-   for-each:x:@data.read/*
-      unwrap:x:+/*
-      invoke:x:@.arguments/*/.execute
-         role:x:@.dp/#/*/name
+   // Offset into the dataset of where to start retrieving records
+   offset:long
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+   order:string
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
+
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   Artist.ArtistId.mt:long
+   Artist.ArtistId.lt:long
+   Artist.ArtistId.mteq:long
+   Artist.ArtistId.lteq:long
+   Artist.ArtistId.neq:long
+   Artist.ArtistId.eq:long
+   Artist.Name.like:string
+   Artist.Name.mt:string
+   Artist.Name.lt:string
+   Artist.Name.mteq:string
+   Artist.Name.lteq:string
+   Artist.Name.neq:string
+   Artist.Name.eq:string
+
+// Type of endpoint
+.type:crud-read
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
 /*
- * To execute the file, you can use something such as follows:
- * 
- * io.file.execute:/modules/slett/foo.get.hl
- * .execute
- * 
- * // You will be getting the role in as an argument from the above Hyperlambda file here.
- * log.info:x:@.arguments/*/role
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
  */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our read invocation with ordering arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+
+   // Parametrising our read invocation with paging arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Artist
+      columns
+         Artist.ArtistId
+         Artist.Name
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

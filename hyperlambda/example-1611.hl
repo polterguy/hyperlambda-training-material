@@ -1,18 +1,6 @@
-// Hyperlambda [if] with numeric comparison
-.temperature:int:31
-.weather-status
-if
-   mt:x:@.temperature
-      .:int:30
-   .lambda
-      set-value:x:@.weather-status
-         .:hot
-
-/* JavaScript equivalent of Hyperlambda [if] with numeric comparison
-const temperature = 25;
-let weatherStatus;
-
-if (temperature > 30) {
-  weatherStatus = "hot";
-}
-*/
+/*
+ * Example: Check if a string ends with itself.
+ */
+// Returns true
+strings.ends-with:Test
+   .:Test

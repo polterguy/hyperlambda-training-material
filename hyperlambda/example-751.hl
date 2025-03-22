@@ -1,6 +1,12 @@
-// Create a multipart MIME message
-mime.create:multipart/mixed
-   entity:text/plain
-      content:Some text content
-   entity:text/markdown
-      filename:/etc/README.md
+
+// Create a Hyperlambda GET endpoint that takes two arguments, 'name' and 'age', and concatenates them into a message.
+.arguments
+   name:string
+   age:int
+strings.concat
+   get-value:x:@.arguments/*/name
+   .:" is "
+   get-value:x:@.arguments/*/age
+   .:" years old"
+yield
+   message:x:@strings.concat

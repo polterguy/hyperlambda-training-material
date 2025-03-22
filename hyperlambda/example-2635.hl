@@ -1,49 +1,43 @@
 
-// Deletes the specified cloudlet
+// Searches through your training snippets using RAG / VSS search for the specified query
 .arguments
-   cloudlet_name:string
+   _type:string
+
+   // Mandatory argument and the actual query to use when finding data from your RAG database.
+   query:string
+
+   // Optional argument and the number of tokens to return. The default value of not spcified is 4000.
+   max_tokens:int
+
+   // Optional argument being similarity distance between query and RAG records matched during search. Will default to 0.3 if not specified.
+   threshold:decimal
+.type:public
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/_type
+validators.mandatory:x:@.arguments/*/query
+
+// Applying defaults.
+validators.default:x:@.arguments
+   max_tokens:int:4000
+   threshold:decimal:0.3
 
 /*
- * Ensures the specified [arg] was given.
+ * Returns context for the specified [query] from the specified [_type],
+ * and returns to caller.
  * 
- * This action will throw an exception with a descriptive text explaining if the argument is missing.
+ * Optionally add [threshold] and [max_tokens] to specify similarity and maximum
+ * tokens to return. [_type] is a machine learning type from your ml_types database table in
+ * your magic database.
  */
 execute:magic.workflows.actions.execute
-   name:validators-mandatory
-   filename:/misc/workflows/actions/security/validators-mandatory.hl
+   name:openai-context-from-database
+   filename:/modules/openai/workflows/actions/openai-context-from-database.hl
    arguments
-      arg:x:@.arguments/*/cloudlet_name
-
-/*
- * Ensures user is authorized to access endpoint.
- * 
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
-
-/*
- * Returns the username of the currently authenticated user,
- * or null if user isn't authenticated.
- */
-execute:magic.workflows.actions.execute
-   name:username-get
-   filename:/misc/workflows/actions/security/username-get.hl
-   arguments
-
-// Deletes the specified cloudlet
-execute:magic.workflows.actions.execute
-   name:hub-cloudlets-delete
-   filename:/modules/hub/workflows/actions/hub-cloudlets-delete.hl
-   arguments
-      cloudlet_name:x:@.arguments/*/cloudlet_name
-      username:x:--/execute/=username-get/*/username
+      type:x:@.arguments/*/_type
+      query:x:@.arguments/*/query
+      max_tokens:x:@.arguments/*/max_tokens
+      threshold:x:@.arguments/*/threshold
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*

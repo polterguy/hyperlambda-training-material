@@ -1,53 +1,72 @@
-// How does CRUD slots in Hyperlambda
 
 /*
- * Hyperlambda has 4 basic CRUD slots, you can examples of these below.
+ * Slot for adding user to SendGrid mailing list version 2.
+ *
+ * This slots takes the type too and adds it as a custom field.
  */
+slots.create:wl.sendgrid.add-to-list-2
 
-// [data.create]
-data.create
-   table:table1
-   values
-      column1:value1
-      column2:value2
-      column3:value3
+   // Sanity checking invocation
+   validators.mandatory:x:@.arguments/*/type
+   validators.mandatory:x:@.arguments/*/name
+   validators.mandatory:x:@.arguments/*/email
+   validators.email:x:@.arguments/*/email
 
-// Read
-data.read
-   table:table1
+   /*
+    * Checking if SendGrid is configured for "auto-add" at which point
+    * we automatically add create a contact, and add it to the configured list.
+    */
+   if
+      eq
+         config.get:"magic:sendgrid:auto-add"
+         .:yes
+      .lambda
 
-   // Optional
-   limit:5
+         // Invoking SendGrid to create recipient.
+         .auth
+         set-value:x:@.auth
+            strings.concat
+               .:"Bearer "
+               config.get:"magic:sendgrid:api-key"
+         config.get:"magic:sendgrid:default-list"
+         set-name:x:./*/http.put/**/full_name
+            config.get:"magic:sendgrid:full_name_id"
+               .:e1_T
+         set-name:x:./*/http.put/**/ml_type
+            config.get:"magic:sendgrid:ml_type_id"
+               .:e2_T
+         unwrap:x:+/**
+         http.put:"https://api.sendgrid.com/v3/marketing/contacts"
+            convert:true
+            headers
+               Authorization:x:@.auth
+               Content-Type:application/json
+            payload
+               list_ids
+                  .:x:@config.get
+               contacts
+                  .
+                     email:x:@.arguments/*/email
+                     custom_fields
+                        full_name:x:@.arguments/*/name
+                        ml_type:x:@.arguments/*/type
 
-   // Optional
-   offset:5
+         // Sanity checking invocation.
+         if
+            neq:x:@http.put
+               .:int:202
+            .lambda
 
-   // Optional
-   order
-      column1
-      column2
+               // Oops ...!!
+               lambda2hyper:x:@http.put/*/content
+               log.error:Could not add new contact to list
+                  email:x:@.arguments/*/email
+                  name:x:@.arguments/*/name
+                  stack:x:@lambda2hyper
 
-   // Optional
-   direction:desc
+         else
 
-   // Conditions we're filtering on
-   where
-
-      // Use either [or] or [and] here
-      and
-
-// Update
-data.update
-   table:table1
-   values
-      column1:new-value
-   where
-      and
-         id.eq:PRIMARY-KEY-OF-RECORD-TO-UPDATE
-
-// Delete
-data.delete
-   table:table1
-   where
-      and
-         id.eq:PRIMARY-KEY-OF-RECORD-TO-UPDATE
+            // Doing some basic logging
+            log.info:Successfully added contact to SendGrid automation
+               name:x:@.arguments/*/name
+               email:x:@.arguments/*/email

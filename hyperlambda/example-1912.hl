@@ -1,8 +1,5 @@
-// Demonstrating nested [and] and [or] slots
-or
-   and
-      .:bool:true
-      .:bool:false
-   .:bool:true
 
-// Becomes true
+// Example: Get the length of a numeric string.
+
+// Returns 5
+strings.length:12345

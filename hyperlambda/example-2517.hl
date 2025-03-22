@@ -1,17 +1,8 @@
 
-// Write a Hyperlambda snippet demonstrating string handling, escape sequences, and multi-line formatting.
+// Example: Trim specific characters from the beginning of a string.
 
-// Plain string assignment
-.textX:plain
+// The leading "xyz" will be removed
+strings.trim-start:xyzabcxyz
+   .:xyz
 
-// Special character requires quotes
-.textY:"url:path"
-
-// Multi-line format
-.textZ:"start\nend"
-
-// Single-quoted alternative
-.textQ:custom-string
-
-// Escaping newlines in a string
-.textR:"value\nbreak"
+// Result: "abcxyz"

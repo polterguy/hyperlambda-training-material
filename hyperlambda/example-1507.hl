@@ -1,13 +1,27 @@
-// Example of endpoint taking two arguments, concatenating them, and returning the result using [return].
-.arguments
-   arg1:string
-   arg2:string
 
-strings.concat
-   get-value:x:@.arguments/*/arg1
-   get-value:x:@.arguments/*/arg2
+// Create a Hyperlambda snippet that executes [.lambda] only if both conditions are met.
 
-// MUST call [unwrap] otherwise we're simply returning the expression.
-unwrap:x:+/*
-return
-   result:x:@strings.concat
+// Executes [.lambda] only if both conditions are met.
+.output
+.numA:int:6
+.numB:int:12
+if
+   and
+
+      // Less than check
+      lt:x:@.numA
+         .:int:7
+
+      // Greater than check
+      mt:x:@.numB
+         .:int:11
+   .lambda
+
+      // Setting [.output] to true
+      set-value:x:@.output
+         .:bool:true
+else
+
+   // Setting [.output] to false
+   set-value:x:@.output
+      .:bool:false

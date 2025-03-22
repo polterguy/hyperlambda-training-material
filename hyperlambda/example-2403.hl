@@ -1,9 +1,11 @@
 
-// Generate a Hyperlambda snippet that inserts a 'milestone2' node after 'milestone1' inside '.project'.
-
-// Inserts a "milestone2" node after "milestone1" inside ".project".
-.project
-   milestone1
-insert-after:x:@.project/*/milestone1
-   .
-      milestone2:Second milestone
+// Add children from multiple sources into multiple destinations
+.dest1
+.dest2
+.src1
+   foo1:bar1
+.src2
+   foo2:bar2
+add:x:../*/.dest*
+   get-nodes:x:@.src1/*
+   get-nodes:x:@.src2/*

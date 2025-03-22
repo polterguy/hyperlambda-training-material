@@ -1,6 +1,5 @@
-// Add .base-salary and .overtime
-.base-salary:int:3000
-.overtime:int:400
-math.add
-   get-value:x:@.base-salary
-   get-value:x:@.overtime
+/*
+ * Example: Trim whitespace from both ends of a string.
+ */
+// Result: "hello"
+strings.trim:"   hello   "

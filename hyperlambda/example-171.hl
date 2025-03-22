@@ -1,8 +1,4 @@
-// Connect to the "sakila" database using the default connection string (SQLite) and retrieve actors (default adapter from config)
-data.connect:sakila
+// This snippet defines a node with a date/time value (UTC DateTime).
+.timestamp:date:"2025-03-17T18:00:00Z"
 
-   // Using our CRUD read slot
-   data.read
-
-      // Reads from the "actor" table (returns first 25 records by default)
-      table:actor
+// Notice, dates must always be wrapped in quotes since they contain : characters

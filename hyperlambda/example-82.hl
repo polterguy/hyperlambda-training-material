@@ -1,10 +1,13 @@
-// Converting a date string to date object and assigning to another node
+// Evaluates specified [.lambda] for as long as condition evaluates to true.
+.no:int:0
+while
+   lt
+      get-value:x:@.no
+      .:int:20
+   .lambda
 
-// This is a string, but it's formatted as a valid date
-.data:"2023-05-17T23:59:59"
-.dest
-set-value:x:-
-   convert:x:@.data
-      type:date
+      // Your lambda goes here.
+      log.info:Howdy from while
 
-// The above will result in [.dest] having a value of :date:"2023-05-17T23:59:59"
+      // Incrementing counter.
+      math.increment:x:@.no

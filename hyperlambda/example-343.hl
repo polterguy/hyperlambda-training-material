@@ -1,9 +1,35 @@
-// Handling a signal with arguments
-.data
-   first-name:John
-   last-name:Doe
-execute:user.full-name
-   first-name:x:@.data/*/first-name
-   last-name:x:@.data/*/last-name
 
-// Above the expressions will be evaluated passing in the values of [first-name] and [last-name] to the slot
+// Imports training snippets into the specified [type].
+.arguments
+   type
+      type:string
+      mandatory:bool:true
+   snippets
+      type:*
+      mandatory:bool:true
+   meta
+      type:string
+      mandatory:bool:false
+      default:imported
+.icon:chat_bubble
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+
+// Connecting to database.
+data.connect:[generic|magic]
+
+   // Looping through each record specified in [snippets] collection.
+   for-each:x:@.arguments/*/snippets/*
+
+      // Verifying prompt is not null.
+      if:x:@.dp/#/*/prompt
+
+         // Inserting into database.
+         data.create
+            table:ml_training_snippets
+            values
+               type:x:@.arguments/*/type
+               prompt:x:@.dp/#/*/prompt
+               completion:x:@.dp/#/*/completion
+               meta:x:@.arguments/*/meta

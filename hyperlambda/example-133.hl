@@ -1,6 +1,13 @@
 
-// Example: Check if a string contains a given substring that is not present.
+// Write a Hyperlambda snippet that fetches album details from an API.
 
-// Returns false
-strings.contains:ChatGPT
-   .:OpenAI
+// Fetches album details from an API.
+http.get:"https://jsonplaceholder.typicode.com/albums/1"
+
+   // Converts JSON response.
+   convert:true
+
+// Sets [.album_title] to the album title
+.album_title
+set-value:x:@.album_title
+   get-value:x:@http.get/*/content/*/title

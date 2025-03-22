@@ -1,3 +1,11 @@
-// Example: Create a slot
-slots.create:foo
-   return-value:int:57
+
+// Write a Hyperlambda snippet that extracts nodes from [.data_source] and places them into [.data_target].
+
+// Extracts nodes from [.data_source] and places them into [.data_target]
+.data_source
+   attrOne:valOne
+   attrTwo:valTwo
+   attrThree:valThree
+.data_target
+add:x:@.data_target
+   get-nodes:x:@.data_source/*

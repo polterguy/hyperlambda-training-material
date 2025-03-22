@@ -1,17 +1,7 @@
 
-// Generate a Hyperlambda snippet that retrieves records from the sales database and its transactions table.
+// Return the URL of the current request
+request.url
 
-// Retrieves records from the sales database and its transactions table.
-data.connect:sales_db
+// Example result ==> magic/system/evaluator/evaluate
 
-   // Using MySQL as the database type.
-   database-type:mysql
-
-   // Fetching data from the database.
-   data.read
-      database-type:mysql
-      table:transactions
-      limit:20
-      sort
-         transaction_date
-      direction:asc
+// Notice, URL will always be returned as relative URL

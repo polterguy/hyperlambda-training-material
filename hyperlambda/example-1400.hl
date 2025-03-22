@@ -1,11 +1,6 @@
-/*
- * This Hyperlambda snippet demonstrates how to check if a child node exists.
- * 
- * 1. The `.dest` node is created with a child node named `foo`.
- * 2. The `exists` slot is used to check if there are any child nodes within `.dest`.
- * 3. The result will be `true` since `foo` exists.
- */
 
-.dest
-   foo
-exists:x:-/*
+// Sets the value of [.res] to the number of records we've got in our table1 table in our foo database
+.res
+data.connect:foo
+   set-value:x:@.res
+      data.scalar:select count(*) from table1

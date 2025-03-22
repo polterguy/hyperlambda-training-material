@@ -1,5 +1,12 @@
 
-// Example: Create a slot that returns [return-value] being integer of 57
-slots.create:foo
-   return-value:int:57
-slots.get:foo
+// Provide a Hyperlambda example where error codes are iterated and logged.
+
+// Iterates through error codes and logs them.
+.errors
+   error1:404 Not Found
+   error2:500 Internal Server Error
+   error3:403 Forbidden
+for-each:x:@.errors/*
+
+   // Logging each error message.
+   log.info:x:@.dp/#

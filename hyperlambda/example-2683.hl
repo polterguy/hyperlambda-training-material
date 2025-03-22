@@ -1,4 +1,8 @@
 
-// Auth module version and name.
-version:v2.0.0
-module_name:auth
+// Example: Concatenate strings when one part is empty.
+strings.concat
+   .:Hello
+   .:
+   .:World
+
+// Result: "HelloWorld"

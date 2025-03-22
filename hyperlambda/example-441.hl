@@ -1,3 +1,16 @@
-// Generate random number below 1024
-crypto.random.int
-   max:1024
+
+// Create a Hyperlambda snippet that retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target].
+
+// Retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target]
+.sourceA
+   keyX:valX
+   keyY:valY
+   keyZ:valZ
+.sourceB
+   keyM:valM
+   keyN:valN
+   keyO:valO
+.target
+add:x:@.target
+   get-nodes:x:@.sourceA/*
+   get-nodes:x:@.sourceB/*

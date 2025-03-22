@@ -1,8 +1,6 @@
-
-// Example: Remove all non-digit characters from a string (keep only digits).
-.mixed:"Phone: 555-1234!"
-strings.replace-not-of:x:@.mixed
-   .:0123456789
-   .:
-
-// Result: "5551234" (only digits remain)
+// Create a lambda object that adds 2 by 3
+.calculate
+   math.add
+      .:int:2
+      .:int:3
+   return:x:-

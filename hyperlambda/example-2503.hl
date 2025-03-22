@@ -1,4 +1,9 @@
-
-// Generate a simple Hyperlambda HTTP endpoint that returns a static message.
-yield
-   result:Hello from Magic Backend
+/**
+ * This example checks if "/config/settings.json" exists.
+ * If it does, it sets the value of [.result] to "File exists".
+ */
+.result
+io.file.exists:/config/settings.json
+if:x:-
+   set-value:x:@.result
+      .:File exists

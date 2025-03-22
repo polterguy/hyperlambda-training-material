@@ -1,8 +1,13 @@
-// This snippet uses the '*' iterator to retrieve all children of a node, in addition to the # reference iterator.
-.data
-   item1:one
-   item2:two
-for-each:x:@.data/*   
-   set-value:x:@.dp/#
-      :processed
-// The expression @.data/* selects both item1 and item2 nodes, and the for-each loop sets each of their values to "processed" since it's using the [.dp] node by reference which is injected by the [for-each] slot.
+
+// Define a slot that returns multiple values by evaluating expressions before the slot returns
+slots.create:giveData
+   .tmp1:Value 1
+   .tmp2:int:2025
+
+   // Return two nodes, evaluating any expressions in them
+   yield
+      message:x:@.tmp1
+      year:x:@.tmp2
+signal:giveData
+
+// Result: message = "Value 1", year = 2023

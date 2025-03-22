@@ -1,5 +1,16 @@
-/*
- * Example: URL-encode a URL (especially characters like : / and spaces).
- */
-strings.url-encode:"https://example.com/foo bar"
-// Result: "https%3A%2F%2Fexample.com%2Ffoo%20bar"
+// Attempt to delete records, then roll back the transaction to abort changes
+data.connect:shopDB
+   data.transaction.create
+      data.delete
+         table:temp_data
+         where
+            and
+               created_at.lt:date:"2020-01-01T00:00:00"
+      /*
+       * Suppose a condition triggers an abort here.
+       * Roll back the transaction to cancel the deletion.
+       */
+
+      // Abort transaction: all deletions are undone
+      data.transaction.rollback
+// After rollback, no changes from the transaction are applied to the database

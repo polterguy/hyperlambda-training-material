@@ -1,5 +1,10 @@
-// Convert an empty value to a byte array (should return null)
+// How do I create a Hyperlambda endpoint that takes arguments?
+.arguments
+   arg1:int
+   arg2:string
 
-.src
-convert:x:-
-   type:bytes
+// Your Hyperlambda code goes here ...!!
+
+// Return result to caller using for instance ...
+return
+   SOME_RESULT:SOME_VALUE

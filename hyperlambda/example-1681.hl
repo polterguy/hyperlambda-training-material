@@ -1,5 +1,6 @@
-// Add 8 as correction to .distance
-.distance:int:50
-math.add
-   get-value:x:@.distance
-   .:int:8
+/*
+ * Example: Use a variable as the input to uppercase.
+ */
+.text:"make me upper"
+// Result: "MAKE ME UPPER"
+strings.to-upper:x:@.text

@@ -1,26 +1,13 @@
-
-// Write a Hyperlambda script to return a specified TXT training data file to the client.
-.arguments
-   file:string
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
-
-// Figuringout full path of file.
-strings.concat
-   .:/etc/system/openai/pdf/
-   get-value:x:@.arguments/*/file
-
-// Getting our response HTTP headers sorted out.
-strings.concat
-   .:"attachment; filename=\""
-   get-value:x:@.arguments/*/file
-   .:"\""
-response.headers.set
-   Content-Type:text/plain
-   Content-Disposition:x:@strings.concat
-   Access-Control-Expose-Headers:Content-Disposition
-
-// Returning file to caller.
-io.stream.open-file:x:@strings.concat/@strings.concat
-return:x:-
+// Builds a payload response by computing sections and adding them to .payload
+.payload
+.compute-user
+   return
+      userId:123
+      username:johndoe
+.compute-meta
+   return
+      timestamp:date:"2025-03-22T10:00:00Z"
+      requestId:xyz-789
+add:x:@.payload
+   get-nodes:x:@.compute-user/*/return/*
+   get-nodes:x:@.compute-meta/*/return/*

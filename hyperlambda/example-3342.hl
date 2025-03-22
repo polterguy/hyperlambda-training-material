@@ -1,10 +1,16 @@
+// Using [switch] to evaluate a car part status and set a corresponding message
+.status:in-stock
+.message
+switch:x:@.status
 
-// Decrement a value by a custom step from another node
-.value:int:10
-.step:int:4
-math.decrement:x:@.value
+   case:in-stock
+      set-value:x:@.message
+         .:Car part is in stock
 
-   // use 4 from .step as the decrement amount
-   get-value:x:@.step
+   case:out-of-stock
+      set-value:x:@.message
+         .:Car part is out of stock
 
-// .value should now be 6
+   default
+      set-value:x:@.message
+         .:Unknown status

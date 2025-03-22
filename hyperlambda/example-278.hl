@@ -1,25 +1,14 @@
+// Hyperlambda endpoint that returns true if the specified text contains 'xyz'
+.arguments
+   arg:string
 
-// Hyperlambda [if] with else branch
-.status:inactive
-.display-class
-if
-   eq:x:@.status
-      .:active
-   .lambda
-      set-value:x:@.display-class
-         .:green
-else
-   set-value:x:@.display-class
-      .:red
+// Making sure argument was given
+validators.mandatory:x:@.arguments/*/arg
 
-/*
- * JavaScript equivalent of Hyperlambda [if] with else branch
- * const status = "inactive";
- * let displayClass;
- * 
- * if (status === "active") {
- * displayClass = "green";
- * } else {
- * displayClass = "red";
- * }
- */
+// Checking if 'xyz' exists in string
+strings.contains:x:@.arguments/*/arg
+   .:xyz
+
+// Returning result to caller
+yield
+   result:x:@strings.contains

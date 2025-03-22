@@ -1,10 +1,8 @@
 
-// Creates a bar chart
-image.chart:bars
-   filename:/chart.png
-   width:600
-   height:300
-   bars
-      Spring:int:2
-      Summer:int:5
-      Autumn:int:10
+// Example: Perform a case-insensitive replacement.
+.input:Yes yes YES
+strings.regex-replace:x:@.input
+   .:(?i)yes
+   .:no
+
+// Result: "no no no"

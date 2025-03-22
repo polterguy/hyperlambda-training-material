@@ -1,5 +1,5 @@
-// Convert a base64 string to raw bytes
 
-.src:ICA=
-convert:x:-
-   type:from-base64
+// [and] returns true only if all arguments are true
+and
+   .:bool:true
+   .:bool:true

@@ -1,35 +1,20 @@
 
-// CRUD Hyperlambda file that deletes one record from your categories table in your cms database
+// Create a Hyperlambda snippet that updates a user's email in the 'auth_db' database within the 'users' table.
+
+// Updates a user's email in the "auth_db" database within the "users" table.
 .arguments
+   user_id:int
+data.connect:auth_db
+   database-type:pgsql
 
-   // Primary key of record to delete, mandatory argument
-   id:long
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/id
-
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:categories
+   // Updating the user's email and status.
+   data.update
+      database-type:pgsql
+      table:users
+      values
+         email:newuser@example.com
+         status:active
       where
          and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+            user_id.eq:x:@.arguments/*/user_id
+   return:x:@data.update

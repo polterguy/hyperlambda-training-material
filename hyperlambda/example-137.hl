@@ -1,46 +1,50 @@
 
-// Read or list records from your categories table in your cms database
+/*
+ * Counts usage of slots in our training material
+ * 
+ * Returns all slots, and how many times each slot is mentioned in training material
+ */
 .arguments
+.type:public
 
-   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+// Used as buffer to hold result.
+.result
 
-   // Offset into the dataset of where to start retrieving records
+// Fetching vocabulary of server.
+vocabulary
 
-   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+// Iterating through each slot
+for-each:x:@vocabulary/*
 
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   categories.id.eq:long
-   categories.name.like:string
-   categories.name.eq:string
-   categories.description.like:string
-   categories.description.eq:string
+   // Executing file that actually counts how many instances we can find of slot.
+   execute-file:/modules/fine-tune-hyperlambda/api/hyperlambda-search-count.get.hl
+      query:x:@.dp/#
 
-// Meta data description for endpoint
+   // Adding result of above invocation to [.result] folder.
+   set-name:x:+/+/*/*
+      get-value:x:@.dp/#
+   unwrap:x:+/*/*
+   add:x:@.result
+      .
+         .:x:@execute-file/*/count
 
-// Type of endpoint
-.type:crud-read
+// Sorting result.
+sort:x:@.result/*
+   if
+      lt:x:@.lhs/#
+         get-value:x:@.rhs/#
+      .lambda
+         set-value:x:@.result
+            .:int:-1
+   else-if
+      mt:x:@.lhs/#
+         get-value:x:@.rhs/#
+      .lambda
+         set-value:x:@.result
+            .:int:1
+   else
+      set-value:x:@.result
+         .:int:0
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:guest
-
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:categories
-      columns
-         categories.id
-         categories.name
-         categories.description
-      where
-         and
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+// Returning result to caller.
+return-nodes:x:@sort/*

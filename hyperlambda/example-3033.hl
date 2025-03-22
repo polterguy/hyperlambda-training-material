@@ -1,27 +1,7 @@
+// Storing a message in the cache with a 10-second expiration time.
 
-// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the users_roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
-.arguments
-   role:string
-   user:string
+cache.set:session.message
+   expiration:10
+   value:Welcome back, user!
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Opening up database connection.
-data.connect:[generic|magic]
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      table:users_roles
-      return-id:bool:false
-      values
-
-   // Returning result of above invoction to caller.
-   response.status.set:201
-   unwrap:x:+/*
-   return
-      result:success
+// This will store "Welcome back, user!" in cache under "session.message".

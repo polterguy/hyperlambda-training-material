@@ -1,6 +1,3 @@
-
-// Example: Use a variable as the input to lowercase.
-.text:LOWER ME
-
-// Result: "lower me"
-strings.to-lower:x:@.text
+// Increment .loop-index by 1 (inside a loop context)
+.loop-index:int:0
+math.increment:x:@.loop-index

@@ -1,13 +1,8 @@
-// Define slot 'foo' with an initial return value
-slots.create:foo  
-   return-value:First version
+/*
+ * Example: Check if a string contains a given substring that is not present.
+ */
+// Returns false
+strings.contains:ChatGPT
+   .:OpenAI
 
-// Invoke 'foo' (will yield "First version")
-signal:foo  
-
-// Redefine (override) slot 'foo' with new logic
-slots.create:foo  
-   return-value:Second version
-
-// Invoke 'foo' again (now yields "Second version")
-signal:foo  
+// Result is false

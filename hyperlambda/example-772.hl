@@ -1,8 +1,17 @@
-// Create a task, then schedule it
-tasks.create:task-id-555
-   .lambda
 
-      log.info:It is the 10PM now.
+// Generate a Hyperlambda snippet covering string assignments, multi-line text, and escape sequences.
 
-tasks.schedule:task-id-555
-   repeats:**.**.22.00.00
+// Basic assignment without quotes
+.field1:dataItem
+
+// Requires quotes for colon
+.field2:"log:entry"
+
+// Multi-line notation
+.field3:"Header\nFooter"
+
+// Alternative quote usage
+.field4:line-segment
+
+// Escape sequence example
+.field5:"next\nstep"

@@ -1,9 +1,8 @@
 
-// Example: Concatenate all strings stored as children of a list node.
-.items
-   .:Red
-   .:Green
-   .:Blue
-strings.concat:x:@.items/*
+// Example: Remove a substring by replacing it with an empty string.
+.sentence:Apples and oranges
+strings.replace:x:@.sentence
+   .:"and "
+   .:
 
-// Result: "RedGreenBlue"
+// Result: "Apples oranges" (removed "and ")

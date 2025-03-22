@@ -1,30 +1,30 @@
 
-// Ensures our system messages are updated during deployments
-io.file.list:/modules/finovo/system-messages/
+// Scrapes the specified [url] and returns as context data to caller
+.arguments
+   url:string
 
-// Opening up database connection.
-data.connect:magic
+/*
+ * Ensures user is authorized to access endpoint.
+ *
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/modules/auth/workflows/actions/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-   // Looping through each system message and updating our machine learning type accordingly.
-   for-each:x:@io.file.list/*
 
-      // Loading file.
-      io.file.load:x:@.dp/#
+// Returns [max_tokens] context from the specified [url].
+execute:magic.workflows.actions.execute
+   name:openai-context-from-url
+   filename:/modules/openai/workflows/actions/openai-context-from-url.hl
+   arguments
+      url:x:@.arguments/*/url
+      max_tokens:int:2000
 
-      // Finding type name
-      .type
-      strings.split:x:@.dp/#
-         .:/
-      strings.split:x:-/0/-
-         .:.
-      set-value:x:@.type
-         get-value:x:@strings.split/0
-
-      // Updating type name's system message.
-      data.update
-         table:ml_types
-         values
-            system_message:x:@io.file.load
-         where
-            and
-               type.eq:x:@.type
+// Returns the result of your last action.
+return-nodes:x:@execute/*

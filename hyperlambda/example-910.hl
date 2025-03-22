@@ -1,40 +1,18 @@
 
-// Create endpoint inserting one record into your spice_urls table in your scraper database.
-.arguments
+// Updates SQLIte's table1, setting field1 to 'howdy' with filtering on field2 and field3
+sqlite.update
+   table:table1
+   values
+      field1:howdy
+   where
 
-   // url column value
-   url:string
+      // [where] node MUST have either [and] or [or] child, which becomes the logical operator to filter on
+      and
 
-   // type column value
-   type:string
+         // more than comparison
+         field2.mt:someValue
 
-// Meta data description for endpoint
+         // Less than or equal to comparison
+         field3.lte:someValue
 
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up database connection.
-data.connect:[generic|scraper]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:spice_urls
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+// Notice, before executing [sqlite.update] you must have an open database connection using [data.connect].

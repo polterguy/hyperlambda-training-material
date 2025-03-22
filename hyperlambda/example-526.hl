@@ -1,17 +1,11 @@
-// Complex if with both [and] and [or]
-.foo1:bar
-.foo2:bool:false
-.foo3:bool:true
+
+// Write a Hyperlambda snippet that queries 'messaging_db' for recent chat logs.
+
+// Queries "messaging_db" for recent chat logs.
 .result
-
-if
-   and
-      eq:x:@.foo1
-         .:bar
-      or
-         get-value:x:@.foo2
-         get-value:x:@.foo3
-   .lambda
-
-      set-value:x:@.result
-         .:Yup!
+data.connect:messaging_db
+   database-type:sqlite
+   data.select:select * from chat_logs order by timestamp desc limit 100
+      database-type:sqlite
+   add:x:@.result
+      get-nodes:x:@data.select/*

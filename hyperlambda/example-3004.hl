@@ -1,8 +1,3 @@
-/*
- * Example: Mix in a dynamic slot call inside a string.
- */
-strings.mixin:@"Current year is {{
-date.now
-return:x:-
-}}"
-// Result: "Current year is 2025" (assuming year 2025)
+
+// Logs a fatal error
+log.fatal:Fatal error we cannot recover from

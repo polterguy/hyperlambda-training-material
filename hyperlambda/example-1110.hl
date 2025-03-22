@@ -1,12 +1,4 @@
-// Appends fields from two form templates into a live form
-.form
-   fields
-.template1
-   username
-   password
-.template2
-   email
-   age
-add:x:@.form/*/fields
-   get-nodes:x:@.template1/*
-   get-nodes:x:@.template2/*
+
+// Hyperlambda file containing version and module name information for sqlite-chinook.
+version:v1.0.0
+module_name:sqlite-chinook

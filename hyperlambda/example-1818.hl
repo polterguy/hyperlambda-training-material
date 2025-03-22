@@ -1,11 +1,9 @@
-// [yaml2json] example no. 2
-.yaml:@"
-books:
-  - title: ""The Great Gatsby""
-    author: ""F. Scott Fitzgerald""
-    year: 1925
-  - title: ""1984""
-    author: ""George Orwell""
-    year: 1949
-"
-yaml2json:x:@.yaml
+/*
+ * Accesses a specific configuration group based on a dynamic environment value.
+ *
+ * The `{@.env}` part is resolved at runtime and could yield "dev", "staging", "prod", etc.
+ * The full expression becomes something like: `@.config/*/prod`
+ *
+ * This allows you to fetch settings based on the current environment context.
+ */
+.active-config:x:@.config/*/{@.env}

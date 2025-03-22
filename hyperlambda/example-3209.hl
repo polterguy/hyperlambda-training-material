@@ -1,7 +1,10 @@
-// Attempt to add nodes to a destination when source is empty
 
-.dest
-add:x:../*/.dest
-   get-nodes
-
-// No change to [.dest]
+// Evaluate all lambda objects under the current node sequentially (result becomes 'Second')
+.res:
+.lambda
+   set-value:x:@.res
+      .:First
+.lambda
+   set-value:x:@.res
+      .:Second
+eval:x:../*/.lambda

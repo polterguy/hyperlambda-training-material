@@ -1,8 +1,16 @@
 
-// Example: Remove all digits from a string using a regex.
-.original:abc123xyz
-strings.regex-replace:x:@.original
-   .:"\\d+"
-   .:
+// Generate a Hyperlambda snippet that logs messages while [.count] is less than 10.
 
-// Result: "abcxyz"
+// Logs messages while [.count] is less than 10.
+.count:int:0
+while
+   lt
+      get-value:x:@.count
+      .:int:10
+   .lambda
+
+      // Logging iteration message.
+      log.info:Iteration running
+
+      // Incrementing counter.
+      math.increment:x:@.count

@@ -1,14 +1,16 @@
-// Create a Hyperlambda file concatenating two strings
-.arguments
-   arg1:string
-   arg2:int
 
-strings.concat
-   get-value:x:@.arguments/*/arg1
-   .:" - "
-   get-value:x:@.arguments/*/arg2
+// Provide a Hyperlambda example where [.lambda] runs based on the boolean value of [.flag].
 
-// Unwrap must be used here or [return] would return the expression and not its result
-unwrap:x:+/*
-return
-   result:x:@strings.concat
+// Runs [.lambda] based on the boolean value of [.flag].
+.flag:bool:true
+if
+   eq:x:@.flag
+      .:bool:true
+   .lambda
+
+      // Runs when [.flag] is set to true.
+      log.info:[.flag] is enabled
+else
+
+   // Runs when [.flag] is false.
+   log.info:[.flag] is disabled

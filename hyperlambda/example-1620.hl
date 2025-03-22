@@ -1,23 +1,12 @@
-// Hyperlambda [if] checking multiple conditions
-.role:editor
-.content-type:premium
-.permission
-if
-   and
-      eq:x:@.role
-         .:editor
-      eq:x:@.content-type
-         .:premium
-   .lambda
-      set-value:x:@.permission
-         .:granted
-
-/* JavaScript equivalent of Hyperlambda [if] checking multiple conditions
-const role = "editor";
-const contentType = "premium";
-let permission;
-
-if (role === "editor" && contentType === "premium") {
-  permission = "granted";
-}
-*/
+/*
+ * Example: Use a dynamic value from another slot as the replacement.
+ * Here, replace a substring with its uppercase version using strings.to-upper.
+ */
+.data:"Make it lowercase"
+strings.replace:x:@.data
+   .:lowercase
+   strings.to-upper:lowercase
+/*
+ * After execution, "lowercase" in the original string is replaced with "LOWERCASE".
+ * Result: "Make it LOWERCASE"
+ */

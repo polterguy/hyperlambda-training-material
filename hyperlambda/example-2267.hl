@@ -1,18 +1,12 @@
 
-// Generate a Hyperlambda snippet that evaluates specified [.lambda] if condition does not evaluate to Hello Universe.
+// Write a Hyperlambda script to create a specified folder on the server.
+.arguments
+   folder:string
 
-// Evaluates specified [.lambda] if condition does not evaluate to Hello Universe.
-.foo:Hello Universe
-if
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // [neq] implies "not equals".
-   neq:x:@.foo
-      .:Hello Universe
-   .lambda
-
-      // Lambda evaluates if condition is true.
-      log.info:[.foo] is NOT Hello Universe
-else
-
-   // Lambda evaluated if condition is NOT true.
-   log.info:[.foo] is Hello Universe
+// Creates the specified folder.
+io.folder.create:x:@.arguments/*/folder
+return
+   result:success

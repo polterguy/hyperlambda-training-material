@@ -1,25 +1,52 @@
-/*
- * Sends a POST request to fetch user metadata by ID.
- * Extracts and yields the name and email if the request is successful.
- */
 
+// Develop a function to search for customers in Stripe using a username, which corresponds to the user's email. The function should validate the username and retrieve the Stripe API token. It should construct a URL to search for customers by email, make a GET request to the Stripe API, and handle any errors by logging and throwing exceptions. If successful, the function should return the retrieved customer data to the caller.
 .arguments
-   id:int
+   username
+      type:string
+      mandatory:bool:true
+.icon:payment
 
-http.post:"https://user.example.io/meta"
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+
+// Retrieving token to use for invocations towards Stripe.
+.token
+set-value:x:-
+   strings.concat
+      .:"Bearer "
+      config.get:"magic:stripe:token"
+
+// Making sure we retrieve only customers with the specified email.
+.url
+strings.concat
+   .:"email:'"
+   get-value:x:@.arguments/*/username
+   .:"'"
+strings.url-encode:x:@strings.concat
+set-value:x:@.url
+   strings.concat
+      .:"https://api.stripe.com/v1/customers/search?query="
+      get-value:x:@strings.url-encode
+
+// Invoking Stripe REST API.
+http.get:x:@.url
+   headers
+      Authorization:x:@.token
    convert:true
-   payload
-      id:x:@.arguments/*/id
 
+// Sanity checking above invocation.
 if
-   and
-      lt:x:@http.post
-         .:int:300
-      mte:x:@http.post
-         .:int:200
+   mte
+      get-value:x:@http.post
+      .:int:400
    .lambda
-      yield
-         name:x:@http.post/*/content/*/name
-         email:x:@http.post/*/content/*/email
-return
-   error:Unable to retrieve user metadata
+
+      // Oops, something went wrong ...!!
+      lambda2hyper:x:@http.post
+      log.error:Something went wrong while invoking Stripe API to create subscription
+         result:x:@lambda2hyper
+         provider:Stripe
+      throw:Something went wrong while invoking Stripe API to create subscription
+         public:true
+         status:500
+return-nodes:x:@http.get/*/content/*

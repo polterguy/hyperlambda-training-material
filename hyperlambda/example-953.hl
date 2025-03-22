@@ -1,15 +1,17 @@
-// How can I create a loop that increments a value until it's 5?
-.no:int:0
 
-// will contain 5 nodes afterwards
-.results
-
-while
-   lt
-      get-value:x:@.no
-      .:int:5
+// Example: Create two slots, then execute a [whitelist] lambda object only allowing for 'foo1', to illustrate how an exception will be raise if we execute non-whitelisted slots
+slots.create:foo1
+   return-value:Safe
+slots.create:foo2
+   return-value:Unsafe
+whitelist
+   vocabulary
+      signal
+      signal:foo1
    .lambda
-      add:x:@.results
-         .
-            .:Iteration
-      math.increment:x:@.no
+
+      // Assuming you have a [foo1] slot created, this will work
+      signal:foo1
+
+      // This will throw, since [foo2] is not whitelisted
+      signal:foo2

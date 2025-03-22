@@ -1,45 +1,144 @@
 
-// Counts items from your pages table in your cms database
-.arguments
+// Lists all columns in some SQL Server database table.
+slots.create:magic.db.mssql.columns
 
-   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/database
+   validators.mandatory:x:@.arguments/*/table
 
-   // Offset into the dataset of where to start retrieving records
+   // Opens up our connection
+   .connection:[master]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               get-value:x:@.arguments/*/database
+               .:]
+   else
+      set-value:x:@.connection
+         strings.concat
+            .:[generic|
+            get-value:x:@.arguments/*/database
+            .:]
+   mssql.connect:x:@.connection
 
-   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+      // Running our query to retrieve meta information.
+      mssql.select:"select c.name 'name', t.Name 'type', c.is_nullable 'nullable', isnull(i.is_primary_key, 0) 'primary', c.is_identity 'automatic', c.default_object_id 'default'\n         from sys.columns c \n             inner join sys.types t on c.user_type_id = t.user_type_id\n             left outer join sys.index_columns ic \n             left outer join sys.indexes i on ic.object_id = i.object_id and \n                 ic.index_id = i.index_id on ic.object_id = c.object_id and \n                 ic.column_id = c.column_id and i.is_primary_key = 1\n         where c.object_id = OBJECT_ID(@table)"
+         @table:x:@.arguments/*/table
 
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   pages.id.eq:long
-   pages.title.like:string
-   pages.title.eq:string
-   pages.content.like:string
-   pages.content.eq:string
-   pages.created_at.eq:date
+      // Adding the returned values from the above SQL into our return invocation below.
+      for-each:x:@mssql.select/*
+         unwrap:x:+/*/*
+         .tmp
+            ""
+               name:x:@.dp/#/*/name
+               db:x:@.dp/#/*/type
+               nullable:x:@.dp/#/*/nullable
+               primary:x:@.dp/#/*/primary
+               automatic:x:@.dp/#/*/automatic
 
-// Meta data description for endpoint
+         /*
+          * Checking if column is not automatic,
+          * but still seems to have a default value.
+          */
+         if
+            mt
+               get-value:x:@.dp/#/*/default
+               .:int:0
+            .lambda
 
-// Type of endpoint
-.type:crud-count
+               // Column has default value.
+               set-value:x:@.tmp/*/*/automatic
+                  .:bool:true
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:guest
+         /*
+          * Figuring our which Hyperlambda type to project
+          * its database type to.
+          */
+         .type
+         switch:x:@.dp/#/*/type
 
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
+            // Everything transformed into date values.
+            case:date
+            case:datetime
+            case:datetime2
+            case:datetimeoffset
+            case:smalldatetime
+            case:time
+               set-value:x:@.type
+                  .:date
 
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:pages
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
+            // Everything transformed into decimal values.
+            case:numeric
+            case:decimal
+            case:smallmoney
+            case:money
+            case:float
+            case:real
+               set-value:x:@.type
+                  .:decimal
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+            // Everything transformed into integer long values.
+            case:bigint
+            case:smallint
+            case:int
+            case:tinyint
+               set-value:x:@.type
+                  .:long
+
+            // Everything transformed into boolean values.
+            case:bit
+               set-value:x:@.type
+                  .:bool
+
+            // Everything transformed into string values.
+            case:char
+            case:varchar
+            case:text
+            case:nchar
+            case:nvarchar
+            case:ntext
+            case:binary
+            case:image
+            case:varbinary
+            case:uniqueidentifier
+               set-value:x:@.type
+                  .:string
+
+            // Special case for timestamp, since it's actually an "automatic" column.
+            case:rowversion
+            case:timestamp
+               set-value:x:@.type
+                  .:string
+               set-value:x:@.tmp/*/*/automatic
+                  .:bool:true
+
+            // Defaulting Hyperlambda type to string.
+            default
+               set-value:x:@.type
+                  .:string
+
+         // Adding Hyperlambda type to [.tmp] above.
+         unwrap:x:+/*/*
+         add:x:@.tmp/*
+            .
+               hl:x:@.type
+
+         // Adding [.tmp] to [return-nodes] below.
+         add:x:../*/mssql.connect/*/return-nodes
+            get-nodes:x:@.tmp/*
+
+      // Returning results to caller.
+      return-nodes

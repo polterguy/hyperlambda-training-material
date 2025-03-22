@@ -1,8 +1,3 @@
-/*
- * Example: Extract a substring given a start index and length.
- */
-.text:"HelloWorld"
-strings.substring:x:@.text
-   .:5
-   .:3
-// Result: "Wor"
+
+// Create HTTP GET invocation
+http.get:"https://docs.ainiro.io"

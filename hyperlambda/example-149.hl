@@ -1,93 +1,39 @@
 
-// Returns minimum, maximum, average or sum from your Customers table in your northwind database
-.arguments
+/*
+ * Default global exception handler, invoked if no other overrides exists
+ * at the module level.
+ *
+ * If you want to create a custom exception handler
+ * for a specific module, you can do so by creating a file called "exceptions.hl"
+ * inside a folder in your module.
+ */
+log.error:x:@.arguments/*/message
+   url:x:@.arguments/*/path
+   exception:x:@.arguments/*/stack
 
-   // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg
-   aggregate_function:string
+/*
+ * Notice, unless the [public] argument exists, and is true,
+ * we return a "generic" error to caller to make sure we don't
+ * disclose any security information originating from exceptions.
+ */
+if
+   or
+      auth.ticket.in-role:root
+      and
+         exists:x:@.arguments/*/public
+         or
+            get-value:x:@.arguments/*/public
+            convert:x:@.arguments/*/public
+               type:bool
+   .lambda
 
-   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME.
-   aggregate_column:string
-   Customers.CustomerID.like:string
-   Customers.CustomerID.eq:string
-   Customers.CompanyName.like:string
-   Customers.CompanyName.eq:string
-   Customers.ContactName.like:string
-   Customers.ContactName.eq:string
-   Customers.ContactTitle.like:string
-   Customers.ContactTitle.eq:string
-   Customers.Address.like:string
-   Customers.Address.eq:string
-   Customers.City.like:string
-   Customers.City.eq:string
-   Customers.Region.like:string
-   Customers.Region.eq:string
-   Customers.PostalCode.like:string
-   Customers.PostalCode.eq:string
-   Customers.Country.like:string
-   Customers.Country.eq:string
-   Customers.Phone.like:string
-   Customers.Phone.eq:string
-   Customers.Fax.like:string
-   Customers.Fax.eq:string
+      // Exception message is supposed to propagate to client.
+      set-value:x:../*/return/*/message
+         get-value:x:@.arguments/*/message
 
-// Meta data description for endpoint
-.description:Returns minimum, maximum, average or sum from your Customers table in your northwind database
-
-// Type of endpoint
-.type:crud-aggregate
-
-// Sanity checking mandatory arguments.
-validators.mandatory:x:@.arguments/*/aggregate_function
-validators.mandatory:x:@.arguments/*/aggregate_column
-
-// Sanity checking name of aggregate function.
-validators.enum:x:@.arguments/*/aggregate_function
-   .:min
-   .:max
-   .:sum
-   .:avg
-
-// Sanity checking agggregate column name.
-validators.enum:x:@.arguments/*/aggregate_column
-   .:Customers.CustomerID
-   .:Customers.CompanyName
-   .:Customers.ContactName
-   .:Customers.ContactTitle
-   .:Customers.Address
-   .:Customers.City
-   .:Customers.Region
-   .:Customers.PostalCode
-   .:Customers.Country
-   .:Customers.Phone
-   .:Customers.Fax
-
-// Opening up our database connection.
-data.connect:[generic|northwind]
-   database-type:sqlite
-
-   // Making sure we're using correct aggregate function.
-   set-name:x:./*/data.read/*/columns/*/aggregate_functor
-      strings.concat
-         get-value:x:@.arguments/*/aggregate_function
-         .:(
-         get-value:x:@.arguments/*/aggregate_column
-         .:)
-
-   // Removing aggregate arguments to simplify adding other arguments.
-   remove-nodes:x:@.arguments/*/[0,2]
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:Customers
-      columns
-         aggregate_functor
-            as:result
-      where
-         and
-      limit:long:1
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+// Parametrizing return invocation.
+add:x:+
+   get-nodes:x:@.arguments/*/status
+   get-nodes:x:@.arguments/*/field
+return
+   message:Guru meditation, come back when Universe is in order!

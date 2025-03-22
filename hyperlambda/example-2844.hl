@@ -1,26 +1,28 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the roles table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
+// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the users_roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
-   name:string
+   role:string
+   user:string
+.type:crud-create
 
 // Verifying user is authorized to access endpoint.
 auth.ticket.verify:root
-validators.mandatory:x:@.arguments/*/name
 
-// Opening up our database connection.
+// Opening up database connection.
 data.connect:[generic|magic]
 
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
       get-nodes:x:@.arguments/*
 
-   // Deleting item from database.
-   data.delete
-      table:roles
-      where
-         and
+   // Creating our record.
+   data.create
+      table:users_roles
+      return-id:bool:false
+      values
 
-   // Returning result of above invocation to caller.
+   // Returning result of above invoction to caller.
+   response.status.set:201
    unwrap:x:+/*
    return
-      affected:x:@data.delete
+      result:success

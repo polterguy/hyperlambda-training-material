@@ -1,39 +1,14 @@
 
-/*
- * Gets a company
- * 
- * Will return the company with the specified name.
- */
+// Create a Hyperlambda action to load a specified file and return its content.
 .arguments
-   query:string
-.type:public
+   file
+      type:string
+      mandatory:bool:true
+.icon:insert_drive_file
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/query
+// Loads the specified file.
+load-file:x:@.arguments/*/file
 
-// Connecting to database.
-data.connect:[finovo|finovo]
-   database-type:pgsql
-
-   // Retrieving items.
-   data.read
-      database-type:pgsql
-      table:basic
-      columns
-         org_number
-         company_name
-      where
-         and
-            legalgroup_code.eq:AB
-            company_name.ilike:x:@.arguments/*/query
-      limit:1
-
-   // Checking we've got data.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         return
-            result:No results were found
-
-   // Returning result to caller.
-   return-nodes:x:@data.read/*/*
+// Returning result of above invocation to caller.
+yield
+   content:x:@load-file

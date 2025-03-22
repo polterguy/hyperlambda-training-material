@@ -1,28 +1,18 @@
+// Hyperlambda [if] with greater than or equal
+.age:int:19
+.access-status
+if
+   mte:x:@.age
+      .:int:18
+   .lambda
+      set-value:x:@.access-status
+         .:allowed
 
-// Deletes one item from your types table in your [generic|onboarding] database matching the specified argument(s).
-.arguments
-   name:string
+/* JavaScript equivalent of Hyperlambda [if] with greater than or equal
+const age = 18;
+let accessStatus;
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/name
-
-// Opening up our database connection.
-data.connect:[generic|hub]
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      table:plans
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+if (age >= 18) {
+  accessStatus = "allowed";
+}
+*/

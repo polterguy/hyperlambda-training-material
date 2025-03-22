@@ -1,20 +1,26 @@
 
-// Provide a Hyperlambda example where an order status is updated in the 'ecommerce_db' database within the 'orders' table.
-
-// Updates an order status in the "ecommerce_db" database within the "orders" table.
+// Write a Hyperlambda script to delete all existing vectors for a specified model.
 .arguments
-   order_id:int
-data.connect:ecommerce_db
-   database-type:mssql
+   type:string
+.type:internal
 
-   // Updating the order status.
-   data.update
-      database-type:mssql
-      table:orders
-      values
-         order_status:shipped
-         shipped_date:date:"2025-04-01T00:00:00.000"
-      where
-         and
-            order_id.eq:x:@.arguments/*/order_id
-   return:x:@data.update
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+
+// Connecting to database.
+data.connect:[generic|magic]
+
+   // Deleting VSS data.
+   data.execute:delete from vss_ml_training_snippets where rowid in (select id as rowid from ml_training_snippets where type = @type)
+      @type:x:@.arguments/*/type
+
+   // Deleting embeddings.
+   data.execute:update ml_training_snippets set embedding = null where type = @type
+      @type:x:@.arguments/*/type
+
+// Returning success to caller.
+return
+   result:success

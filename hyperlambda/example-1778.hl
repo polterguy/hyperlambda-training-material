@@ -1,5 +1,10 @@
-// Purging all cache entries.
 
-cache.clear
+// Adding expressions as new nodes but unwrapping expressions before executing [add]
+.data
+   foo:some value
+unwrap:x:+/*/*
+add:x:@.data
+   .
+      bar:x:@.data/*/foo
 
-// All cache items will be removed.
+// Both nodes will contain the values of the above [foo] nodes after [add].

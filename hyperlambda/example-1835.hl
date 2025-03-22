@@ -1,43 +1,14 @@
 
-// Deletes the training snippet with the specified [id]
+// Write a Hyperlambda script to return the OpenAI API key to the caller.
 .arguments
 
-   // Mandatory and is the ID of the training snippet to delete.
-   id:int
-.type:public
+// Making sure user has access to invoked endpoint.
+auth.ticket.verify:root
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/id
-validators.integer:x:@.arguments/*/id
-   min:int:0
+// Reading OpenAI API key from configuration.
+config.get:"magic:openai:key"
 
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Making sure snippet exists.
-   data.read
-      table:ml_training_snippets
-      columns
-         prompt
-         completion
-         uri
-      where
-         and
-            id.eq:x:@.arguments/*/id
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         throw:Now such snippet
-         public:bool:true
-         status:int:401
-
-   // Deleting snippet.
-   data.execute:delete from vss_ml_training_snippets where rowid = @id
-      @id:x:@.arguments/*/id
-   data.delete
-      table:ml_training_snippets
-      where
-         and
-            id.eq:x:@.arguments/*/id
+// Returning key to caller.
+unwrap:x:+/*
 return
-   result:success
+   result:x:@config.get

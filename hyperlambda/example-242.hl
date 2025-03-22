@@ -1,18 +1,20 @@
 
-// Executing the following Hyperlambda results in the following
+// Generate a Hyperlambda snippet that updates an employee record in the 'hr_db' database within the 'employees' table.
 
-// When executing the following Hyperlambda
-data.connect:magic
-   database-type:sqlite
-   data.create
-      database-type:sqlite
-      table:log_entries
+// Updates an employee record in the "hr_db" database within the "employees" table.
+.arguments
+   employee_id:int
+data.connect:hr_db
+   database-type:mysql
+
+   // Updating the employee's department and salary.
+   data.update
+      database-type:mysql
+      table:employees
       values
-         content:Foo bar log content
-         type:info
-
-// We end up with this result
-data.connect
-   data.create:long:75152
-
-// Notice how lists are declared with nodes having names of "." or even sometimes ""
+         department:Finance
+         salary:decimal:75000.00
+      where
+         and
+            employee_id.eq:x:@.arguments/*/employee_id
+   return:x:@data.update

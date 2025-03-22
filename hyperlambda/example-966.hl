@@ -1,5 +1,6 @@
-// Convert a string to a node
-
-.src:".foo"
-convert:x:-
-   type:node
+/**
+ * This example converts "input.png" to "output.webp" for better compression.
+ */
+image.convert
+   file:/input.png
+   output:/output.webp

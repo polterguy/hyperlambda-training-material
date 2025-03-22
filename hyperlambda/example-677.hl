@@ -1,10 +1,8 @@
-// Group by syntax counting items from table1 grouped by col1
-sql.read
-   table:table1
-   limit:-1
-   columns
-      col1
-      count(*)
-         as:count
-   group
-      col1
+
+// Provide a Hyperlambda example simulating a long-running task using [fork].
+
+// Simulates a long-running task running in parallel.
+fork
+   sleep:3000
+   log.info:Long-running task completed
+log.info:Main process continues...

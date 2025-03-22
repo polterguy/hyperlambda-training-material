@@ -1,4 +1,9 @@
-// Validate [enum_value] argument is either 'val1' or 'val2'
-validators.enum:x:@.arguments/*/enum_value
-   .:val1
-   .:val2
+
+// Create a Hyperlambda snippet that inserts a 'task2' node after 'task1' inside '.tasks'.
+
+// Inserts a "task2" node after "task1" inside ".tasks".
+.tasks
+   task1
+insert-after:x:@.tasks/*/task1
+   .
+      task2:Next task in queue

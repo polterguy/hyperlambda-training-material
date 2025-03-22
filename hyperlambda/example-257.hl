@@ -1,33 +1,39 @@
 
-// How to use [data.select]
-
 /*
- * To execute SQL towards some database, we first must open a database connection.
+ * Gets a company
  * 
- * This invocation uses the default database type being SQLite, and connects to warehouse database file, that can be found under /data/warehouse.db
+ * Will return the company with the specified name.
  */
-data.connect:warehouse
+.arguments
+   query:string
+.type:public
 
-   // This executes the specified SQL
-   data.select:select first_name, last_name from admins limit 5
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/query
 
-/*
- * How it will look like after execution:
- * data.connect
- * data.select
- * ""
- * first_name:PENELOPE
- * last_name:GUINESS
- * ""
- * first_name:NICK
- * last_name:WAHLBERG
- * ""
- * first_name:ED
- * last_name:CHASE
- * ""
- * first_name:JENNIFER
- * last_name:DAVIS
- * ""
- * first_name:JOHNNY
- * last_name:LOLLOBRIGIDA
- */
+// Connecting to database.
+data.connect:[finovo|finovo]
+   database-type:pgsql
+
+   // Retrieving items.
+   data.read
+      database-type:pgsql
+      table:basic
+      columns
+         org_number
+         company_name
+      where
+         and
+            legalgroup_code.eq:AB
+            company_name.ilike:x:@.arguments/*/query
+      limit:1
+
+   // Checking we've got data.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+         return
+            result:No results were found
+
+   // Returning result to caller.
+   return-nodes:x:@data.read/*/*

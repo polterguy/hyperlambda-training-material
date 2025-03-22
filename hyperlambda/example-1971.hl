@@ -1,3 +1,12 @@
-// How do you declare a boolean value in Hyperlambda?
+// Create a while loop for 20 iterations that creates a log entry
+.no:int:0
 
-.is-active:bool:false
+while
+   lt
+      get-value:x:@.no
+      .:int:20
+   .lambda
+
+      // Your lambda goes here.
+      log.info:Howdy from while
+      math.increment:x:@.no

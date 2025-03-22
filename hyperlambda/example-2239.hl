@@ -1,10 +1,3 @@
-
-// Create a Hyperlambda snippet that appends several key-value pairs into the given result node.
-
-// Appends several key-value pairs into the given result node.
-.result
-add:x:@.result
-   .
-      keyA:valA
-      keyB:valB
-      keyC:valC
+// Formats specified date according to specified pattern
+date.format:date:"2023-01-19T12:49:44.000Z"
+   format:dd. MMMM yyyy

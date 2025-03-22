@@ -1,13 +1,15 @@
 
-// Define a slot that returns multiple values by evaluating expressions before the slot returns
-slots.create:giveData
-   .tmp1:Value 1
-   .tmp2:int:2025
+// Create a Hyperlambda snippet that counts tickets in the 'support_db' database from the 'tickets' table.
 
-   // Return two nodes, evaluating any expressions in them
-   yield
-      message:x:@.tmp1
-      year:x:@.tmp2
-signal:giveData
+// Counts tickets in the "support_db" database from the "tickets" table.
+data.connect:support_db
+   database-type:pgsql
 
-// Result: message = "Value 1", year = 2023
+   // Counting total support tickets.
+   data.read
+      database-type:pgsql
+      table:tickets
+      columns
+         count(*)
+            as:count
+      limit:long:1

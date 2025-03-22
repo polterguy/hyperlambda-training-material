@@ -1,7 +1,5 @@
-// Iterate over each child node and perform an operation
-.list
-   item1
-   item2
-for-each:x:@.list/*
-   set-value:x:@.dp/#
-      .:processed
+
+// [and] returns true only if all arguments are true
+and
+   .:bool:true
+   .:bool:true

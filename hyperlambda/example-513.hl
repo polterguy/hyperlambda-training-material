@@ -1,2 +1,5 @@
-// Returns the IP address of the cloudlet
-server.ip
+// Convert an empty value to a node (should return an empty node)
+
+.src
+convert:x:-
+   type:node

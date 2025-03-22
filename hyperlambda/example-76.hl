@@ -1,4 +1,3 @@
-// Convert a numeric string to an integer type
-.str:"42"
-convert:x:@.str
-   type:int
+// How do you declare a double-precision floating point number in Hyperlambda?
+
+.pi-approx:double:3.14159265358979

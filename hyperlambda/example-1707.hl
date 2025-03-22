@@ -1,9 +1,7 @@
-// Replace "dog" with "cat" using values from other nodes
-.target-string:I love my dog
-.search-for:dog
-.replace-with:cat
-
-set-value:x:@.target-string
-   strings.replace:x:@.target-string
-      get-value:x:@.search-for
-      get-value:x:@.replace-with
+/*
+ * Example: Trim specific characters from the end of a string.
+ */
+// The trailing "xyz" will be removed
+strings.trim-end:"abcxyzxyz"
+   .:"xyz"
+// Result: "abc"

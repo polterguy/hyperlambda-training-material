@@ -1,10 +1,17 @@
-// Use and to evaluate conditions sequentially
+// Select specific columns from the employees table and sort by department ascending
+data.connect:hrDB
+   data.read
+      table:employees
 
-.result
-if
-   and
-      .:bool:true
-      .:bool:false
-   .lambda
-      set-value:x:../*/.result
-         .:ERROR
+      // Columns we're interested in
+      columns
+         id
+         name
+         department
+
+      // Sort results by department in ascending order
+      order:department
+      direction:asc
+
+      // Limit to 10 results
+      limit:10

@@ -1,5 +1,7 @@
-// Connect using a named connection string "foo" and database "bar", then count records
-data.connect:[foo|bar]
-
-   data.scalar:select count(*) from users
-   // [foo|bar] uses connection string "foo" and database "bar" from configuration
+// This snippet uses the '-' iterator to get the previous sibling of a given node.
+.sequence
+   first:A
+   second:B
+   third:C
+get-value:x:@.sequence/*/second/-  
+// The expression finds "second" under .sequence, then '-' returns its previous sibling ("first"), so the get-value yields "A".

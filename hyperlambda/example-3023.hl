@@ -1,7 +1,27 @@
-
-// Creates our image cache folder.
+// Hyperlambda [if] with multiple conditions and actions
+.user-role:premium
+.subscription:active
+.days-left:5
+.user-message
 if
-   not
-      io.folder.exists:/etc/hub/image-cache/
+   and
+      eq:x:@.user-role
+         .:premium
+      eq:x:@.subscription
+         .:active
+      lt:x:@.days-left
+         .:7
    .lambda
-      io.folder.create:/etc/hub/image-cache/
+      set-value:x:@.user-message
+         .:Subscription expires soon
+
+/* JavaScript equivalent of Hyperlambda [if] with multiple conditions and actions
+const userRole = "premium";
+const subscription = "active";
+const daysLeft = 5;
+let userMessage;
+
+if (userRole === "premium" && subscription === "active" && daysLeft < 7) {
+  userMessage = "Subscription expires soon";
+}
+*/

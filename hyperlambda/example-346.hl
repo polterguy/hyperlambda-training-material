@@ -1,6 +1,16 @@
 
-// Example: Pattern not found yields an empty result set.
-strings.matches:no digits here
-   .:"\\d+"
+// Vectorizing the specified [type].
+.arguments
+   type
+      type:string
+      mandatory:bool:true
+.icon:chat_bubble
 
-// Result: No child nodes (no matches found)
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+
+// Vectorizing model.
+unwrap:x:+/*/*
+fork
+   signal:magic.ai.vectorise
+      type:x:@.arguments/*/type

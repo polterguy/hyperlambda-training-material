@@ -1,8 +1,28 @@
-// If the cache does not contain the specified key, generate a new entry.
 
-cache.try-get:user.theme
-   expiration:30
-   .lambda
-      return:dark-mode
+// Create a Hyperlambda endpoint for a CRUD delete endpoint that deletes one record from the ml_requests table in the magic database with an ID matching the argument, ensuring authentication and authorization for root roles.
+.arguments
+   id:long
 
-// If "user.theme" is not found in cache, "dark-mode" is stored and returned.
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/id
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      table:ml_requests
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

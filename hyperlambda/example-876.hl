@@ -1,6 +1,7 @@
 
-// Example: Use a variable as the input to uppercase.
-.text:make me upper
-
-// Result: "MAKE ME UPPER"
-strings.to-upper:x:@.text
+// Composing a dynamic node expression from parts
+compose
+   .:..
+   .:*
+   .:.data
+   .:*

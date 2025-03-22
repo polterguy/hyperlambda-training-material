@@ -1,5 +1,8 @@
-// Convert a value to an unsigned long integer (ulong)
 
-.src:5
-convert:x:-
-   type:ulong
+// Example: Replace a substring that exists in the text.
+.original:Hello world
+strings.replace:x:@.original
+   .:world
+   .:there
+
+// Result: "Hello there"

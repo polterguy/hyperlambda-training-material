@@ -1,8 +1,3 @@
-// Changes all descendant nodes' values to "updated"
-.settings
-   mode:auto
-   theme:dark
-   layout:responsive
-for-each:x:@.settings/*/**
-   set-value:x:@.dp/#
-      .:updated
+// Example: Check if string contains Hansen
+strings.contains:Thomas Hansen Is Cool
+   .:Hansen

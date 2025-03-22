@@ -1,127 +1,77 @@
 
-// Create a Hyperlambda action to invoke an HTTP GET request with a specified 'url'. Optionally include 'token', 'token_type', and 'params'. Validate URL and handle authorization headers.
+/*
+ * Lists products
+ * 
+ * Optionally apply limit, offset or filter as you see fit
+ */
 .arguments
-   url
-      type:string
-      mandatory:bool:true
-   token
-      type:string
-      mandatory:bool:false
-   token_type
-      type:enum
-      mandatory:bool:false
-      values
-         .:Bearer
-         .:Basic
-   params
-      type:key-value
-      mandatory:bool:false
-.icon:http
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/url
-validators.url:x:@.arguments/*/url
+   // Optional filtering argument allowing to filter items on No_ and Description.
+   filter:string
 
-// Checking if we've got a token, and if so, adding it to HTTP GET invocation.
-if
-   and
-      exists:x:@.arguments/*/token_type
-      not-null:x:@.arguments/*/token_type
-      neq:x:@.arguments/*/token_type
-         .:
-   .lambda
+   // Optional maximum number of records to return. Defaults to 10 if not specified.
+   limit:long
 
-      // Buffer for token to pass in as Authorization HTTP header.
-      .token
+   // Optional offset into records of where to start returning items.
+   offset:long
 
-      // Handling token according to type.
-      switch:x:@.arguments/*/token_type
-         case:Bearer
+.type:public
 
-            // Making sure [token] is supplied.
-            validators.mandatory:x:@.arguments/*/token
+// Making sure user is authorised to access the workflow.
+auth.ticket.verify:mnhc-admin
 
-            // Creating our token.
-            set-value:x:@.token
-               strings.concat
-                  .:"Bearer "
-                  get-value:x:@.arguments/*/token
-         case:Basic
+// Getting limit value, defaulting to 50
+.limit
+set-value:x:@.limit
+   get-first-value
+      get-value:x:@.arguments/*/limit
+      .:long:50
 
-            // Making sure [token] is supplied.
-            validators.mandatory:x:@.arguments/*/username
-            validators.mandatory:x:@.arguments/*/password
+// Getting offset value, defaulting to 0
+.offset
+set-value:x:@.offset
+   get-first-value
+      get-value:x:@.arguments/*/offset
+      .:long:0
 
-            // Creating Basic AUTH token
-            set-value:x:@.token
-               strings.concat
-                  get-value:x:@.arguments/*/username
-                  .:":"
-                  get-value:x:@.arguments/*/password
-            set-value:x:@.token
-               convert:x:@.token
-                  type:bytes
-            set-value:x:@.token
-               strings.concat
-                  .:"Basic "
-                  convert:x:@.token
-                     type:base64
+// Opening up database connection.
+mssql.connect:[production|MNDG_LSC18-1]
 
-      // Adding token to invocation.
-      unwrap:x:+/*/*/*
-      add:x:../*/http.get
-         .
-            headers
-               Authorization:x:@.token
-
-// Handling QUERY parameters.
-if
-   exists:x:@.arguments/*/params/0
-   .lambda
-
-      // Buffer for QUERY params parts of URL.
-      .params
-
-      // Caller provided at least one QUERY parameter.
-      set-value:x:@.params
-         strings.concat
-            get-value:x:@.arguments/*/url
-            .:?
-
-      // Looping through each parameter and appending it to above [.params].
-      for-each:x:@.arguments/*/params/*
-         set-value:x:@.params
-            strings.concat
-               get-value:x:@.params
-               get-name:x:@.dp/#
-               .:=
-               strings.url-encode:x:@.dp/#
-               .:&
-
-      // Removing trailing & and updating our [url].
-      set-value:x:@.arguments/*/url
-         strings.trim:x:@.params
-            .:&
-
-// Invoking HTTP GET endpoint.
-http.get:x:@.arguments/*/url
-   convert:true
-
-// Making sure invocation was a success.
-if
-   not
+   // Checking if we're filtering items.
+   if
       and
-         mte:x:@http.get
-            .:int:200
-         lt:x:@http.get
-            .:int:300
-   .lambda
+         exists:x:@.arguments/*/filter
+         not-null:x:@.arguments/*/filter
+         neq:x:@.arguments/*/filter
+            .:
+      .lambda
 
-      // Oops ...!
-      throw:Something went wrong while invoking HTTP GET action
+         // Creating our filtering condition. To filter on additional columns, add these columns here.
+         .fields
+            .:No_
+            .:Description
+         for-each:x:@.fields/*
+            .condition
+               cond
+            set-name:x:@.condition/*
+               strings.concat
+                  get-value:x:@.dp/#
+                  .:.like
+            set-value:x:@.condition/*
+               strings.concat
+                  .:%
+                  get-value:x:@.arguments/*/filter
+                  .:%
+            add:x:@mssql.connect/*/mssql.read/*/where/*/or
+               get-nodes:x:@.condition/*
 
-// Returning result of invocation to caller.
-add:x:./*/return
-   get-nodes:x:@http.get/*/content
-   get-nodes:x:@http.get/*/headers
-return
+   // Reading records.
+   mssql.read
+      table:addv_Productos
+      limit:x:@.limit
+      offset:x:@.offset
+      where
+         or
+   
+   // Returning result of above invocation to caller.
+   return-nodes:x:@mssql.read/*

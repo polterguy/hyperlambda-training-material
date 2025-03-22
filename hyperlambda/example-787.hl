@@ -1,4 +1,8 @@
-// Create HTTP GET example with headers
-http.get:"https://google.com"
-   headers
-      Accept:text/html
+
+// Create a Hyperlambda script to verify a specified CAPTCHA token.
+.arguments
+   token:string
+
+// Invoking method responsible for verifying CAPTCHA token, which will throw if not valid.
+execute:magic.auth.captcha-verify
+   token:x:@.arguments/*/token

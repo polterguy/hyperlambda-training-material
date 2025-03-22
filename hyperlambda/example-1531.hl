@@ -1,16 +1,41 @@
 
-// Generate a Hyperlambda snippet that loops until [.requests] reach 10.
+// Delete one record from your menus table in your cms database
+.arguments
 
-// Loops until [.requests] reach 10.
-.requests:int:1
-while
-   lt
-      get-value:x:@.requests
-      .:int:10
-   .lambda
+   // Primary key of record to delete, mandatory argument
+   id:long
 
-      // Handling request.
-      log.info:Processing request
+// Meta data description for endpoint
 
-      // Incrementing request counter.
-      math.increment:x:@.requests
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+validators.mandatory:x:@.arguments/*/id
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:menus
+      where
+         and
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.menus.delete
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

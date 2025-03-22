@@ -1,4 +1,7 @@
-
-// Example: Create a slot
+// Example: Create a dynamic slot returning 2 nodes, then invoke it
 slots.create:foo
-   return-value:int:57
+   return-nodes
+      integer-value:int:57
+      string-value:Foo bar
+
+signal:foo

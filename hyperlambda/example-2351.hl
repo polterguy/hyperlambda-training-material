@@ -1,12 +1,4 @@
-
-// Provide a Hyperlambda example where error codes are iterated and logged.
-
-// Iterates through error codes and logs them.
-.errors
-   error1:404 Not Found
-   error2:500 Internal Server Error
-   error3:403 Forbidden
-for-each:x:@.errors/*
-
-   // Logging each error message.
-   log.info:x:@.dp/#
+// Write HTTP POST invocation with payload
+http.post:"https://some-url.com"
+   token:qwerty_secret_JWT_token_goes_here
+   payload:some mumbo jumbo payload, typically JSON and not text though ...

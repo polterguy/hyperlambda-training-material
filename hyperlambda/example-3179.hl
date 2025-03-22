@@ -1,8 +1,5 @@
-/*
- * Example: Concatenate strings when one part is empty.
- */
-strings.concat
-   .:Hello
-   .:""
-   .:World
-// Result: "HelloWorld"
+
+// Example: Convert a string with letters and numbers to uppercase.
+
+// Result: "MIXEDCASE123"
+strings.to-upper:MixedCase123

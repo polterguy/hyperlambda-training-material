@@ -1,62 +1,177 @@
 
-// Create a Hyperlambda script that creates a user and inserts it into the magic database with specified username, password, and roles, ensuring password is securely hashed.
-slots.create:magic.auth.create-user
+/*
+ * Creates a sales email after x days.
+ */
+slots.create:magic.wl.create-send-email-task
 
-   // Hashing password if we should.
-   .password
-   if
-      get-value:x:@.arguments/*/is_hashed
+   // Parametrising task.
+   math.add
+      date.now
+      time
+         days:x:@.arguments/*/days
+   strings.concat
+      .:send-email-to-
+      get-value:x:@.arguments/*/type
+      .:-after-
+      get-value:x:@.arguments/*/days
+      .:-days
+
+   // Creating task.
+   .desc
+   set-value:x:@.desc
+      strings.concat
+         .:"Send demo user email "
+         get-value:x:@.arguments/*/days
+         .:" after creating demo"
+   unwrap:x:./*/tasks.create/*/.lambda/*/.input/*
+   tasks.create:x:@strings.concat
+      description:x:@.desc
+      due:x:@math.add
       .lambda
+      
+         // Forward evaluated further up.
+         .input
+            type:x:@.args-input/*/type
+            task:x:@strings.concat
+            name:x:@.arguments/*/name
+            email:x:@.arguments/*/email
+            url:x:@.arguments/*/url
+            instruction:x:@.arguments/*/instruction
+            task-id:x:@strings.concat
 
-         // Password is already hashed.
-         set-value:x:@.password
-            get-value:x:@.arguments/*/password
-   else
+         // Scraping URL and sending user email making sure we trap exceptions.
+         try
 
-      // Password is not hashed, hashing it.
-      set-value:x:@.password
-         crypto.password.hash:x:@.arguments/*/password
+            // Retrieving token used to invoke OpenAI.
+            .token
+            set-value:x:@.token
+               strings.concat
+                  .:"Bearer "
+                  get-first-value
+                     get-value:x:@.arguments/*/api_key
+                     config.get:"magic:openai:key"
 
-   // Opening up a database connection to magic.
-   data.connect:magic
+            // Scraping lead's website
+            unwrap:x:+/*
+            signal:magic.http.scrape-url
+               url:x:@.input/*/url
+               semantics:bool:false
+            .scraped
+            set-value:x:-
+               strings.join:x:@signal/*/*
+                  .:"\r\n\r\n"
 
-      // Inserting user.
-      data.create
-         table:users
-         values
-            username:x:@.arguments/*/username
-            password:x:@.password
+            // Invoking OpenAI.
+            unwrap:x:./*/http.post/**
+            http.post:"https://api.openai.com/v1/chat/completions"
+               convert:bool:true
+               headers
+                  Authorization:x:@.token
+                  Content-Type:application/json
+               payload
+                  model:gpt-4-1106-preview
+                  max_tokens:int:2000
+                  temperature:decimal:0.3
+                  messages
+                     .
+                        role:system
+                        content:x:@.input/*/instruction
+                     .
+                        role:user
+                        content:x:@.scraped
 
-      // Inserting all roles.
-      for-each:x:@.arguments/*/roles/*
+            // Sanity checking above invocation.
+            if
+               not
+                  and
+                     mte:x:@http.post
+                        .:int:200
+                     lt:x:@http.post
+                        .:int:300
+               .lambda
 
-         // Then inserting into users_roles an association between user and role.
-         data.create
-            table:users_roles
-            values
-               role:x:@.dp/#
-               user:x:@.arguments/*/username
+                  // Oops, error - Logging error and returning status 500 to caller.
+                  lambda2hyper:x:@http.post
+                  log.error:Something went wrong while invoking OpenAI
+                     message:x:@http.post/*/content/*/error/*/message
+                     status:x:@http.post
+                     error:x:@lambda2hyper
+            else
 
-      // Inserting optionally supplied extra information.
-      if
-         exists:x:@.arguments/*/extra/*
-         .lambda
+               // Success, we have an email.
+               strings.split:x:@http.post/*/content/*/choices/0/*/message/*/content
+                  .:"\n"
+               .subject
+               set-value:x:@.subject
+                  strings.trim:x:@strings.split/0
+               if
+                  strings.contains:x:@.subject
+                     .:":"
+                  .lambda
+                     strings.split:x:@.subject
+                        .:":"
+                     set-value:x:@.subject
+                        strings.join:x:@strings.split/*/[1,20]
+                           .:":"
+               remove-nodes:x:@strings.split/0
+               .body
+               set-value:x:@.body
+                  strings.join:x:@strings.split/*
+                     strings.concat
+                        .:"\r\n"
+                        .:"\r\n"
+               .body-html
+               set-value:x:@.body-html
+                  strings.concat
+                     .:@"<!doctype html>
+<html lang=""en"">
+<head>
+<title>"
+                     get-value:x:@.subject
+                     .:@"</title>
+</head>
+<body>
+<div dir=""ltr"">
+"
+                     markdown2html:x:@.body
+                     .:@"
+</div>
+</body>
+</html>"
 
-            // Looping through each extra child specified.
-            for-each:x:@.arguments/*/extra/*
 
-               // Temporary variables.
-               .type
-               .value
-               set-value:x:@.type
-                  get-name:x:@.dp/#
-               set-value:x:@.value
-                  get-value:x:@.dp/#
+               // Sending email.
+               unwrap:x:+/**
+               mail.smtp.send
+                  message
+                     to
+                        .
+                           name:x:@.input/*/name
+                           email:x:@.input/*/email
+                     subject:x:@.subject
+                     entity:multipart/alternative
+                        entity:text/html
+                           headers
+                              Content-Transfer-Encoding:utf8
+                           content:x:@.body-html
+                        entity:text/plain
+                           headers
+                              Content-Transfer-Encoding:utf8
+                           content:x:@.body
 
-               // Then inserting into users_extra an association between user and extra value.
-               data.create
-                  table:users_extra
-                  values
-                     user:x:@.arguments/*/username
-                     type:x:@.type
-                     value:x:@.value
+               // Doing some basic logging.
+               log.info:Demo user was sent email 2 days after creating demo
+                  name:x:@.args-input/*/name
+                  email:x:@.args-input/*/email
+                  type:x:@.type
+                  body:x:@.body
+                  subject:x:@.subject
+
+         .catch
+
+            // Oops ...!!
+            log.info:Could not send user email
+               error:x:@.arguments/*/message
+
+         // Deleting currently executing task.
+         tasks.delete:x:@.input/*/task-id

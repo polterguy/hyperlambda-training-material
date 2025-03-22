@@ -1,25 +1,10 @@
-// If/else-if and else lambda object
-.src:int:3
-.dest
-if
-   eq
-      get-value:x:@.src
-      .:int:1
-   .lambda
-
-      set-value:x:@.dest
-         .:yup!
-
-else-if
-   eq
-      get-value:x:@.src
-      .:int:2
-   .lambda
-
-      set-value:x:@.dest
-         .:yup2.0!
-
-else
-
-   set-value:x:@.dest
-      .:nope
+// Adds a user's two financial balances and stores the result in .totals/sum
+.user
+   balance1:decimal:125.75
+   balance2:decimal:320.50
+.totals
+   sum
+set-value:x:@.totals/*/sum
+   math.add
+      get-value:x:@.user/*/balance1
+      get-value:x:@.user/*/balance2

@@ -1,15 +1,17 @@
-/*
- * Determines the oldest user from three profiles using math.max.
- */
-.users
-   alice
-      age:int:30
-   bob
-      age:int:42
-   carol
-      age:int:36
-.oldest
-math.max
-   get-value:x:@.users/*/alice/*/age
-   get-value:x:@.users/*/bob/*/age
-   get-value:x:@.users/*/carol/*/age
+
+// KPI file displaying the name of the 10 last created contacts
+.name:Latest contacts
+.description:10 last created contacts
+.enabled:bool:true
+.type:table
+.lambda
+   data.connect:[generic|robo-crm]
+      data.read
+         table:contacts
+         columns
+            name
+            created
+         order:created
+         direction:desc
+         limit:10
+      return-nodes:x:-/*

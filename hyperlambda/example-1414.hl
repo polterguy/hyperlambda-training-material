@@ -1,43 +1,11 @@
 
-// Write a Hyperlambda script to unzip a specified file in its current folder, with an option to create a new folder.
-.arguments
-   file:string
-   create_folder:bool
-.type:internal
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Checking if we need to create folder with name and path of zip file.
-if:x:@.arguments/*/create_folder
-   strings.length:x:@.arguments/*/file
-   strings.substring:x:@.arguments/*/file
-      .:int:0
-      math.subtract:x:@strings.length
-         .:int:4
-   strings.concat
-      get-value:x:@strings.substring
-      .:/
-   unwrap:x:+/*/*
-   add:x:../*/io.file.unzip
-      .
-         folder:x:@strings.concat
-   if
-      not
-         io.folder.exists:x:@strings.concat
-      .lambda
-
-         // Creating folder we're unzipping into.
-         io.folder.create:x:@strings.concat
-   else
-
-      // Deleting folder and re-creating it to ensure it's empty.
-      io.folder.delete:x:@strings.concat
-      io.folder.create:x:@strings.concat
-
-// Unzipping file.
-io.file.unzip:x:@.arguments/*/file
-
-// Returning success to caller.
-return-nodes
-   result:success
+// Create a Hyperlambda script to send an email with specified 'to', 'from', 'subject', and 'content'.
+mail.smtp.send
+   message
+      to
+         Thomas Hansen:thomas@gaiasoul.com
+      from
+         Testing Gmail:testing.anarchy@gmail.com
+      subject:This is subject
+      entity:text/plain
+         content:This is body

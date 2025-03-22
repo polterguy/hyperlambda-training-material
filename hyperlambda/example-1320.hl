@@ -1,41 +1,46 @@
 
-/*
- * Returns parent company from specified org number.
- * 
- * Returns the company the specified org number is owned by.
- */
+// Counts items from your spice_urls table in your scraper database.
 .arguments
-   org_number:string
-.type:public
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/org_number
-set-value:x:@.arguments/*/org_number
-   strings.replace-not-of:x:@.arguments/*/org_number
-      .:0123456789
-      .:
+   // spice_urls table spice_url_id column equality exact match filtering
+   spice_urls.spice_url_id.eq:long
 
-// Connecting to database.
-data.connect:[finovo|finovo]
-   database-type:pgsql
+   // spice_urls table url column wildcard filtering with SQL like '%' comparison
+   spice_urls.url.like:string
 
-   // Retrieving items.
+   // spice_urls table url column equality exact match filtering
+   spice_urls.url.eq:string
+
+   // spice_urls table type column wildcard filtering with SQL like '%' comparison
+   spice_urls.type.like:string
+
+   // spice_urls table type column equality exact match filtering
+   spice_urls.type.eq:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-count
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up our database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
    data.read
-      database-type:pgsql
-      table:group_structure
+      database-type:sqlite
+      table:spice_urls
       columns
-         group_mother_orgnumber
+         count(*)
+            as:count
       where
          and
-            org_number.eq:x:@.arguments/*/org_number
-      limit:-1
+      limit:long:1
 
-   // Verifying the company has a parent company.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         return
-            result:"This company doesn't have any parent company"
-
-   // Returning result to caller.
-   return-nodes:x:@data.read/*
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

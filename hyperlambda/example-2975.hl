@@ -1,5 +1,7 @@
+// Define a dynamic slot 'greet' (using alias for slots.create)
+slots.create:greet  
+   return-value:Hi there
 
-// Converting a string to integer
-.data:42
-convert:x:@.data
-   type:int
+// Invoke 'greet'
+signal:greet  
+// The signal node's value is "Hi there"

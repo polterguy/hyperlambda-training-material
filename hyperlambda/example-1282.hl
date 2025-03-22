@@ -1,15 +1,29 @@
 
-// Provide a Hyperlambda example where orders are counted in the 'ecommerce_db' database from the 'orders' table.
+// Compiles C# code files required to wire up module correctly
+io.file.load:/modules/netsuite/magic.startup/csharp/GenerateToken.cs.raw
 
-// Counts orders in the "ecommerce_db" database from the "orders" table.
-data.connect:ecommerce_db
-   database-type:mssql
+// Compiling file into an assembly.
+system.compile
+   references
+      .:netstandard
+      .:System.Linq
+      .:System.Runtime
+      .:System.Net.Http
+      .:System.Private.Uri
+      .:System.ComponentModel
+      .:System.Private.CoreLib
+      .:System.Linq.Expressions
+      .:System.Security.Cryptography
+      .:Microsoft.IdentityModel.Tokens
+      .:System.IdentityModel.Tokens.Jwt
+      .:Microsoft.IdentityModel.Abstractions
+      .:Newtonsoft.Json
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.signals.contracts
+      .:System.Net.Primitives
+   code:x:@io.file.load
+   assembly-name:dynamic.magic.lambda.netsuite.dll
 
-   // Counting total orders.
-   data.read
-      database-type:mssql
-      table:orders
-      columns
-         count(*)
-            as:count
-      limit:long:1
+// Loading assembly as plugin now that we've created it.
+system.plugin.load:x:@system.compile

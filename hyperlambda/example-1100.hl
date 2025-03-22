@@ -1,12 +1,34 @@
-// Add several integer constants together
-math.add
-   .:int:1
 
-   // 1+2 = 3
-   .:int:2
+// Create a Hyperlambda script for a CRUD create endpoint that inserts one record into the questions table in the magic database, taking question and questionnaire, ensuring authentication and authorization for root and admin roles.
+.arguments
+   question:string
+   questionnaire:string
+   type:string
+   name:string
+.type:crud-create
 
-   // 3+3 = 6
-   .:int:3
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // 6+4 = 10 (final result)
-   .:int:4
+// Opening up database connection.
+data.connect:[generic|magic]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:questions
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

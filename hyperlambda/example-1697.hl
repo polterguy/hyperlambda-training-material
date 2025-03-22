@@ -1,4 +1,8 @@
 /*
- * Demonstrates use of escaped quotes in a string literal.
+ * Example: Use an empty allowed set (no characters allowed, so every character is replaced).
  */
-.message:"He said: \"Hello, world!\""
+.original:"Hello"
+strings.replace-not-of:x:@.original
+   .:""
+   .:"*"
+// Result: "*****"

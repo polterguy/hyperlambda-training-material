@@ -1,16 +1,6 @@
-// Using [switch] to evaluate a car part status and set a corresponding message
-.status:in-stock
-.message
-switch:x:@.status
-
-   case:in-stock
-      set-value:x:@.message
-         .:Car part is in stock
-
-   case:out-of-stock
-      set-value:x:@.message
-         .:Car part is out of stock
-
-   default
-      set-value:x:@.message
-         .:Unknown status
+// Inserts a bunch of nodes after the specified destination expression's node.
+.destination
+   foo1
+insert-after:x:@.destination/*/foo1
+   .
+      foo2:bar

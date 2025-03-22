@@ -1,35 +1,27 @@
 
-// Create a Hyperlambda script to update an existing task according to specified arguments.
-.arguments
-   id:string
-   description:string
-   hyperlambda:string
-.type:internal
+// Write a Hyperlambda snippet that determines if conditions are satisfied and executes [.lambda].
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Converting Hyperlambda to lambda.
-.lambda
+// Determines if conditions are satisfied and executes [.lambda].
+.status
+.metricX:int:5
+.metricY:int:15
 if
    and
-      exists:x:@.arguments/*/hyperlambda
-      not
-         eq
-            get-value:x:@.arguments/*/hyperlambda
-            .
-      not
-         eq
-            get-value:x:@.arguments/*/hyperlambda
-            .:
-   .lambda
-      add:x:@.lambda/@.lambda
-         hyper2lambda:x:@.arguments/*/hyperlambda
-      add:x:../*/tasks.update
-         get-nodes:x:@.lambda/@.lambda
-tasks.update:x:@.arguments/*/id
-   description:x:@.arguments/*/description
 
-// Returning success to caller.
-return
-   result:success
+      // Less than condition
+      lt:x:@.metricX
+         .:int:6
+
+      // Greater than condition
+      mt:x:@.metricY
+         .:int:14
+   .lambda
+
+      // Setting [.status] to true
+      set-value:x:@.status
+         .:bool:true
+else
+
+   // Setting [.status] to false
+   set-value:x:@.status
+      .:bool:false

@@ -1,2 +1,4 @@
-// Execute the task named 'create-backup'
-tasks.execute:create-backup
+
+// Module version and name
+version:v0.5.0
+module_name:finovo

@@ -1,17 +1,7 @@
-
-// Write a Hyperlambda script to list all folders in a specified folder recursively, with options to display hidden and system folders.
-.arguments
-   folder:string
-   sys:bool
-.type:internal
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Listing all folders in specified folder.
-io.folder.list-recursively:x:@.arguments/*/folder
-   display-hidden:bool:true
-   display-system:x:@.arguments/*/sys
-
-// Returning results of above invocation to caller.
-return-nodes:x:@io.folder.list-recursively/*
+// Use try with .catch and .finally to handle exceptions
+try
+   throw:Error occurred
+.catch
+   log.info:Caught the error
+.finally
+   log.info:Cleanup done

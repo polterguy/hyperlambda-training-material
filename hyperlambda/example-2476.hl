@@ -1,5 +1,5 @@
+// Convert a numeric value to a byte
 
-// [and] returns true only if all arguments are true
-and
-   .:bool:true
-   .:bool:true
+.src:57
+convert:x:-
+   type:byte

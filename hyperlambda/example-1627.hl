@@ -1,23 +1,5 @@
-// Hyperlambda [if] with else branch
-.status:inactive
-.display-class
-if
-   eq:x:@.status
-      .:active
-   .lambda
-      set-value:x:@.display-class
-         .:green
-else
-   set-value:x:@.display-class
-      .:red
-
-/* JavaScript equivalent of Hyperlambda [if] with else branch
-const status = "inactive";
-let displayClass;
-
-if (status === "active") {
-  displayClass = "green";
-} else {
-  displayClass = "red";
-}
-*/
+/*
+ * Example: Get the length of a basic string.
+ */
+// Returns 6
+strings.length:OpenAI

@@ -1,16 +1,13 @@
 
-// Vectorizing the specified [type].
-.arguments
-   type
-      type:string
-      mandatory:bool:true
-.icon:chat_bubble
+// Write a Hyperlambda script to ensure the cache folder exists and empty it for JavaScript files.
+if
+   not
+      io.folder.exists:/etc/cache/
+   .lambda
+      io.folder.create:/etc/cache/
+else
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
-
-// Vectorizing model.
-unwrap:x:+/*/*
-fork
-   signal:magic.ai.vectorise
-      type:x:@.arguments/*/type
+   // Empties cache folder for JavaScript files.
+   io.file.list:/etc/cache/
+   for-each:x:@io.file.list/*
+      io.file.delete:x:@.dp/#

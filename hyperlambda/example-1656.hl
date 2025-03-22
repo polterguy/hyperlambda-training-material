@@ -1,5 +1,12 @@
-// Example of how to use [strings.concat] to concatenate two or more strings together.
-strings.concat
-   .:foo
-   .:-
-   .:bar
+/*
+ * Example: Split a string with consecutive delimiters (empty segments).
+ */
+strings.split:"one,,two"
+   .:,
+/*
+ * Resulting parts:
+ * .:one
+ * .:two
+ *
+ * Notice, empty strings are ignored
+ */

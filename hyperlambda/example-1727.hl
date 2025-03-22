@@ -1,16 +1,5 @@
 /*
- * Save this file as `/modules/auth/endpoints/register.hl`
- * This exposes an HTTP POST endpoint at `/auth/register`
- *
- * Requires `email` to be present and match a valid email regex.
+ * Example: URL-decode a fully encoded URL.
  */
-
-.arguments
-   email
-
-validators.mandatory:x:@.arguments/*/email
-validators.regex:x:@.arguments/*/email
-   .:^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$
-
-yield
-   result:Email is valid
+strings.url-decode:https%3A%2F%2Fexample.com%2Ffoo%20bar
+// Result: "https://example.com/foo bar"

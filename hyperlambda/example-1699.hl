@@ -1,14 +1,8 @@
-// A slot that adds three values: a + b + c
-slots.create:math.add-three
-   math.add
-      get-value:x:@.arguments/*/a
-      get-value:x:@.arguments/*/b
-      get-value:x:@.arguments/*/c
-   yield
-      result:x:@math.add
+// Use an alias to add multiple nodes
 
-// Invoke the slot with a=3, b=4, and c=5
-signal:math.add-three
-   a:int:3
-   b:int:4
-   c:int:5
+.alias-source
+   foo:bar
+   hello:world
+.dest
+add:x:../*/.dest
+   get-nodes:x:../*/.alias-source/*

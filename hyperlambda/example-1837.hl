@@ -1,9 +1,14 @@
-// This code connects to the 'company' database and updates the salary of an employee in the 'employees' table.
-pgsql.connect:company
-   pgsql.update
-      table:employees
-      values
-         salary:decimal:75000
-      where
-         and
-            employee_id:int:303
+// Use or in comparison to check multiple conditions
+.result
+.foo1:OK
+if
+   or
+      eq
+         get-value:x:../*/.foo1
+         .:OK
+      eq
+         get-value:x:../*/.foo1
+         .:ERROR
+   .lambda
+      set-value:x:../*/.result
+         .:MATCH

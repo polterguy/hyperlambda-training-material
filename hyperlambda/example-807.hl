@@ -1,5 +1,6 @@
-// Convert a value to a double-precision floating-point number (double)
 
-.src:5
-convert:x:-
-   type:double
+// Example: Pattern not found yields an empty result set.
+strings.matches:no digits here
+   .:"\\d+"
+
+// Result: No child nodes (no matches found)

@@ -1,22 +1,24 @@
 
-// Create a Hyperlambda snippet that compiles a C# file 'logger.cs' into a library and loads it dynamically.
+// Write a Hyperlambda script to list all connection strings in your installation for a specified database type.
+.arguments
+   databaseType:string
 
-/*
- * Compiles a C# file "logger.cs" into a library and loads it dynamically.
- * This assumes "logger.cs" exists in "/etc/" and contains a slot named [log_message].
- */
-io.file.load:/etc/logger.cs
-system.compile
-   references
-      .:netstandard
-      .:System.Runtime
-      .:System.IO
-      .:System.Private.CoreLib
-      .:magic.node
-      .:magic.node.extensions
-      .:magic.signals.contracts
-   code:x:@io.file.load
-   assembly-name:logger.dll
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Loading the compiled assembly.
-system.plugin.load:x:@system.compile
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/databaseType
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:pgsql
+   .:mssql
+   .:sqlite
+
+// Retrieves all connection strings according to database type specified.
+strings.concat
+   .:"magic:databases:"
+   get-value:x:@.arguments/*/databaseType
+config.section:x:-
+add:x:+
+   get-nodes:x:@config.section/*
+return

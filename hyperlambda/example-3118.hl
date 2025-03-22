@@ -1,5 +1,4 @@
-
-// Example: Convert a lowercase string to uppercase.
-
-// Result: "HELLO"
-strings.to-upper:hello
+/*
+ * Shows how to escape backslashes in file paths.
+ */
+.path:"C:\\Users\\Alice\\Documents"

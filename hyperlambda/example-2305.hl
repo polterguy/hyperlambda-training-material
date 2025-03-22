@@ -1,13 +1,11 @@
+// Create and update a task
+tasks.create:foo-bar-task-4
+   .lambda
 
-// Create a Hyperlambda snippet that retrieves access logs from the security database and access_logs table.
+      log.info:Executing foo-bar-task-1
 
-// Retrieves access logs from the security database and access_logs table.
-data.connect:security_db
+tasks.update:foo-bar-task-4
+   description:This is the foo bar task
+   .lambda
 
-   // PostgreSQL database used.
-   database-type:pgsql
-
-   // Querying access logs without sorting or limiting.
-   data.read
-      database-type:pgsql
-      table:access_logs
+      log.info:Another log entry now!

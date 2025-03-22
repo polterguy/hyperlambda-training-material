@@ -1,7 +1,7 @@
+// Define a sample slot 'sample'
+slots.create:sample  
+   return-value:Done
 
-// Create a Hyperlambda script to return context data from the 'ainiro_io' type using a specified prompt, threshold, and max tokens.
-signal:magic.ai.get-context
-   type:ainiro_io
-   prompt:"DuckDuckGo \"Pixar\""
-   threshold:float:0.6
-   max_tokens:int:2000
+// Retrieve the Hyperlambda definition of 'sample'
+slots.get:sample  
+// The result is the lambda nodes of 'sample', e.g. a child node [return-value] with value "Done".

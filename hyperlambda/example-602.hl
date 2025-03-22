@@ -1,5 +1,13 @@
+// Executing the Hyperlambda changes the node hierarchy
 
-// Example: Capitalize a fully lowercase word.
+// This Hyperlambda
+.no:int:0
+set-value:x:@.no
+   math.modulo
+      .:int:20
+      .:int:7
 
-// Result: "Hyperlambda"
-strings.capitalize:hyperlambda
+// Creates this result
+.no:int:6
+set-value:x:@.no
+   math.modulo:int:6

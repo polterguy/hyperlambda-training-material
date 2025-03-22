@@ -1,16 +1,40 @@
 
-// Write a Hyperlambda snippet that loops while [.progress] is not equal to 100.
+// Create a Hyperlambda action to publish a web socket message with a specified 'channel' and 'args'. Optionally include 'roles' to restrict notifications. Validate mandatory fields.
+.arguments
+   channel
+      type:string
+      mandatory:bool:true
+   args
+      type:key-value
+      mandatory:bool:true
+   roles
+      type:array
+      mandatory:bool:false
+.icon:send
 
-// Loops while [.progress] is not equal to 100.
-.progress:int:0
-while
-   neq
-      get-value:x:@.progress
-      .:int:100
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/channel
+validators.mandatory:x:@.arguments/*/args
+
+// Decorating invocation.
+add:x:./*/sockets.signal/*/args
+   get-nodes:x:@.arguments/*/args/*
+
+// Checking if we've got a [roles] declaration and if so decorating invocation.
+if
+   and
+      exists:x:@.arguments/*/roles
+      not-null:x:@.arguments/*/roles
    .lambda
 
-      // Logging progress.
-      log.info:Processing...
+      // Decorating invocation with comma separated list of roles.
+      strings.join:x:@.arguments/*/roles
+         .:,
+      unwrap:x:+/*/*
+      add:x:../*/sockets.signal
+         .
+            roles:x:@strings.join
 
-      // Increasing progress.
-      math.increment:x:@.progress
+// Publishing socket message.
+sockets.signal:x:@.arguments/*/channel
+   args

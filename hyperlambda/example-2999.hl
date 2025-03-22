@@ -1,21 +1,8 @@
-// Executing the following Hyperlambda results in the following
-
-// When executing the following Hyperlambda
-.result
-.foo:whatever
-if:x:-
-   set-value:x:@.result
-      .:Yup!
-else
-   set-value:x:@.result
-      .:Nope!
-
-// We end up with this result
-.result:Yup!
-.foo:whatever
-if:bool:true
-   set-value:x:@.result
-      .:Yup!
-else:bool:false
-   set-value:x:@.result
-      .:Nope!
+// Adding expressions as new nodes but unwrapping expressions before executing [add]
+.data
+   foo:some value
+unwrap:x:+/*/*
+add:x:@.data
+   .
+      bar:x:@.data/*/foo
+// Both nodes will contain the values of the above [foo] nodes after [add].

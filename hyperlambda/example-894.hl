@@ -1,5 +1,11 @@
-// Convert a numeric value to a byte
-
-.src:57
-convert:x:-
-   type:byte
+// Else-if using an expression shorthand for its condition
+.flag:bool:true
+.result
+if
+   .:bool:false
+   .lambda
+      set-value:x:@.result
+         .:First
+else-if:x:@.flag
+   set-value:x:@.result
+      .:Second

@@ -1,13 +1,10 @@
-// Hyperlambda [get-value]
-.data
-   item1:apple
-   item2:banana
-.item:item2
-get-value:x:@.data/*/{@.item}
-
-// Results in:
-.data
-   item1:apple
-   item2:banana
-.item:item2
-get-value:banana
+/*
+ * Example: Use variables for the target substring and replacement.
+ */
+.target:world
+.replacement:"WORLD!"
+.phrase:"Hello world"
+strings.replace:x:@.phrase
+   get-value:x:@.target
+   get-value:x:@.replacement
+// Result: "Hello WORLD!"

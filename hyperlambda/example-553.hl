@@ -1,6 +1,12 @@
-// Checks if not exists
-.src1
-   foo
-.src2
-not-exists:x:@.src1/*
-not-exists:x:@.src2/*
+
+// Create a Hyperlambda snippet that iterates through product names and logs each one.
+
+// Iterates through product names and logs each one.
+.products
+   productA:Laptop
+   productB:Smartphone
+   productC:Tablet
+for-each:x:@.products/*
+
+   // Logging each product.
+   log.info:x:@.dp/#

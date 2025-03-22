@@ -1,12 +1,13 @@
 
-// Create a Hyperlambda GET endpoint that takes two arguments, 'name' and 'age', and concatenates them into a message.
-.arguments
-   name:string
-   age:int
-strings.concat
-   get-value:x:@.arguments/*/name
-   .:" is "
-   get-value:x:@.arguments/*/age
-   .:" years old"
-yield
-   message:x:@strings.concat
+// Provide a Hyperlambda example where a user's phone number is fetched from an API.
+
+// Fetches a user's phone number.
+http.get:"https://jsonplaceholder.typicode.com/users/3"
+
+   // Converts JSON response.
+   convert:true
+
+// Stores the phone number in [.phone]
+.phone
+set-value:x:@.phone
+   get-value:x:@http.get/*/content/*/phone

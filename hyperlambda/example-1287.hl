@@ -1,6 +1,16 @@
 
-// Example: No trim characters at start (string remains unchanged).
+// Write a Hyperlambda script to return all saved SQL files in the system for a specified database type.
+.arguments
+   databaseType:string
+.type:internal
 
-// Result: "abc"
-strings.trim-start:abc
-   .:z
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Returns all files in the "/etc/[databaseType]/templates/" folder.
+strings.concat
+   .:/etc/
+   get-value:x:@.arguments/*/databaseType
+   .:/templates/
+io.file.list:x:@strings.concat
+return-nodes:x:-/*

@@ -1,9 +1,18 @@
-// Looping through a collection with [for-each]
-.items
-   item1:Apple
-   item2:Banana
-   item3:Cherry
-for-each:x:@.items/*
+/*
+ * Stores a value in the cache with expiration.
+ */
+.arguments
+   key:string
+   value:string
+   seconds:int
 
-   // Logs each item value
-   log.info:x:@.dp/#
+validators.mandatory:x:@.arguments/*/key
+validators.mandatory:x:@.arguments/*/value
+validators.mandatory:x:@.arguments/*/seconds
+
+cache.set:x:@.arguments/*/key
+   get-value:x:@.arguments/*/value
+   expiration:x:@.arguments/*/seconds
+
+return
+   success:true

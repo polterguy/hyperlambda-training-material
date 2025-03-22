@@ -1,10 +1,11 @@
+// HTTP endpoint that selects users from database and returns as XML
+.arguments
 
-// Adding expressions as new nodes but unwrapping expressions before executing [add]
-.data
-   foo:some value
-unwrap:x:+/*/*
-add:x:@.data
-   .
-      bar:x:@.data/*/foo
-
-// Both nodes will contain the values of the above [foo] nodes after [add].
+// Connect to the database and retrieve employee
+data.connect:company_database
+   data.read
+      table:employees
+   response.headers.set
+      Content-Type:application/xml
+   lambda2xml:x:@data.read/*
+   return:x:-

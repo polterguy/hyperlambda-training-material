@@ -1,15 +1,23 @@
-// Can I combine [while] with [if] to control loop execution?
-.index:int:3
-.loopLog
-while
-   eq
-      get-value:x:@.index
-      .:int:0
-   .lambda
-      if
-         neq
-            get-value:x:@.index
-            .:int:0
-         .lambda
-            // Your loop's code here
-      math.decrement:x:@.index
+
+// Authenticates the user with the specified [username] and [password].
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   password
+      type:string
+      mandatory:bool:true
+.icon:shield
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
+
+// Invokes slot responsible for authenticating caller.
+execute:magic.auth.authenticate
+   username:x:@.arguments/*/username
+   password:x:@.arguments/*/password
+
+// Returning resulting ticket/token to caller.
+yield
+   ticket:x:@execute/*/ticket

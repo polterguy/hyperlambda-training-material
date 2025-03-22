@@ -1,3 +1,5 @@
-// Example: Connect to the SQLite 'foo' database using the 'generic' connection string and create a backup as 'foo.backup' filename
-sqlite.connect:[generic|foo]
-   sqlite.backup:foo.backup
+
+// Example: URL-decode a string with reserved characters.
+strings.url-decode:100%2525%2520free%2520%2526%2520easy
+
+// Result: "100% free & easy"

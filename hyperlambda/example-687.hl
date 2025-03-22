@@ -1,9 +1,13 @@
-// Returns ALL items (limit is -1) from table1 where field1 equals 'howdy' or field2 equals 'world'
-sql.read
-   table:table1
-   limit:-1
-   where
 
-      or
-         field1.eq:howdy
-         field2.eq:world
+// Provide a Hyperlambda example where multiple loggers run in parallel.
+
+// An example of running multiple loggers in parallel.
+join
+   fork
+      log.info:Logging task 1 started
+      sleep:500
+      log.info:Logging task 1 completed
+   fork
+      log.info:Logging task 2 started
+      sleep:1000
+      log.info:Logging task 2 completed

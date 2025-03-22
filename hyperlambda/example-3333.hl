@@ -1,11 +1,16 @@
-// Check multiple conditions using or and variable values
-
+// Basic usage of the [switch] slot to determine a result based on a car part
+.part:engine
 .result
-.value:bool:true
-if
-   or
-      .:bool:false
-      get-value:x:@.value
-   .lambda
-      set-value:x:../*/.result
-         .:OK
+switch:x:@.part
+
+   case:engine
+      set-value:x:@.result
+         .:This is an engine
+
+   case:wheel
+      set-value:x:@.result
+         .:This is a wheel
+
+   default
+      set-value:x:@.result
+         .:Unknown car part

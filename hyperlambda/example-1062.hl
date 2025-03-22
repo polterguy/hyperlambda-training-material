@@ -1,13 +1,10 @@
 
-// What types does Hyperlambda support?
-Hyperlambda supports various types including:
-- `string`, `int`, `bool`, `decimal`, `double`, `float`
-- `date` (serialized as UTC time)
-- `guid`, `time`, `char`, `byte`, `sbyte`
-Example of type declarations:
-```
-.foo:int:5
-.bar:bool:true
-.baz:hello
-```
-If no type is specified, `string` is assumed.
+// Create a Hyperlambda script to generate a bar chart image with specified dimensions and bar values.
+image.chart:bars
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring:int:2
+      Summer:int:5
+      Autumn:int:10

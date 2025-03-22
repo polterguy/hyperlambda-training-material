@@ -1,14 +1,42 @@
 
-// Create a Hyperlambda action to redirect the client to a specified 'url'. Set the response status to 302 and include the 'Location' header.
+// Counts items from your roles table in your cms database
 .arguments
-   url
-      type:string
-      mandatory:bool:true
-.icon:http
 
-// Ensuring we return the correct status code.
-response.status.set:302
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
 
-// Making sure we return the new location to caller.
-response.headers.set
-   Location:x:@.arguments/*/url
+   // Offset into the dataset of where to start retrieving records
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   roles.id.eq:long
+   roles.name.like:string
+   roles.name.eq:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-count
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:roles
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

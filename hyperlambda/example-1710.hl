@@ -1,4 +1,6 @@
 /*
- * Shows how to escape backslashes in file paths.
+ * Example: No trim characters at end (string remains unchanged).
  */
-.path:"C:\\Users\\Alice\\Documents"
+// Result: "abc"
+strings.trim-end:abc
+   .:"z"

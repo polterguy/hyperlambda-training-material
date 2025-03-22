@@ -1,3 +1,14 @@
-// I've got a list of nodes in an existing list of nodes in [.data], please join all values and use ', ' as separator
-strings.join:x:@.data/*
-   .:', '
+
+// Create a Hyperlambda action to ensure a specified 'arg' matches a specified 'regex'. Validate mandatory fields.
+.arguments
+   arg
+      type:string
+      mandatory:bool:true
+   regex
+      type:string
+      mandatory:bool:true
+.icon:shield
+
+// Invoking validator.
+validators.regex:x:@.arguments/*/arg
+   regex:x:@.arguments/*/regex

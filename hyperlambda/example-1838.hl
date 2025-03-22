@@ -1,9 +1,10 @@
-// This code connects to the 'cinema' database and updates the showtime of a movie in the 'showtimes' table.
-pgsql.connect:cinema
-   pgsql.update
-      table:showtimes
-      values
-         time:"time:18:30:00"
-      where
-         and
-            movie_id:int:404
+
+// Example: Find all digit sequences in a string.
+strings.matches:abc123xyz45
+   .:"\\d+"
+
+/*
+ * Resulting matches:
+ * .:123
+ * .:45
+ */

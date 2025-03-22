@@ -1,27 +1,6 @@
-// Hyperlambda [if] with multiple conditions and actions
-.user-role:premium
-.subscription:active
-.days-left:5
-.user-message
-if
-   and
-      eq:x:@.user-role
-         .:premium
-      eq:x:@.subscription
-         .:active
-      lt:x:@.days-left
-         .:7
-   .lambda
-      set-value:x:@.user-message
-         .:Subscription expires soon
-
-/* JavaScript equivalent of Hyperlambda [if] with multiple conditions and actions
-const userRole = "premium";
-const subscription = "active";
-const daysLeft = 5;
-let userMessage;
-
-if (userRole === "premium" && subscription === "active" && daysLeft < 7) {
-  userMessage = "Subscription expires soon";
-}
-*/
+/*
+ * Example: Use a variable to provide the input string.
+ */
+.text:"Test"
+// Returns 4
+strings.length:x:@.text

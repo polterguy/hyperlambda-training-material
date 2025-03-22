@@ -1,5 +1,8 @@
-
-// Example: Convert an already uppercase string (no change).
-
-// Result: "HELLO"
-strings.to-upper:HELLO
+// This code connects to the 'restaurant' database and inserts a new menu item into the 'menu' table.
+mysql.connect:restaurant
+   mysql.create
+      table:menu
+      values
+         dish_name:Spaghetti Carbonara
+         price:decimal:12.99
+         category:Pasta

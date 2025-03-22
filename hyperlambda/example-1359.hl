@@ -1,44 +1,54 @@
 
-/*
- * Returns subsidiary companies from specified org number.
- * 
- * Returns all companies the specified org number company owns, either partially or completely.
- */
+// Counts items from your clusters table in your [generic|hub] database according to the specified arguments.
 .arguments
-   org_number:string
+   operator:string
+   clusters.id.like:string
+   clusters.id.eq:string
+   clusters.country.like:string
+   clusters.country.eq:string
+   clusters.name.like:string
+   clusters.name.eq:string
+   clusters.enabled.eq:bool
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/org_number
-set-value:x:@.arguments/*/org_number
-   strings.replace-not-of:x:@.arguments/*/org_number
-      .:0123456789
-      .:
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
-// Connecting to database.
-data.connect:[finovo|finovo]
-   database-type:pgsql
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
 
-   // Retrieving items.
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/*
+         get-value:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|hub]
+
+   // Parametrising our read invocation.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/operator
+   remove-nodes:x:@.arguments/*/operator
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
    data.read
-      database-type:pgsql
-      table:group_structure
+      table:clusters
       columns
-         org_number
-         company_name
-         company_country_name
-         owned_percent
+         count(*)
+            as:count
       where
          and
-            group_mother_orgnumber.eq:x:@.arguments/*/org_number
-            org_number.neq:x:@.arguments/*/org_number
-      limit:-1
+      limit:long:1
 
-   // Verifying the company has subsidiaries.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         return
-            result:"This company doesn't have any subsidiaries"
-
-   // Returning result to caller.
-   return-nodes:x:@data.read/*
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

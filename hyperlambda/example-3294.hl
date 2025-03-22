@@ -1,5 +1,8 @@
-/*
- * Example: URL-decode an email address.
- */
-strings.url-decode:user%40example.com
-// Result: "user@example.com"
+// This example connects to the 'hospital' database and inserts a new patient record into the 'patients' table.
+sqlite.connect:hospital
+   sqlite.create
+      table:patients
+      values
+         patient_id:int:11223
+         name:Robert Brown
+         diagnosis:Cold

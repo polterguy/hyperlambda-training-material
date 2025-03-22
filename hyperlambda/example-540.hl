@@ -1,4 +1,15 @@
-// Demonstrates how [unwrap] works
-.src:Hello World
-unwrap:x:+
-.dest:x:@.src
+
+// Provide a Hyperlambda example where orders are counted in the 'ecommerce_db' database from the 'orders' table.
+
+// Counts orders in the "ecommerce_db" database from the "orders" table.
+data.connect:ecommerce_db
+   database-type:mssql
+
+   // Counting total orders.
+   data.read
+      database-type:mssql
+      table:orders
+      columns
+         count(*)
+            as:count
+      limit:long:1

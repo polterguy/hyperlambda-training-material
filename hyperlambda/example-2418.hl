@@ -1,9 +1,10 @@
+// Among the chosen few, we must find "Neo" in the prophecy.
 
-// Create a Hyperlambda snippet that inserts a 'task0' node before 'task1' inside '.tasks'.
+.matrix
+   candidate1:Morpheus
+   candidate2:Neo
+   candidate3:Trinity
 
-// Inserts a "task0" node before "task1" inside ".tasks".
-.tasks
-   task1
-insert-before:x:@.tasks/*/task1
-   .
-      task0:Preliminary task
+get-value:x:@.matrix/*/candidate2
+
+// The result is "Neo" because he is the chosen one.

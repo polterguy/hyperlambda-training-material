@@ -1,16 +1,3 @@
-// Define a DELETE endpoint that removes a user based on their unique ID.
-// Filename - /modules/users/delete.delete.hl
-// Only admin users can perform this action, and the ID is passed as a query parameter.
 
-.arguments
-   id:int
-
-auth.ticket.verify:admin
-
-data.connect:[generic|users]
-   data.delete
-      table:users
-      where
-         and
-            id.eq:x:@.arguments/*/id
-   return-nodes:x:@data.delete/*
+// Example: Try signaling a slot without throwing exception if it doesn't exist
+try-signal:foo

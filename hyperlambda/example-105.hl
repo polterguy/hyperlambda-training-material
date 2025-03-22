@@ -1,16 +1,27 @@
 
-// Vectorizing the specified [type].
-.arguments
-   type
-      type:string
-      mandatory:bool:true
-.icon:chat_bubble
+// Create a Hyperlambda snippet that executes [.lambda] if at least one condition is met.
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+// Executes [.lambda] if at least one condition is met.
+.output
+.numA:int:6
+.numB:int:12
+if
+   or
 
-// Vectorizing model.
-unwrap:x:+/*/*
-fork
-   signal:magic.ai.vectorise
-      type:x:@.arguments/*/type
+      // Less than check
+      lt:x:@.numA
+         .:int:7
+
+      // Greater than check
+      mt:x:@.numB
+         .:int:11
+   .lambda
+
+      // Setting [.output] to true
+      set-value:x:@.output
+         .:bool:true
+else
+
+   // Setting [.output] to false
+   set-value:x:@.output
+      .:bool:false

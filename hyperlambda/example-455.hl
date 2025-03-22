@@ -1,10 +1,16 @@
 
-// This snippet uses the '*' iterator to retrieve all children of a node, in addition to the # reference iterator.
-.data
-   item1:one
-   item2:two
-for-each:x:@.data/*
-   set-value:x:@.dp/#
-      :processed
+// Write a Hyperlambda snippet that determines if [.toggle] is true and executes [.lambda].
 
-// The expression @.data/* selects both item1 and item2 nodes, and the for-each loop sets each of their values to "processed" since it's using the [.dp] node by reference which is injected by the [for-each] slot.
+// Determines if [.toggle] is true and executes [.lambda].
+.toggle:bool:true
+if
+   eq:x:@.toggle
+      .:bool:true
+   .lambda
+
+      // Executes when [.toggle] is true.
+      log.info:[.toggle] is on
+else
+
+   // Executes when [.toggle] is false.
+   log.info:[.toggle] is off

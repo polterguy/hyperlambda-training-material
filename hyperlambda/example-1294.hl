@@ -1,19 +1,32 @@
-// Checks if the user's age is greater than 18 and yields the boolean result
-slots.create:check.age
-   if
-      mt:x:@.arguments/*/age
-         .:int:18
-      .lambda
-         yield
-            allowed:bool:true
-   else
-      yield
-         allowed:bool:false
 
-// Returns true
-execute:check.age
-   age:int:22
+// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the users_extra table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+.arguments
+   type:string
+   value:string
+   user:string
 
-// Returns false
-execute:check.age
-   age:int:15
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.regex:x:@.arguments/*/type
+   regex:^[a-zA-Z0-9-_]+$
+
+// Opening up database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      table:users_extra
+      return-id:bool:false
+      values
+
+   // Returning result of above invoction to caller.
+   response.status.set:201
+   unwrap:x:+/*
+   return
+      result:success

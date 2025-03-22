@@ -1,14 +1,44 @@
-// What are lambda expressions?
 
-/*
- * Lambda expressions in Hyperlambda are used to reference any node within the currently executing graph object.
- * They allow for dynamic access to nodes, enabling you to express relationships and hierarchies in the nodes effectively.
- * They are similar to XPath expressions found in other technologies.
- */
+// Removes the specified [extra] field(s) from the specified [username].
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   extra
+      type:array
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Example of a simple lambda expression referencing the [.person] node.
-.person:John
-set-value:x:@.person
-   .:Jane
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/extra
 
-// In this case, @.person is a lambda expression that points to the .person node, and the [set-value] slot changes its value.
+// Connecting to database.
+data.connect:[generic|magic]
+
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
+
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Removing extra fields from user.
+   for-each:x:@.arguments/*/extra/*
+      data.delete
+         table:users_extra
+         where
+            and
+               user.eq:x:@.arguments/*/username
+               type.eq:x:@.dp/#

@@ -1,2 +1,7 @@
-// Create a random new GUID
-guid.new
+
+// Define a Hyperlambda POST endpoint that handles file uploads and returns the uploaded file name.
+.arguments
+   file
+yield
+   message:File uploaded successfully
+   filename:x:@.arguments/*/file/name

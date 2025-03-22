@@ -1,28 +1,49 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the users_extra table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
+// Deletes the specified cloudlet
 .arguments
-   type:string
-   user:string
+   cloudlet_name:string
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-validators.mandatory:x:@.arguments/*/type
-validators.mandatory:x:@.arguments/*/user
+/*
+ * Ensures the specified [arg] was given.
+ * 
+ * This action will throw an exception with a descriptive text explaining if the argument is missing.
+ */
+execute:magic.workflows.actions.execute
+   name:validators-mandatory
+   filename:/misc/workflows/actions/security/validators-mandatory.hl
+   arguments
+      arg:x:@.arguments/*/cloudlet_name
 
-// Opening up our database connection.
-data.connect:[generic|magic]
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
+/*
+ * Returns the username of the currently authenticated user,
+ * or null if user isn't authenticated.
+ */
+execute:magic.workflows.actions.execute
+   name:username-get
+   filename:/misc/workflows/actions/security/username-get.hl
+   arguments
 
-   // Deleting item from database.
-   data.delete
-      table:users_extra
-      where
-         and
+// Deletes the specified cloudlet
+execute:magic.workflows.actions.execute
+   name:hub-cloudlets-delete
+   filename:/modules/hub/workflows/actions/hub-cloudlets-delete.hl
+   arguments
+      cloudlet_name:x:@.arguments/*/cloudlet_name
+      username:x:--/execute/=username-get/*/username
 
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Returns the result of your last action.
+return-nodes:x:@execute/*

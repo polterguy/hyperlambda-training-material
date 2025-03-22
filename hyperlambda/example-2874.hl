@@ -1,47 +1,20 @@
 
-// KPI file for new activities created per day the last 14 days
-.name:New activities
-.description:New activities per day the last 14 days
-.enabled:bool:false
-.type:line
-.lambda
-   .now
-   set-value:x:-
-      math.subtract
-         date.now
-         time
-            days:13
-   data.connect:[generic|robo-crm]
-      while
-         lt:x:@.now
-            date.now
-         .lambda
-            .max
-            set-value:x:@.max
-               math.add:x:@.now
-                  time
-                     days:1
-            date.format:x:@.now
-               format:yyyy-MM-dd
-            date.format:x:@.max
-               format:yyyy-MM-dd
-            data.read
-               table:activities
-               columns
-                  count(*)
-                     as:name
-               where
-                  and
-                     created.mt:x:@date.format/@date.format
-                     created.lt:x:@date.format
-            unwrap:x:+/*/*/*
-            add:x:../*/return
-               .
-                  .
-                     name:x:@date.format/@date.format
-                     value:x:@data.read/*/*
-            set-value:x:@.now
-               math.add:x:@.now
-                  time
-                     days:1
-   return
+// Create a Hyperlambda action to set specified HTTP headers in a response. Use 'headers' as a key-value input to determine which headers to set.
+.arguments
+   headers
+      type:key-value
+      mandatory:bool:true
+.icon:http
+
+/*
+ * Iterating through each header from above invocation and checking if caller is interested in it,
+ * and if caller wants this particular header, we make sure we return it below.
+ */
+for-each:x:@.arguments/*/headers/*
+
+   // Adding currently iterated HTTP header.
+   add:x:../*/response.headers.set
+      get-nodes:x:@.dp/#
+
+// Invoking slot responsible for setting response HTTP headers.
+response.headers.set

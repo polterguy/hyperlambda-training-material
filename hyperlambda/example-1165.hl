@@ -1,3 +1,19 @@
-// Invoking a non-existing signal should throw an exception
+// Evaluate all lambda objects under the current node sequentially (result becomes 'Second')
+.res:
+.lambda
+   set-value:x:@.res
+      .:First
+.lambda
+   set-value:x:@.res
+      .:Second
+eval:x:../*/.lambda
 
-foo_XXX
+// Result after executing above lambda
+.res:Second
+.lambda
+   set-value:x:@.res
+      .:First
+.lambda
+   set-value:x:@.res
+      .:Second
+eval:x:../*/.lambda

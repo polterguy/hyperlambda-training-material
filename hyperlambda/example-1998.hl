@@ -1,3 +1,5 @@
-// How do you declare a GUID value in Hyperlambda?
-
-.api-key:guid:9f8c4d89-a9f7-4b63-b3c5-1d2c85b7ab2f
+// [eq] equality comparison checking [.src]
+.src:int:5
+eq
+   get-value:x:@.src
+   .:int:5

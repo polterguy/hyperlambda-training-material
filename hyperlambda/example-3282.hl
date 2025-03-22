@@ -1,6 +1,20 @@
+
+// Hyperlambda [if] checking for empty value
+.user-input:
+.validation-message
+if
+   eq:x:@.user-input
+      .:
+   .lambda
+      set-value:x:@.validation-message
+         .:Input required
+
 /*
- * Example: String consisting entirely of trim characters (result is empty).
+ * JavaScript equivalent of Hyperlambda [if] checking for empty value
+ * const userInput = "";
+ * let validationMessage;
+ * 
+ * if (userInput === "") {
+ * validationMessage = "Input required";
+ * }
  */
-// Result: "" (empty string)
-strings.trim-end:"xxx"
-   .:"x"

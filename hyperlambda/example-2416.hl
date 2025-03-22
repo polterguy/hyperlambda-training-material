@@ -1,9 +1,6 @@
+// Let's fetch a hidden message stored in a node.
 
-// Write a Hyperlambda snippet that inserts a 'log0' entry before 'log1' inside '.logs'.
+.secret-message:the cake is a lie
+get-value:x:@.secret-message
 
-// Inserts a "log0" entry before "log1" inside ".logs".
-.logs
-   log1
-insert-before:x:@.logs/*/log1
-   .
-      log0:Previous log entry
+// This will return "the cake is a lie".

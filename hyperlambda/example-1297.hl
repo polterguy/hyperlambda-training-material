@@ -1,14 +1,23 @@
 
-/*
- * Example: Use a dynamic value from another slot as the replacement.
- * Here, replace a substring with its uppercase version using strings.to-upper.
- */
-.data:Make it lowercase
-strings.replace:x:@.data
-   .:lowercase
-   strings.to-upper:lowercase
+// Updates an existing object of the specified type with the specified fields
+.arguments
 
-/*
- * After execution, "lowercase" in the original string is replaced with "LOWERCASE".
- * Result: "Make it LOWERCASE"
- */
+   // Type of object to update. Mandatory.
+   type:string
+
+   // Id of object to update. Mandatory.
+   id:long
+
+   // Key/value list of fields to update in object. Mandatory.
+   object:*
+
+// Ensuring user is authorized to invoking endpoint.
+auth.ticket.verify:netsuite
+
+// Forwarding heavy lifting to workflow file.
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/modules/netsuite/workflows/workflows/netsuite-update-record.hl
+
+// Returning result to caller.
+return-nodes:x:@execute-file/*

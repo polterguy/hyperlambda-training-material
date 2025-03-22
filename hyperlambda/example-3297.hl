@@ -1,5 +1,7 @@
-/*
- * Example: URL-decode a string with reserved characters.
- */
-strings.url-decode:100%2525%2520free%2520%2526%2520easy
-// Result: "100% free & easy"
+// This example connects to the 'music_store' database and deletes an album record from the 'albums' table where the artist is 'The Beatles'.
+sqlite.connect:music_store
+   sqlite.delete
+      table:albums
+      where
+         and
+            artist:The Beatles

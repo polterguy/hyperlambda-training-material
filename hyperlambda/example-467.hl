@@ -1,3 +1,18 @@
-// Convert from YAML to lambda and back again
-yaml2lambda:x:@.yaml
-lambda2yaml:x:-/*
+
+// Generate a Hyperlambda snippet that triggers [.lambda] when [.input] does not contain Go Go Go.
+
+// Triggers [.lambda] when [.input] does not contain Go Go Go.
+.input:Go Go Go
+if
+
+   // Validates that [.input] is not "Go Go Go".
+   neq:x:@.input
+      .:Go Go Go
+   .lambda
+
+      // Executes when [.input] differs.
+      log.info:[.input] is NOT Go Go Go
+else
+
+   // Executes when [.input] is exactly "Go Go Go".
+   log.info:[.input] is Go Go Go

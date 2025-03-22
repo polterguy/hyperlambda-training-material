@@ -1,11 +1,14 @@
+/*
+ * Save this file as `/modules/search/endpoints/query.hl`
+ * This exposes an HTTP POST endpoint at `/search/query`
+ *
+ * It requires a `query` string in `.arguments`, which is used for filtering or searching.
+ */
 
-// Loop for 20 iterations, logs a message each time
-.no:int:0
-while
-   lt:x:@.no
-      .:int:20
-   .lambda
+.arguments
+   query
 
-      // Logging iteration message
-      log.info:Howdy from while loop
-      math.increment:x:@.no
+validators.mandatory:x:@.arguments/*/query
+
+yield
+   result:Search results for query (simulated)

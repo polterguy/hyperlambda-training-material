@@ -1,5 +1,11 @@
-// Connects to crm PostgreSQL database using generic connection string
-pgsql.connect:[generic|crm]
-
-   // Notice, you can only de-reference the connection created above inside the 'scope' of the [pgsql.connect] slot
-   pgsql.select:select * from contacts
+// Getting the first customer's name
+.customers
+   .
+      name:Thomas Hansen
+      email:thomas@ainiro.io
+   .
+      name:Jane Fonda
+   .
+      name:Peter Sellers
+      email:peter@sellers.com
+get-value:x:@.customers/0/*/name

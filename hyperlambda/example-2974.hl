@@ -1,23 +1,13 @@
+// Define slot 'foo' with an initial return value
+slots.create:foo  
+   return-value:First version
 
-// Create a function that returns all clusters in the system.
+// Invoke 'foo' (will yield "First version")
+signal:foo  
 
-// Adding 30 seconds of public caching to avoid DOS attacks from exhausting server.
-response.headers.set
-   Cache-Control:public, max-age=30
+// Redefine (override) slot 'foo' with new logic
+slots.create:foo  
+   return-value:Second version
 
-// Opening up our database connection.
-data.connect:[generic|hub]
-
-   // Reading data from database.
-   data.read
-      table:clusters
-      columns
-         id
-         country
-         name
-      where
-         and
-            enabled.eq:bool:true
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+// Invoke 'foo' again (now yields "Second version")
+signal:foo  

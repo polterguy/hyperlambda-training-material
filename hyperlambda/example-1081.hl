@@ -1,10 +1,5 @@
-// Schedule shifted by 1 day and 4 hours
-.schedule
-   base:date:"2025-03-20T12:00:00Z"
-   shifted
-set-value:x:@.schedule/*/shifted
-   math.add
-      get-value:x:@.schedule/*/base
-      time
-         days:int:1
-         hours:int:4
+
+// Create a Hyperlambda script to save a string to the memory cache and then retrieve it.
+cache.set:foo
+   value:some cache value
+cache.get:foo

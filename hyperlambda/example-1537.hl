@@ -1,20 +1,35 @@
-// Creates a scatter chart.
-image.chart:scatter
-   filename:/scatter.png
-   width:400
-   height:300
-   data-x
-      .:1
-      .:2
-      .:3
-      .:4
-      .:5
-   data-y
-      .:1
-      .:4
-      .:9
-      .:16
-      .:25
-   line-width:5
-   marker-size:15
-   color:#55aa5555
+
+// Hyperlambda file that deletes one record from your actor table in your sakila database with authorization. Responds with endpoint or Hyperlambda file syntax.
+.arguments
+
+   // Primary key of record to delete, mandatory argument
+   actor_id:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/actor_id
+
+// Opening up our database connection.
+data.connect:[generic|sakila]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:actor
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

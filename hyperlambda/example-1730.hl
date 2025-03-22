@@ -1,18 +1,6 @@
 /*
- * Save this file as `/modules/settings/endpoints/set-theme.hl`
- * This exposes an HTTP POST endpoint at `/settings/set-theme`
- *
- * Requires `theme` to be one of "light", "dark", or "auto".
+ * Example: Use a variable for the string to decode.
  */
-
-.arguments
-   theme
-
-validators.mandatory:x:@.arguments/*/theme
-validators.enum:x:@.arguments/*/theme
-   .:light
-   .:dark
-   .:auto
-
-yield
-   result:Theme set
+.enc:"key%3Dvalue%26flag%3Dtrue"
+strings.url-decode:x:@.enc
+// Result: "key=value&flag=true"

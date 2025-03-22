@@ -1,35 +1,8 @@
+/*
+ * This Hyperlambda snippet demonstrates an uncaught exception.
+ * Since there is no `catch` block, the exception propagates and results in a `HyperlambdaException`.
+ * Expected behavior: The execution will fail with a `HyperlambdaException`.
+ */
 
-// Lists all database in your MySQL instance.
-slots.create:magic.db.mssql.databases
-
-   // Opens up our connection
-   .connection:master
-   if
-      and
-         exists:x:@.arguments/*/connection-string
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .:
-      .lambda
-         set-value:x:@.connection
-            strings.concat
-               .:[
-               get-value:x:@.arguments/*/connection-string
-               .:|
-               .:master]
-   mssql.connect:x:@.connection
-
-      // Runs our query
-      mssql.select:select name from master.dbo.sysdatabases where has_dbaccess(name) = 1
-
-      // Renaming "Database" nodes.
-      set-name:x:@mssql.select/*/*
-         .:db
-
-      // Returns the remaining databases to caller.
-      return-nodes:x:@mssql.select/*
+try
+   throw:foo

@@ -1,27 +1,6 @@
-/*
- * FILE: /modules/api/employees/search-lastname.hl
- *
- * DESCRIPTION:
- * Searches employees by their last name using a `LIKE` query.
- * Useful for autocomplete by surname.
- *
- * HOW TO CREATE THIS ENDPOINT:
- * 1. Save as `/modules/api/employees/search-lastname.hl`
- * 2. Access via: GET /api/employees/search-lastname?lastname=Smi
- */
 
-.arguments
-   lastname:string
+// Example: Pattern not found yields an empty result set.
+strings.matches:no digits here
+   .:"\\d+"
 
-validators.mandatory:x:@.arguments/*/lastname
-
-data.connect:sakila
-   strings.concat
-      .:%
-      get-value:x:@.arguments/*/lastname
-      .:%
-   data.select:SELECT first_name, last_name FROM actor WHERE last_name LIKE @filter
-      @filter:x:@strings.concat
-
-   yield
-      results:x:@data.select/*
+// Result: No child nodes (no matches found)

@@ -1,26 +1,10 @@
-
-// Create a Hyperlambda script that changes the password of the currently authenticated user, ensuring the user is authorized.
-.arguments
-   password:string
-.type:public
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/password
-validators.string:x:@.arguments/*/password
-   min:12
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify
-
 /*
- * Invokes the slot that does the heavy lifting, and updates the user's current password.
- * 
- * This slot will change the password of the currently logged in user.
+ * Example: Use variables for the string, start index, and length.
  */
-unwrap:x:+/*
-signal:magic.auth.change-password
-   password:x:@.arguments/*/password
-
-// Returns success to caller.
-return-nodes
-   result:success
+.text:"Magic"
+.start:int:1
+.len:int:3
+strings.substring:x:@.text
+   get-value:x:@.start
+   get-value:x:@.len
+// Result: "agi"

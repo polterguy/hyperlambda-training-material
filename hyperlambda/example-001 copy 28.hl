@@ -1,0 +1,10 @@
+// Construct a GET endpoint that fetches all user records from the database.
+// Filename - /modules/admin/users.get.hl
+// Access is restricted to users with the `admin` role.
+
+auth.ticket.verify:admin
+
+data.connect:[generic|users]
+   data.read
+      table:users
+   return-nodes:x:@data.read/*

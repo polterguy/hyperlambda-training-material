@@ -1,0 +1,15 @@
+// Create a POST endpoint that inserts a new contact record into the CRM system.
+// It expects `name` and `email` as input arguments in the body of the request.
+// Save as /modules/contacts/add.post.hl
+
+.arguments
+   name:string
+   email:string
+
+data.connect:[generic|crm]
+   data.insert
+      table:contacts
+      values
+         name:x:@.arguments/*/name
+         email:x:@.arguments/*/email
+   return-nodes:x:@data.insert/*

@@ -1,0 +1,10 @@
+// Tries verifying role, then executes different logic based on access level.
+
+.result
+try
+   auth.ticket.verify:superuser
+   set-value:x:@.result
+      .:Superuser access granted
+.catch
+   set-value:x:@.result
+      .:You are not a superuser

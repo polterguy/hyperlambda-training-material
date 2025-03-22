@@ -1,0 +1,10 @@
+// Doubles a given number using math.multiply and yields the result
+slots.create:double.value
+   math.multiply
+      get-value:x:@.arguments/*/number
+      .:int:2
+   yield
+      result:x:@math.multiply
+
+execute:double.value
+   number:int:7

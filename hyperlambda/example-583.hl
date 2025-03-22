@@ -1,5 +1,2 @@
-
-// Example: Convert a mixed-case sentence to lowercase.
-
-// Result: "hello world!"
-strings.to-lower:Hello World!
+// Return some cache item
+cache.get:cache-item-key

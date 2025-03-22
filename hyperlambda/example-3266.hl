@@ -1,49 +1,35 @@
 
-// Create endpoint inserting one record into your products table in your shopping-cart-demo database.
+// Create a Hyperlambda script that generates a long-lasting JWT token with the specified username and role, expiring on the specified date, ensuring the user is authorized.
 .arguments
 
-   // name column value
-   name:string
+   // Mandatory username for token we should generate. Does not need to be an existing user from the database.
+   username:string
 
-   // description column value
-   description:string
+   // Mandatory argument being the role the returned JWT token should be associated with.
+   role:string
 
-   // sku column value
-   sku:string
+   // Mandatory expiration date for the token. Can be any future date and time.
+   expires:date
 
-   // price column value
-   price:decimal
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // image_url column value
-   image_url:string
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/role
+validators.mandatory:x:@.arguments/*/expires
 
-// Meta data description for endpoint
+/*
+ * Invokes [auth.ticket.create] to create our JWT token,
+ * making sure we return the token to the caller.
+ */
+auth.ticket.create
+   username:x:@.arguments/*/username
+   expires:x:@.arguments/*/expires
+   roles
+      .:x:@.arguments/*/role
 
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up database connection.
-data.connect:[generic|shopping-cart-demo]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:products
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+// Returns the authentication JWT ticket created above to caller.
+unwrap:x:+/*
+return
+   ticket:x:@auth.ticket.create

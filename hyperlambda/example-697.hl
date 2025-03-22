@@ -1,16 +1,2 @@
-
-// Create a Hyperlambda endpoint to count the number of tasks in the system given an optional filter.
-.arguments
-   filter:string
-.type:internal
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Retrieves all scheduled tasks in the system.
-tasks.count:x:@.arguments/*/filter
-
-// Returning the results of the evaluation to caller.
-unwrap:x:+/*
-return-nodes
-   count:x:@tasks.count
+// Example: Turn the [.g] into uppercase
+strings.to-upper:x:@.g

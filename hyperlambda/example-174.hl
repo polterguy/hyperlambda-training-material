@@ -1,15 +1,15 @@
-
-// Create a new product with name and price fields
-data.connect:shopDB
-   data.create
-      table:products
-      values
-         name:Coffee Mug
-
-         // Use decimale
-         price:decimal:9.99
-
-         // Use bool type for a boolean column
-         in_stock:bool:true
-
-   // After execution, the node's value will contain the new record's ID (if available)
+// List cities and their country names by joining the city and country tables
+data.connect:sakila
+   data.read
+      table:city
+      join
+         inner
+            table:country
+            on
+               city.country_id
+               country.country_id
+      columns
+         city.city
+         country.country
+      limit:5
+   // Inner join on country_id returns city-country pairs

@@ -1,15 +1,14 @@
+// Example: Concatenate 6 strings, one being an expression reference
+.bar:Bar
+strings.concat
+   .:Thomas
+   .:" "
+   .:Hansen
+   .:" "
+   .:Foo
+   .:" "
+   get-value:x:@.bar
 
-// Create a Hyperlambda snippet that counts tickets in the 'support_db' database from the 'tickets' table.
-
-// Counts tickets in the "support_db" database from the "tickets" table.
-data.connect:support_db
-   database-type:pgsql
-
-   // Counting total support tickets.
-   data.read
-      database-type:pgsql
-      table:tickets
-      columns
-         count(*)
-            as:count
-      limit:long:1
+/*
+ * Resulting in "Thomas Hansen Foo Bar" after invocation.
+ */

@@ -1,6 +1,3 @@
-// Create a multipart MIME message
-mime.create:multipart/mixed
-   entity:text/plain
-      content:Some text content
-   entity:text/markdown
-      filename:/etc/README.md
+
+// Lists all cookies in current request
+request.cookies.list

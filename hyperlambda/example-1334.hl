@@ -1,19 +1,27 @@
 
-// Write a Hyperlambda script to return the maximum tokens for a specified completion slot.
-.arguments
-   slot:string
-.type:internal
+// Generate a Hyperlambda snippet that evaluates specified [.lambda] if both conditions are true.
 
-// Making sure user is authenticate to access endpoint
-auth.ticket.verify:root
+// Evaluates specified [.lambda] if both conditions are true.
+.result
+.value1:int:3
+.value2:int:10
+if
+   and
 
-// Retrieving max tokens from config.
-strings.split:x:@.arguments/*/slot
-   .:.
-strings.concat
-   .:"magic:"
-   get-value:x:@strings.split/0/-
-   .:":max_tokens"
-config.get:x:@strings.concat
-yield
-   max_tokens:x:@config.get
+      // [lt] implies "less than"
+      lt:x:@.value1
+         .:int:4
+
+      // [mt] implies "more than"
+      mt:x:@.value2
+         .:int:9
+   .lambda
+
+      // Changing the value of [.result] to true
+      set-value:x:@.result
+         .:bool:true
+else
+
+   // Changing the value of [.result] to false
+   set-value:x:@.result
+      .:bool:false

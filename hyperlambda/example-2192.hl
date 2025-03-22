@@ -1,10 +1,4 @@
-// [yaml2json] example no. 1
-.yaml:@"
-server:
-  host: localhost
-  port: 8080
-features:
-  login: true
-  registration: false
-"
-yaml2json:x:@.yaml
+
+// Define the version and module name for a Stripe integration module. Ensure the version is set to 'v2.0.0' and the module name is 'stripe'. This setup is crucial for maintaining version control and module identification within the system.
+version:v2.0.0
+module_name:stripe

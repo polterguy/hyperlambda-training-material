@@ -1,52 +1,40 @@
 
-// Write a Hyperlambda script to subscribe a specified name and email to a newsletter using SendGrid.
-slots.create:magic.questionnaires.action.sendgrid-subscribe
+// Returns subsidiary companies from specified org number
+.arguments
+   org_number:string
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/name
-   validators.mandatory:x:@.arguments/*/email
-   validators.email:x:@.arguments/*/email
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/org_number
+set-value:x:@.arguments/*/org_number
+   strings.replace-not-of:x:@.arguments/*/org_number
+      .:0123456789
+      .:
 
-   // Invoking SendGrid to create recipient.
-   .auth
-   set-value:x:@.auth
-      strings.concat
-         .:"Bearer "
-         config.get:"magic:sendgrid:api-key"
-   config.get:"magic:sendgrid:chatbot-list"
-   set-name:x:./*/http.put/**/full_name
-      config.get:"magic:sendgrid:full_name_id"
-         .:e1_T
-   unwrap:x:+/**
-   http.put:"https://api.sendgrid.com/v3/marketing/contacts"
-      convert:true
-      headers
-         Authorization:x:@.auth
-         Content-Type:application/json
-      payload
-         list_ids
-            .:x:@config.get
-         contacts
-            .
-               email:x:@.arguments/*/email
-               custom_fields
-                  full_name:x:@.arguments/*/name
+// Connecting to database.
+data.connect:[finovo|finovo]
+   database-type:pgsql
 
-   // Sanity checking invocation.
+   // Retrieving items.
+   data.read
+      database-type:pgsql
+      table:group_structure
+      columns
+         org_number
+         company_name
+         company_country_name
+         owned_percent
+      where
+         and
+            group_mother_orgnumber.eq:x:@.arguments/*/org_number
+            org_number.neq:x:@.arguments/*/org_number
+      limit:-1
+
+   // Verifying the company has subsidiaries.
    if
-      neq:x:@http.put
-         .:int:202
+      not-exists:x:@data.read/*
       .lambda
+         return
+            result:"This company doesn't have any subsidiaries"
 
-         // Oops ...!!
-         lambda2hyper:x:@http.put/*/content
-         log.error:Could not add new contact to list
-            email:x:@.arguments/*/email
-            name:x:@.arguments/*/name
-            stack:x:@lambda2hyper
-   else
-
-      // Doing some basic logging
-      log.info:Successfully added contact to SendGrid automation
-         name:x:@.arguments/*/name
-         email:x:@.arguments/*/email
+   // Returning result to caller.
+   return-nodes:x:@data.read/*

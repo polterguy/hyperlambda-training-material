@@ -1,9 +1,8 @@
-// This code connects to the 'company' database and updates the salary of an employee in the 'employees' table.
-pgsql.connect:company
-   pgsql.update
-      table:employees
-      values
-         salary:decimal:75000
-      where
-         and
-            employee_id:int:303
+// Conditionally updates value if it matches
+.user:Alice
+if
+   eq:x:@.user
+      .:Alice
+   .lambda
+      set-value:x:@.user
+         .:Admin

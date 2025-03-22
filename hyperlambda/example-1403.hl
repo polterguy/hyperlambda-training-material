@@ -1,5 +1,11 @@
+// Adds two integers and yields the result from a dynamic slot
+slots.create:math.add-two
+   math.add
+      get-value:x:@.arguments/*/a
+      get-value:x:@.arguments/*/b
+   yield
+      result:x:@math.add
 
-// Example: Capitalize an empty string (result is still an empty string).
-
-// Result: "" (empty string)
-strings.capitalize:
+execute:math.add-two
+   a:int:10
+   b:int:20

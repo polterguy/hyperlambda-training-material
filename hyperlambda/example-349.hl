@@ -1,6 +1,9 @@
 /*
- * Example: Check if a string starts with a specific substring (positive case).
+ * Accesses a setting from a user-specific preferences section.
+ *
+ * The expression dynamically resolves the user's ID from `.arguments/*/userId`,
+ * turning the path into something like: `@.preferences/*/u123/*/theme`
+ *
+ * Ideal for multi-user preference handling with per-user customization.
  */
-// Returns true
-strings.starts-with:HelloWorld
-   .:Hello
+.user-preference:x:@.preferences/*/{@.arguments/*/userId}/*/theme

@@ -1,10 +1,18 @@
-
-// Hyperlambda Example 2: If with variable condition
-.status:active
-.message
+// Hyperlambda [if] checking substring
+.filename:document.pdf
+.file-type
 if
-   eq:x:@.status
-      .:active
+   strings.ends-with:x:@.filename
+      .:pdf
    .lambda
-      set-value:x:@.message
-         .:System is running
+      set-value:x:@.file-type
+         .:pdf
+
+/* JavaScript equivalent of Hyperlambda [if] checking substring
+const filename = "document.pdf";
+let fileType;
+
+if (filename.endsWith("pdf")) {
+  fileType = "pdf";
+}
+*/

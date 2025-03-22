@@ -1,13 +1,13 @@
 
-// Provide a Hyperlambda example where employee records are retrieved from the HR database and employees table.
+// Create a Hyperlambda script to return the backend version to the caller, ensuring user authorization.
 
-// Retrieves employee records from the HR database and employees table.
-data.connect:hr_db
+// By making our endpoint 'internal' it does not become visible in dashboard
+.type:internal
 
-   // Microsoft SQL Server is used.
-   database-type:mssql
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // Fetching employee records without sorting or limiting.
-   data.read
-      database-type:mssql
-      table:employees
+// Retrieves backend version, and returns to client.
+eval:x:+
+return-nodes
+   version

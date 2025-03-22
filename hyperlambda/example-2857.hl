@@ -1,14 +1,2 @@
-
-// Write a Hyperlambda script to return a specified CSS file to the caller, with options for position, color, link, start, and end.
-.arguments
-   file:string
-   position:string
-   color:string
-   link:string
-   start:string
-   end:string
-   v:string
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/include-style.css.get.hl
-return:x:-
+// Give me Hyperlambda that makes sure ONLY admin, marketing_manager, and c_exec users are able to execute HTTP endpoint
+auth.ticket.verify:admin, marketing_manager, c_exec

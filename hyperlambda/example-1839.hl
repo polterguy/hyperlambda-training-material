@@ -1,6 +1,4 @@
-// Deduct penalty from salary
-.salary:int:2000
-.penalty:int:300
-math.subtract
-   get-value:x:@.salary
-   get-value:x:@.penalty
+// This example hashes a string using SHA256 and returns the hash in fingerprint format.
+.data:Hello World
+crypto.hash.sha256:x:@.data
+   format:fingerprint

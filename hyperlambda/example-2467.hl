@@ -1,8 +1,13 @@
 
-// Generate a Hyperlambda snippet that embeds structured data into a specific node's subtree.
+// Provide a Hyperlambda example where an email address is created from a username and domain.
 
-// Embeds structured data into a specific node's subtree.
-.storage
-add:x:@.storage
-   .
-      item:detail
+// Hyperlambda file that creates an email address from a username and domain.
+.arguments
+   username:string
+   domain:string
+strings.concat
+   get-value:x:@.arguments/*/username
+   .:@
+   get-value:x:@.arguments/*/domain
+yield
+   email:x:@strings.concat

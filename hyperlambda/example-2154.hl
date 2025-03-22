@@ -1,7 +1,3 @@
-/*
- * Formatting a single digit number with leading zeros.
- */
 
-.foo:int:5
-format:x:-
-   pattern:"{0:000}"
+// Example: Try signaling a slot without throwing exception if it doesn't exist
+try-signal:foo

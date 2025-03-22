@@ -1,29 +1,16 @@
-/*
- * Illustrates how to create a complex read invocation,
- * that joins two different tables together, using lambda
- * and semantic SQL.
- * 
- * Notice, requires you to have the Sakila database installed
- * from Oracle.
- */
-mysql.connect:sakila
-   mysql.read
-      columns
-         film.title
-         film.description
-         actor.last_name
-         actor.first_name
-      table:film
-         join:film_actor
-            type:inner
-            on
-               and
-                  film.film_id:film_actor.film_id
-            join:actor
-               type:inner
-               on
-                  and
-                     film_actor.actor_id:actor.actor_id
-      where
-         and
-            actor.first_name:NICK
+
+// Write a Hyperlambda snippet that queries inventory data from the warehouse database and items table.
+
+// Queries inventory data from the warehouse database and items table.
+data.connect:warehouse_db
+
+   // SQLite database used.
+   database-type:sqlite
+
+   // Fetching item records.
+   data.read
+      database-type:sqlite
+      table:items
+      sort
+         updated_at
+      direction:desc

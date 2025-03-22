@@ -1,8 +1,9 @@
-/*
- * Example: Allowed set includes all characters in the input (no replacements occur).
- */
-.input:"ABC123"
-strings.replace-not-of:x:@.input
-   .:ABC123
-   .:"#"
-// Result: "ABC123" (unchanged, since all characters were allowed)
+// Defines a custom slot that enforces 'admin' role before continuing.
+
+slots.create:admin.only.action
+   auth.ticket.verify:admin
+
+   // Admin-only logic executed here ...
+
+// Usage:
+execute:admin.only.action

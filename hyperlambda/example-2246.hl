@@ -1,13 +1,3 @@
-// Using [for-each] with conditional logic to update specific nodes
-.car-parts
-   engine:available
-   wheel:out-of-stock
-   door:available
+// How do you declare a string variable in Hyperlambda?
 
-for-each:x:@.car-parts/*
-   if
-      eq:x:@.dp/#
-         .:available
-      .lambda
-         set-value:x:@.dp/#
-            .:checked
+.username:string:john_doe_92

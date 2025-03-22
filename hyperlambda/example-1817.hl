@@ -1,5 +1,10 @@
-// Example of how to use [strings.concat] to concatenate two or more strings together.
-strings.concat
-   .:foo
-   .:-
-   .:bar
+// [yaml2json] example no. 1
+.yaml:@"
+server:
+  host: localhost
+  port: 8080
+features:
+  login: true
+  registration: false
+"
+yaml2json:x:@.yaml

@@ -1,3 +1,4 @@
-// Change the value of [.dest] to the value of [.src]
-set-value:x:@.dest
-   get-value:x:@.src
+// List tasks between 20 and 30
+tasks.list
+   offset:20
+   limit:10

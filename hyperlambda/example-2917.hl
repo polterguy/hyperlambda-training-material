@@ -1,29 +1,68 @@
 
-// Write a Hyperlambda script to upload a specified backup file.
+// Deletes a single object in NetSuite
 .arguments
-   file:*
-.accept:multipart/form-data
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Mandatory argument declaring the type of entity we want to delete.
+   type:string
+
+   // Mandatory argument declaring the ID of the entity we should delete.
+   id:long
+.type:public
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
-validators.mandatory:x:@.arguments/*/file/*/name
-validators.mandatory:x:@.arguments/*/file/*/stream
-validators.regex:x:@.arguments/*/file/*/name
-   regex:"\\.db$"
+validators.mandatory:x:@.arguments/*/id
+validators.mandatory:x:@.arguments/*/type
 
-// Saves the file to the specified folder.
-.full-path
-set-value:x:@.full-path
+/*
+ * Returns an access token for NetSuite.
+ * 
+ * Returns a JWT token that can be used to invoke NetSuite according to your configuration settings.
+ * Notice, this will read account-id, certificate-id, and consumer-key from your configuration settings,
+ * in addition to assume your private key exists in the file '/etc/netsuite/private-key.txt'.
+ */
+execute:magic.workflows.actions.execute
+   name:netsuite-get-access-token
+   filename:/modules/netsuite/workflows/actions/netsuite-get-access-token.hl
+   arguments
+
+// Creating our idempotency key to prevent replay attacks.
+guid.new
+
+// Creating invocation URL.
+.url
+set-value:x:@.url
    strings.concat
-      .:/data/
-      get-value:x:@.arguments/*/file/*/name
-io.stream.save-file:x:@.full-path
-   get-value:x:@.arguments/*/file/*/stream
+      .:"https://"
+      config.get:"magic:netsuite:account-id"
+      .:.suitetalk.api.netsuite.com/services/rest/record/v1
+      .:/
+      get-value:x:@.arguments/*/type
+      .:/
+      get-value:x:@.arguments/*/id
 
-// Flushing SQLite, and returning success to caller.
-sqlite.connections.flush
+// Invoking our HTTP GET endpoint, now correctly parametrised.
+http.delete:x:@.url
+   token:x:--/execute/=netsuite-get-access-token/*/access-token
+   headers
+      X-NetSuite-Idempotency-Key:x:@guid.new
+
+// Sanity checking above invocation.
+if
+   not
+      and
+         mte:x:@http.delete
+            .:int:200
+         lt:x:@http.delete
+            .:int:300
+   .lambda
+
+      // Oops, error ...!!
+      convert:x:@http.delete/*/content
+         type:string
+      log.error:Could not delete entity in NetSuite
+         response:x:@convert
+      throw:Could not delete entity in NetSuite, check your log for details.
+
+// Returning success to caller.
 return
    result:success

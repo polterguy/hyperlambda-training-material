@@ -1,11 +1,10 @@
-.inventory
-   part1
-      name:engine
-      status:available
-   part2
-      name:wheel
-      status:out-of-stock
 
-for-each:x:@.inventory/*
-   set-value:x:@.dp/*/status
-      .:checked
+// Generate a Hyperlambda snippet that embeds multiple structured data entries into a given storage node.
+
+// Embeds multiple structured data entries into a given storage node.
+.storage
+add:x:@.storage
+   .
+      itemAlpha:detailAlpha
+      itemBeta:detailBeta
+      itemGamma:detailGamma

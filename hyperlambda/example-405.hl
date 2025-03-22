@@ -1,5 +1,10 @@
-/*
- * Example: URL-encode an email address.
- */
-strings.url-encode:"user@example.com"
-// Result: "user%40example.com"
+
+// Adding expressions as new nodes but unwrapping expressions before executing [add]
+.data
+   foo:some value
+unwrap:x:+/*/*
+add:x:@.data
+   .
+      bar:x:@.data/*/foo
+
+// After execution, [.data/bar] contains the value from [.data/foo].

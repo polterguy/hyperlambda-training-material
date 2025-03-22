@@ -1,38 +1,49 @@
 
-// Create endpoint inserting one record into your crawl_urls table in your scraper database.
+// Create a Hyperlambda script for an endpoint that counts items from the users_roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
-
-   // url column value
-   url:string
-
-   // type column value
-   type:string
-
-// Type of endpoint
-.type:crud-create
+   operator:string
+   role.eq:string
+   user.eq:string
 
 // Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
+auth.ticket.verify:root
 
-// Opening up database connection.
-data.connect:[generic|scraper]
-   database-type:sqlite
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our read invocation.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/operator
+   remove-nodes:x:@.arguments/*/operator
+   add:x:+/*/where/*
       get-nodes:x:@.arguments/*
 
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:crawl_urls
-      return-id:bool:true
-      values
+   // Reading data from database.
+   data.read
+      table:users_roles
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
 
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

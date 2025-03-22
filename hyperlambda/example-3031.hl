@@ -1,56 +1,54 @@
 
-// Counts items from your products table in your shopping-cart-demo database.
-.arguments
+// Enables a cloudlet when a subscription payment has gone through.
+slots.create:payments.subscriptions.unsubscribed.cloudlets.destroy
 
-   // products table product_id column equality exact match filtering
-   products.product_id.eq:long
+   // Checking if invocation is for us.
+   if
+      neq:x:@.arguments/*/type
+         .:subscription
+      .lambda
 
-   // products table name column wildcard filtering with SQL like '%' comparison
-   products.name.like:string
+         // Not our guy.
+         return:bool:false
 
-   // products table name column equality exact match filtering
-   products.name.eq:string
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/meta
+   validators.mandatory:x:@.arguments/*/username
 
-   // products table description column wildcard filtering with SQL like '%' comparison
-   products.description.like:string
+   // Invoking slot responsible for deleting cloudlet.
+   .name
+   set-value:x:@.name
+      strings.concat
+         get-value:x:@.arguments/*/meta
+         .:-
+         get-value:x:@.arguments/*/username
 
-   // products table description column equality exact match filtering
-   products.description.eq:string
+   // Finding cluster for cloudlet.
+   .cluster
+   data.connect:[generic|hub]
+      data.read
+         table:cloudlets
+         values
+            cluster
+         where
+            and
+               user.eq:x:@.arguments/*/username
+               name.eq:x:@.arguments/*/meta
+      set-value:x:@.cluster
+         get-value:x:@data.read/*/*/cluster
+   unwrap:x:+/*
+   signal:hub.cloudlets.hard-delete
+      cluster:x:@.cluster
+      name:x:@.name
 
-   // products table sku column wildcard filtering with SQL like '%' comparison
-   products.sku.like:string
+   // Deleting cloudlet from database.
+   data.connect:[generic|hub]
+      data.delete
+         table:cloudlets
+         where
+            and
+               name.eq:x:@.arguments/*/meta
+               user.eq:x:@.arguments/*/username
 
-   // products table sku column equality exact match filtering
-   products.sku.eq:string
-
-   // products table price column equality exact match filtering
-   products.price.eq:decimal
-
-   // products table image_url column wildcard filtering with SQL like '%' comparison
-   products.image_url.like:string
-
-   // products table image_url column equality exact match filtering
-   products.image_url.eq:string
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up our database connection.
-data.connect:[generic|shopping-cart-demo]
-   database-type:sqlite
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:products
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+   // Returning true to indicate we handled the callback.
+   return:bool:true

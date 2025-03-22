@@ -1,26 +1,9 @@
-/*
- * Posts a dynamic set of arguments to a user info API.
- * Returns full name and contact email on success; error message otherwise.
- */
+// Returns ALL items (limit is -1) from table1 where field1 equals 'howdy' or field2 equals 'world'
+sql.read
+   table:table1
+   limit:-1
+   where
 
-.arguments
-   id:int
-
-add:x:+/*/payload
-   get-nodes:x:@.arguments/*
-http.post:"https://api.example.com/user/profile"
-   convert:true
-   payload
-
-if
-   and
-      mte:x:@http.post
-         .:int:200
-      lt:x:@http.post
-         .:int:300
-   .lambda
-      yield
-         full_name:x:@http.post/*/content/*/full_name
-         contact_email:x:@http.post/*/content/*/contact_email
-return
-   error:Unable to retrieve user profile
+      or
+         field1.eq:howdy
+         field2.eq:world

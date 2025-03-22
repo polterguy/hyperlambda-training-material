@@ -1,3 +1,8 @@
-// Connects to saklia and executes the specified SQL
-data.connect:sakila
-   data.select:select first_name, last_name from actor limit 5
+
+// Example: Trim specific characters from both ends.
+
+// The character "?" at both ends will be removed
+strings.trim:??hello??
+   .:?
+
+// Result: "hello"

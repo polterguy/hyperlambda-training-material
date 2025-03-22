@@ -1,11 +1,20 @@
 
-// Generate a Hyperlambda snippet that retrieves all customers from 'crm_db'.
+// Create a Hyperlambda snippet that summarizes odd numbers from 1 to 19.
 
-// Retrieves all customers from "crm_db".
-.result
-data.connect:crm_db
-   database-type:mysql
-   data.select:"select id, name, email from customers where status='active'"
-      database-type:mysql
-   add:x:@.result
-      get-nodes:x:@data.select/*
+// Summarizing odd numbers from 1 to 19
+.no:int:1
+.sum:int:0
+while
+   lt
+      get-value:x:@.no
+      .:int:20
+   .lambda
+
+      // Summing odd numbers.
+      set-value:x:@.sum
+         math.add:x:@.sum
+            get-value:x:@.no
+
+      // Incrementing by 2 to keep it odd.
+      math.increment:x:@.no
+      math.increment:x:@.no

@@ -1,7 +1,8 @@
-// Create a MIME message
-mime.create:multipart/mixed
-   structured:false
-   entity:text/plain
-      content:this is the body text     
-   entity:text/plain
-      content:this is another body text
+
+// Example: Use an empty allowed set (no characters allowed, so every character is replaced).
+.original:Hello
+strings.replace-not-of:x:@.original
+   .:
+   .:*
+
+// Result: "*****"

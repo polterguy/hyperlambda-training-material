@@ -1,8 +1,9 @@
-/*
- * Example: Replace all occurrences of a substring.
- */
-.text:"abababab"
-strings.replace:x:@.text
-   .:ab
-   .:AB
-// Result: "ABABABAB"
+// How to apply caching headers conditionally for GET requests?
+request.verb
+if
+   eq
+      get-value:x:@request.verb
+      .:get
+   .lambda
+      response.headers.set
+         Cache-Control:public, max-age=3600

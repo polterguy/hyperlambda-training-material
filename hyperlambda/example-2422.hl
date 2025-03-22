@@ -1,80 +1,27 @@
 
-// Hyperlambda action returning [max_tokens] context from the specified [url].
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the roles table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
 .arguments
-   url
-      type:string
-      mandatory:bool:true
-   max_tokens
-      type:int
-      default:int:4000
-   throw
-      type:boolean
-      default:bool:false
-.icon:extension
+   name:string
+.type:crud-delete
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/url
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+validators.mandatory:x:@.arguments/*/name
 
-// Applying default values for optional arguments.
-validators.default:x:@.arguments
-   max_tokens:int:4000
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-// Retrieving context.
-execute:magic.http.scrape-url
-   url:x:@.arguments/*/url
-if
-   and
-      get-value:x:@.arguments/*/throw
-      not-null:x:@execute
-   .lambda
-      throw:Could not scrape URL
-         public:bool:true
-         status:x:@execute
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
 
-// Building our context return value.
-.context:
-while
-   and
-      exists:x:@execute/0
-      lt
-         openai.tokenize:x:@.context
-         convert:x:@.arguments/*/max_tokens
-            type:int
-   .lambda
+   // Deleting item from database.
+   data.delete
+      table:roles
+      where
+         and
 
-      // Temporary value.
-      .tmp
-      set-value:x:@.tmp
-         strings.concat
-            get-value:x:@.context
-            .:"\n\n"
-            get-value:x:@execute/0/*/prompt
-            .:"\n\n"
-            get-value:x:@execute/0/*/completion
-      if
-         lt
-            openai.tokenize:x:@.tmp
-            convert:x:@.arguments/*/max_tokens
-               type:int
-         .lambda
-
-            // Still below [max_tokes].
-            set-value:x:@.context
-               get-value:x:@.tmp
-
-      // Removing top snippet.
-      remove-nodes:x:@execute/0/*/snippets/0
-      if
-         not-exists:x:@execute/0/*/snippets/0
-         .lambda
-
-            // Removing currently iterated URL.
-            remove-nodes:x:@execute/0
-
-// Trimming result.
-set-value:x:@.context
-   strings.trim:x:@.context
-
-// Returning result to caller.
-yield
-   context:x:@.context
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

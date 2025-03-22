@@ -1,29 +1,45 @@
 
-// Create a Hyperlambda script to return a named task to the caller.
+// Delete one record from your category table in your sakila database without authorization. Log invocation.
 .arguments
-   offset:long
-   limit:long
-   filter:string
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Primary key of record to delete, mandatory argument
+   category_id:long
 
-// Retrieves all scheduled tasks in the system.
-add:x:../*/tasks.list
-   get-nodes:x:@.arguments/*/offset
-   get-nodes:x:@.arguments/*/limit
-tasks.list:x:@.arguments/*/filter
+// Meta data description for endpoint
 
-// Retrieving schedules for tasks, if any.
-include:x:@tasks.list/*
-   tasks.get:x:@.dp/#/*/id
-      schedules:true
-   add:x:+/*
-      get-nodes:x:@tasks.get/*/schedules/*
-   add:x:./*/return/*/schedules
-      .
+// Type of endpoint
+.type:crud-delete
+
+// Logging invocation.
+auth.ticket.get
+lambda2hyper:x:@.arguments/*
+log.info:sakila.category entry deleted
+   username:x:@auth.ticket.get
+   arguments:x:@lambda2hyper
+validators.mandatory:x:@.arguments/*/category_id
+
+// Opening up our database connection.
+data.connect:[generic|sakila]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:category
+      where
+         and
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:sakila.category.delete
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
    return
-      schedules
-
-// Returning the results of the evaluation to caller.
-return-nodes:x:@tasks.list/*
+      affected:x:@data.delete

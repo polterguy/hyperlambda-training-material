@@ -1,17 +1,31 @@
 /*
- * This file opens a connection to the 'sales' database and selects the top 10 records
- * from the 'campaigns' table where the email contains 'mailchimp' OR the 'company' field
- * is Microsoft.
+ * This script generates training data from Markdown files.
  */
-data.connect:[generic|sales]
-   database-type:sqlite
-   data.read
-      database-type:sqlite
-      table:campaigns
-      
-      // [data.read] slot will automatically convert the following argument to a long value
-      limit:10
-      where
-         or
-            email.like:%mailchimp%
-            company.eq:Microsoft
+execute:magic.io.file.load-recursively
+   .:/etc/slett/
+for-each:x:@execute/*
+
+   // Verifying we're dealing with a Markdown file.
+   if
+      strings.ends-with:x:@.dp/#
+         .:.md
+      .lambda
+
+         // Extracting training data.
+         markdown2html:x:@.dp/#/0
+
+         // Converts the value of the previous node to a lambda object, allowing us to traverse it using expressions
+         html2lambda:x:-
+
+         for-each:x:@html2lambda/*/pre/*/code
+
+            // The [.dp] pointer is passed in a a "node by reference" pointer by [for-each]
+            strings.trim:x:@.dp/#/*/\#text
+            data.connect:fine-tune
+               data.create
+                  table:hyperlambda
+                  values
+                     code:x:@strings.trim
+
+// House cleanups.
+remove-nodes:x:@execute/*

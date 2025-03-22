@@ -1,2 +1,5 @@
-// Example: Invoke a slot
-signal:foo
+// Convert a value to a long integer (long)
+
+.src:5
+convert:x:-
+   type:long

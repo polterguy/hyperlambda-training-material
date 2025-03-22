@@ -1,7 +1,6 @@
-/*
- * Example: Trim specific characters from both ends.
- */
-// The character "?" at both ends will be removed
-strings.trim:"??hello??"
-   .:"?"
-// Result: "hello"
+// Handle missing values in comparison
+
+.foo1
+eq
+   get-value:x:../*/.foo1
+   .:OK

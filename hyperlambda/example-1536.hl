@@ -1,14 +1,38 @@
-// Exchange name with value, and value with name, in all nodes, for the following [.data] segment
-.data
-   n1:v1
-      n2:v2
-   n3:v3
-      n4:v4
-         n5:v5
-   n6:v6
-for-each:x:@.data/**
-   get-name:x:@.dp/#
-   set-name:x:@.dp/#
-      get-value:x:@.dp/#
-   set-value:x:@.dp/#
-      get-value:x:@get-name
+
+// Create one record in your Artist table in your chinook database
+.arguments
+
+   // ArtistId column value
+   ArtistId:long
+
+   // Name column value
+   Name:string
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:Artist
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

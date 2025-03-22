@@ -1,56 +1,23 @@
 
-// Create a function that returns all cloudlets belonging to the currently authenticated user.
-.type:crud-read
+// Create a Hyperlambda script that returns the setup status of the system, ensuring the user is authorized.
 
-// Ensuring user is authorised to invoke endpoint.
-auth.ticket.verify:root, guest, impersonated
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-/*
- * Retrieving currently authenticated user to prevent a user
- * from retrieving cloudlets not belonging to him/her.
- */
-auth.ticket.get
+// Checking if JWT secret has been changed.
+config.get:"magic:auth:secret"
+if
+   or
+      null:x:@config.get
+      lt
+         strings.length:x:@config.get
+         .:int:50
+   .lambda
 
-// Opening up our database connection.
-data.connect:[generic|hub]
+      // System has not been setup.
+      return
+         result:bool:false
 
-   // Reading data from database.
-   data.read
-      table:cloudlets
-         join:plans
-            type:inner
-            on
-               and
-                  cloudlets.plan.eq:plans.name
-         join:clusters
-            type:inner
-            on
-               and
-                  cloudlets.cluster.eq:clusters.id
-      columns
-         cloudlets.id
-         cloudlets.created
-         cloudlets.name
-         cloudlets.plan
-         cloudlets.cluster
-         cloudlets.destruction_date
-         cloudlets.enabled
-         cloudlets.source_cloudlet
-         plans.price
-         plans.storage
-         plans.cpu
-         plans.memory
-         plans.frontend
-         plans.max_upload
-         plans.bandwidth
-         plans.max_timeout
-         clusters.country
-         clusters.name
-            as:node_name
-         plans.description
-      where
-         and
-            user.eq:x:@auth.ticket.get
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+// Returns results of above invocations to caller.
+return
+   result:bool:true

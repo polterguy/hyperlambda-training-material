@@ -1,13 +1,10 @@
-// Example of creating a MIME HTTP POST request.
-http.post:"http://localhost:5000/magic/modules/foo/foo"
-   headers
-      Content-Type:multipart/form-data
-   payload
-      entity:text/plain
-         headers
-            Content-Disposition:"form-data; name=\"foo\""
-         content:Foo bar
-      entity:text/plain
-         headers
-            Content-Disposition:"form-data; filename=\"README.md\""
-         filename:/README.md
+// Doubles a given number using math.multiply and yields the result
+slots.create:double.value
+   math.multiply
+      get-value:x:@.arguments/*/number
+      .:int:2
+   yield
+      result:x:@math.multiply
+
+execute:double.value
+   number:int:7

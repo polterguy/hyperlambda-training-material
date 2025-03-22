@@ -1,2 +1,12 @@
-// Give me Hyperlambda that makes sure ONLY admin, marketing_manager, and c_exec users are able to execute HTTP endpoint
-auth.ticket.verify:admin, marketing_manager, c_exec
+/*
+ * Retrieves temperature readings from multiple sensors and finds the lowest one.
+ */
+.sensors
+   t1:int:23
+   t2:int:18
+   t3:int:27
+.lowest
+math.min
+   get-value:x:@.sensors/*/t1
+   get-value:x:@.sensors/*/t2
+   get-value:x:@.sensors/*/t3

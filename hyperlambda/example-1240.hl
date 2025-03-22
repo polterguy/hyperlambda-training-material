@@ -1,6 +1,16 @@
+// Using a whitelist incorrectly should throw an exception
 
-// Connect using a named connection string "foo" and database "bar", then count records
-data.connect:[foo|bar]
-   data.scalar:select count(*) from users
+.result
+add:x:-
+   whitelist
+      vocabulary
+         return
+         vocabulary
+      .lambda
+         .foo
 
-   // [foo|bar] uses connection string "foo" and database "bar" from configuration
+         // This will throw an exception (not whitelisted above)
+         set-value:x:@.foo
+            .:foo
+         vocabulary
+         return:x:-/*

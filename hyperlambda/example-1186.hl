@@ -1,11 +1,13 @@
-
-// Example: Find all substrings matching a pattern in curly braces.
-.text:{match1} and {match2} are here
-strings.matches:x:@.text
-   .:"\\{.+?\\}"
-
-/*
- * Resulting matches:
- * .:{match1}
- * .:{match2}
- */
+// Example of creating a MIME HTTP POST request.
+http.post:"http://localhost:5000/magic/modules/foo/foo"
+   headers
+      Content-Type:multipart/form-data
+   payload
+      entity:text/plain
+         headers
+            Content-Disposition:"form-data; name=\"foo\""
+         content:Foo bar
+      entity:text/plain
+         headers
+            Content-Disposition:"form-data; filename=\"README.md\""
+         filename:/README.md

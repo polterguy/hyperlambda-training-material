@@ -1,34 +1,16 @@
 
-// Ingests products from Shopify using Shopify API.
-.arguments
-   shop
-      type:string
-      mandatory:bool:true
-   type
-      type:string
-      mandatory:bool:true
-   base_url
-      type:string
-      mandatory:bool:true
-   secret
-      type:string
-      mandatory:bool:true
-   meta
-      type:bool
-      default:true
-.icon:shopping_cart
+// Create a Hyperlambda snippet that keeps checking until [.tries] reaches 5.
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/shop
-validators.mandatory:x:@.arguments/*/type
-validators.mandatory:x:@.arguments/*/base_url
-validators.mandatory:x:@.arguments/*/secret
-validators.url:x:@.arguments/*/base_url
+// Keeps checking until [.tries] reaches 5.
+.tries:int:0
+while
+   lt
+      get-value:x:@.tries
+      .:int:5
+   .lambda
 
-// Ingesting products using Shopify slot.
-execute:shopify.products.ingest
-   shop:x:@.arguments/*/shop
-   type:x:@.arguments/*/type
-   base_url:x:@.arguments/*/base_url
-   secret:x:@.arguments/*/
-   meta:x:@.arguments/*/meta
+      // Attempting operation.
+      log.info:Retrying operation
+
+      // Incrementing tries counter.
+      math.increment:x:@.tries

@@ -1,6 +1,8 @@
 
-// Example: Use a variable as the input to lowercase.
-.text:LOWER ME
+// Create a Hyperlambda script that returns the reCAPTCHA key if required, otherwise returns null or an empty string.
 
-// Result: "lower me"
-strings.to-lower:x:@.text
+// Retrieving key configuration setting and returning to caller.
+config.get:"magic:auth:recaptcha:key"
+unwrap:x:+/*
+return-nodes
+   result:x:@config.get

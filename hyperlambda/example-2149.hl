@@ -1,7 +1,8 @@
-/*
- * If `.foo1` has no children, `for-each` should not execute the `foo2` slot.
- */
-
-.foo1
-for-each:x:../*/.foo1/*
-   foo2
+// Changes all descendant nodes' values to "updated"
+.settings
+   mode:auto
+   theme:dark
+   layout:responsive
+for-each:x:@.settings/*/**
+   set-value:x:@.dp/#
+      .:updated

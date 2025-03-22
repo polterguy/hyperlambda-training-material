@@ -1,11 +1,17 @@
-// Executing the Hyperlambda changes the node hierarchy
 
-// This Hyperlambda
-.destination
-set-name:x:@.destination
-   .:foo
+// Write a Hyperlambda snippet that adds a new employee in 'hr_db' database and its 'employees' table.
 
-// Creates this result
-foo
-set-name:x:@.destination
-   .:foo
+// Adds a new employee in "hr_db" database and its "employees" table.
+data.connect:hr_db
+   database-type:sqlite
+
+   // Creating employee record.
+   data.create
+      database-type:sqlite
+      table:employees
+      values
+         employee_id:int:301
+         name:Alice Smith
+         department:Finance
+         salary:decimal:55000.00
+         hire_date:date:"2020-07-15T00:00:00.000"

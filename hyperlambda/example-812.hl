@@ -1,14 +1,9 @@
-// Loops for 5 iterations, adding a static node each iteration
-.no:int:0
-.res
+/*
+ * This Hyperlambda snippet retrieves only selected columns.
+ */
 
-while
-   lt
-      get-value:x:@.no
-      .:int:5
-   .lambda
-
-      add:x:@.res
-         .
-            foo
-      math.increment:x:@.no
+data.read
+   table:table1
+   columns
+      column1
+      column2

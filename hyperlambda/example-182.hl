@@ -1,4 +1,4 @@
-// Adds a bunch of nodes into specified destination expression's children collection.
-add:x:@.destination
-   .
-      foo:bar
+// Count the total number of orders
+data.connect:shopDB
+   data.scalar:SELECT COUNT(*) FROM orders
+   // Returns a single value (e.g., 42) as the node's value (type long/int)

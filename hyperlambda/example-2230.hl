@@ -1,5 +1,14 @@
-// This code uses the sqlite.scalar slot to execute a SQL query that calculates the average value in the 'height' column.
-// Returns a single scalar representing the average height of trees.
-
-sqlite.connect:forest
-   sqlite.scalar:select avg(height) from trees
+// Applies env variable values into the system configuration
+.env
+   vars
+      port:int:8080
+      debug:bool:true
+      region:eu-west
+.system
+   port
+   debug
+   region
+for-each:x:@.env/*/vars/*
+   get-name:x:@.dp/#
+   set-value:x:@.system/*/{@get-name}
+      get-value:x:@.dp/#

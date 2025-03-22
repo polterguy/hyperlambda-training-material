@@ -1,55 +1,55 @@
 
-// Create a Hyperlambda script to read or list records from a specified table in a database with optional filtering arguments and a logical operator.
+// Associates the specified [username] with the specified [extra] fields.
 .arguments
-
-   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
-   limit:long
-
-   // Offset into the dataset of where to start retrieving records
-   offset:long
-
-   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
-   order:string
-
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   direction:string
-
-   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
-   operator:string
+   username
+      type:string
+      mandatory:bool:true
+   extra
+      type:key-value
+      mandatory:bool:true
+.icon:supervisor_account
 
 // Sanity checking invocation.
-validators.enum:x:@.arguments/*/operator
-   .:or
-   .:and
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/extra
 
-/*
- * Checking if user supplied an [operator] argument, and if so
- * changing the boolean operator for comparison operations.
- */
-if
-   exists:x:@.arguments/*/operator
-   .lambda
+// Connecting to database.
+data.connect:[generic|magic]
 
-      // User provided a boolean comparison [operator] argument.
-      set-name:x:../*/data.connect/*/data.read/*/where/0
-         get-value:x:@.arguments/*/operator
-      remove-nodes:x:@.arguments/*/operator
-
-// Opening up our database connection.
-data.connect:{database}
-   database-type:{database-type}
-
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
+   // Verifying user exists.
    data.read
-      database-type:{database-type}
-      table:{table}
+      table:users
       columns
+         username
       where
          and
+            username.eq:x:@.arguments/*/username
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Adding extra fields to user.
+   for-each:x:@.arguments/*/extra/*
+      get-name:x:@.dp/#
+
+      // Deleting old value (if existing).
+      data.delete
+         table:users_extra
+         where
+            and
+               user.eq:x:@.arguments/*/username
+               type.eq:x:@get-name
+
+      // Inserting new value.
+      data.create
+         table:users_extra
+         values
+            user:x:@.arguments/*/username
+            type:x:@get-name
+            value:x:@.dp/#

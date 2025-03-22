@@ -1,6 +1,16 @@
-/*
- * Posts data with a Bearer token in the request.
- */
-http.post:"https://api.example.com/secure"
-   token:Bearer eyJhbGciOiJIUzI1NiIsIn...
-   payload:@"{""action"": ""sync""}"
+
+// Create a Hyperlambda snippet that retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target].
+
+// Retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target]
+.sourceA
+   keyX:valX
+   keyY:valY
+   keyZ:valZ
+.sourceB
+   keyM:valM
+   keyN:valN
+   keyO:valO
+.target
+add:x:@.target
+   get-nodes:x:@.sourceA/*
+   get-nodes:x:@.sourceB/*

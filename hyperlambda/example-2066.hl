@@ -1,6 +1,3 @@
-// Compare two values using less than (lt)
+// How do you declare a signed byte value in Hyperlambda?
 
-.foo1:int:3
-lt
-   get-value:x:../*/.foo1
-   .:int:5
+.offset:sbyte:-42

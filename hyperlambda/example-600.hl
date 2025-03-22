@@ -1,6 +1,4 @@
-
-// Example: Use a variable to provide the input string.
-.text:Test
-
-// Returns 4
-strings.length:x:@.text
+// Divide [.arg]'s value by 2
+math.divide
+   get-value:x:@.arg
+   .:int:2

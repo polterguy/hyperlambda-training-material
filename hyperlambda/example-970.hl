@@ -1,13 +1,6 @@
-
-// Provide a Hyperlambda example where multiple loggers run in parallel.
-
-// An example of running multiple loggers in parallel.
-join
-   fork
-      log.info:Logging task 1 started
-      sleep:500
-      log.info:Logging task 1 completed
-   fork
-      log.info:Logging task 2 started
-      sleep:1000
-      log.info:Logging task 2 completed
+/**
+ * This example attempts to save data to "/system/config.lock".
+ * If the file is read-only, an error will be thrown.
+ */
+io.file.save:/system/config.lock
+   .:Cannot overwrite this file!

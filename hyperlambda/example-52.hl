@@ -1,43 +1,59 @@
 
-// Create one record in your Album table in your chinook database
+// Counts items from your comments table in your cms database
 .arguments
 
-   // AlbumId column value
-   AlbumId:long
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
 
-   // Title column value
-   Title:string
+   // Offset into the dataset of where to start retrieving records
 
-   // ArtistId column value
-   ArtistId:long
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
 
-// Meta data description for endpoint
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   comments.id.eq:long
+   comments.post_id.eq:long
+   comments.user_id.eq:long
+   comments.content.like:string
+   comments.content.eq:string
+   comments.created_at.eq:date
+   post_id.title.eq:string
+   post_id.title.like:string
+   user_id.username.eq:string
+   user_id.username.like:string
 
 // Type of endpoint
-.type:crud-create
+.type:crud-count
 
 // Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
+auth.ticket.verify:enterprise,root
 
-// Opening up database connection.
-data.connect:[generic|chinook]
+// Opening up our database connection.
+data.connect:[generic|cms]
    database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
+   add:x:+/*/where/*
       get-nodes:x:@.arguments/*
 
-   // Creating our record.
-   data.create
+   // Reading data from database.
+   data.read
       database-type:sqlite
-      table:Album
-      return-id:bool:false
-      values
+      table:comments
+         join:posts
+            as:post_id
+            type:left
+            on
+               and
+                  comments.post_id:post_id.id
+         join:users
+            as:user_id
+            type:left
+            on
+               and
+                  comments.user_id:user_id.id
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
 
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      result:success
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

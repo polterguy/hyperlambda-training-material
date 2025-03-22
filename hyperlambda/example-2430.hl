@@ -1,30 +1,22 @@
 
-// Returns [max_urls] matching specified query by searching DuckDuckGo.
-.arguments
-   query
-      type:string
-      mandatory:bool:true
-   max_urls
-      type:int
-      default:int:10
-.icon:extension
+// Generate a Hyperlambda snippet that compiles a C# file 'math.cs' into a library and loads it dynamically.
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/query
+/*
+ * Compiles a C# file "math.cs" into a library and loads it dynamically.
+ * This assumes "math.cs" exists in "/etc/" and contains a slot named [calculate].
+ */
+io.file.load:/etc/math.cs
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.Math
+      .:System.Private.CoreLib
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.signals.contracts
+   code:x:@io.file.load
+   assembly-name:math.dll
 
-// Applying default values for optional arguments.
-validators.default:x:@.arguments
-   max_urls:int:10
-
-// Converting to integer to make sure we've got the right type.
-set-value:x:@.arguments/*/max_urls
-   convert:x:@.arguments/*/max_urls
-      type:int
-
-// Retrieving context.
-execute:magic.http.duckduckgo-search
-   query:x:@.arguments/*/query
-   max:x:@.arguments/*/max_urls
-
-// Returning result to caller.
-return-nodes:x:@execute/*
+// Loading the compiled assembly.
+system.plugin.load:x:@system.compile

@@ -1,14 +1,10 @@
 
-// Create a Hyperlambda script to demonstrate a try/catch/finally block with logging.
-try
+// Provide a Hyperlambda example where a formatted date string is concatenated.
 
-   // Perform your unsafe operation here.
-   throw:Some error is thrown here
-.catch
-
-   // If an exception is triggered, this lambda will be evaluated.
-   log.info:x:@.arguments/*/message
-.finally
-
-   // If an exception is triggered, this lambda will be evaluated.
-   log.info:Try finished evaluating
+// Example of concatenating a formatted date string.
+strings.concat
+   .:2025
+   .:-
+   .:03
+   .:-
+   .:15

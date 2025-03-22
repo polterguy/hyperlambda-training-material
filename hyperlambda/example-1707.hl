@@ -1,28 +1,9 @@
+// Replace "dog" with "cat" using values from other nodes
+.target-string:I love my dog
+.search-for:dog
+.replace-with:cat
 
-// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the users_roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
-.arguments
-   role:string
-   user:string
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Opening up database connection.
-data.connect:[generic|magic]
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      table:users_roles
-      return-id:bool:false
-      values
-
-   // Returning result of above invoction to caller.
-   response.status.set:201
-   unwrap:x:+/*
-   return
-      result:success
+set-value:x:@.target-string
+   strings.replace:x:@.target-string
+      get-value:x:@.search-for
+      get-value:x:@.replace-with

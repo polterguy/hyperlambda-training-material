@@ -1,6 +1,4 @@
-// Creates a new record in table1 with field1 and field2 having values
-sql.create
-   table:table1
-   values
-      field1:howdy
-      field2:world
+
+// Convert from YAML to lambda and back again
+yaml2lambda:x:@.yaml
+lambda2yaml:x:-/*

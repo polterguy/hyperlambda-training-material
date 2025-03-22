@@ -1,11 +1,11 @@
-// Concatenating strings for each node in the list
-.car-parts
-   engine
-   wheel
-   door
 
-for-each:x:@.car-parts/*
-   set-value:x:@.dp/#
-      strings.concat
-         get-name:x:@.dp/#
-         .:" is checked"
+// Create a Hyperlambda snippet that retrieves nodes from [.source_data] and adds them into [.target_data].
+
+// Retrieves nodes from [.source_data] and adds them into [.target_data]
+.source_data
+   keyX:valX
+   keyY:valY
+   keyZ:valZ
+.target_data
+add:x:@.target_data
+   get-nodes:x:@.source_data/*

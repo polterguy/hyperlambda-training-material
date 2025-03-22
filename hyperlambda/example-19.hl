@@ -1,27 +1,52 @@
 
-// Create a Hyperlambda snippet that executes [.lambda] if at least one condition is met.
+// Create one record in your media table in your cms database
+.arguments
 
-// Executes [.lambda] if at least one condition is met.
-.output
-.numA:int:6
-.numB:int:12
-if
-   or
+   // post_id column value
+   post_id:long
 
-      // Less than check
-      lt:x:@.numA
-         .:int:7
+   // file_path column value
+   file_path:string
 
-      // Greater than check
-      mt:x:@.numB
-         .:int:11
-   .lambda
+   // file_type column value
+   file_type:string
 
-      // Setting [.output] to true
-      set-value:x:@.output
-         .:bool:true
-else
+   // created_at column value
+   created_at:date
 
-   // Setting [.output] to false
-   set-value:x:@.output
-      .:bool:false
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:media
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.media.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

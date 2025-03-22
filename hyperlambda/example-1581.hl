@@ -1,9 +1,9 @@
+slots.create:demo  
+   return-value:42
 
-// Returns items from your DATABASE_NAME and TABLE_NAME.
-data.connect:DATABASE_NAME
-   database-type:sqlite
+slots.delete:demo  
 
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:TABLE_NAME
+// Now any attempt to use 'demo' will fail
+// slots.get:demo  (would throw an exception, since 'demo' no longer exists)
+try-signal:demo  
+// No exception thrown by try-signal, but no result since 'demo' is gone

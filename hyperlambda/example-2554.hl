@@ -1,16 +1,11 @@
 
-// Provide a Hyperlambda example where a value increases until [.value] is greater than 15.
+// Create a Hyperlambda endpoint to return all slots registered in the system.
 
-// Increases value until [.value] is greater than 15.
-.value:int:5
-while
-   lt
-      get-value:x:@.value
-      .:int:15
-   .lambda
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-      // Logging current value.
-      log.info:Increasing value
+// Retrieving all system slots.
+vocabulary
 
-      // Incrementing value.
-      math.increment:x:@.value
+// Returning results of the above to caller.
+return-nodes:x:@vocabulary/*

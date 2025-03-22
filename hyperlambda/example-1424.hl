@@ -1,6 +1,10 @@
 
-// Example: Starts-with check is case-sensitive.
+// Example: Use variables for the string, start index, and length.
+.text:Magic
+.start:int:1
+.len:int:3
+strings.substring:x:@.text
+   get-value:x:@.start
+   get-value:x:@.len
 
-// Returns false
-strings.starts-with:Hello
-   .:hello
+// Result: "agi"

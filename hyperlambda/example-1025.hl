@@ -1,6 +1,10 @@
 /**
- * This example converts "input.bmp" to PNG and replaces the original file.
+ * This example checks if "/uploads/image.jpg" exists before moving it.
+ * If it exists, it is moved to "/gallery/image.jpg".
  */
-image.convert
-   file:/input.bmp
-   output:/input.png
+.result
+io.file.exists:/uploads/image.jpg
+if:x:-
+   io.file.move
+      from:/uploads/image.jpg
+      to:/gallery/image.jpg

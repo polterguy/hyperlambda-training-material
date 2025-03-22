@@ -1,17 +1,4 @@
-
-// Scrape the specified URL and returns the raw HTML
-.arguments
-
-   // Mandatory argument and the actual URL to scrape.
-   url:string
-.type:public
-
-// Invokes some HTTP GET resource.
-execute:magic.workflows.actions.execute
-   name:http-get
-   filename:/misc/workflows/actions/http/http-get.hl
-   arguments
-      url:x:@.arguments/*/url
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// [not-exists] returns false if the expression finds at least one node
+.list
+   item
+not-exists:x:@.list/*

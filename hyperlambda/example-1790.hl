@@ -1,18 +1,14 @@
-// Hyperlambda [if] with not equal condition
-.status:pending
-.action-required
-if
-   neq:x:@.status
-      .:complete
-   .lambda
-      set-value:x:@.action-required
-         .:bool:true
+/*
+ * This Hyperlambda snippet retrieves specific nodes by index.
+ *
+ * 1. The `.data` node has multiple children.
+ * 2. The `get-nodes` slot retrieves only the first and third children.
+ */
 
-/* JavaScript equivalent of Hyperlambda [if] with not equal condition
-const status = "pending";
-let actionRequired;
-
-if (status !== "complete") {
-  actionRequired = true;
-}
-*/
+.data
+   foo1:bar1
+   foo2:bar2
+   foo3:bar3
+get-nodes
+   get-value:x:@.data/0
+   get-value:x:@.data/2

@@ -1,8 +1,6 @@
 
-// Example: Use variables to supply the string and suffix to check.
-.text:Goodbye
-.suffix:bye
+// Example: Check if a string starts with a substring that is not at the beginning.
 
-// Returns true
-strings.ends-with:x:@.text
-   get-value:x:@.suffix
+// Returns false
+strings.starts-with:HelloWorld
+   .:World

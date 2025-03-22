@@ -1,6 +1,4 @@
-
-// Example: Trim characters that are not present (no change).
-
-// Result: "hello"
-strings.trim:hello
-   .:?
+// [or] returns false if all arguments are false
+or
+   .:bool:false
+   .:bool:false

@@ -1,5 +1,9 @@
-// String format the value of [.foo]
-format:x:@.foo
-   pattern:"{0:00000}"
+/*
+ * This Hyperlambda snippet sorts results in descending order.
+ */
 
-// This works similarly to C# `string.Format`
+data.read
+   table:table1
+   order
+      column1
+   direction:desc

@@ -1,6 +1,5 @@
 
-// Create a Hyperlambda for-each loop that iterates through a list of items and logs the current item.
-for-each:x:@.data/*
+// Example: URL-decode an email address.
+strings.url-decode:user%40example.com
 
-   // Currently iterated node can be found by reference in [.dp] node
-   log.info:x:@.dp/#
+// Result: "user@example.com"

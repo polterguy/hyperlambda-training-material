@@ -1,13 +1,44 @@
 
-// Retrieves all shopping cart items for the current [session].
-.arguments
-   _session:string
-.type:public
+// Sends the user a warning email informing them that their cloudlet is about to be destroyed 5 days from now.
+slots.create:hub.emails.user.warn-destruction-of-cloudlet
 
-// Opening up our database connection.
-data.connect:[generic|shopping-cart-demo]
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/username
+   validators.mandatory:x:@.arguments/*/cloudlet
 
-   // Reading items from our items table.
-   data.select:"\nselect i.item_id, i.quantity, p.name, p.description, p.image_url, p.price\n   from items i inner join products p on i.product_id = p.product_id\n   where i.session_id = @session"
-      @session:x:@.arguments/*/_session
-   return:x:@data.select/*
+   // Retrieving frontend URL.
+   .url
+   set-value:x:@.url
+      config.get:"magic:hub:frontend-url"
+
+   // Retrieving user's name and email address.
+   .email
+   .name
+   data.connect:[generic|magic]
+      data.read
+         table:users_extra
+         values
+            type
+            name
+         where
+            and
+               user.eq:x:@.arguments/*/username
+               or
+                  type.eq:email
+                  type.eq:name
+      set-value:x:@.email
+         get-value:x:@data.read/*/*/type/=email/./*/value
+      set-value:x:@.name
+         get-value:x:@data.read/*/*/type/=name/./*/value
+
+   // Sending user his warning email.
+   unwrap:x:+/**
+   signal:magic.emails.send
+      subject:[Important] - Your AINIRO cloudlet is scheduled for destruction!
+      template-file:/modules/hub/magic.startup/templates/cloudlet-to-be-destroyed.html
+      substitutes
+         url:x:@.url
+         cloudlet:x:@.arguments/*/cloudlet
+      mime-type:text/html
+      email:x:@.email
+      name:x:@.name

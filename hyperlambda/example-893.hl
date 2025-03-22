@@ -1,12 +1,31 @@
-// Complex condition, where either field1 must be 'howdy' or field2 must be 'world' in addition to field3 being 'dudes'
-sql.read
-   table:table1
-   limit:-1
-   where
 
-      or
-         field1.eq:howdy
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the questionnaires table in the magic database with a name matching the argument, ensuring authentication and authorization for root and admin roles.
+.arguments
+   name:string
+.type:crud-delete
 
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/name
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:questionnaires
+      where
          and
-            field2.eq:world
-            field3.eq:dudes
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

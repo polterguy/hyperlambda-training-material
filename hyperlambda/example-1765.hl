@@ -1,19 +1,37 @@
-/*
- * Hyperlambda file taking arguments that invokes a dynamic slot with dynamic parameters.
- */
+
+// Delete one record from your address table in your sakila database without authorization. Log invocation
 .arguments
-   slot:string
-   params:*
-validators.mandatory:x:@.arguments/*/slot
 
-// Forwards all arguments to [invoke].
-add:x:./*/invoke
-   get-nodes:x:@.arguments/*/params/*
+   // Primary key of record to delete, mandatory argument
+   address_id:long
 
-// Invoke the slot dynamically
-invoke:x:@.arguments/*/slot
+// Meta information about endpoint. 'crud-XXX' makes the endpoint possible to use as AI function from Machine Learning component
+.type:crud-delete
 
-// Returning result
-add:x:./*/return
-   get-nodes:x:@invoke/*
-return
+// Logging invocation.
+auth.ticket.get
+lambda2hyper:x:@.arguments/*
+log.info:sakila.address entry deleted
+   username:x:@auth.ticket.get
+   arguments:x:@lambda2hyper
+validators.mandatory:x:@.arguments/*/address_id
+
+// Opening up our database connection.
+data.connect:[generic|sakila]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:address
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

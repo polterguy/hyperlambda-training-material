@@ -1,16 +1,33 @@
+// This snippet demonstrates how to perform basic string manipulation by iterating 
+// through a collection of strings and transforming each one
+.strings
+   string1:Hello World
+   string2:Hyperlambda is fun
+   string3:Magic Cloud
+   
+// Create a destination node to store our results
+.transformed
 
-// Create a Hyperlambda script that overrides the exception handler to ensure information is returned to root users, logging errors and returning status, field, and message.
-.arguments
-   status:int
-   field:string
-   message:string
-   path:string
-   stack:string
-log.error:x:@.arguments/*/message
-   url:x:@.arguments/*/path
-   exception:x:@.arguments/*/stack
-add:x:+
-   get-nodes:x:@.arguments/*/status
-   get-nodes:x:@.arguments/*/field
-   get-nodes:x:@.arguments/*/message
-return
+// Iterate through each string and transform it
+for-each:x:@.strings/*
+   
+   // Get the current string value
+   .current-value:x:@.dp/#
+
+   // Unwrapping above expression.
+   unwrap:x:-
+   
+   // Transform the string (uppercase + add exclamation)
+   strings.to-upper:x:@.current-value
+   strings.concat
+      get-value:x:@strings.to-upper
+      .:!
+   
+   // Add the transformed string to our results
+   unwrap:x:+/*/*
+   add:x:@.transformed
+      .
+         transformed-string:x:@strings.concat
+
+// Log our results
+log.info:Transformation complete

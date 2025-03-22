@@ -1,15 +1,5 @@
 
-// Reads contacts from HubSpot
-.arguments
-   after:string
-.type:public
+// Returns the operating system to caller
+system.os
 
-// Forwarding request to our HTTP POST Hyperlambda file.
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/modules/hubspot/contacts.get.hl
-
-// Returning whatever above invocation returned.
-add:x:./*/return
-   get-nodes:x:@execute-file/*
-return
+// Results in (for Mac); Darwin 23.1.0 Darwin Kernel Version 23.1.0: Mon Oct  9 21:32:11 PDT 2023; root:xnu-10002.41.9~7/RELEASE_ARM64_T6030

@@ -1,8 +1,6 @@
 /*
- * Example: Use variables to supply the string and prefix to check.
+ * Retrieves the `title` node from a referenced article object.
+ * Each `.results/*/ref` node contains a reference (value) to another node structure.
+ * The `#` dereferences that value, and `/*/title` navigates to its child node named `title`.
  */
-.text:"Sample"
-.prefix:"Sam"
-// Returns true
-strings.starts-with:x:@.text
-   get-value:x:@.prefix
+.article-title:x:@.results/*/ref/#/*/title

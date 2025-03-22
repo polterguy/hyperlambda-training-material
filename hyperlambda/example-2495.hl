@@ -1,27 +1,36 @@
 
-// Provide a Hyperlambda example where [.lambda] runs if any of the conditions hold true.
+// Create a Hyperlambda script to execute startup files, create the magic database, and apply default configuration settings.
+io.file.execute:/system/sql/magic.startup/mssql/magic.db.mssql.databases.hl
+io.file.execute:/system/sql/magic.startup/mysql/magic.db.mysql.databases.hl
+io.file.execute:/system/sql/magic.startup/pgsql/magic.db.pgsql.databases.hl
+io.file.execute:/system/sql/magic.startup/sqlite/magic.db.sqlite.databases.hl
 
-// Runs [.lambda] if any of the conditions hold true.
-.state
-.check1:int:2
-.check2:int:8
-if
-   or
+// Creating our magic database.
+io.file.execute:/system/ensure-magic-database.hl
 
-      // First condition: Less than
-      lt:x:@.check1
-         .:int:3
+// Executing all magic.startup Hyperlambda files.
+io.file.list-recursively:/system/
+io.file.list-recursively:/modules/
+for-each:x:./*/io.file.list-recursively/*
 
-      // Second condition: More than
-      mt:x:@.check2
-         .:int:7
-   .lambda
+   // Checking if file is a startup Hyperlambda file.
+   if
+      and
+         strings.contains:x:@.dp/#
+            .:/magic.startup/
+         strings.ends-with:x:@.dp/#
+            .:.hl
+      .lambda
 
-      // Updating [.state] to true
-      set-value:x:@.state
-         .:bool:true
-else
-
-   // Updating [.state] to false
-   set-value:x:@.state
-      .:bool:false
+         // Executing file.
+         strings.concat
+            .:"Executing startup file '"
+            get-value:x:@.dp/#
+            .:.
+         console.log:x:-
+         try
+            io.file.execute:x:@.dp/#
+         .catch
+            log.error:Error while executing startup file
+               exception:x:@.arguments/*/message
+               file:x:@.dp/#

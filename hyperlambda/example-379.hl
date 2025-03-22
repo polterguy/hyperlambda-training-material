@@ -1,5 +1,25 @@
 /*
- * Example: Convert a string with letters and numbers to lowercase.
+ * Sends a POST request to fetch user metadata by ID.
+ * Extracts and yields the name and email if the request is successful.
  */
-// Result: "mixedcase123"
-strings.to-lower:MixedCase123
+
+.arguments
+   id:int
+
+http.post:"https://user.example.io/meta"
+   convert:true
+   payload
+      id:x:@.arguments/*/id
+
+if
+   and
+      lt:x:@http.post
+         .:int:300
+      mte:x:@http.post
+         .:int:200
+   .lambda
+      yield
+         name:x:@http.post/*/content/*/name
+         email:x:@http.post/*/content/*/email
+return
+   error:Unable to retrieve user metadata

@@ -1,22 +1,31 @@
+// Helper file to vectorize xplain training data.
+.arguments
+   vectorize:bool
 
-// Converts the specified lambda to XML
-.lambda
-   customers
-      customer
-         name
-            #text:John Doe
-         email
-            #text:john@doe.com
+// Applying defaults.
+validators.default:x:@.arguments
+   vectorize:bool:true
 
-// Expression referencing above [.lambda] node's children nodes
-lambda2xml:x:@.lambda/*
+// Logging invocation.
+log.info:Started vectorizing training snippets from xplain-kennisbank-plus-caos model
 
-/*
- * Resulting Hyperlambda;
- * lambda2xml:@"<customers>
- * <customer>
- * <name>John Doe</name>
- * <email>john@doe.com</email>
- * </customer>
- * </customers>"
- */
+// Buffer for type name.
+.type:xplain-kennisbank-plus-caos 
+
+// Making sure we can handle exceptions.
+try
+
+   // Vectorising
+   if:x:@.arguments/*/vectorize
+      execute:magic.ai.vectorise
+         type:x:@.type
+
+      // Logging.
+      log.info:Finished vectorizing training snippets from xplain-kennisbank-plus-caos model
+
+.catch
+
+   // Oops ...!!
+   log.error:Something went wrong as we tried to vectorize training snippets from xplain-kennisbank-plus-caos model
+      error:x:@.arguments/*/message
+      type:x:@.type

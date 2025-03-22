@@ -1,11 +1,18 @@
 
-// Create a Hyperlambda action to return the originating IP address of an HTTP request.
-.arguments
-.icon:http
-
-// Retrieving IP address from equest.
-request.ip
-
-// Returning IP address to caller.
-yield
-   ip:x:@request.ip
+// KPI file for displaying the 10 last created accounts
+.name:Latest accounts
+.description:10 last created accounts
+.enabled:bool:false
+.type:table
+.lambda
+   data.connect:[generic|robo-crm]
+      data.read
+         table:accounts
+         columns
+            name
+            status
+            created
+         order:created
+         direction:desc
+         limit:10
+      return-nodes:x:-/*

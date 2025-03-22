@@ -1,15 +1,20 @@
 
-// Write a Hyperlambda snippet that counts messages in the 'messaging_db' database from the 'chat_logs' table.
+// Provide a Hyperlambda example where an order status is updated in the 'ecommerce_db' database within the 'orders' table.
 
-// Counts messages in the "messaging_db" database from the "chat_logs" table.
-data.connect:messaging_db
-   database-type:sqlite
+// Updates an order status in the "ecommerce_db" database within the "orders" table.
+.arguments
+   order_id:int
+data.connect:ecommerce_db
+   database-type:mssql
 
-   // Counting total chat messages.
-   data.read
-      database-type:sqlite
-      table:chat_logs
-      columns
-         count(*)
-            as:count
-      limit:long:1
+   // Updating the order status.
+   data.update
+      database-type:mssql
+      table:orders
+      values
+         order_status:shipped
+         shipped_date:date:"2025-04-01T00:00:00.000"
+      where
+         and
+            order_id.eq:x:@.arguments/*/order_id
+   return:x:@data.update

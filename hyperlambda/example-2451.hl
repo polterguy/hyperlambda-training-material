@@ -1,28 +1,31 @@
+/*
+ * Compiles a C# file and creates a library from the compiled result,
+ * for then to dynamically load it as a plugin and invoke a slot
+ * called [foo] expected to exist within the C# code.
+ *
+ * Notice, the code assumes there's a C# file called "foo.cs"
+ * in your '/etc/' folder. Create this file with Hyper IDE
+ * using the "slot" template to test the code.
+ */
+io.file.load:/etc/foo.cs
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.ComponentModel
+      .:System.Private.CoreLib
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.signals.contracts
+   code:x:@io.file.load
+   assembly-name:foo.dll
 
-// Create a Hyperlambda script to invoke the OpenAI API with a Bearer token, process audio data, and save it as an MP3 file.
-http.post:"https://api.openai.com/v1/chat/completions"
-   convert:bool:true
-   headers
-      Authorization:Bearer TOKEN_HERE
-      Content-Type:application/json
-   payload
-      model:gpt-4o-audio-preview
-      max_tokens:int:4000
-      temperature:double:0.3
-      messages
-         .
-            role:system
-            content:You are a helpful assistant and you can answer questions related to the context.
-         .
-            role:user
-            content:"Hi there, how's it going?"
-      audio
-         voice:alloy
-         format:mp3
-      modalities
-         .:text
-         .:audio
-convert:x:@http.post/*/content/*/choices/0/*/message/*/audio/*/data
-   type:from-base64
-io.file.save.binary:/foo.mp3
-   get-value:x:@convert
+// Loading assembly now that we've created it and saved it.
+system.plugin.load:x:@system.compile
+
+// Invoking dynamically created C# slot.
+.name:John Doe
+foo:x:@.name
+
+// Unloading plugin.
+system.plugin.unload:foo.dll

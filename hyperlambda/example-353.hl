@@ -1,6 +1,6 @@
 /*
- * Example: Check if a string starts with itself.
+ * Retrieves the `email` field from a user object referenced inside each session.
+ * `.sessions/*/userRef` holds a pointer (value) to another node containing user data.
+ * Using `#`, we follow that pointer and retrieve the user's `email` node.
  */
-// Returns true
-strings.starts-with:Test
-   .:Test
+.session-email:x:@.sessions/*/userRef/#/*/email

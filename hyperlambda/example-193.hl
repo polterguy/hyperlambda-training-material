@@ -1,16 +1,18 @@
 
-// Provide a Hyperlambda example where a counter counts down from 10.
+// Returns all plans that exist.
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-// Counts down from 10.
-.counter:int:10
-while
-   gt
-      get-value:x:@.counter
-      .:int:0
-   .lambda
+// Returns all plans in the system.
+execute:magic.workflows.actions.execute
+   name:hub-plans-get
+   filename:/modules/hub/workflows/actions/hub-plans-get.hl
+   arguments
 
-      // Logging countdown.
-      log.info:Counting down
-
-      // Decrementing counter.
-      math.decrement:x:@.counter
+// Returns the result of your last action.
+return-nodes:x:@execute/*

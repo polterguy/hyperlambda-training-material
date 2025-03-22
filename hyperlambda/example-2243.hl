@@ -1,9 +1,10 @@
-// Basic usage of [for-each] to iterate over a list of car parts
-.car-parts
-   engine
-   wheel
-   door
 
-for-each:x:@.car-parts/*
-   set-value:x:@.dp/#
-      .:checked
+// Write a Hyperlambda snippet that pushes a collection of nodes into the specified container.
+
+// Pushes a collection of nodes into the specified container.
+.container
+add:x:@.container
+   .
+      fieldOne:contentOne
+      fieldTwo:contentTwo
+      fieldThree:contentThree

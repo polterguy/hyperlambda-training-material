@@ -1,10 +1,32 @@
 
-// Decrement a value by a custom step from another node
-.value:int:10
-.step:int:4
-math.decrement:x:@.value
+// Create a Hyperlambda script for an endpoint that counts items in the questions table in the magic database, ensuring the user is authorized and handling optional filters.
+.arguments
+   questions.question_id.eq:long
+   questions.question.like:string
+   questions.question.eq:string
+   questions.questionnaire.like:string
+   questions.questionnaire.eq:string
+.type:crud-count
 
-   // use 4 from .step as the decrement amount
-   get-value:x:@.step
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// .value should now be 6
+// Opening up our database connection.
+data.connect:[generic|magic]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:questions
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

@@ -1,52 +1,57 @@
 
-// Create a Hyperlambda endpoint to evaluate given Hyperlambda code and return the results, handling exceptions with public error messages.
+// Update endpoint updating one record in your spice_urls table in your scraper database.
 .arguments
-   hyperlambda:string
-   args:*
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // spice_url_id column value being primary key of record to update
+   spice_url_id:long
 
-/*
- * To be able to return intelligent error messages to caller,
- * we catch all exceptions, and returns the exception message
- * publicly back to caller.
- */
-try
+   // url column's new value
+   url:string
 
-   /*
-    * Transforms the specified [hyperlambda] to a lambda object,
-    * making sure we correctly set the root node for the execution
-    * in the process. This looks a bit cheezy, but to make sure
-    * the root node for the execution object is the node containing
-    * the Hyperlambda as children, it is necessary.
-    * 
-    * It basically "unties" the execution object from the rest of this
-    * particular file, preventing caller to interfer with the file itself,
-    * as a consequence of his Hyperlambda.
-    */
-   .x:node:""
-   hyper2lambda:x:@.arguments/*/hyperlambda
-   remove-nodes:x:@hyper2lambda/*/.arguments/*
-   add:x:@hyper2lambda/*/.arguments
-      get-nodes:x:@.arguments/*/args/*
-   add:x:@.x/#
-      get-nodes:x:@hyper2lambda/*
+   // type column's new value
+   type:string
 
-   // Evaluating Hyperlambda, now with the correct root node.
-   eval:x:@.x/#
+// Type of endpoint
+.type:crud-update
 
-   // Returning the results of the evaluation to caller.
-   lambda2hyper:x:@.x/#/*
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/spice_url_id
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up our database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
+
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
+
+   // Invoking our update slot.
+   data.update
+      database-type:sqlite
+      table:spice_urls
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning the correct status code.
+   response.status.set:202
+
+   // Returning success to caller.
    unwrap:x:+/*
-   return-nodes
-      result:x:@lambda2hyper
-.catch
-
-   /*
-    * Throwing a new exception, wrapping message,
-    * this time as a publicly visible exception.
-    */
-   throw:x:@.arguments/*/message
-      status:400
-      public:true
+   return
+      affected:x:@data.update

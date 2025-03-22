@@ -1,5 +1,14 @@
-/*
- * Example: Convert an uppercase string to lowercase.
- */
-// Result: "hello"
-strings.to-lower:HELLO
+// Use or in comparison to check multiple conditions
+.result
+.foo1:OK
+if
+   or
+      eq
+         get-value:x:../*/.foo1
+         .:OK
+      eq
+         get-value:x:../*/.foo1
+         .:ERROR
+   .lambda
+      set-value:x:../*/.result
+         .:MATCH

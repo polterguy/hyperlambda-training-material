@@ -1,3 +1,11 @@
-// Verifies the specified JWT token
-auth.token.verify
-   token:SOME_JWT_TOKEN_HERE
+
+// Example: Replace all characters not in the given set (allow only lowercase letters).
+.text:abc123!?XYZ
+strings.replace-not-of:x:@.text
+   .:abcdefghijklmnopqrstuvwxyz
+   .:-
+
+/*
+ * Result: "abc--------"
+ * (digits, punctuation, and uppercase letters were replaced with '-')
+ */

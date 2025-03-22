@@ -1,4 +1,8 @@
-// Format an integer with leading zeros (width 5)
-.num:int:57
-format:x:@.num
-   pattern:"{0:00000}"
+/**
+ * This example resizes an image to 600x400 pixels and saves it as "output.jpg".
+ */
+image.resize
+   file:/input.jpg
+   width:int:600
+   height:int:400
+   output:/output.jpg

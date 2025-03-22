@@ -1,6 +1,5 @@
-/**
- * This example converts "input.png" to "output.webp" for better compression.
- */
-image.convert
-   file:/input.png
-   output:/output.webp
+
+// Example: Capitalize a string starting with a digit (no alphabetical character to capitalize).
+
+// Result: "42hello"
+strings.capitalize:42hello

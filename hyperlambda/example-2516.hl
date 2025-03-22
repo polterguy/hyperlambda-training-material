@@ -1,17 +1,17 @@
 
-// Write a Hyperlambda snippet that adds a new employee in 'hr_db' database and its 'employees' table.
+// Provide a Hyperlambda snippet focusing on different string formats, including multi-line and escaped characters.
 
-// Adds a new employee in "hr_db" database and its "employees" table.
-data.connect:hr_db
-   database-type:sqlite
+// Regular string without quotes
+.paramA:default
 
-   // Creating employee record.
-   data.create
-      database-type:sqlite
-      table:employees
-      values
-         employee_id:int:301
-         name:Alice Smith
-         department:Finance
-         salary:decimal:55000.00
-         hire_date:date:"2020-07-15T00:00:00.000"
+// String requiring quotes due to special character
+.paramB:"id:number"
+
+// Multi-line string using @
+.paramC:"first\nsecond"
+
+// Single-quoted text
+.paramD:example-quoted
+
+// Escaped newline
+.paramE:"split\ntext"

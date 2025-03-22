@@ -1,9 +1,18 @@
-// Seeking a lost legend that may or may not exist.
-
-.legends
-   hero1:Achilles
-   hero2:Hercules
-
-get-value:x:@.legends/*/hero3
-
-// Since "hero3" doesn’t exist, the result is null or empty.
+// I want to update my database and append " - OBSOLETE" for every 'content' column found in my 'system' database and its 'log_records' table. Primary key is 'id'. Do it manually, once for each record. Don't update all rows with one SQL.
+data.connect:system
+   data.read
+      table:log_records
+      columns
+         id
+         content
+   for-each:x:@data.select/*
+      strings.concat
+         get-value:x:@.dp/#/*/content
+         .:" - OBSOLETE"
+      data.update
+         table:log_records
+         values
+            content:x:@strings.concat
+         where
+            and
+               id:x:@.dp/#/*/id

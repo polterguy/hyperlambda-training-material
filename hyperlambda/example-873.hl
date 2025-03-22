@@ -1,2 +1,5 @@
-// Verifies user belongs to root, admin or guest role
-auth.ticket.verify:root,admin,guest
+
+// Example: Convert a string with letters and numbers to uppercase.
+
+// Result: "MIXEDCASE123"
+strings.to-upper:MixedCase123

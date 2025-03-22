@@ -1,24 +1,27 @@
-/*
- * Sends a POST request to an internal user service with a user ID.
- * Verifies that the status code is 2xx and yields the full response content.
- */
 
-.arguments
-   id:int
+// Generate a Hyperlambda snippet that evaluates a user role using a switch case with a default option.
 
-http.post:"https://internal.api.example.com/users/lookup"
-   convert:true
-   payload
-      userId:x:@.arguments/*/id
+// Switch case comparison for user roles.
+.user_role:admin
+.result
+switch:x:@.user_role
+   case:admin
 
-if
-   and
-      mte:x:@http.post
-         .:int:200
-      lt:x:@http.post
-         .:int:300
-   .lambda
-      yield
-         result:x:@http.post/*/content/*
-else
-   throw:User lookup failed
+      // If user role is "admin".
+      set-value:x:@.result
+         .:Has admin privileges
+   case:editor
+
+      // If user role is "editor".
+      set-value:x:@.result
+         .:Has editor privileges
+   case:user
+
+      // If user role is "user".
+      set-value:x:@.result
+         .:Has user privileges
+   default
+
+      // If none of the above roles match.
+      set-value:x:@.result
+         .:Unknown role

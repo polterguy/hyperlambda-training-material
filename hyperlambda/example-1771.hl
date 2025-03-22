@@ -1,9 +1,8 @@
-// Define a slot that returns two pieces of data
-slots.create:getPair
-   return-nodes
-      key:Value  
-      number:int:123
 
-// Invoke 'getPair'
-signal:getPair
-// The result has child nodes: key = "Value" and number = 123
+// Example: Use variables for string and trim characters (start only).
+.text:...Hello
+.trimchars:.
+
+// Result: "Hello"
+strings.trim-start:x:@.text
+   get-value:x:@.trimchars

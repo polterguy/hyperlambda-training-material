@@ -1,27 +1,17 @@
-/*
- * FILE: /modules/api/employees/search.hl
- *
- * DESCRIPTION:
- * Accepts a `name` parameter and performs a SQL `LIKE` search.
- * This is useful for autocomplete or fuzzy search.
- *
- * HOW TO CREATE THIS ENDPOINT:
- * 1. Save as `/modules/api/employees/search.hl`.
- * 2. Endpoint becomes available at:
- *     GET /api/employees/search?name=Joh
- *
- * SECURITY:
- * - Uses parameterized SQL to prevent SQL injection.
- */
 
+// Create a Hyperlambda action to retrieve a specified cookie by 'name'. Validate the mandatory field and return the cookie's value.
 .arguments
-   name:string
+   name
+      type:string
+      mandatory:bool:true
+.icon:http
 
+// Sanity checking invocation.
 validators.mandatory:x:@.arguments/*/name
 
-data.connect:sakila
-   data.select:SELECT first_name, last_name FROM actor WHERE first_name LIKE @filter
-      @filter:x:@.arguments/*/name
+// Retrieving cookie.
+request.cookies.get:x:@.arguments/*/name
 
-   yield
-      results:x:@data.select/*
+// Returning cookie's value to caller.
+yield
+   result:x:@request.cookies.get

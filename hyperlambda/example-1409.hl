@@ -1,9 +1,14 @@
+/*
+ * This Hyperlambda calculates the sum of all child node values of [.numbers],
+ * and assigns the result to [.total]. Demonstrates use of [for-each] and expression iterators.
+ */
 
-// Example: Concatenate all strings stored as children of a list node.
-.items
-   .:Red
-   .:Green
-   .:Blue
-strings.concat:x:@.items/*
-
-// Result: "RedGreenBlue"
+.total:int:0
+.numbers
+   one:int:10
+   two:int:20
+   three:int:30
+for-each:x:@.numbers/*
+   set-value:x:@.total
+      math.add:x:@.total
+         .:x:@.dp/#

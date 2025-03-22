@@ -1,4 +1,8 @@
-// Example: Do a regular expression replace of fo+ with FOO
-strings.regex-replace:foo bar hansen
-   .:fo+
-   .:FOO
+
+// Example: Use variables to supply the string and prefix to check.
+.text:Sample
+.prefix:Sam
+
+// Returns true
+strings.starts-with:x:@.text
+   get-value:x:@.prefix

@@ -1,27 +1,16 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the users table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
+// Create a Hyperlambda action to HTML encode a specified string and return the encoded content.
 .arguments
-   username:string
-.type:crud-delete
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-validators.mandatory:x:@.arguments/*/username
+   // Action syntax
+   html
+      type:string
+      mandatory:bool:true
+.icon:pageview
 
-// Opening up our database connection.
-data.connect:[generic|magic]
+// Transforming Markdown to HTML.
+strings.html-encode:x:@.arguments/*/html
 
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      table:users
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Returning resulting HTML to caller.
+yield
+   content:x:@strings.html-encode

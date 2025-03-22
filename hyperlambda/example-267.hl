@@ -1,9 +1,15 @@
-/*
- * Iterates through each line of the file and logs it.
- */
 
-io.file.load:/README.md
-strings.split:x:@io.file.load
-   .:\n
-for-each:x:@strings.split/*
-   log.info:x:@.dp/#
+// Create a Hyperlambda snippet that counts tickets in the 'support_db' database from the 'tickets' table.
+
+// Counts tickets in the "support_db" database from the "tickets" table.
+data.connect:support_db
+   database-type:pgsql
+
+   // Counting total support tickets.
+   data.read
+      database-type:pgsql
+      table:tickets
+      columns
+         count(*)
+            as:count
+      limit:long:1

@@ -1,5 +1,22 @@
-// Purging all cache entries.
 
-cache.clear
+// Converts the specified lambda to XML
+.lambda
+   customers
+      customer
+         name
+            #text:John Doe
+         email
+            #text:john@doe.com
 
-// All cache items will be removed.
+// Expression referencing above [.lambda] node's children nodes
+lambda2xml:x:@.lambda/*
+
+/*
+ * Resulting Hyperlambda;
+ * lambda2xml:@"<customers>
+ * <customer>
+ * <name>John Doe</name>
+ * <email>john@doe.com</email>
+ * </customer>
+ * </customers>"
+ */

@@ -1,25 +1,22 @@
+/*
+ * Save this file as `/modules/code-cleaner/endpoints/standardize-vars.hl`
+ * This exposes an HTTP POST endpoint at `/code-cleaner/standardize-vars`
+ *
+ * This endpoint reads the file path from the [filename] argument and performs
+ * variable name replacements based on `what` and `with` values in the same argument list.
+ * The updated file content is returned.
+ */
 
-// Create a Hyperlambda script that returns the specified URL to the caller with a 5-minute server-side cache to avoid re-fetching the URL too frequently.
-slots.create:magic.http.get-with-cache
+.arguments
+   filename:string
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/url
-   validators.url:x:@.arguments/*/url
-
-   // Checking cache.
-   unwrap:x:+/*/.lambda/*/.url
-   cache.try-get:x:@.arguments/*/url
-      expiration:300
-      .lambda
-
-         // Forward evaluated above.
-         .url:x:@.arguments/*/url
-         http.get:x:@.url
-            headers
-               User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36
-               Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-               Accept-Language:en-GB,en-US;q=0.9,en;q=0.8,no;q=0.7
-         return:x:-/*/content
-
-   // Returning result of above invocation to caller.
-   return:x:@cache.try-get
+.result
+set-value:x:-
+   io.file.load:x:@.arguments/*/filename
+for-each:x:@.arguments/*
+   set-value:x:@.result
+      strings.replace:x:@.result
+         get-value:x:@.dp/#/*/what
+         get-value:x:@.dp/#/*/with
+yield
+   result:x:@.result

@@ -1,6 +1,9 @@
 
-// Example: Ends-with check is case-sensitive.
+// Create a new customer with only a name field
+data.connect:shopDB
+   data.create
+      table:customers
+      values
 
-// Returns false
-strings.ends-with:Hello
-   .:LLO
+         // Insert "Alice" into the name column
+         name:Alice

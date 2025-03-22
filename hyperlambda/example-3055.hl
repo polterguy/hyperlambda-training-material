@@ -1,50 +1,26 @@
 
-// Returns a grouped chart image to caller. Values is a mandatory comma separated list of values.
-.arguments:*
-.type:public
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the users table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
+.arguments
+   username:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/legend
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+validators.mandatory:x:@.arguments/*/username
 
-// Creating our individual bars.
-.bars
-for-each:x:@.arguments/*
-   get-name:x:@.dp/#
-   if
-      not
-         strings.starts-with:x:@get-name
-            .:legend
-      .lambda
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-         // Adding primary node for bar.
-         set-name:x:+/*/*
-            get-value:x:@get-name
-         add:x:@.bars
-            .
-               .
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
 
-         // Adding values for individual cells.
-         add:x:@.bars/0/-
-            strings.split:x:@.dp/#
-               .:,
+   // Deleting item from database.
+   data.delete
+      table:users
+      where
+         and
 
-// Creating our legend.
-add:x:../*/image.chart/*/legend
-   strings.split:x:@.arguments/*/legend
-      .:,
-
-// Parametrizing [image.chart] invocation.
-add:x:../*/image.chart/*/bars
-   get-nodes:x:@.bars/*
-image.chart:grouped
-   width:800
-   height:500
-   bars
-   legend
-
-// Applying correct HTTP header.
-response.headers.set
-   Content-Type:image/png
-
-// Returning chart to caller.
-return:x:@image.chart
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

@@ -1,17 +1,7 @@
-// Select specific columns from the employees table and sort by department ascending
-data.connect:hrDB
-   data.read
-      table:employees
+// String formats the value of [.foo] with the specified culture
+.foo:decimal:57
+format:x:-
+   pattern:"{0:0.00}"
+   culture:nb-NO
 
-      // Columns we're interested in
-      columns
-         id
-         name
-         department
-
-      // Sort results by department in ascending order
-      order:department
-      direction:asc
-
-      // Limit to 10 results
-      limit:10
+// The [format] slot is just a wrapper around `String.Format` from C#

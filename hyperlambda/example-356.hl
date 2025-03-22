@@ -1,10 +1,6 @@
 /*
- * Example: Join all strings stored as children of a list node.
+ * Retrieves the `startDate` from an event object referenced by entries in a calendar.
+ * The `event` node in `.calendar/*` contains a reference to another node structure.
+ * The expression dereferences it and selects its `startDate` child.
  */
-.words
-   .:one
-   .:two
-   .:three
-strings.join:x:@.words/*
-   .:"|"
-// Result: "one|two|three"
+.calendar-start:x:@.calendar/*/event/#/*/startDate

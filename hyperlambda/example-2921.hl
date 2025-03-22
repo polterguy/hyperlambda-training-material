@@ -1,162 +1,63 @@
 
-// Write a Hyperlambda script to list all databases in your installation, according to specified arguments.
+// Returns the Swagger and OpenAPI specification for the specified type from NetSuite
 .arguments
-   databaseType:string
-   connectionString:string
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Type of object the caller wants the OpenAPI spec for.
+   type:string
+.type:public
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/databaseType
-validators.mandatory:x:@.arguments/*/connectionString
-validators.enum:x:@.arguments/*/databaseType
-   .:mysql
-   .:pgsql
-   .:mssql
-   .:sqlite
+validators.mandatory:x:@.arguments/*/type
 
 /*
- * Since this endpoint is quite expensive to invoke, we cache its result
- * for 10 hours on the server side.
+ * Returns an access token for NetSuite.
+ * 
+ * Returns a JWT token that can be used to invoke NetSuite according to your configuration settings.
+ * Notice, this will read account-id, certificate-id, and consumer-key from your configuration settings,
+ * in addition to assume your private key exists in the file '/etc/netsuite/private-key.txt'.
  */
-strings.concat
-   .:magic.sql.databases.
-   get-value:x:@.arguments/*/databaseType
-   :.
-   get-value:x:@.arguments/*/connectionString
-unwrap:x:../*/cache.try-get/**/.databaseType
-unwrap:x:../*/cache.try-get/**/.connection-string
-cache.try-get:x:@strings.concat
-   expiration:36000
+execute:magic.workflows.actions.execute
+   name:netsuite-get-access-token
+   filename:/modules/netsuite/workflows/actions/netsuite-get-access-token.hl
+   arguments
+
+// Creating our idempotency key to prevent replay attacks.
+guid.new
+
+// Creating invocation URL.
+.url
+set-value:x:@.url
+   strings.concat
+      .:"https://"
+      config.get:"magic:netsuite:account-id"
+      .:.suitetalk.api.netsuite.com/services/rest/record/v1/metadata-catalog
+      .:/
+      get-value:x:@.arguments/*/type
+
+// Invoking our HTTP GET endpoint, now correctly parametrised.
+http.get:x:@.url
+   token:x:--/execute/=netsuite-get-access-token/*/access-token
+   headers
+      Accept:application/swagger+json
+      X-NetSuite-Idempotency-Key:x:@guid.new
+
+// Converts the result to a lambda object.
+json2lambda:x:@http.get/*/content
+
+// Sanity checking above invocation.
+if
+   not
+      and
+         mte:x:@http.get
+            .:int:200
+         lt:x:@http.get
+            .:int:300
    .lambda
 
-      // Retrieving databases.
-      .databaseType:x:@.arguments/*/databaseType
-      .connection-string:x:@.arguments/*/connectionString
-      strings.concat
-         .:magic.db.
-         get-value:x:@.databaseType
-         .:.databases
-      unwrap:x:+/*
-      signal:x:@strings.concat
-         connection-string:x:@.connection-string
-      switch:x:@.databaseType
-         case:mssql
-            remove-nodes:x:@signal/*/*/db/=master
-            remove-nodes:x:@signal/*/*/db/=tempdb
-            remove-nodes:x:@signal/*/*/db/=model
-            remove-nodes:x:@signal/*/*/db/=msdb
-         case:mysql
-            remove-nodes:x:@signal/*/*/db/=information_schema
-            remove-nodes:x:@signal/*/*/db/=mysql
-            remove-nodes:x:@signal/*/*/db/=performance_schema
-            remove-nodes:x:@signal/*/*/db/=sys
-         case:pgsql
-            remove-nodes:x:@signal/*/*/db/=template1
-            remove-nodes:x:@signal/*/*/db/=template0
+      // Oops, error ...!!
+      lambda2hyper:x:@json2lambda
+      log.error:x:@lambda2hyper
+      throw:Could not get entity from NetSuite, check your log for details.
 
-      // Creating our return value, one for each database.
-      .result
-      for-each:x:@signal/*/*
-         set-name:x:@.dp/#
-            .:database
-         unwrap:x:+/*/*/*
-         add:x:@.result
-            .
-               .
-                  name:x:@.dp/#
-                  tables
-
-      // Iterating through databases.
-      for-each:x:@.result/*
-
-         // Retrieving tables.
-         strings.concat
-            .:magic.db.
-            get-value:x:@.databaseType
-            .:.tables
-         unwrap:x:+/*
-         signal:x:@strings.concat
-            connection-string:x:@.connection-string
-            database:x:@.dp/#/*/name
-         for-each:x:@signal/*
-
-            // Retrieving columns.
-            unwrap:x:+/*/*/*
-            add:x:@for-each/@.dp/#/*/tables
-               .
-                  .
-                     name:x:@.dp/#/*/table
-                     columns
-            strings.concat
-               .:magic.db.
-               get-value:x:@.databaseType
-               .:.columns
-            unwrap:x:+/*
-            signal:x:@strings.concat
-               connection-string:x:@.connection-string
-               database:x:@for-each/@.dp/#/*/name
-               table:x:@.dp/#/*/table
-            for-each:x:@signal/*
-               unwrap:x:+/*/*/*
-               add:x:@for-each/@for-each/@.dp/#/*/tables/0/-/*/columns
-                  .
-                     .
-                        name:x:@.dp/#/*/name
-                        db:x:@.dp/#/*/db
-                        nullable:x:@.dp/#/*/nullable
-                        primary:x:@.dp/#/*/primary
-                        automatic:x:@.dp/#/*/automatic
-                        hl:x:@.dp/#/*/hl
-
-            // Retrieving foreign keys.
-            add:x:@for-each/@for-each/@.dp/#/*/tables/0/-
-               .
-                  foreign_keys
-            strings.concat
-               .:magic.db.
-               get-value:x:@.databaseType
-               .:.foreign_keys
-            unwrap:x:+/*
-            signal:x:@strings.concat
-               connection-string:x:@.connection-string
-               database:x:@for-each/@for-each/@.dp/#/*/name
-               table:x:@.dp/#/*/table
-            for-each:x:@signal/*
-               add:x:+/*/*
-                  get-nodes:x:@.dp/#/*
-               add:x:@for-each/@for-each/@for-each/@.dp/#/*/tables/0/-/*/foreign_keys
-                  .
-                     .
-
-            // Retrieving indexes.
-            add:x:@for-each/@for-each/@for-each/@.dp/#/*/tables/0/-
-               .
-                  indexes
-            strings.concat
-               .:magic.db.
-               get-value:x:@.databaseType
-               .:.indexes
-            unwrap:x:+/*
-            signal:x:@strings.concat
-               connection-string:x:@.connection-string
-               database:x:@for-each/@for-each/@for-each/@.dp/#/*/name
-               table:x:@.dp/#/*/table
-            for-each:x:@signal/*
-               add:x:+/*/*
-                  get-nodes:x:@.dp/#/*
-               add:x:@for-each/@for-each/@for-each/@for-each/@.dp/#/*/tables/0/-/*/indexes
-                  .
-                     .
-
-      // Returning database to caller.
-      lambda2hyper:x:@.result/*
-      return:x:@lambda2hyper
-
-// Returning results to caller.
-hyper2lambda:x:@cache.try-get
-add:x:../*/return-nodes/*/databases
-   get-nodes:x:@hyper2lambda/*
-return-nodes
-   databases
+// Returning our entity to caller.
+return:x:@json2lambda/*

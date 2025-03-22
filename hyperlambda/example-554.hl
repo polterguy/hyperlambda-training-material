@@ -1,13 +1,7 @@
-// Retrieve orders that are either pending OR processing
-data.connect:shopDB
-
-   // CRUD read ...
-   data.read
-      table:orders
-      limit:-1
-      where
-
-         // Either status equals "pending" OR department not equal "hr"
-         or
-            status.eq:"pending"
-            department.neq:"hr"
+// Checks for null values, second invocation will be false
+.src1
+   foo:foo
+.src2
+   foo
+null:x:@.src1/*
+null:x:@.src2/*

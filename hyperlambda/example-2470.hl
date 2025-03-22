@@ -1,10 +1,16 @@
 
-// Provide a Hyperlambda example where structured nodes are inserted into the referenced endpoint's children.
+// Write a Hyperlambda snippet that formats an address.
 
-// Inserts structured nodes into the referenced endpoint's children.
-.endpoint
-add:x:@.endpoint
-   .
-      paramX:settingX
-      paramY:settingY
-      paramZ:settingZ
+// Hyperlambda file that concatenates an address string.
+.arguments
+   street:string
+   city:string
+   zip:int
+strings.concat
+   get-value:x:@.arguments/*/street
+   .:", "
+   get-value:x:@.arguments/*/city
+   .:" - "
+   get-value:x:@.arguments/*/zip
+yield
+   address:x:@strings.concat

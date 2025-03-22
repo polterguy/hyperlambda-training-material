@@ -1,10 +1,27 @@
-/*
- * Stores a multi-line block of text without needing to escape newline characters.
- * This is useful for help messages, logs, or text templates.
- */
-.documentation:@"
-Welcome to the system!
-Please follow the instructions below:
-1. Log in
-2. Change your password
-3. Read the terms and conditions"
+
+// Creates a new stacked chart
+image.chart:stacked
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   ticks
+      .:Spring
+      .:Summer
+      .:Autumn
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets

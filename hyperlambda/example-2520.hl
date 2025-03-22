@@ -1,11 +1,17 @@
 
-// Write a Hyperlambda snippet that opens a connection to 'warehouse_db' and gets recent inventory changes.
+// Show another example of Hyperlambda string assignments, ensuring various formatting methods are covered.
 
-// Opens a connection to "warehouse_db" and gets recent inventory changes.
-.result
-data.connect:warehouse_db
-   database-type:sqlite
-   data.select:select * from inventory_changes order by modified_at desc limit 15
-      database-type:sqlite
-   add:x:@.result
-      get-nodes:x:@data.select/*
+// Regular text
+.valueA:simpleData
+
+// Needs quotes for special characters
+.valueB:"index:field"
+
+// Multi-line usage
+.valueC:"data1\ndata2"
+
+// Alternative quoting with single quotes
+.valueD:something-new
+
+// Escape sequence in a string
+.valueE:"row\ncolumn"

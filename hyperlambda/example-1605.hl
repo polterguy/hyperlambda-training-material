@@ -1,16 +1,3 @@
-
-// Write a Hyperlambda snippet that formats an address.
-
-// Hyperlambda file that concatenates an address string.
-.arguments
-   street:string
-   city:string
-   zip:int
-strings.concat
-   get-value:x:@.arguments/*/street
-   .:", "
-   get-value:x:@.arguments/*/city
-   .:" - "
-   get-value:x:@.arguments/*/zip
-yield
-   address:x:@strings.concat
+// Try to retrieve a slot that does not exist
+slots.get:unknown  
+// Throws an exception because 'unknown' slot is not defined

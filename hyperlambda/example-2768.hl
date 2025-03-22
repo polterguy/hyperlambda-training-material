@@ -1,23 +1,31 @@
 
-// Create a Hyperlambda script that returns the setup status of the system, ensuring the user is authorized.
+// Returns a bar chart image to caller. Values is a mandatory comma separated list of values.
+.arguments:*
+.type:public
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Creating our individual bars.
+.bars
+for-each:x:@.arguments/*
 
-// Checking if JWT secret has been changed.
-config.get:"magic:auth:secret"
-if
-   or
-      null:x:@config.get
-      lt
-         strings.length:x:@config.get
-         .:int:50
-   .lambda
+   // Adding primary node for bar.
+   unwrap:x:+/+/*/*
+   set-name:x:+/*/*
+      get-name:x:@.dp/#
+   add:x:@.bars
+      .
+         .:x:@.dp/#
 
-      // System has not been setup.
-      return
-         result:bool:false
+// Parametrizing [image.chart] invocation.
+add:x:../*/image.chart/*/bars
+   get-nodes:x:@.bars/*
+image.chart:bars
+   width:800
+   height:500
+   bars
 
-// Returns results of above invocations to caller.
-return
-   result:bool:true
+// Applying correct HTTP header.
+response.headers.set
+   Content-Type:image/png
+
+// Returning chart to caller.
+return:x:@image.chart

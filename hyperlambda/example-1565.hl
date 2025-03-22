@@ -1,4 +1,5 @@
-// [null] returns false if the target node exists and has a value
-.src1
-   foo:bar
-null:x:@.src1/*
+// Pass a node by reference and modify it inside another slot
+.foo
+reference:x:@.foo
+set-value:x:-/#
+   .:Updated

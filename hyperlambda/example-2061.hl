@@ -1,5 +1,2 @@
-// Compare two values using inline eq syntax
-
-.foo1:OK
-eq:x:../*/.foo1
-   .:OK
+// This snippet defines a node with an unsigned short (UInt16) value.
+.maxCount:ushort:123

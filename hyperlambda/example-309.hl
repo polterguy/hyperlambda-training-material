@@ -1,13 +1,17 @@
-/*
- * This script connects to the 'inventory' database using the default connection string and fetches the top 5 records from the 'products' table with email addresses that contain 'shopify'.
- * It demonstrates the use of database reading and filtering slots.
- */
-data.connect:[generic|inventory]
-   database-type:sqlite
-   data.read
-      database-type:sqlite
-      table:products
-      limit:long:5
-      where
-         and
-            email.like:%shopify%
+
+// Scrape the specified URL and returns the raw HTML
+.arguments
+
+   // Mandatory argument and the actual URL to scrape.
+   url:string
+.type:public
+
+// Invokes some HTTP GET resource.
+execute:magic.workflows.actions.execute
+   name:http-get
+   filename:/misc/workflows/actions/http/http-get.hl
+   arguments
+      url:x:@.arguments/*/url
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

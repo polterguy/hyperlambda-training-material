@@ -1,6 +1,5 @@
-/**
- * This example tries to resize an image without specifying width or height.
- * This should trigger an error.
- */
-image.resize
-   file:/input.jpg
+// Attempting to convert to a non-existing type should throw an error
+
+.src:int:5
+convert:x:-
+   type:non-existing-type

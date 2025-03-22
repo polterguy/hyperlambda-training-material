@@ -1,4 +1,5 @@
-// Generate a cryptographically secure random integer between 1 and 100
-crypto.random.int
-   min:int:1
-   max:int:100
+// Add a bonus to .user-score
+.user-score:int:100
+math.add
+   get-value:x:@.user-score
+   .:int:25

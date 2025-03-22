@@ -1,3 +1,2 @@
-// Convert from YAML to lambda and back again
-yaml2lambda:x:@.yaml
-lambda2yaml:x:-/*
+// Example: Convert a PDF file to text.
+pdf2text:/foo/bar.pdf

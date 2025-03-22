@@ -1,18 +1,13 @@
-/**
- * This example creates a custom slot `my.slot` that returns multiple nodes using `return-nodes`.
- * When the slot is invoked, it returns an integer and a string node.
- */
-slots.create:my.slot
-   return-nodes
-      user-id:int:12345
-      username:JohnDoe
-      status:Active
+// Executing the Hyperlambda changes the node hierarchy
 
-// Invoking the slot
-signal:my.slot
+// This Hyperlambda
+.no:int:0
+set-value:x:@.no
+   math.add
+      .:int:3
+      .:int:5
 
-
-// Result below
-user-id:int:12345
-username:JohnDoe
-status:Active
+// Creates this result
+.no:int:8
+set-value:x:@.no
+   math.add:int:8

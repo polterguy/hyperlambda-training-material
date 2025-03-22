@@ -1,17 +1,13 @@
+// Retrieve all pending orders of amount 100 (using AND conditions in where clause)
+data.connect:shopDB
+   data.read
+      table:orders
 
-// Hyperlambda endpoint taking arguments. The SQL aggregates and returns the top 25 artists with the most albums from the chinook database.
-.arguments
+      // No limit on results (-1 means no limit)
+      limit:long:-1
+      where
 
-// Making sure user is authorized to invoke endpoint.
-auth.ticket.verify:root,admin
-
-// Connecting to database.
-data.connect:chinook
-   database-type:sqlite
-
-   // Executing [data.select] slot with our SQL.
-   data.select:"\n/*\n * Script to aggregate records for each artist in chinook database.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect ar.Name, count(*) as count\n  from Album al, Artist ar where al.ArtistId = ar.ArtistId\n  group by al.ArtistId\n  order by count desc\n  limit 25\n"
-      database-type:sqlite
-
-   // Returning a result of above invocation to caller.
-   return-nodes:x:@data.select/*
+         // Both conditions must be true (AND)
+         and
+            status.eq:"pending"
+            amount.eq:long:100

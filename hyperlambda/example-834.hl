@@ -1,5 +1,11 @@
-// Multiplies [.arg]'s value by 3
-.arg:int:5
-math.multiply
-   get-value:x:@.arg
-   .:int:3
+
+// Add children from multiple sources into multiple destinations
+.dest1
+.dest2
+.src1
+   foo1:bar1
+.src2
+   foo2:bar2
+add:x:../*/.dest*
+   get-nodes:x:@.src1/*
+   get-nodes:x:@.src2/*

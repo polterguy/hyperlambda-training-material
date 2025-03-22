@@ -1,10 +1,12 @@
+// Create CRUD Hyperlambda joining table1 and table2 with fk1 being equal to pk1
+sql.read
+   limit:-1
+   table:table1
 
-// Create a Hyperlambda script to generate a bar chart image with specified dimensions and bar values.
-image.chart:bars
-   filename:/chart.png
-   width:600
-   height:300
-   bars
-      Spring:int:2
-      Summer:int:5
-      Autumn:int:10
+      join:table2
+         type:inner
+         on
+            and
+               fk1.neq:pk1
+
+// Notice, the above code does not have an open database connection and will therefore throw an exception

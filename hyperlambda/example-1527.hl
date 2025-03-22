@@ -1,20 +1,20 @@
 
-// Hyperlambda [if] with numeric comparison
-.temperature:int:31
-.weather-status
-if
-   mt:x:@.temperature
-      .:int:30
-   .lambda
-      set-value:x:@.weather-status
-         .:hot
-
 /*
- * JavaScript equivalent of Hyperlambda [if] with numeric comparison
- * const temperature = 25;
- * let weatherStatus;
+ * Endpoint that takes any arguments, converts all arguments to integers, adds all together, and returns result
  * 
- * if (temperature > 30) {
- * weatherStatus = "hot";
- * }
+ * Pass in whatever arguments you wish.
  */
+.arguments:*
+.type:public
+
+// Adding all arguments
+.result:int:0
+for-each:x:@.arguments/*
+   set-value:x:@.result
+      math.add:x:@.result
+         convert:x:@.dp/#
+            type:int
+
+// Returning result (notice, [yield] unwraps all its arguments)
+yield
+   result:x:@.result

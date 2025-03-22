@@ -1,19 +1,13 @@
 
-// Provide a Hyperlambda example where numbers are summed while the sum remains below 100.
+// Delete an item by ID with authorization, specifying a short timeout
+http.delete:"https://api.example.com/items/123"
 
-// Summing numbers while sum remains below 100
-.no:int:0
-.sum:int:0
-while
-   lt
-      get-value:x:@.sum
-      .:int:100
-   .lambda
+   // attach query parameters instead of hardcoding them in URL
+   query
+      category:cars
 
-      // Adding to sum.
-      set-value:x:@.sum
-         math.add:x:@.sum
-            get-value:x:@.no
+   // include Bearer token for auth if required by the API
+   token:XYZ_SECRET_TOKEN_123
 
-      // Incrementing counter.
-      math.increment:x:@.no
+   // abort if no response within 5 seconds
+   timeout:int:5

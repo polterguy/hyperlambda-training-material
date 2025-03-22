@@ -1,5 +1,6 @@
-// Convert a value to a decimal number
+/*
+ * Invalid: Uses `@.foo` but the `.foo` node doesn't exist in the current node hierarchy.
+ * Returns null.
+ */
 
-.src:5
-convert:x:-
-   type:decimal
+get-value:x:@.foo

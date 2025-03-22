@@ -1,12 +1,19 @@
-// Create a CRUD endpoint returning employees from DBCustomers database. My database is SQLite
+
+// Write a Hyperlambda script to return log items from the database based on optional arguments like 'from', 'max', and 'query'.
 .arguments
-.type:crud-read
+   from:string
+   max:long
+   query:string
+.type:internal
 
-data.connect:DBCustomers
-   database-type:sqlite
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   data.read
-      database-type:sqlite
-      table:employees
-   yield
-      records:x:@data.read/*
+// Invoking slot responsible for returning items, making sure we correctly parametrise invocation.
+add:x:../*/log.query
+   get-nodes:x:@.arguments/*/max
+   get-nodes:x:@.arguments/*/from
+log.query:x:@.arguments/*/query
+
+// Returning result of above invocation to caller.
+return-nodes:x:-/*

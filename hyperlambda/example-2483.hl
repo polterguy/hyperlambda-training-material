@@ -1,16 +1,3 @@
 
-// Generate a Hyperlambda snippet that evaluates specified [.check] if condition evaluates to true.
-
-// Evaluates specified [.check] if condition evaluates to true.
-.check:bool:true
-if
-   eq:x:@.check
-      .:bool:true
-   .lambda
-
-      // Lambda evaluates if condition is true.
-      log.info:[.check] is true
-else
-
-   // Lambda evaluated if condition is NOT true.
-   log.info:[.check] is false
+// Generate a Hyperlambda snippet using a string containing an escaped newline character.
+.string5:"foo\nbar"

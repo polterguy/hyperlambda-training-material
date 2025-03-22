@@ -1,5 +1,16 @@
+// Hyperlambda endpoint taking two decimal numbers, then multiplying these and returning the result
+.arguments
+   no1:decimal
+   no2:decimal
 
-// Example: Get the length of an empty string.
+// Making sure argument was given
+validators.mandatory:x:@.arguments/*/no1
+validators.mandatory:x:@.arguments/*/no2
 
-// Returns 0
-strings.length:
+// Multiplying.
+math.multiply
+   get-value:x:@.arguments/*/no1
+   get-value:x:@.arguments/*/no2
+
+yield
+   result:x:@math.multiply

@@ -1,8 +1,20 @@
 
-// Example: Replace a substring that is not present (no change occurs).
-.input:foo bar
-strings.replace:x:@.input
-   .:baz
-   .:qux
+// Hyperlambda [set-value] and [if]
+.condition:yes
+.result
+if
+   eq:x:@.condition
+      .:yes
+   .lambda
+      set-value:x:@.result
+         .:Condition Met
 
-// Result: "foo bar" (unchanged)
+// Results in:
+.condition:yes
+.result:Condition Met
+if:bool:true
+   eq:bool:true
+      .:yes
+   .lambda
+      set-value:x:@.result
+         .:Condition Met

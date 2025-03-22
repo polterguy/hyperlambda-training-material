@@ -1,10 +1,14 @@
 
-// Example: Join all strings stored as children of a list node.
-.words
-   .:one
-   .:two
-   .:three
-strings.join:x:@.words/*
-   .:|
+// Create a Hyperlambda action to ensure a specified 'arg' matches a specified 'regex'. Validate mandatory fields.
+.arguments
+   arg
+      type:string
+      mandatory:bool:true
+   regex
+      type:string
+      mandatory:bool:true
+.icon:shield
 
-// Result: "one|two|three"
+// Invoking validator.
+validators.regex:x:@.arguments/*/arg
+   regex:x:@.arguments/*/regex

@@ -1,5 +1,21 @@
 
-// Create a Hyperlambda script to save a string to the memory cache and then retrieve it.
-cache.set:foo
-   value:some cache value
-cache.get:foo
+// Creates a withdrawal transaction in our Stripe module.
+.arguments
+   amount:long
+   affiliate:string
+
+// Verifying user has access to endpoint.
+auth.ticket.verify:root, admin
+
+// Opening up Stripe database and creating our transaction.
+guid.new
+convert:x:-
+   type:string
+data.connect:[generic|stripe]
+   data.create
+      table:transactions
+      values
+         transaction:x:@convert
+         amount:x:@.arguments/*/amount
+         username:x:@.arguments/*/affiliate
+         type:withdrawal

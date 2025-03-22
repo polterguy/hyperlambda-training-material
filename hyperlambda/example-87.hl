@@ -1,13 +1,6 @@
 
-// Write a Hyperlambda script to ensure the cache folder exists and empty it for JavaScript files.
-if
-   not
-      io.folder.exists:/etc/cache/
-   .lambda
-      io.folder.create:/etc/cache/
-else
+// Set all inactive users to have NULL last_login
+data.connect:authDB
+   data.execute:UPDATE users SET last_login = NULL WHERE active = 0
 
-   // Empties cache folder for JavaScript files.
-   io.file.list:/etc/cache/
-   for-each:x:@io.file.list/*
-      io.file.delete:x:@.dp/#
+   // Executes the UPDATE; number of affected records returned

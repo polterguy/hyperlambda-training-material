@@ -1,10 +1,14 @@
 /*
- * Example: Replace all characters not in the given set (allow only lowercase letters).
+ * An email template stored as a verbatim string.
+ * Includes newlines and token placeholders without any escaping.
  */
-.text:"abc123!?XYZ"
-strings.replace-not-of:x:@.text
-   .:abcdefghijklmnopqrstuvwxyz
-   .:"-"
-/* Result: "abc--------"
- * (digits, punctuation, and uppercase letters were replaced with '-')
- */
+.email-template:@"
+Hello {{name}},
+
+Thank you for registering at our site!
+
+Click the link below to confirm your email:
+{{confirmation_link}}
+
+Regards,
+The Team"

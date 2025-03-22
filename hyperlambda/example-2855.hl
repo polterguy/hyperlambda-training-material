@@ -1,48 +1,60 @@
 
-// Write a Hyperlambda script to return a specified CSS file to the caller.
+// Create a Hyperlambda script for a CRUD read endpoint that returns items from the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
-   file:string
+   limit:long
+   offset:long
+   order:string
+   direction:string
+   operator:string
+   name.eq:string
+   name.like:string
+   description.like:string
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
-// Checking if custom CSS file exists.
-.result
-strings.concat
-   .:/etc/system/openai/css/search/
-   get-value:x:@.arguments/*/file
-   .:.css
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
 if
-   io.file.exists:x:@strings.concat
+   exists:x:@.arguments/*/operator
    .lambda
 
-      // Custom template file.
-      set-value:x:@.result
-         io.file.load:x:@strings.concat
-else
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
 
-   // Checking if system CSS file exists.
-   strings.concat
-      .:/system/openai/front.files/search/
-      get-value:x:@.arguments/*/file
-      .:.css
-   if
-      io.file.exists:x:@strings.concat
-      .lambda
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-         // Generic template file.
-         set-value:x:@.result
-            io.file.load:x:@strings.concat
-   else
+   // Parametrising our read invocation.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/operator
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
 
-      // Oops, no such file exists.
-      throw:No such AI chat template file exists
-         public:bool:true
-         status:400
+   // Reading data from database.
+   data.read
+      table:roles
+      columns
+         roles.name
+         roles.description
+      where
+         and
 
-// Making sure we return correct Content-Type to caller, and applying some cache.
-response.headers.set
-   Content-Type:text/css
-
-// Returning result to caller.
-return:x:@.result
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

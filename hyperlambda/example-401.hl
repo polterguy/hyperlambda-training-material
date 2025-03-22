@@ -1,6 +1,7 @@
-/*
- * Example: No trim characters at end (string remains unchanged).
- */
-// Result: "abc"
-strings.trim-end:abc
-   .:"z"
+
+// Example: Extract with length exceeding string bounds (returns till end).
+strings.substring:Hello
+   .:2
+   .:10
+
+// Result: "llo"

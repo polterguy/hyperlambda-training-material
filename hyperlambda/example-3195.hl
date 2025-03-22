@@ -1,4 +1,9 @@
+/*
+ * Example: Use variables to supply the string and suffix to check.
+ */
+.text:"Goodbye"
+.suffix:"bye"
 
-// Module version and name information.
-version:v0.5.0
-module_name:hub
+// Returns true
+strings.ends-with:x:@.text
+   get-value:x:@.suffix

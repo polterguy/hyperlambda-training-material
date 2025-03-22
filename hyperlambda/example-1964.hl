@@ -1,9 +1,21 @@
-// Calculates average score per category by dividing total score by number of categories
-.scores
-   total:int:270
-   categories:int:3
-   average
-set-value:x:@.scores/*/average
-   math.divide
-      get-value:x:@.scores/*/total
-      get-value:x:@.scores/*/categories
+
+// Connects to sakila with database transactions
+data.connect:sakila
+   data.transaction.create
+      data.execute:delete from film_actor
+
+      /*
+       * If you uncomment the line below the
+       * transaction will be committed, resulting
+       * in that everything from your film_actor
+       * table will be deleted.
+       */
+
+      // data.transaction.commit
+data.connect:sakila
+
+   /*
+    * Notice, this still returns 5462 items, since
+    * transaction was implicitly rolled back above.
+    */
+   data.scalar:select count(*) from film_actor

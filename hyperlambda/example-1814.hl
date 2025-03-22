@@ -1,31 +1,18 @@
 
-// Write a Hyperlambda script to install a specified module by executing all magic.startup Hyperlambda files inside it.
-slots.create:magic.modules.install-module
+// Create a Hyperlambda action to save specified 'content' to a specified 'file'. Validate mandatory fields.
+.arguments
+   file
+      type:string
+      mandatory:bool:true
+   content
+      type:string
+      mandatory:bool:true
+.icon:save
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/module
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/file
+validators.mandatory:x:@.arguments/*/content
 
-   /*
-    * Loops through all files recursively from within the module's
-    * "magic.startup" folder.
-    */
-   strings.concat
-      .:/modules/
-      get-value:x:@.arguments/*/module
-      .:/
-
-   // Executing all magic.startup Hyperlambda files inside module.
-   io.file.list-recursively:x:@strings.concat
-   for-each:x:@io.file.list-recursively/*
-
-      // Checking if file is a startup Hyperlambda file.
-      if
-         and
-            strings.contains:x:@.dp/#
-               .:/magic.startup/
-            strings.ends-with:x:@.dp/#
-               .:.hl
-         .lambda
-
-            // Executing file.
-            io.file.execute:x:@.dp/#
+// Saves the specified file.
+save-file:x:@.arguments/*/file
+   get-value:x:@.arguments/*/content

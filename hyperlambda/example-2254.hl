@@ -1,24 +1,18 @@
-// Complex logic using multiple [if] and [else] within [for-each]
-.car-parts
-   engine:available
-   wheel:out-of-stock
-   door:out-of-stock
+// Dynamically accesses settings keys and stores their values as comma separated list in .result using extrapolated expressions
+.settings
+   apiKey:XYZ-123
+   secretKey:ABC-987
+   region:us-east
+.result
+for-each:x:@.settings/*
+   get-name:x:@.dp/#
+   set-value:x:@.result
+      strings.concat
+         get-value:x:@.result
+         get-value:x:@.dp/#
+         .:,
 
-for-each:x:@.car-parts/*
-   if
-      eq:x:@.dp/#
-         .:available
-      .lambda
-         set-value:x:@.dp/#
-            .:checked
-   else
-      get-name:x:@.dp/#
-      if
-         eq:x:@get-name
-            .:wheel
-         .lambda
-            set-value:x:@.dp/#
-               .:urgent restock
-      else
-         set-value:x:@.dp/#
-            .:restock
+// Removing last comma.
+set-value:x:@.result
+   strings.trim-end:x:@.result
+      .:,

@@ -1,11 +1,16 @@
-
-// Example: Split a string by spaces.
-strings.split:one two three
-   .:" "
-
 /*
- * Resulting parts:
- * .:one
- * .:two
- * .:three
+ * This Hyperlambda snippet demonstrates using `not-null` in an `if` condition.
+ *
+ * 1. The `.data` node has a child `foo` with a value `"bar"`.
+ * 2. The `if` statement checks if `foo` is not null.
+ * 3. If `foo` is not null, an exception will be thrown
+ *
+ * Result: An exception is thrown since `foo` has a value
  */
+
+.data
+   foo:bar
+if
+   not-null:x:@.data/*/foo
+   .lambda
+      throw:You are not supposed to be here!

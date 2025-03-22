@@ -1,5 +1,4 @@
-// Replace "hansen" with "tjobing hansen" in a string
-.full-name:thomas hansen
-strings.replace:x:@.full-name
-   .:hansen
-   .:tjobing hansen
+// This example hashes a string using MD5 and returns the hash in text format.
+.data:Magic is awesome
+crypto.hash.md5:x:@.data
+   format:text

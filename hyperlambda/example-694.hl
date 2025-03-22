@@ -1,33 +1,26 @@
-/*
- * Hyperlambda file that can be executed with arguments.
- * Prepares a password reset email by replacing the {{user}} and {{reset_link}} placeholders.
- */
+// Generate an endpoint returning line_items from financial database. Add optional paging support and optional filtering on name
 .arguments
-   user:string
-   reset_link:string
-.email-template:@"
-Hi {{user}},
+   limit:long
+   offset:long
+   comments.name.eq:string
 
-We received a request to reset your password.
+// Type of endpoint
+.type:crud-read
 
-Click the link below to proceed:
-{{reset_link}}
+// Opening up our database connection.
+data.connect:financial
 
-If you didn't request this, please ignore this message.
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*/and
+      get-nodes:x:@.arguments/*/comments.name.eq
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   data.read
+      table:line_items
+      where
+         and
 
-Thanks,
-Support Team"
-
-.reset-email
-set-value:x:@.reset-email
-   strings.replace:x:@.email-template
-      .:{{user}}
-      get-value:x:@.arguments/*/user
-
-set-value:x:@.reset-email
-   strings.replace:x:@.reset-email
-      .:{{reset_link}}
-      get-value:x:@.arguments/*/reset_link
-
-yield
-   email:x:@.reset-email
+   // Returning result of above read invocation to caller.
+   yield
+      result:x:@data.read/*

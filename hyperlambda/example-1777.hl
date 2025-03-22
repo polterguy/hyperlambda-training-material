@@ -1,13 +1,12 @@
-// Define slot 'foo' with an initial return value
-slots.create:foo  
-   return-value:First version
+/*
+ * This Hyperlambda snippet demonstrates an error when multiple nodes match.
+ *
+ * 1. The `.data` node has multiple children.
+ * 2. The `get-name` slot is used with a wildcard selector `*`, which returns multiple nodes.
+ * 3. This will cause a HyperlambdaException because `get-name` expects exactly one node.
+ */
 
-// Invoke 'foo' (will yield "First version")
-signal:foo  
-
-// Redefine (override) slot 'foo' with new logic
-slots.create:foo  
-   return-value:Second version
-
-// Invoke 'foo' again (now yields "Second version")
-signal:foo  
+.data
+   foo1:bar1
+   foo2:bar2
+get-name:x:@.data/*

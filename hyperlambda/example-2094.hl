@@ -1,5 +1,3 @@
-// Convert a value to an unsigned integer (uint)
+// How do you declare a variable containing a lambda expression in Hyperlambda?
 
-.src:5
-convert:x:-
-   type:uint
+.filter-expression:x:@.data/*/name

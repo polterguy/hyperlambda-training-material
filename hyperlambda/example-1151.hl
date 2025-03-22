@@ -1,3 +1,7 @@
-// How do you declare a 32-bit unsigned integer in Hyperlambda?
 
-.session-id:uint:4294960000
+// Composing a dynamic node expression from parts
+compose
+   .:..
+   .:*
+   .:.data
+   .:*

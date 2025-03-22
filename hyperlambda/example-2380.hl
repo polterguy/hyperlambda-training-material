@@ -1,50 +1,21 @@
 
-// Create one record in your category table in your sakila database without authorization. Log invocation.
+// Removes the specified [item_id] from your shopping cart.
 .arguments
-
-   // name column value
-   name:string
-
-   // last_update column value
-   last_update:date
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-create
-
-// Logging invocation.
-auth.ticket.get
-lambda2hyper:x:@.arguments/*
-log.info:sakila.category entry created
-   username:x:@auth.ticket.get
-   arguments:x:@lambda2hyper
+   item_id:int
+   _session:string
+.type:public
 
 // Opening up database connection.
-data.connect:[generic|sakila]
-   database-type:sqlite
+data.connect:[generic|shopping-cart-demo]
 
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
+   // Removing item.
+   data.delete
+      table:items
+      where
+         and
+            item_id.eq:x:@.arguments/*/item_id
+            session_id.eq:x:@.arguments/*/_session
 
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:category
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Publishing socket message.
-   add:x:./*/sockets.signal/*/args
-      get-nodes:x:@.arguments/*
-   sockets.signal:sakila.category.post
-      args
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+// Returning success to caller.
+return
+   result:success

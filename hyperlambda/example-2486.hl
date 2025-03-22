@@ -1,16 +1,17 @@
 
-// Write a Hyperlambda snippet that determines if [.toggle] is true and executes [.lambda].
+// Provide a Hyperlambda example with string variables, covering cases of colons, multi-line strings, and escaped characters.
 
-// Determines if [.toggle] is true and executes [.lambda].
-.toggle:bool:true
-if
-   eq:x:@.toggle
-      .:bool:true
-   .lambda
+// No special characters, so no quotes required
+.text1:sample
 
-      // Executes when [.toggle] is true.
-      log.info:[.toggle] is on
-else
+// Contains a colon, requiring quotes
+.text2:"sample:value"
 
-   // Executes when [.toggle] is false.
-   log.info:[.toggle] is off
+// Multi-line string, using @ notation
+.text3:"lineA\nlineB"
+
+// Alternative quoting with single quotes
+.text4:test
+
+// Escaped newline within a string
+.text5:"first\nsecond"

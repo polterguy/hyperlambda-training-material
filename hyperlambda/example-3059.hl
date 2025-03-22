@@ -1,45 +1,75 @@
 
-// Moves SQL scripts to the correct folder and creates the Northwind database file if it doesn't exist.
-io.file.list:/modules/sqlite-northwind/magic.startup/
-for-each:x:-/*
-   strings.split:x:@.dp/#
-      .:/
+// Returns balance information for affiliate.
+auth.ticket.get
+
+// Affiliate percent calculated below.
+.percent
+
+// Ensuring user is an affiliate
+data.connect:[generic|magic]
+
+   /*
+    * Retrieving affiliate percent for user.
+    * Notice, if user doesn't have an affiliate percent, user is
+    * not an affiliate.
+    */
+   data.read
+      table:users_extra
+      columns
+         value
+      where
+         and
+            type.eq:affiliate_percent
+            user.eq:x:@auth.ticket.get
    if
-      strings.ends-with:x:@.dp/#
-         .:.sql
+      not-exists:x:@data.read/*/*/value
       .lambda
-         strings.concat
-            .:/etc/sqlite/templates/
-            get-value:x:@strings.split/0/-
-         if
-            not
-               io.file.exists:x:@strings.concat
-            .lambda
 
-               // File doesn't exists, hence moving it.
-               io.file.move:x:@.dp/#
-                  .:/etc/sqlite/templates/
-               log.info:SQL script moved into etc folder
-                  filename:x:@.dp/#
+         // Oops ...!!
+         log.error:User is not affiliate
+            username:x:@auth.ticket.get
+         throw:You are not an affiliate
+            public:true
+            status:400
 
-// Creates the Northwind database file.
-if
-   not
-      io.file.exists:/data/northwind.db
-   .lambda
+   // Calculating ratio and storing.
+   convert:x:@data.read/*/*/value
+      type:decimal
+   set-value:x:@.percent
+      math.divide:x:@convert
+         .:decimal:100
 
-      // Creating a default database file to store database in.
-      io.file.save:/data/northwind.db
-         .:
-      log.info:Northwind database file created
-         filename:/data/northwind.db
+// Connecting to database.
+data.connect:[generic|stripe]
 
-      // Loads and executes the northwind.sql script.
-      io.file.load:/etc/sqlite/templates/northwind.sql
-      sqlite.connect:northwind
-         sqlite.execute:x:@io.file.load
-      log.info:The northwind database was successfully created
-         filename:/etc/sqlite/templates/northwind.sql
+   // Buffer to hold return values.
+   .balance
+      received
+      accepted
+      withdrawals
 
-      // Evicting cache item related to SQLite.
-      cache.set:magic.sql.databases.sqlite.generic
+   // Retrieving all received amounts from database.
+   set-value:x:@.balance/*/received
+      math.multiply
+         data.scalar:"select coalesce(sum(amount), 0) as sum from transactions\n   where affiliate = @affiliate and\n      type = 'charge.succeeded'"
+            @affiliate:x:@auth.ticket.get
+         get-value:x:@.percent
+
+   // Retrieving all accepted amounts from database.
+   set-value:x:@.balance/*/accepted
+      math.multiply
+         data.scalar:"select coalesce(sum(amount), 0) as sum from transactions t\n   where affiliate = @affiliate and\n      created <= curdate() - interval 1 month and\n      type = 'charge.succeeded' and not exists(\n         select * from transactions t2\n            where t2.type = 'charge.refunded' and\n               t2.invoice = t.invoice and t2.invoice is not null)"
+            @affiliate:x:@auth.ticket.get
+         get-value:x:@.percent
+
+   // Retrieving all withdrawals from database.
+   set-value:x:@.balance/*/withdrawals
+      data.scalar:"select coalesce(sum(amount), 0) as sum from transactions t\n   where affiliate = @affiliate and type = 'withdrawal'"
+         @affiliate:x:@auth.ticket.get
+
+   // Applying some HTTP caching since endpoint is kind of expensive to invoke.
+   response.headers.set
+      Cache-Control:private, max-age=3600
+
+   // Returning result to caller.
+   return-nodes:x:@.balance/*

@@ -1,13 +1,19 @@
-// Example of endpoint taking two arguments, concatenating them, and returning the result using [return].
+/*
+ * Save this file as `/modules/files/endpoints/read.hl`
+ * This exposes an HTTP POST endpoint at `/files/read`
+ *
+ * It requires a `filename` argument to be passed,
+ * and returns the file contents if valid.
+ */
+
 .arguments
-   arg1:string
-   arg2:string
+   filename
 
-strings.concat
-   get-value:x:@.arguments/*/arg1
-   get-value:x:@.arguments/*/arg2
+validators.mandatory:x:@.arguments/*/filename
 
-// MUST call [unwrap] otherwise we're simply returning the expression.
-unwrap:x:+/*
-return
-   result:x:@strings.concat
+.result
+set-value:x:@.result
+   io.file.load:x:@.arguments/*/filename
+
+yield
+   file:x:@.result

@@ -1,10 +1,13 @@
-// Add [.src1] and [.src2]'s children to [.dest]
-.dest
-.dest
-.src1
+// Generate HTTP GET with query paramaters
+.query
    foo1:bar1
-.src2
    foo2:bar2
-add:x:../*/.dest
-   get-nodes:x:@.src1/*
-   get-nodes:x:@.src2/*
+http.get:"https://foo.com"
+   query:x:@.query/*
+
+// Or, alternatively ...
+
+http.get:"https://foo.com"
+   query
+      foo1:bar1
+      foo2:bar2

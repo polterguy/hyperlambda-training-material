@@ -1,40 +1,19 @@
-/*
- * Compiles a snippet of C# code down to a library,
- * for then to dynamically load it as a plugin.
- */
-system.compile
-   references
-      .:netstandard
-      .:System.Runtime
-      .:System.Private.CoreLib
-      .:magic.node
-      .:magic.node.extensions
-      .:magic.signals.contracts
-   code:@"
 
-// Example C# code creating a Hyperlambda slot.
-using System;
-using magic.node;
-using magic.node.extensions;
-using magic.signals.contracts;
+// Write a Hyperlambda script to return the maximum tokens for a specified completion slot.
+.arguments
+   slot:string
+.type:internal
 
-// Our slot class.
-[Slot(Name = ""foo"")]
-public class Foo : ISlot
-{
-   public void Signal(ISignaler signaler, Node input)
-   {
-      input.Value = $""Hi {input.GetEx<string>()}, how may I assist you?"";
-   }
-}"
-   assembly-name:foo.dll
+// Making sure user is authenticate to access endpoint
+auth.ticket.verify:root
 
-// Loading assembly from raw bytes now that we've created it.
-system.plugin.load:x:@system.compile
-
-// Executing [foo] slot now dynamically injected into AppDomain.
-.name:John Doe
-foo:x:@.name
-
-// Unloading plugin.
-system.plugin.unload:foo.dll
+// Retrieving max tokens from config.
+strings.split:x:@.arguments/*/slot
+   .:.
+strings.concat
+   .:"magic:"
+   get-value:x:@strings.split/0/-
+   .:":max_tokens"
+config.get:x:@strings.concat
+yield
+   max_tokens:x:@config.get

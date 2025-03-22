@@ -1,6 +1,10 @@
-// Execute Hyperlambda from a string that creates a log item
-.hl:@"log.info:""This was logged from a piece of text"""
-
-hyper2lambda:x:-
-
-eval:x:-
+// How do I evaluate seasonal discount eligibility with [if]?
+.month:string:December
+.discount
+if
+   eq
+      get-value:x:@.month
+      .:December
+   .lambda
+      set-value:x:@.discount
+         .:Holiday 20% off

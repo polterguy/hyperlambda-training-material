@@ -1,5 +1,6 @@
-// Validates the [recaptcha_value] argument is a valid reCAPTCHA token
-validators.recaptcha:x:@.arguments/*/recaptcha_value
-   site-key:xyz
-   secret:qwerty
-   min:decimal:0.3
+// Invokes Chuck Norris API using an HTTP GET request and retrieving joke
+.joke
+http.get:"https://api.chucknorris.io/jokes/random"
+   convert:true
+set-value:x:@.joke
+   get-value:x:@http.get/*/content/*/value

@@ -1,6 +1,14 @@
-// How to use shorthand [if:x:expression] to simplify conditions?
-.flag:bool:true
-.message
-if:x:@.flag
-   set-value:x:@.message
-      .:Shorthand evaluated to true
+
+// Write a Hyperlambda script to list all folders in a specified folder.
+.arguments
+   folder:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Listing all folders in specified folder.
+io.folder.list:x:@.arguments/*/folder
+
+// Returning results of above invocation to caller.
+return-nodes:x:@io.folder.list/*

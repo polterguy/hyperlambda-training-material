@@ -1,4 +1,6 @@
-// Connects to sakila and returns all items from actor
-data.connect:sakila
-   data.read
-      table:actor
+
+// Example: Use a variable as the input to uppercase.
+.text:make me upper
+
+// Result: "MAKE ME UPPER"
+strings.to-upper:x:@.text

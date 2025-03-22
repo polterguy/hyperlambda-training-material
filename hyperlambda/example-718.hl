@@ -1,3 +1,22 @@
-// Move folder
-io.folder.move:/misc/source-folder/
-   .:/misc/destination-folder/
+// Create grouped chart
+image.chart:grouped
+   filename:/grouped-chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets

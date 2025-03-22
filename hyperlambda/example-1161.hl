@@ -1,54 +1,61 @@
 
 /*
- * Returns a grouped chart image to caller.
+ * Returns total discounts applied for quotes during period
  * 
- * Values is a mandatory comma separated list of values.
+ * Optionally apply limit, offset or filter as you see fit
  */
-.arguments:*
+.arguments
+
+   // Optional minimum date. ISO formatted as follows "yyyy-MM-dd"
+   min_date:string
+
+   // Optional maximum date. ISO formatted as follows "yyyy-MM-dd"
+   max_date:string
+
 .type:public
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/legend
+// Making sure user is authorised to access the workflow.
+auth.ticket.verify:mnhc-admin
 
-// Creating our individual bars.
-.bars
-for-each:x:@.arguments/*
-   get-name:x:@.dp/#
+// Opening up database connection.
+mssql.connect:[production|MNDG_LSC18-1]
+
+   // Checking if we're filtering items on [min_date].
    if
-      not
-         strings.starts-with:x:@get-name
-            .:legend
+      and
+         exists:x:@.arguments/*/min_date
+         not-null:x:@.arguments/*/min_date
       .lambda
-
-         // Adding primary node for bar.
-         set-name:x:+/*/*
-            get-value:x:@get-name
-         add:x:@.bars
+         convert:x:@.arguments/*/min_date
+            type:date
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/mssql.read/*/where/*/and
             .
-               .
+               Document Date.mt:x:@convert
 
-         // Adding values for individual cells.
-         add:x:@.bars/0/-
-            strings.split:x:@.dp/#
-               .:,
+   // Checking if we're filtering items on [max_date].
+   if
+      and
+         exists:x:@.arguments/*/max_date
+         not-null:x:@.arguments/*/max_date
+      .lambda
+         convert:x:@.arguments/*/max_date
+            type:date
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/mssql.read/*/where/*/and
+            .
+               Document Date.lt:x:@convert
 
-// Creating our legend.
-add:x:../*/image.chart/*/legend
-   strings.split:x:@.arguments/*/legend
-      .:,
-
-// Parametrizing [image.chart] invocation.
-add:x:../*/image.chart/*/bars
-   get-nodes:x:@.bars/*
-image.chart:grouped
-   width:800
-   height:500
-   bars
-   legend
-
-// Applying correct HTTP header.
-response.headers.set
-   Content-Type:image/png
-
-// Returning chart to caller.
-return:x:@image.chart
+   // Reading records.
+   mssql.read
+      table:addv_Cotizaciones
+      columns
+         sum((Quantity * [Unit Price]) - Amount)
+            as:TotalDiscountsApplied
+      where
+         and
+      limit:-1
+   
+   // Returning result of above invocation to caller.
+   yield
+      result:x:@mssql.read/*

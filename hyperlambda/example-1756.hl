@@ -1,5 +1,6 @@
-// Setting value from another node
-.source:Hello World
-.target
-set-value:x:@.target
-   get-value:x:@.source
+
+// Example: Use a variable as the input to lowercase.
+.text:LOWER ME
+
+// Result: "lower me"
+strings.to-lower:x:@.text

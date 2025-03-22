@@ -1,10 +1,8 @@
+// CRUD endpoint that selects items from your DATABASE_NAME and TABLE_NAME.
+data.connect:DATABASE_NAME
+   database-type:sqlite
 
-// Append multiple new child nodes to a destination node
-.dest
-add:x:@.dest
-   .
-      foo1:hello
-      foo2:world
-   .
-      bar1:hi
-      bar2:planet
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:TABLE_NAME

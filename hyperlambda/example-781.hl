@@ -1,4 +1,2 @@
-// More then or equal to [.src]
-.src1:int:7
-mte:x:@.src1
-   .:int:5
+// Return configuration key named 'foo:bar'
+config.get:"foo:bar"

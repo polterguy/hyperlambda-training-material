@@ -1,6 +1,4 @@
-
-// Example: Split on a substring that is not present.
-strings.split:hello
-   .:,
-
-// Result: The string remains "hello" as a single part (no split)
+// Shorthand mte with an expression as the left-hand side
+.val:int:7
+mte:x:@.val
+   .:int:5

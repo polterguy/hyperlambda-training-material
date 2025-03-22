@@ -1,8 +1,5 @@
-// Composing a dynamic node expression from parts
-compose
-   .:..
-   .:*
-   .:.segment
-   .:*
+// Example: Create a slot and then delete it
+slots.create:foo
+   return-value:int:57
 
-// The above will construct an expression resembling the following :x:../*/.segment/*
+slots.delete:foo

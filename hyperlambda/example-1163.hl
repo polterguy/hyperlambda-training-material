@@ -1,36 +1,102 @@
 
-// Write a Hyperlambda script to create a log item using specified arguments like type, content, and meta information.
+/*
+ * Lists total discounts applied for individual quotes
+ * 
+ * Optionally apply limit and offset as you see fit
+ */
 .arguments
-   type:string
-   content:string
-   meta:*
+
+   // Optional minimum date. ISO formatted as follows "yyyy-MM-dd"
+   min_date:string
+
+   // Optional maximum date. ISO formatted as follows "yyyy-MM-dd"
+   max_date:string
+
+   // Optional maximum number of records to return. Defaults to 10 if not specified.
+   limit:long
+
+   // Optional offset into records of where to start returning items.
+   offset:long
+
 .type:public
 
-/*
- * Ensures user is authorized to access endpoint.
- * Notice, we only allow authenticated users to access this endpoint.
- * What roles they belong to is not important, as long as they're authenticated.
- */
-auth.ticket.verify
+// Making sure user is authorised to access the workflow.
+auth.ticket.verify:mnhc-admin
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
-validators.mandatory:x:@.arguments/*/content
-validators.enum:x:@.arguments/*/type
-   .:info
-   .:error
-   .:debug
-   .:fatal
+// Getting limit value, defaulting to 10
+.limit
+set-value:x:@.limit
+   get-first-value
+      get-value:x:@.arguments/*/limit
+      .:long:10
 
-// Creating a log entry using the specified type of logger.
-add:x:../*/log-invocation
-   get-nodes:x:@.arguments/*/meta/*
-set-name:x:../*/log-invocation
-   strings.concat
-      .:log.
-      get-value:x:@.arguments/*/type
-log-invocation:x:@.arguments/*/content
+// Making sure limit is never more than 10
+if
+   or
+      eq:x:@.limit
+         .:long:-1
+      mt:x:@.limit
+         .:long:10
+   .lambda
+      set-value:x:@.limit
+         .:long:10
+      add:x:../*/mssql.connect/*/yield
+         .
+            notice:"There might be more records but the system can only retrieve a maximum of 10 records at the time. Please inform the user that you can show him the next set of records if required."
 
-// Returning success to caller.
-return
-   result:success
+// Getting offset value, defaulting to 0
+.offset
+set-value:x:@.offset
+   get-first-value
+      get-value:x:@.arguments/*/offset
+      .:long:0
+
+// Opening up database connection.
+mssql.connect:[production|MNDG_LSC18-1]
+
+   // Checking if we're filtering items on [min_date].
+   if
+      and
+         exists:x:@.arguments/*/min_date
+         not-null:x:@.arguments/*/min_date
+      .lambda
+         convert:x:@.arguments/*/min_date
+            type:date
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/mssql.read/*/where/*/and
+            .
+               Document Date.mt:x:@convert
+
+   // Checking if we're filtering items on [max_date].
+   if
+      and
+         exists:x:@.arguments/*/max_date
+         not-null:x:@.arguments/*/max_date
+      .lambda
+         convert:x:@.arguments/*/max_date
+            type:date
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/mssql.read/*/where/*/and
+            .
+               Document Date.lt:x:@convert
+
+   // Reading records.
+   mssql.read
+      table:addv_Cotizaciones
+      columns
+         No_
+            as:QuoteNumber
+         sum((Quantity * [Unit Price]) - Amount)
+            as:TotalDiscountForQuote
+      where
+         and
+      group
+         No_
+      limit:x:@.limit
+      offset:x:@.offset
+      order:TotalDiscountForQuote
+      direction:desc
+   
+   // Returning result of above invocation to caller.
+   yield
+      result:x:@mssql.read/*

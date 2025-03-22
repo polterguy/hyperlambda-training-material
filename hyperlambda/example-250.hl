@@ -1,13 +1,8 @@
-/*
- * This example demonstrates basic exception handling in Hyperlambda.
- * It attempts to divide two numbers. If a division by zero occurs,
- * an exception is thrown and caught by the `.catch` block, logging an error message.
- */
 
-.numerator:int:5
-.denominator:int:0
-try
-   math.divide:x:@.numerator
-      .:x:@.denominator
-.catch
-   log.error:Division by zero error occurred.
+// Example: Replace a substring that exists in the text.
+.original:Hello world
+strings.replace:x:@.original
+   .:world
+   .:there
+
+// Result: "Hello there"

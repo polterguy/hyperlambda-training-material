@@ -1,7 +1,5 @@
-// This example connects to the 'hospital' database and deletes a patient record from the 'patients' table where the diagnosis is 'Cold'.
-sqlite.connect:hospital
-   sqlite.delete
-      table:patients
-      where
-         and
-            diagnosis:Cold
+
+// How to use Hyperlambda's [lambda2hyper]
+.hl
+   log.info:This is some example logging invocation
+lambda2hyper:x:-/*

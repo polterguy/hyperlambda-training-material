@@ -1,11 +1,5 @@
-// Check multiple conditions using or and variable values
-
-.result
-.value:bool:true
-if
-   or
-      .:bool:false
-      get-value:x:@.value
-   .lambda
-      set-value:x:../*/.result
-         .:OK
+// This snippet uses the '.' iterator to retrieve the parent of a node.
+.parent
+   child:value
+get-name:x:@.parent/*/child/.  
+// The expression @.parent/*/child finds the 'child' node, then '.' gets its parent node. get-name returns ".parent".

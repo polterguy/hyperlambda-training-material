@@ -1,6 +1,8 @@
-
-// Example: Check if a string starts with a substring that is not at the beginning.
-
-// Returns false
-strings.starts-with:HelloWorld
-   .:World
+// Getting substring from a string
+.data:Hyperlambda is awesome
+.result
+strings.substring:x:@.data
+   .:int:0
+   .:int:11
+set-value:x:@.result
+   get-value:x:@strings.substring

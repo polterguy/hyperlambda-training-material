@@ -1,16 +1,10 @@
+// When creating a Hyperlambda file we're supposed to execute, it's CRUCIAL we add an [.arguments] node at the top of the file
+.arguments
+   name:string
+strings.concat
+   .:"Hello "
+   get-value:x:@.arguments/*/name
 
-// Generate a Hyperlambda snippet that copies nodes from [.input1] and [.input2] and appends them into [.output].
-
-// Copies nodes from [.input1] and [.input2] and appends into [.output]
-.input1
-   itemA:dataA
-   itemB:dataB
-   itemC:dataC
-.input2
-   itemD:dataD
-   itemE:dataE
-   itemF:dataF
-.output
-add:x:@.output
-   get-nodes:x:@.input1/*
-   get-nodes:x:@.input2/*
+// Returns greeting, notice [yield] will automatically [unwrap] expression references inside of itself
+yield
+   greeting:x:@strings.concat

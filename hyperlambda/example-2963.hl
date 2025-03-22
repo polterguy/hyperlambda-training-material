@@ -1,35 +1,35 @@
 
-// Lists all database in your MySQL instance.
-slots.create:magic.db.mssql.databases
+// Delete one record from your Track table in your chinook database
+.arguments
 
-   // Opens up our connection
-   .connection:master
-   if
-      and
-         exists:x:@.arguments/*/connection-string
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .:
-      .lambda
-         set-value:x:@.connection
-            strings.concat
-               .:[
-               get-value:x:@.arguments/*/connection-string
-               .:|
-               .:master]
-   mssql.connect:x:@.connection
+   // Primary key of record to delete, mandatory argument
+   TrackId:long
 
-      // Runs our query
-      mssql.select:select name from master.dbo.sysdatabases where has_dbaccess(name) = 1
+// Meta data description for endpoint
 
-      // Renaming "Database" nodes.
-      set-name:x:@mssql.select/*/*
-         .:db
+// Type of endpoint
+.type:crud-delete
 
-      // Returns the remaining databases to caller.
-      return-nodes:x:@mssql.select/*
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/TrackId
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Track
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

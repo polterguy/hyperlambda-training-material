@@ -1,6 +1,6 @@
-// Check if a value is less than or equal to another
 
-.foo1:int:5
-lte
-   get-value:x:../*/.foo1
-   .:int:5
+// Create an argument collection with 3 args being arg1 (string), arg2 (date) and arg3 being any type (unknown)
+.arguments
+   arg1:string
+   arg2:date
+   arg3:*

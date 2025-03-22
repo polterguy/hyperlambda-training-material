@@ -1,6 +1,14 @@
-
-// Opens a database connection and executes some arbitrary SQL,  returning results as a record set
-data.connect:DATABASE_NAME_HERE
-   database-type:sqlite
-   data.select:select * from TABLE_NAME_HERE
-      database-type:sqlite
+// Clones all fields from user1 to user2 using extrapolated paths
+.users
+   user1
+      name:Alice
+      role:admin
+      active:yes
+   user2
+      name
+      role
+      active
+for-each:x:@.users/*/user1/*
+   get-name:x:@.dp/#
+   set-value:x:@.users/*/user2/*/{@get-name}
+      get-value:x:@.dp/#

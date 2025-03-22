@@ -1,14 +1,5 @@
 
-// Create a Hyperlambda action to transform specified markdown into HTML and return the HTML content.
-.arguments
-   markdown
-      type:string
-      mandatory:bool:true
-.icon:pageview
+// Example: Capitalize an empty string (result is still an empty string).
 
-// Transforming Markdown to HTML.
-markdown2html:x:@.arguments/*/markdown
-
-// Returning resulting HTML to caller.
-yield
-   html:x:@markdown2html
+// Result: "" (empty string)
+strings.capitalize:

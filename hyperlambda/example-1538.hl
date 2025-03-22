@@ -1,44 +1,30 @@
 
-// Removes the specified [roles] from the specified [username].
+// Scrapes the specified [url] and returns as context data to caller
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-   roles
-      type:array
-      mandatory:bool:true
-.icon:supervisor_account
+   url:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/roles
+/*
+ * Ensures user is authorized to access endpoint.
+ *
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/modules/auth/workflows/actions/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-// Connecting to database.
-data.connect:[generic|magic]
 
-   // Verifying user exists.
-   data.read
-      table:users
-      columns
-         username
-      where
-         and
-            username.eq:x:@.arguments/*/username
+// Returns [max_tokens] context from the specified [url].
+execute:magic.workflows.actions.execute
+   name:openai-context-from-url
+   filename:/modules/openai/workflows/actions/openai-context-from-url.hl
+   arguments
+      url:x:@.arguments/*/url
+      max_tokens:int:2000
 
-   // Verifying above invocation returned something.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-
-         // Oops ...!!
-         throw:No such user
-            username:x:@.arguments/*/username
-
-   // Removing [roles] from [username]
-   for-each:x:@.arguments/*/roles/*
-      data.delete
-         table:users_roles
-         where
-            and
-               user.eq:x:@.arguments/*/username
-               role.eq:x:@.dp/#
+// Returns the result of your last action.
+return-nodes:x:@execute/*

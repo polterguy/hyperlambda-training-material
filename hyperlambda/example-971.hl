@@ -1,27 +1,20 @@
-
-// Create a Hyperlambda script to generate a stacked chart image with specified dimensions, bar values, ticks, and legend.
-image.chart:stacked
-   filename:/chart.png
-   width:600
-   height:300
-   bars
-      Spring
-         .:int:2
-         .:int:5
-         .:int:10
-      Summer
-         .:int:4
-         .:int:7
-         .:int:10
-      Autumn
-         .:int:2
-         .:int:5
-         .:int:4
-   ticks
-      .:Spring
-      .:Summer
-      .:Autumn
-   legend
-      .:Phones
-      .:Computers
-      .:Tablets
+// How can I use [if], [else-if], and [else] for conditional branching?
+.number:int:7
+.output
+if
+   eq
+      get-value:x:@.number
+      .:int:5
+   .lambda
+      set-value:x:@.output
+         .:Five
+else-if
+   eq
+      get-value:x:@.number
+      .:int:6
+   .lambda
+      set-value:x:@.output
+         .:Six
+else
+   set-value:x:@.output
+      .:Not Five or Six

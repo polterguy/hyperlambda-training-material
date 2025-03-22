@@ -1,17 +1,18 @@
+// Hyperlambda [if] with numeric comparison
+.temperature:int:31
+.weather-status
+if
+   mt:x:@.temperature
+      .:int:30
+   .lambda
+      set-value:x:@.weather-status
+         .:hot
 
-// Write a Hyperlambda script to list all files in a specified folder recursively, with options to display hidden and system files.
-.arguments
-   folder:string
-   sys:bool
-.type:internal
+/* JavaScript equivalent of Hyperlambda [if] with numeric comparison
+const temperature = 25;
+let weatherStatus;
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Listing all file in specified folder.
-io.file.list-recursively:x:@.arguments/*/folder
-   display-hidden:bool:true
-   display-system:x:@.arguments/*/sys
-
-// Returning results of above invocation to caller.
-return-nodes:x:@io.file.list-recursively/*
+if (temperature > 30) {
+  weatherStatus = "hot";
+}
+*/

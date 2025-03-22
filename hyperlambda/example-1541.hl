@@ -1,27 +1,47 @@
 
-// Create a Hyperlambda endpoint to return the arguments required by specified Hyperlambda code.
+// Create one record in your Genre table in your chinook database.
 .arguments
-   hyperlambda:string
-.type:internal
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // GenreId column value
+   GenreId:long
 
-// Transforming Hyperlambda to lambda object.
-hyper2lambda:x:@.arguments/*/hyperlambda
+   // Name column value
+   Name:string
 
-// Making sure we "normalize" arguments.
-for-each:x:@hyper2lambda/*/.arguments/*
-   if
-      and
-         not-exists:x:@.dp/#/*/type
-         not-null:x:@.dp/#
-      .lambda
-         unwrap:x:+/*/*
-         add:x:@.dp/#
-            .
-               type:x:@.dp/#
-         set-value:x:@.dp/#
+// Meta data description for endpoint
 
-// Returning arguments Hyperlambda requires to caller.
-return-nodes:x:@hyper2lambda/*/.arguments/*
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:partner
+
+// Logging invocation.
+auth.ticket.get
+lambda2hyper:x:@.arguments/*
+log.info:chinook.Genre entry created
+   username:x:@auth.ticket.get
+   arguments:x:@lambda2hyper
+
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:Genre
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

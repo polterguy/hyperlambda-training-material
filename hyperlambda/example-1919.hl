@@ -1,6 +1,10 @@
+// Using variables with the [if] slot to evaluate a condition
+.condition:bool:false
+.result
 
-// Opens a database connection and executes some arbitrary SQL,  returning results as a record set
-data.connect:DATABASE_NAME_HERE
-   database-type:sqlite
-   data.select:select * from TABLE_NAME_HERE
-      database-type:sqlite
+if
+   get-value:x:@.condition
+   .lambda
+      set-value:x:@.result
+         .:Condition met
+// Result ==> false

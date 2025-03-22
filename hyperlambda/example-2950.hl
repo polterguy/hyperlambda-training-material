@@ -1,40 +1,17 @@
 
-// Lists all tables in your SQLite instance.
-slots.create:magic.db.sqlite.tables
+// Returns the schema specifications for the specified type
+.arguments
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/database
+   // Mandatory argument declaring the type of object to retrieve the schema specification for.
+   type:string
 
-   // Opens up our connection
-   .connection:[postgres]
-   if
-      and
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .:
-      .lambda
-         set-value:x:@.connection
-            strings.concat
-               .:[
-               get-value:x:@.arguments/*/connection-string
-               .:|
-               get-value:x:@.arguments/*/database
-               .:]
-   else
-      set-value:x:@.connection
-         strings.concat
-            .:[generic|
-            get-value:x:@.arguments/*/database
-            .:]
-   sqlite.connect:x:@.connection
+// Ensuring user is authorized to invoking endpoint.
+auth.ticket.verify:netsuite
 
-      // Runs our query
-      sqlite.select:"select name from sqlite_master where type = 'table' and name != 'sqlite_sequence'"
-      set-name:x:@sqlite.select/*/*
-         .:table
-      return-nodes:x:@sqlite.select/*
+// Forwarding heavy lifting to workflow file.
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/modules/netsuite/workflows/workflows/netsuite-schema-spec.hl
+
+// Returning result to caller.
+return-nodes:x:@execute-file/*

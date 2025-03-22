@@ -1,2 +1,4 @@
-// Selects the root node
-.root:x:..
+/*
+ * Demonstrates use of escaped quotes in a string literal.
+ */
+.message:"He said: \"Hello, world!\""

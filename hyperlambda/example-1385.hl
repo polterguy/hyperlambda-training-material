@@ -1,14 +1,77 @@
 
-// Hyperlambda endpoint taking arguments. The SQL query retrieves distinct customer details who have purchased tracks from the "Rock" genre.\n\nThe SQL code connects to the Chinook database and executes a query that selects distinct email addresses, first names, last names, and genre names of customers who have purchased tracks classified under the "Rock" genre. It achieves this by joining the Customer, Invoice, InvoiceLine, Track, and Genre tables on their respective keys, filtering the results to include only those where the genre name is "Rock". The results are ordered by the customer's email address. This query is useful for identifying and analyzing the customer base interested in rock music, which can be leveraged for targeted marketing or customer relationship management initiatives.
+/*
+ * Workflow that registers a new user in the system.
+ *
+ * Registers the specified [username] as a new user with [password] as password,
+ * and [name] and [email] as extra fields. The action will associate the user with the [role] role.
+ *
+ * The workflow does not return anything but will throw an exception if it does not succeed.
+ */
 .arguments
+   username:string
+   password:string
+   name:string
+   email:string
+   role:string
 
-// Connecting to database.
-data.connect:chinook
-   database-type:sqlite
+/*
+ * Throws an exception unless the specified [username] is available to use as the username
+ * for a new user.
+ */
+execute:magic.workflows.actions.execute
+   name:username-available
+   filename:/modules/registration/workflows/actions/username-available.hl
+   arguments
+      username:x:@.arguments/*/username
+      throw:bool:true
 
-   // Executing [data.select] slot with our SQL.
-   data.select:"\n/*\n * Selects details from all customers that are listening to rock.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect distinct c.Email, c.FirstName, c.LastName, g.name\n  from Customer c\n    inner join Invoice i on c.CustomerId = i.CustomerId\n    inner join InvoiceLine ii on i.InvoiceId = ii.InvoiceId\n    inner join Track t ON ii.TrackId = t.TrackId\n    inner join Genre g ON t.GenreId = g.GenreId\n  where g.Name = \"Rock\"\n  order by c.Email\n"
-      database-type:sqlite
+/*
+ * Registers the specified [username] as a user in the system, with the specified [password].
+ *
+ * Notice, [password] will be hashed using blowfish hashing by the users-create action.
+ */
+execute:magic.workflows.actions.execute
+   name:users-create
+   filename:/modules/registration/workflows/actions/users-create.hl
+   arguments
+      username:x:@.arguments/*/username
+      password:x:@.arguments/*/password
 
-   // Returning a result of above invocation to caller.
-   return-nodes:x:@data.select/*
+/*
+ * Associates the specified [username] with the specified [extra] fields.
+ *
+ * [name] and [email] are special system extra fields in Magic and handled accordingly.
+ */
+execute:magic.workflows.actions.execute
+   name:extras-upsert
+   filename:/modules/registration/workflows/actions/extras-upsert.hl
+   arguments
+      username:x:@.arguments/*/username
+      extra
+         name:x:@.arguments/*/name
+         email:x:@.arguments/*/email
+
+/*
+ * Checking if we've got a [role] argument, and only if we do, we associate
+ * the user with the specified [role].
+ */
+if
+   and
+      exists:x:@.arguments/*/role
+      not-null:x:@.arguments/*/role
+      neq:x:@.arguments/*/role
+         .:
+   .lambda
+
+      /*
+       * Associates the specified [username] with the specified [roles] role.
+       *
+       * The [role] specified during invocation of action becomes the role we associate the user with.
+       */
+      execute:magic.workflows.actions.execute
+         name:roles-add
+         filename:/modules/registration/workflows/actions/roles-add.hl
+         arguments
+            username:x:@.arguments/*/username
+            roles
+               .:x:@.arguments/*/role

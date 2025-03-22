@@ -1,4 +1,17 @@
-// Missing conversion parameters should throw an error
+// Multiply two numbers given as arguments and return the result to caller
+.arguments
+   arg1:int
+   arg2:int
 
-.src:5
-convert:x:-
+// Making sure arguments are actually passed in, throwing exceptions if not.
+validators.mandatory:x:@.arguments/*/arg1
+validators.mandatory:x:@.arguments/*/arg2
+
+// Multiplication.
+math.multiply
+   get-value:x:@.arguments/*/arg1
+   get-value:x:@.arguments/*/arg2
+
+// Returning result to caller
+yield
+   result:x:@math.multiply

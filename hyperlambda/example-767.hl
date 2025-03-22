@@ -1,7 +1,8 @@
-// If condition with static "true" value
-.dest
-if
-   .:bool:true
+// Create a task, then schedule it to run once every 3650 days
+tasks.create:task-id-qwerty123
    .lambda
-      set-value:x:@.dest
-         .:yup!
+
+      log.info:Executing seldomly repeating task once every 10 year
+
+tasks.schedule:task-id-qwerty123
+   repeats:3650.days

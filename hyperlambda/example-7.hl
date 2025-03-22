@@ -1,6 +1,12 @@
 
-// Example: String consisting entirely of trim characters (result is empty).
+// Example: Split a string with consecutive delimiters (empty segments).
+strings.split:one,,two
+   .:,
 
-// Result: "" (empty string)
-strings.trim-end:xxx
-   .:x
+/*
+ * Resulting parts:
+ * .:one
+ * .:two
+ * 
+ * Notice, empty strings are ignored
+ */

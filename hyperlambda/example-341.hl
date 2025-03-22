@@ -1,6 +1,4 @@
-/*
- * Example: Contains check is case-sensitive.
- */
-// Returns false since check is case sensitive
-strings.contains:MagicLambda
-   .:lambda
+// How can I set CORS headers in the response?
+response.headers.set
+   Access-Control-Allow-Origin:*
+   Access-Control-Allow-Methods:GET, POST, OPTIONS

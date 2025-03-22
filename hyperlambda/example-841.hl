@@ -1,3 +1,9 @@
-// Decrement [.arg]'s value by 2
-math.decrement:x:@.arg
-   .:int:2
+/*
+ * Executes a lambda dynamically.
+ */
+
+.result
+.lambda
+   set-value:x:@.result
+      .:Executed!
+eval:x:@.lambda

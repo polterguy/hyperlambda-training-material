@@ -1,9 +1,10 @@
-// If with a condition based on another node's value
-.args
-   flag:bool:true
+// Example of nested expression
+.arg1:.data
+.arg2:foo2
 .result
-if
-   get-value:x:@.args/*/flag
-   .lambda
-      set-value:x:@.result
-         .:Yes
+.data
+   foo1:john
+   foo2:thomas
+   foo3:peter
+set-value:x:@.result
+   get-value:x:../*/{@.arg1}/*/{@.arg2}

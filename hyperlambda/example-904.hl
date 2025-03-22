@@ -1,11 +1,21 @@
-// Sends a multipart email with file attachment
-mail.smtp.send
-   message
-      to
-         Jane Doe:jane@doe.com
-      subject:Subject line
-      entity:multipart/mixed
-         entity:text/plain
-            content:Body content
-         entity:text/plain
-            filename:/files/foo.txt
+
+// Hyperlambda authenticate endpoint
+.arguments
+   username:string
+   password:string
+
+/*
+ * Authenticates the user with the specified [username] and [password].
+ * 
+ * Returns a JWT Bearer token that can be used for consecutive requests authorizing user according
+ * to his or her roles.
+ */
+execute:magic.workflows.actions.execute
+   name:authenticate
+   filename:/modules/auth/workflows/actions/authenticate.hl
+   arguments
+      username:x:@.arguments/*/username
+      password:x:@.arguments/*/password
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

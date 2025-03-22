@@ -1,23 +1,16 @@
 
-// Authenticates the user with the specified [username] and [password].
-.arguments
-   username
-      type:string
-      mandatory:bool:true
-   password
-      type:string
-      mandatory:bool:true
-.icon:shield
+// Create a Hyperlambda snippet that loops while [.stock] is above 0.
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/password
+// Loops while [.stock] is above 0.
+.stock:int:5
+while
+   gt
+      get-value:x:@.stock
+      .:int:0
+   .lambda
 
-// Invokes slot responsible for authenticating caller.
-execute:magic.auth.authenticate
-   username:x:@.arguments/*/username
-   password:x:@.arguments/*/password
+      // Logging stock status.
+      log.info:Stock available
 
-// Returning resulting ticket/token to caller.
-yield
-   ticket:x:@execute/*/ticket
+      // Decrementing stock.
+      math.decrement:x:@.stock

@@ -1,4 +1,5 @@
-// Validate [some-integer-argument] argument is between 50 and 100
-validators.integer:x:@.arguments/*/some-integer-argument
-   min:50
-   max:100
+// Convert a string to a DateTime object
+
+.src:"2020-12-30T23:59:11Z"
+convert:x:-
+   type:date

@@ -1,16 +1,17 @@
 
-// Vectorizing the specified [type].
-.arguments
-   type
-      type:string
-      mandatory:bool:true
-.icon:chat_bubble
+// Generate a Hyperlambda snippet that handles database connection failures using a try/catch/finally block.
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+// Handles database connection failures inside a try/catch/finally block
+try
 
-// Vectorizing model.
-unwrap:x:+/*/*
-fork
-   signal:magic.ai.vectorise
-      type:x:@.arguments/*/type
+   // Attempting to connect to an invalid database
+   data.connect:invalid_database
+      database-type:mysql
+.catch
+
+   // Logging the error
+   log.error:x:@.arguments/*/message
+.finally
+
+   // Logging completion
+   log.info:Database connection attempt finished

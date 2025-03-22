@@ -1,24 +1,9 @@
 
-// Creates a new training snippet from the specified [url]
-.arguments
-   _type:string
+// Generate a Hyperlambda snippet that inserts a 'milestone2' node after 'milestone1' inside '.project'.
 
-   // Mandatory and is the URL from where to scrape training data from
-   url:string
-.type:public
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/_type
-validators.mandatory:x:@.arguments/*/url
-execute:magic.ai.url.scrape
-   url:x:@.arguments/*/url
-   type:x:@.arguments/*/_type
-   threshold:int:150
-   summarize:bool:true
-   lists:bool:false
-   images:bool:true
-   code:bool:false
-
-// Re-vectorising the type.
-execute:magic.ai.vectorise
-   type:x:@.arguments/*/_type
+// Inserts a "milestone2" node after "milestone1" inside ".project".
+.project
+   milestone1
+insert-after:x:@.project/*/milestone1
+   .
+      milestone2:Second milestone

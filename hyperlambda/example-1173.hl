@@ -1,46 +1,13 @@
-
-// Counts items from your spice_urls table in your scraper database.
-.arguments
-
-   // spice_urls table spice_url_id column equality exact match filtering
-   spice_urls.spice_url_id.eq:long
-
-   // spice_urls table url column wildcard filtering with SQL like '%' comparison
-   spice_urls.url.like:string
-
-   // spice_urls table url column equality exact match filtering
-   spice_urls.url.eq:string
-
-   // spice_urls table type column wildcard filtering with SQL like '%' comparison
-   spice_urls.type.like:string
-
-   // spice_urls table type column equality exact match filtering
-   spice_urls.type.eq:string
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-count
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up our database connection.
-data.connect:[generic|scraper]
-   database-type:sqlite
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:spice_urls
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+// Builds a payload response by computing sections and adding them to .payload
+.payload
+.compute-user
+   return
+      userId:123
+      username:johndoe
+.compute-meta
+   return
+      timestamp:date:"2025-03-22T10:00:00Z"
+      requestId:xyz-789
+add:x:@.payload
+   get-nodes:x:@.compute-user/*/return/*
+   get-nodes:x:@.compute-meta/*/return/*

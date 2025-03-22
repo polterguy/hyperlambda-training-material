@@ -1,46 +1,85 @@
 
-// Returns true if the specified username is available.
+// Write a Hyperlambda script to return the specified JavaScript file wrapping a model, with options for placeholder, button, type, CSS, and max.
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-   throw
-      type:bool
-      mandatory:bool:false
-.icon:supervisor_account
+   placeholder:string
+   button:string
+   type:string
+   css:string
+   max:int
 
-// Applying defaults.
-validators.default:x:@.arguments
-   throw:bool:false
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/placeholder
+validators.mandatory:x:@.arguments/*/button
+validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/css
+validators.mandatory:x:@.arguments/*/max
 
-// Opens up database connection.
-data.connect:[generic|magic]
+// Figuring out API URL.
+.scheme
+request.host
+if
+   strings.contains:x:@request.host
+      .:localhost
+   .lambda
+      set-value:x:@.scheme
+         .:http
+else
+   set-value:x:@.scheme
+      .:https
+.url
+set-value:x:@.url
+   strings.concat
+      get-value:x:@.scheme
+      .:"://"
+      request.host
 
-   // Selecting user from database such that we can check if it exists or not.
-   data.read
-      table:users
-      columns
-         username
-      where
-         and
-            username.eq:x:@.arguments/*/username
+// Loading search JavaScript file.
+.result
+set-value:x:@.result
+   io.file.load:/system/openai/front.files/search/search.js
 
-   // Checks if above invocation returned anything.
-   if
-      exists:x:@data.read/*
-      .lambda
+// Retrieving reCAPTCHA key.
+.captcha
+set-value:x:@.captcha
+   config.get:"magic:auth:recaptcha:key"
+      .:
 
-         // Checking if we should throw an exception instead of returning false.
-         if:x:@.arguments/*/throw
-            throw:User already exists
-               status:int:400
-               public:bool:true
+// Dynamically exchanging template fields in JavaScript file.
+set-value:x:@.result
+   strings.replace:x:@.result
+      .:[[url]]
+      get-value:x:@.url
+set-value:x:@.result
+   strings.replace:x:@.result
+      .:[[recaptcha]]
+      get-value:x:@.captcha
+set-value:x:@.result
+   strings.replace:x:@.result
+      .:[[max]]
+      get-value:x:@.arguments/*/max
+set-value:x:@.result
+   strings.replace:x:@.result
+      .:[[placeholder]]
+      get-value:x:@.arguments/*/placeholder
+set-value:x:@.result
+   strings.replace:x:@.result
+      .:[[button]]
+      get-value:x:@.arguments/*/button
+set-value:x:@.result
+   strings.replace:x:@.result
+      .:[[type]]
+      get-value:x:@.arguments/*/type
+set-value:x:@.result
+   strings.replace:x:@.result
+      .:[[css]]
+      get-first-value
+         get-value:x:@.arguments/*/css
+         get-value:x:@.arguments/*/file
+         .:
 
-         // User exists, returning false to caller.
-         return
-            available:bool:false
-   else
+// Making sure we return correct Content-Type to caller, and applying some cache.
+response.headers.set
+   Content-Type:application/javascript
 
-      // User does not exist, returning true to caller.
-      return
-         available:bool:true
+// Returning result to caller.
+return:x:@.result

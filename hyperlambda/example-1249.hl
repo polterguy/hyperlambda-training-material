@@ -1,6 +1,16 @@
-// Shorthand if using an expression directly (no explicit .lambda child)
-.flag:bool:true
-.result
-if:x:@.flag
-   set-value:x:@.result
-      .:Yes
+
+// Generate a Hyperlambda snippet that fetches product details from the inventory database and products table.
+
+// Fetches product details from the inventory database and products table.
+data.connect:inventory_db
+
+   // MySQL database type selected.
+   database-type:mysql
+
+   // Retrieving product records.
+   data.read
+      database-type:mysql
+      table:products
+      sort
+         created_at
+      direction:asc

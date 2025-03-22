@@ -1,16 +1,11 @@
 
-// Create a Hyperlambda snippet that repeats logging while [.attempts] is below 3.
+// Create Hyperlambda endpoint to return all dynamic slots in the system.
 
-// Repeats logging while [.attempts] is below 3.
-.attempts:int:0
-while
-   lt
-      get-value:x:@.attempts
-      .:int:3
-   .lambda
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-      // Logging attempt.
-      log.info:Attempting task
+// Retrieving all system slots.
+slots.vocabulary
 
-      // Increasing attempt count.
-      math.increment:x:@.attempts
+// Returning results of the above to caller.
+return-nodes:x:@slots.vocabulary/*

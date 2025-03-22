@@ -1,72 +1,17 @@
 
-// Read endpoint with paging, sorting, filtering selecting records from your crawl_urls table.
+// The SQL aggregates and returns the top 25 artists with the most albums from the chinook database.
 .arguments
 
-   // Number of records to return
-   limit:long
-
-   // Offset into the dataset of where to start retrieving records
-   offset:long
-
-   // What column to order by
-   order:string
-
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   direction:string
-
-   // crawl_urls table crawl_url_id column equality exact match filtering
-   crawl_urls.crawl_url_id.eq:long
-
-   // crawl_urls table url column wildcard filtering with SQL like '%' comparison
-   crawl_urls.url.like:string
-
-   // crawl_urls table url column equality exact match filtering
-   crawl_urls.url.eq:string
-
-   // crawl_urls table type column wildcard filtering with SQL like '%' comparison
-   crawl_urls.type.like:string
-
-   // crawl_urls table type column equality exact match filtering
-   crawl_urls.type.eq:string
-
-// Type of endpoint
-.type:crud-read
-
-// Verifying user is authorized to access endpoint.
+// Making sure user is authorized to invoke endpoint.
 auth.ticket.verify:root,admin
 
-// Opening up our database connection.
-data.connect:[generic|scraper]
+// Connecting to database.
+data.connect:chinook
    database-type:sqlite
 
-   // Parametrising our read invocation with ordering arguments if specified.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/order
-      get-nodes:x:@.arguments/*/direction
-   remove-nodes:x:@.arguments/*/order
-   remove-nodes:x:@.arguments/*/direction
-
-   // Parametrising our read invocation with paging arguments if specified.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/limit
-      get-nodes:x:@.arguments/*/offset
-   remove-nodes:x:@.arguments/*/limit
-   remove-nodes:x:@.arguments/*/offset
-
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
+   // Executing [data.select] slot with our SQL.
+   data.select:"\n/*\n * Script to aggregate records for each artist in chinook database.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect ar.Name, count(*) as count\n  from Album al, Artist ar where al.ArtistId = ar.ArtistId\n  group by al.ArtistId\n  order by count desc\n  limit 25\n"
       database-type:sqlite
-      table:crawl_urls
-      columns
-         crawl_urls.crawl_url_id
-         crawl_urls.url
-         crawl_urls.type
-      where
-         and
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+   // Returning a result of above invocation to caller.
+   return-nodes:x:@data.select/*

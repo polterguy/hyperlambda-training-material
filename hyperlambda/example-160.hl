@@ -1,7 +1,11 @@
-// Executes a file that adds two numbers and returns the result
-.data
-   a:int:5
-   b:int:15
-execute-file:/modules/utils/add.hl
-   arg1:x:@.data/*/a
-   arg2:x:@.data/*/b
+// Evaluates specified [.lambda] if condition evaluates to true.
+if
+   eq:x:@SOME_EXPRESSION
+      .:SOME_VALUE
+   .lambda
+
+      // Lambda evaluates if condition is true.
+
+else
+
+   // Lambda evaluated if condition is NOT true.

@@ -1,77 +1,50 @@
 
-// Create a Hyperlambda script that authenticates a user and returns a JWT token if successful, handling default root credentials for initial setup.
-.arguments
-   username:string
-   password:string
+// Returns a grouped chart image to caller. Values is a mandatory comma separated list of values.
+.arguments:*
+.type:public
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/password
+validators.mandatory:x:@.arguments/*/legend
 
-/*
- * Checking if JWT secret has been changed, and if not, simply checking if username/password is
- * root/root, and if so returning a valid token allowing the user to setup his or her cloudlet.
- * 
- * This is necessary to allow for configuring a new cloudlet where the user haven't selected a root
- * password yet.
- */
-config.get:"magic:auth:secret"
-if
-   or
-      null:x:@config.get
-      lt
-         strings.length:x:@config.get
-         .:int:50
-   .lambda
+// Creating our individual bars.
+.bars
+for-each:x:@.arguments/*
+   get-name:x:@.dp/#
+   if
+      not
+         strings.starts-with:x:@get-name
+            .:legend
+      .lambda
 
-      // System has not been setup.
-      if
-         and
-            eq
-               get-value:x:@.arguments/*/username
-               .:root
-            eq
-               get-value:x:@.arguments/*/password
-               .:root
-         .lambda
-
-            // Success!
-            auth.ticket.create
-               username:root
-               roles
-                  .:root
-            yield
-               ticket:x:@auth.ticket.create
-
-/*
- * Invokes [magic.auth.authenticate] that does the heavy lifting, and creates our JWT token,
- * making sure we return that token to caller.
- */
-execute:magic.auth.authenticate
-   username:x:@.arguments/*/username
-   password:x:@.arguments/*/password
-
-// Buffer for extra information.
-.extra
-data.connect:magic
-   data.read
-      table:users_extra
-      where
-         and
-            user.eq:x:@.arguments/*/username
-            or
-               type.eq:name
-               type.eq:email
-   for-each:x:@data.read/*
-      set-name:x:./*/add/*/*
-         get-value:x:@.dp/#/*/type
-      set-value:x:./*/add/*/*
-         get-value:x:@.dp/#/*/value
-      add:x:@.extra
-         .
+         // Adding primary node for bar.
+         set-name:x:+/*/*
+            get-value:x:@get-name
+         add:x:@.bars
             .
+               .
 
-// Returns the authentication JWT ticket created above to caller.
-yield
-   ticket:x:@execute/*/ticket
-   extra:x:@.extra/*
+         // Adding values for individual cells.
+         add:x:@.bars/0/-
+            strings.split:x:@.dp/#
+               .:,
+
+// Creating our legend.
+add:x:../*/image.chart/*/legend
+   strings.split:x:@.arguments/*/legend
+      .:,
+
+// Parametrizing [image.chart] invocation.
+add:x:../*/image.chart/*/bars
+   get-nodes:x:@.bars/*
+image.chart:grouped
+   width:800
+   height:500
+   bars
+   legend
+
+// Applying correct HTTP header.
+response.headers.set
+   Content-Type:image/png
+
+// Returning chart to caller.
+return:x:@image.chart

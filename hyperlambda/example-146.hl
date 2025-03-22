@@ -1,12 +1,14 @@
-// Appends fields from two form templates into a live form
-.form
-   fields
-.template1
-   username
-   password
-.template2
-   email
-   age
-add:x:@.form/*/fields
-   get-nodes:x:@.template1/*
-   get-nodes:x:@.template2/*
+// Evaluates specified [.lambda] if condition evaluates to true.
+if
+   and
+      eq:x:@SOME_EXPRESSION
+         .:SOME_VALUE
+      eq:x:@SOME_OTHER_EXPRESSION
+         .:SOME_OTHER_VALUE
+   .lambda
+
+      // Lambda evaluates if condition is true.
+
+else
+
+   // Lambda evaluated if condition is NOT true.

@@ -1,25 +1,32 @@
 
-// Retrieves the specified [username] and return information associated with the user.
+// Returns a single plan.
 .arguments
-   username
+   plan
       type:string
       mandatory:bool:true
-.icon:supervisor_account
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-
-// Opens up database connection.
-data.connect:[generic|magic]
-
-   // Inserting user into database.
+// Returns all plans in the system.
+data.connect:[generic|hub]
    data.read
-      table:users
+      table:plans
       columns
-         username
-         created
+         name
+         description
+         cpu
+         memory
+         storage
+         price
+         price_reference
       where
          and
-            username.eq:x:@.arguments/*/username
+            name.eq:x:@.arguments/*/plan
+
+   // Returning result of above invocation to caller.
    yield
-      created:x:@data.read/*/*/created
+      name:x:@data.read/*/*/name
+      description:x:@data.read/*/*/description
+      cpu:x:@data.read/*/*/cpu
+      memory:x:@data.read/*/*/memory
+      storage:x:@data.read/*/*/storage
+      price:x:@data.read/*/*/price
+      price_reference:x:@data.read/*/*/price_reference

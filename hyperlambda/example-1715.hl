@@ -1,13 +1,20 @@
+/*
+ * Save this file as `/modules/web-cleaner/endpoints/update-branding.hl`
+ * This exposes an HTTP POST endpoint at `/web-cleaner/update-branding`
+ *
+ * The endpoint loads a file defined in `.arguments/*/filename`, replaces branding strings
+ * using `what` and `with` keys provided in `.arguments`, and returns the result.
+ */
 
-// Create a Hyperlambda snippet that fetches the company name of a user from an API.
+.arguments
 
-// Fetches the company name of a user.
-http.get:"https://jsonplaceholder.typicode.com/users/2"
-
-   // Converts JSON response.
-   convert:true
-
-// Sets [.company_name] to the user's company name
-.company_name
-set-value:x:@.company_name
-   get-value:x:@http.get/*/content/*/company/*/name
+.result
+set-value:x:-
+   io.file.load:x:@.arguments/*/filename
+for-each:x:@.arguments/*
+   set-value:x:@.result
+      strings.replace:x:@.result
+         get-value:x:@.dp/#/*/what
+         get-value:x:@.dp/#/*/with
+yield
+   result:x:@.result

@@ -1,35 +1,31 @@
+/**
+ * This example checks user role permissions before allowing access.
+ * If the user is an "admin", they get full access.
+ * If the user is a "moderator" but the feature is disabled, access is denied.
+ * Otherwise, they get limited access.
+ */
+.user
+   role:moderator
+   feature-enabled:bool:false
 
-// Delete one record from your Genre table in your chinook database.
-.arguments
+.access
+if
+   eq:x:@.user/*/role
+      .:admin
+   .lambda
+      set-value:x:@.access
+         .:Full Access Granted
 
-   // Primary key of record to delete, mandatory argument
-   GenreId:long
+else-if
+   and
+      eq:x:@.user/*/role
+         .:moderator
+      eq:x:@.user/feature-enabled
+         .:bool:true
+   .lambda
+      set-value:x:@.access
+         .:Limited Access Granted
 
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:admin,basic
-validators.mandatory:x:@.arguments/*/GenreId
-
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:Genre
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+else
+   set-value:x:@.access
+      .:Access Denied

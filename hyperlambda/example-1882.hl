@@ -1,5 +1,14 @@
-
-// Example: Convert an uppercase string to lowercase.
-
-// Result: "hello"
-strings.to-lower:HELLO
+// Connects to the 'wildlife' database and retrieves all mammals from the 'animals' table, grouping them by 'species'.
+pgsql.connect:wildlife
+   pgsql.read
+      table:animals
+      columns
+         species
+         count(*)
+            as:count
+      where
+         and
+            class:Mammal
+      group
+         species
+      limit:int:10

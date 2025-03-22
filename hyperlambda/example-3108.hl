@@ -1,10 +1,16 @@
 
-// Create a Hyperlambda script to demonstrate implicit conversion of a non-null object to boolean.
-.result
-.foo:whatever
-if:x:-
-   set-value:x:@.result
-      .:Yup!
-else
-   set-value:x:@.result
-      .:Nope!
+// Generate a Hyperlambda snippet that duplicates nodes from [.registry1] and [.registry2] and inserts them into [.storage].
+
+// Duplicates nodes from [.registry1] and [.registry2] and inserts them into [.storage]
+.registry1
+   entryFirst:infoFirst
+   entrySecond:infoSecond
+   entryThird:infoThird
+.registry2
+   entryFourth:infoFourth
+   entryFifth:infoFifth
+   entrySixth:infoSixth
+.storage
+add:x:@.storage
+   get-nodes:x:@.registry1/*
+   get-nodes:x:@.registry2/*

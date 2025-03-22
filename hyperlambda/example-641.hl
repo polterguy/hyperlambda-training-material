@@ -1,8 +1,2 @@
-// How can I set a custom header if a user is authenticated?
-auth.ticket.get
-if
-   neq:x:@auth.ticket.get
-      .:
-   .lambda
-      response.headers.set
-         Cache-Control:public, max-age=1234
+// Creates a log item
+log.info:Howdy world from magic.lambda.logging

@@ -1,6 +1,8 @@
-// Creating two threads and waiting for both to finish
-join
-   fork
-      http.get:"https://servergardens.com"
-   fork
-      http.get:"https://gaiasoul.com"
+
+// Example: Use variables for the string and characters to trim.
+.text:xyzyx
+.chars:xy
+
+// Result: "z"
+strings.trim:x:@.text
+   get-value:x:@.chars

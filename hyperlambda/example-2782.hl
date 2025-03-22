@@ -1,41 +1,68 @@
 
-// Create a Hyperlambda script that changes the password of the currently authenticated user, ensuring the user is authenticated.
-slots.create:magic.auth.change-password
+// Search for images using Google with a mandatory query parameter.
+.arguments
 
-   // Ensuring a password was actually provided.
-   validators.mandatory:x:@.arguments/*/password
+   // Mandatory query to search for.
+   query:string
+.type:public
 
-   /*
-    * Retrieving currently authenticated user's username, and sanity checking to make sure
-    * client actually is authenticated.
-    */
-   auth.ticket.get
-   if
-      null:x:@auth.ticket.get
-      .lambda
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/query
 
-         // Oops ...!!
-         throw:Access denied
-            status:int:401
-            public:bool:true
+// Retrieving SERP API's API key and making sure we've got one.
+.api-key
+set-value:x:@.api-key
+   config.get:"magic:serp-api:api_key"
+if
+   or
+      null:x:@.api-key
+      eq:x:@.api-key
+         .:
+   .lambda
 
-   // Hashing password.
-   .password
-   set-value:x:@.password
-      crypto.password.hash:x:@.arguments/*/password
+      // Oops ...!!
+      throw:Could not find a SERP API key to use for fetching hotels.
 
-   // Opens up our database connection.
-   data.connect:magic
-      database-type:sqlite
+// Creating our URL.
+.url
+set-value:x:@.url
+   strings.concat
+      .:"https://serpapi.com/search.json?engine=google_images&api_key="
+      get-value:x:@.api-key
+      .:&q=
+      strings.url-encode:x:@.arguments/*/query
 
-      /*
-       * Changes the password of the currently logged in user
-       * to whatever new password user provided.
-       */
-      data.update
-         table:users
-         values
-            password:x:@.password
-         where
-            and
-               username.eq:x:@auth.ticket.get
+// Retrieving result.
+http.get:x:@.url
+   convert:true
+
+// Sanity checking result of above invocation.
+if
+   not
+      and
+         mte:x:@http.get
+            .:int:200
+         lt:x:@http.get
+            .:int:300
+   .lambda
+
+      // Oops ...!!
+      lambda2hyper:x:../*
+      log.info:x:-
+      throw:Something went wrong while invoking SERP API
+
+// Iterating through result, making sure we return the result to caller.
+for-each:x:@http.get/*/content/*/images_results/*/[0,10]
+   unwrap:x:+/*/*/*
+   add:x:../*/return-nodes/*/result
+      .
+         .
+            title:x:@.dp/#/*/title
+            link:x:@.dp/#/*/link
+            original:x:@.dp/#/*/original
+            source:x:@.dp/#/*/source
+
+// Returning result to caller.
+unwrap:x:+/*
+return-nodes
+   result

@@ -1,18 +1,4 @@
-
-// Create a Hyperlambda script to return a Magic CAPTCHA challenge
-.arguments
-.type:public
-
-// Generating cryptographically secure random text.
-crypto.random
-strings.concat
-   .:c_
-   get-value:x:@crypto.random
-cache.set:x:@strings.concat
-   expiration:long:30
-   value:valid
-
-// Generating gibberish text.
-unwrap:x:+/*
-return
-   result:x:@strings.concat
+// [not-null] returns false if the target node has no value
+.src
+   foo
+not-null:x:@.src/*/foo

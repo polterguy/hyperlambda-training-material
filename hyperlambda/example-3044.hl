@@ -1,45 +1,53 @@
 
-// Creates training data and inserts into fine-tuning database such that it can be exported later.
+// Create a Hyperlambda script for an endpoint that counts items from the users table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
+   operator:string
+   username.eq:string
+   username.like:string
+   created.mt:date
+   created.lt:date
+   created.mteq:date
+   created.lteq:date
 
-   // Mandatory argument being file number to generate training data for. When listing Hyperlambda files, this will generate training data for the nth file listed, allowing us to loop for as long as have have additional files, incrementing the file-no argument for each iteration.
-   file-no:int
-.type:public
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Listing files recursively.
-io.file.list-recursively:/
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
-// Pruning out everything but Hyperlambda files.
-.file
-for-each:x:@io.file.list-recursively/*
-   if
-      strings.ends-with:x:@.dp/#
-         .:.hl
-      .lambda
-         unwrap:x:+/*/*
-         add:x:@.file
-            .
-               .:x:@.dp/#
-
-// Checking if we've dealt with all files.
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
 if
-   mt
-      get-value:x:@.arguments/*/file-no
-      get-count:x:@.file/*
+   exists:x:@.arguments/*/operator
    .lambda
-      return
-         result:There are no more files, you have handled all files.
 
-// Loading nth file.
-.hyperlambda
-strings.concat
-   .:@.file/
-   get-value:x:@.arguments/*/file-no
-set-x:x:+
-   convert:x:@strings.concat
-      type:x
-io.file.load
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
 
-// Returning Hyperlambda file to caller.
-yield
-   hyperlambda:x:@io.file.load
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our read invocation.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/operator
+   remove-nodes:x:@.arguments/*/operator
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      table:users
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

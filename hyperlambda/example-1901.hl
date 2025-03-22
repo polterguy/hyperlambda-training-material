@@ -1,8 +1,11 @@
+// Concatenating strings for each node in the list
+.car-parts
+   engine
+   wheel
+   door
 
-// Example: Extract a substring given a start index and length.
-.text:HelloWorld
-strings.substring:x:@.text
-   .:5
-   .:3
-
-// Result: "Wor"
+for-each:x:@.car-parts/*
+   set-value:x:@.dp/#
+      strings.concat
+         get-name:x:@.dp/#
+         .:" is checked"

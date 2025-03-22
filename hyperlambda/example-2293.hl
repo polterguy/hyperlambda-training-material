@@ -1,11 +1,13 @@
-// Creates 10 new child items of [.list]
-.i:long:0
-.list
-while
-   neq:x:@.i
-      .:long:10
-   .lambda
-      add:x:@.list
-         .
-            item
-      math.increment:x:@.i
+
+// Create a Hyperlambda snippet that fetches users from the authentication database and its user_accounts table.
+
+// Fetches users from the authentication database and its user_accounts table.
+data.connect:auth_db
+
+   // Database type set to PostgreSQL.
+   database-type:pgsql
+
+   // Querying the database for users.
+   data.read
+      database-type:pgsql
+      table:user_accounts

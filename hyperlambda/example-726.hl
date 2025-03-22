@@ -1,3 +1,10 @@
-// Move file
-io.file.move:/misc/README.md
-   .:/misc/backup/README-backup.md
+// Compiles a piece of C#
+system.compile
+   assembly-name:foo.dll
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.Private.CoreLib
+      .:magic.node
+      .:magic.signals.contracts
+   code:@"C# CODE HERE"

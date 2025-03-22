@@ -1,54 +1,109 @@
 
-// Searches for the specified [query] through your training snippets and returns [max_tokens] training snippets to caller.
+// Write a Hyperlambda script to create a new database with a specified name.
 .arguments
-   _type:string
+   databaseType:string
+   connectionString:string
+   databaseName:string
+   generate:bool
 
-   // Mandatory argument and become an SQL LIKE condition records must match to be considered.
-   query:string
-
-   // Optional argument being maximum number of tokens to return. Will default to 4000 if not specified.
-   max_tokens:int
-.type:public
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/_type
-validators.mandatory:x:@.arguments/*/query
+validators.mandatory:x:@.arguments/*/connectionString
+validators.mandatory:x:@.arguments/*/databaseName
+validators.string:x:@.arguments/*/databaseName
+   min:2
+validators.mandatory:x:@.arguments/*/databaseType
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:sqlite
+   .:pgsql
+   .:mssql
 
-// Applying defaults.
-validators.default:x:@.arguments
-   max_tokens:int:4000
+// Sanity checking invocation.
+if
+   eq:x:@.arguments/*/databaseName
+      .:magic
+   .lambda
+      throw:You cannot create a database with the name of magic since it is a restricted name
 
-// Opening up our database connection.
-data.connect:[generic|magic]
+// Checking if database is SQLite, at which point we simply create a new empty file.
+if
+   eq:x:@.arguments/*/databaseType
+      .:sqlite
+   .lambda
 
-   // Creating our filter string
-   .filter
-   set-value:x:@.filter
+      // Checking if caller only wants to generate SQL.
+      if:x:@.arguments/*/generate
+         return
+            result:/* SQLite does not support create database syntax */
       strings.concat
-         .:%
-         get-value:x:@.arguments/*/query
-         .:%
-   data.read
-      table:ml_training_snippets
-      columns
-         id
-         prompt
-         uri
-      where
-         or
-            prompt.like:x:@.filter
-            completion.like:x:@.filter
-   .cont:bool:true
-   while:x:@.cont
-      lambda2hyper:x:@data.read/*
+         .:/data/
+         get-value:x:@.arguments/*/databaseName
+         .:.db
       if
-         lt
-            openai.tokenize:x:@lambda2hyper
-            convert:x:@.arguments/*/max_tokens
-               type:int
+         io.file.exists:x:@strings.concat
          .lambda
-            set-value:x:@.cont
-               .:bool:false
-      else
-         remove-nodes:x:@data.read/0/-
-   return-nodes:x:@data.read/*
+            throw:Database already exists
+               public:bool:true
+               status:400
+      io.file.save:x:@strings.concat
+         .:
+
+      // Flushing SQLite connections cache.
+      sqlite.connections.flush
+else
+
+   // Buffer to hold SQL and 'master' database.
+   .sql
+   .master
+
+   // Creating our correct SQL according to [databaseType].
+   switch:x:@.arguments/*/databaseType
+      case:mysql
+         set-value:x:@.master
+            .:information_schema
+      case:pgsql
+         set-value:x:@.master
+            .:template1
+      case:mssql
+         set-value:x:@.master
+            .:master
+
+   // Same SQL for all types.
+   set-value:x:@.sql
+      strings.concat
+         .:"create database "
+         get-value:x:@.arguments/*/databaseName
+         .:;
+
+   // Checking if caller only wants to generate SQL statement.
+   if:x:@.arguments/*/generate
+      unwrap:x:+/*
+      return
+         sql:x:@.sql
+
+   // Opening our database connection and executing SQL.
+   strings.concat
+      .:[
+      get-value:x:@.arguments/*/connectionString
+      .:|
+      get-value:x:@.master
+      .:]
+   data.connect:x:@strings.concat
+      database-type:x:@.arguments/*/databaseType
+      data.execute:x:@.sql
+         database-type:x:@.arguments/*/databaseType
+
+// Flushing database cache.
+strings.concat
+   .:magic.sql.databases.
+   get-value:x:@.arguments/*/databaseType
+   :.
+   get-value:x:@.arguments/*/connectionString
+cache.set:x:-
+
+// Returning result to caller.
+return
+   result:success

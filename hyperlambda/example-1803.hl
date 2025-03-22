@@ -1,13 +1,9 @@
-// Hyperlambda [get-value]
-.data
-   item1:apple
-   item2:banana
-.item:item2
-get-value:x:@.data/*/{@.item}
+/*
+ * Retrieving the value of a deeply nested node.
+ * Result becomes 42.
+ */
 
-// Results in:
 .data
-   item1:apple
-   item2:banana
-.item:item2
-get-value:banana
+   parent
+      child:42
+get-value:x:@.data/*/*

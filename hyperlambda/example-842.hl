@@ -1,3 +1,9 @@
-// Increment [.arg]'s value by 1
-.arg:int:5
-math.increment:x:@.arg
+/*
+ * Finds a node with a specific value.
+ */
+
+.data
+   item1:john
+   item2:thomas
+   item3:peter
+get-name:x:@.data/*/={thomas}

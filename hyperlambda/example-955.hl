@@ -1,4 +1,12 @@
-// Return configuration key with default value being value of expression to [.foo]
-.foo:foo
-config.get:"magic:foo:non-existing-key"
-   get-value:x:@.foo
+// A mysterious force renames all entries in the archive.
+
+.archive
+   record1:alpha
+   record2:beta
+   record3:gamma
+
+for-each:x:@.archive/*
+   set-value:x:@.dp/#
+      .:classified
+
+// All records in .archive are now labeled "classified".

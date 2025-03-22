@@ -1,6 +1,9 @@
+// Basic usage of [for-each] to iterate over a list of car parts
+.car-parts
+   engine
+   wheel
+   door
 
-// Example: String consisting entirely of trim characters (result is empty).
-
-// Result: "" (empty string)
-strings.trim-end:xxx
-   .:x
+for-each:x:@.car-parts/*
+   set-value:x:@.dp/#
+      .:checked

@@ -1,15 +1,17 @@
-
-// Create a Hyperlambda endpoint to count the number of tasks in the system given an optional filter.
+// Execute Hyperlambda action
 .arguments
    filter:string
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Returns artists and count of records per artist, sorted by artist having the most albums.
+execute:magic.workflows.actions.execute
 
-// Retrieves all scheduled tasks in the system.
-tasks.count:x:@.arguments/*/filter
+   // Name used to reference action further down in your Hyperlambda code
+   name:chinook-albums-count
 
-// Returning the results of the evaluation to caller.
-unwrap:x:+/*
-return-nodes
-   count:x:@tasks.count
+   // file containing action
+   filename:/etc/workflows/actions/chinook-albums-count.hl
+   arguments
+      filter:x:@.arguments/*/filter
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

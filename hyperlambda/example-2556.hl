@@ -1,16 +1,8 @@
+// How to create an expression that retrieves a single node from input arguments
 
-// Generate a Hyperlambda snippet that loops until [.requests] reach 10.
+get-name:x:@.arguments/*/SOME_NODE_HERE
 
-// Loops until [.requests] reach 10.
-.requests:int:1
-while
-   lt
-      get-value:x:@.requests
-      .:int:10
-   .lambda
-
-      // Handling request.
-      log.info:Processing request
-
-      // Incrementing request counter.
-      math.increment:x:@.requests
+/*
+ * And expression is ALWAYS type declares as `:x:`, implying the following
+ * parts will be interpreted as an expression and parsed as such.
+ */

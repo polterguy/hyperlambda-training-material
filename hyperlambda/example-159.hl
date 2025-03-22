@@ -1,11 +1,91 @@
-// Adds a 2-hour offset to a given timestamp and yields the updated date
-slots.create:offset.timestamp
-   math.add
-      get-value:x:@.arguments/*/timestamp
-      time
-         hours:int:2
-   yield
-      updated:x:@math.add
 
-execute:offset.timestamp
-   timestamp:date:"2025-03-22T10:00:00Z"
+// Read or list records from your Customers table in your northwind database
+.arguments
+
+   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+   limit:long
+
+   // Offset into the dataset of where to start retrieving records
+   offset:long
+
+   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+   order:string
+
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
+   Customers.CustomerID.like:string
+   Customers.CustomerID.eq:string
+   Customers.CompanyName.like:string
+   Customers.CompanyName.eq:string
+   Customers.ContactName.like:string
+   Customers.ContactName.eq:string
+   Customers.ContactTitle.like:string
+   Customers.ContactTitle.eq:string
+   Customers.Address.like:string
+   Customers.Address.eq:string
+   Customers.City.like:string
+   Customers.City.eq:string
+   Customers.Region.like:string
+   Customers.Region.eq:string
+   Customers.PostalCode.like:string
+   Customers.PostalCode.eq:string
+   Customers.Country.like:string
+   Customers.Country.eq:string
+   Customers.Phone.like:string
+   Customers.Phone.eq:string
+   Customers.Fax.like:string
+   Customers.Fax.eq:string
+
+// Meta data description for endpoint
+.description:Read or list records from your Customers table in your northwind database
+
+// Type of endpoint
+.type:crud-read
+
+// Columns with custom handling as frontend is generated.
+.handling
+   Customers.Phone:phone
+
+// Opening up our database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+
+   // Parametrising our read invocation with ordering arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+
+   // Parametrising our read invocation with paging arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Customers
+      columns
+         Customers.CustomerID
+         Customers.CompanyName
+         Customers.ContactName
+         Customers.ContactTitle
+         Customers.Address
+         Customers.City
+         Customers.Region
+         Customers.PostalCode
+         Customers.Country
+         Customers.Phone
+         Customers.Fax
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

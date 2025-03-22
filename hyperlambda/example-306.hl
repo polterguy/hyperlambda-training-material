@@ -1,35 +1,10 @@
-
-// Delete one record from your InvoiceLine table in your chinook database.
-.arguments
-
-   // Primary key of record to delete, mandatory argument
-   InvoiceLineId:long
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/InvoiceLineId
-
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:InvoiceLine
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// How to serve different support contact info based on user role?
+.support
+if
+   auth.ticket.in-role:premium
+   .lambda
+      set-value:x:@.support
+         .:Email us at premium-support@example.com
+else
+   set-value:x:@.support
+      .:Please visit our help center

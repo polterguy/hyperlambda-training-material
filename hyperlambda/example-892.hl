@@ -1,9 +1,13 @@
-// Returns ALL items (limit is -1) from table1 where field1 equals 'howdy' or field2 equals 'world'
-sql.read
-   table:table1
-   limit:-1
-   where
 
-      or
-         field1.eq:howdy
-         field2.eq:world
+// If with else-if
+.dest
+if
+   .:bool:false
+   .lambda
+      set-value:x:@.dest
+         .:yup!
+else-if
+   .:bool:true
+   .lambda
+      set-value:x:@.dest
+         .:yup2.0!

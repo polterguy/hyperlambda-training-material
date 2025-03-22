@@ -1,6 +1,16 @@
 
-// Example: Use a variable as the input to uppercase.
-.text:make me upper
+// Provide a Hyperlambda example where [.lambda] runs based on the boolean value of [.flag].
 
-// Result: "MAKE ME UPPER"
-strings.to-upper:x:@.text
+// Runs [.lambda] based on the boolean value of [.flag].
+.flag:bool:true
+if
+   eq:x:@.flag
+      .:bool:true
+   .lambda
+
+      // Runs when [.flag] is set to true.
+      log.info:[.flag] is enabled
+else
+
+   // Runs when [.flag] is false.
+   log.info:[.flag] is disabled

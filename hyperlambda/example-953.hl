@@ -1,6 +1,15 @@
-// Load a file, convert it to lambda, and then execute it
-io.file.load:/foo.hl
+// How can I create a loop that increments a value until it's 5?
+.no:int:0
 
-hyper2lambda:x:-
+// will contain 5 nodes afterwards
+.results
 
-eval:x:-
+while
+   lt
+      get-value:x:@.no
+      .:int:5
+   .lambda
+      add:x:@.results
+         .
+            .:Iteration
+      math.increment:x:@.no

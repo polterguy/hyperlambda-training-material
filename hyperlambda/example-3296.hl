@@ -1,8 +1,7 @@
-// Update resource with HTTP PUT
-http.put:"https://jsonplaceholder.typicode.com/todos/1"
-   headers
-      Content-Type: application/json
-   payload
-      value:foo
-         title:Updated title
-         completed:true
+// Use a variable condition in an if statement
+
+.result
+.condition:bool:true
+if:x:@.condition
+   set-value:x:../*/.result
+      .:OK

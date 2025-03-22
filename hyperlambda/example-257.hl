@@ -1,20 +1,33 @@
-// Search through a log file and extract all ISO-formatted dates from it
 
-// Reading file's content as text.
-io.file.load:/var/logs/server.log
+// How to use [data.select]
 
-// A temporary place to hold the extracted dates
-.dates
+/*
+ * To execute SQL towards some database, we first must open a database connection.
+ * 
+ * This invocation uses the default database type being SQLite, and connects to warehouse database file, that can be found under /data/warehouse.db
+ */
+data.connect:warehouse
 
-// Extracting ISO date strings using regex (e.g., 2023-12-31)
-strings.matches:x:@io.file.load
-   .:"\\b\\d{4}-\\d{2}-\\d{2}\\b"
+   // This executes the specified SQL
+   data.select:select first_name, last_name from admins limit 5
 
-// Loop through the matches and add them to the list
-for-each:x:@strings.matches/*/match
-   unwrap:x:+/*/*
-   add:x:@.dates
-      .
-         .:x:@.dp/#
-
-// Notice, this Hyperlambda DOES NOT check if the file exists before it's trying to read it. This will result in an exception if the file doesn't exist
+/*
+ * How it will look like after execution:
+ * data.connect
+ * data.select
+ * ""
+ * first_name:PENELOPE
+ * last_name:GUINESS
+ * ""
+ * first_name:NICK
+ * last_name:WAHLBERG
+ * ""
+ * first_name:ED
+ * last_name:CHASE
+ * ""
+ * first_name:JENNIFER
+ * last_name:DAVIS
+ * ""
+ * first_name:JOHNNY
+ * last_name:LOLLOBRIGIDA
+ */

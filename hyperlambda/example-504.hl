@@ -1,12 +1,25 @@
-// CRUD slot returning count of items from your DATABASE_NAME and TABLE_NAME.
-data.connect:DATABASE_NAME
-   database-type:sqlite
+// If/else-if and else lambda object
+.src:int:3
+.dest
+if
+   eq
+      get-value:x:@.src
+      .:int:1
+   .lambda
 
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:TABLE_NAME
-      columns
-         count(*)
-            as:count
-      limit:long:1
+      set-value:x:@.dest
+         .:yup!
+
+else-if
+   eq
+      get-value:x:@.src
+      .:int:2
+   .lambda
+
+      set-value:x:@.dest
+         .:yup2.0!
+
+else
+
+   set-value:x:@.dest
+      .:nope

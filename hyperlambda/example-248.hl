@@ -1,18 +1,23 @@
-/*
- * This example attempts to connect to a non-existent database.
- * It demonstrates how to handle connection failures gracefully by catching exceptions
- * and logging an error message.
- */
 
-try
-   data.connect:non_existent_database
-      data.select:SELECT * FROM non_existent_table
-.catch
-   log.error:Failed to connect to the database or execute the query.
+// Write a Hyperlambda script that creates a slot executing all slots starting with a specified namespace, passing in all arguments to all invocations.
+slots.create:magic.misc.execute-slots
 
-// Notice, the [data.connect] slot will not fail, since the default database
-// is SQLite, which will simply create a new database file with the
-// path of '/data/non_existent_database.db' - But since this database
-// is initialised as an empty database, without any tables, the
-// [data.select] invocation will still fail, since it doesn't have
-// the 'non_existent_table' table.
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/namespace
+
+   // Listing all slots with the specified name.
+   slots.vocabulary:x:@.arguments/*/namespace
+
+   // Looping through each slot returned from above.
+   for-each:x:@slots.vocabulary/*
+
+      // Parametrising slot invocation.
+      add:x:./*/execute
+         get-nodes:x:@.arguments/*/arguments/*
+
+      // Changing name of slot, as in which dynamic slot will be executed below.
+      set-value:x:./*/execute
+         get-value:x:@.dp/#
+
+      // Executing slot now parametrised with [arguments].
+      execute

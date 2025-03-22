@@ -1,18 +1,9 @@
-// This code loads a Python script and replaces several variable names to improve readability.
-// Specifically, it replaces "tmp" with "temp" and "cfg" with "config" using dynamic replacement from the .data block.
-.data
-   .
-      what:tmp
-      with:temp
-   .
-      what:cfg
-      with:config
-.filename:/scripts/main.py
-.result
-set-value:x:-
-   io.file.load:x:@.filename
-for-each:x:@.data/*
-   set-value:x:@.result
-      strings.replace:x:@.result
-         get-value:x:@.dp/#/*/what
-         get-value:x:@.dp/#/*/with
+// This example encrypts a message with a custom seed for the CSRNG.
+crypto.rsa.create-key
+   strength:2048
+
+crypto.encrypt:Top secret message
+   encryption-key:x:@crypto.rsa.create-key/*/public
+   signing-key:x:@crypto.rsa.create-key/*/private
+   signing-key-fingerprint:x:@crypto.rsa.create-key/*/fingerprint
+   seed:RandomSeed123

@@ -1,5 +1,7 @@
-
-// [and] returns true only if all arguments are true
-and
-   .:bool:true
-   .:bool:true
+// Execute Hyperlambda file with arguments
+.args
+   foo1:bar1
+   foo2:bar2
+execute-file:/whatever-file.hl
+   arg1:x:@.args/*/foo1
+   arg2:x:@.args/*/foo2

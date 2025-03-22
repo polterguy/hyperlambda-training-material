@@ -1,19 +1,10 @@
-
-// Write a Hyperlambda script to return log items from the database based on optional arguments like 'from', 'max', and 'query'.
-.arguments
-   from:string
-   max:long
-   query:string
-.type:internal
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Invoking slot responsible for returning items, making sure we correctly parametrise invocation.
-add:x:../*/log.query
-   get-nodes:x:@.arguments/*/max
-   get-nodes:x:@.arguments/*/from
-log.query:x:@.arguments/*/query
-
-// Returning result of above invocation to caller.
-return-nodes:x:-/*
+/*
+ * Stores a raw JSON string without escaping quotes or braces.
+ * Useful for transmitting or logging raw data.
+ */
+.raw-json:@"
+{
+  ""user"": ""john_doe"",
+  ""age"": 30,
+  ""active"": true
+}"

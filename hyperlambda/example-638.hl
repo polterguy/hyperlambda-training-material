@@ -1,8 +1,5 @@
-// How do I create a slot that checks if a user is in the 'editor' role and returns edit access?
-slots.create:user-in-role
-   if
-      auth.ticket.in-role:editor
-      .lambda
-         return:bool:true
-   else
-      return:bool:false
+// Validates the [recaptcha_value] argument is a valid reCAPTCHA token
+validators.recaptcha:x:@.arguments/*/recaptcha_value
+   site-key:xyz
+   secret:qwerty
+   min:decimal:0.3

@@ -1,6 +1,13 @@
+// Executing the following Hyperlambda results in the following
 
-// Example: Pattern not found yields an empty result set.
-strings.matches:no digits here
-   .:"\\d+"
+// When executing the following Hyperlambda
+cache.set:foo
+   value:some cache value
+cache.get:foo
 
-// Result: No child nodes (no matches found)
+// We end up with this result
+cache.set:foo
+   value:some cache value
+cache.get:some cache value
+
+// Notice how the cached value is returned

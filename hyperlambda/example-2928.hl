@@ -1,15 +1,7 @@
 
-// Write a Hyperlambda script to return all saved SQL files in the system for a specified database type.
-.arguments
-   databaseType:string
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Returns all files in the "/etc/[databaseType]/templates/" folder.
-strings.concat
-   .:/etc/
-   get-value:x:@.arguments/*/databaseType
-   .:/templates/
-io.file.list:x:@strings.concat
-return-nodes:x:-/*
+// Create a Hyperlambda script to insert nodes after a specified destination expression's node.
+.destination
+   foo1
+insert-after:x:@.destination/*/foo1
+   .
+      foo2:bar

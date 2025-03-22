@@ -1,4 +1,3 @@
-// How can I set CORS headers in the response?
-response.headers.set
-   Access-Control-Allow-Origin:*
-   Access-Control-Allow-Methods:GET, POST, OPTIONS
+// I've got a list of nodes in an existing list of nodes in [.data], please join all values and use ', ' as separator
+strings.join:x:@.data/*
+   .:', '

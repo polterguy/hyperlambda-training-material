@@ -1,24 +1,34 @@
 
-// Ensures user is authorized to access endpoint.
+// Creates an item in your clusters table in your [generic|hub] database according to the specified arguments.
 .arguments
-   roles
-      type:array
-      mandatory:bool:false
-.icon:shield
+   id:string
+   country:string
+   name:string
+   enabled:bool
 
-/*
- * Checking if we've got a [roles] argument,
- * and if so, joining all roles into a comma separated string of roles.
- */
-.roles
-if
-   exists:x:@.arguments/*/roles/*
-   .lambda
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-      // Creating comma separated list of roles.
-      set-value:x:@.roles
-         strings.join:x:@.arguments/*/roles/*
-            .:,
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+validators.mandatory:x:@.arguments/*/country
+validators.mandatory:x:@.arguments/*/name
 
-// Making sure user is authenticated, and optionally authorised.
-auth.ticket.verify:x:@.roles
+// Opening up database connection.
+data.connect:[generic|hub]
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      table:clusters
+      return-id:bool:false
+      values
+
+   // Returning result of above invoction to caller.
+   response.status.set:201
+   unwrap:x:+/*
+   return
+      result:success

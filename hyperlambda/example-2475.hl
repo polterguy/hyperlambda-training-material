@@ -1,11 +1,7 @@
 
-// Provide a Hyperlambda example where nodes from [.origin] are moved and integrated into [.destination_node].
+// Example: Extract with length exceeding string bounds (returns till end).
+strings.substring:Hello
+   .:2
+   .:10
 
-// Moves nodes from [.origin] and integrates them into [.destination_node]
-.origin
-   field1:content1
-   field2:content2
-   field3:content3
-.destination_node
-add:x:@.destination_node
-   get-nodes:x:@.origin/*
+// Result: "llo"

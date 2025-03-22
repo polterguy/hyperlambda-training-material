@@ -1,21 +1,25 @@
 
-// Hyperlambda authenticate endpoint
-.arguments
-   username:string
-   password:string
-
 /*
- * Authenticates the user with the specified [username] and [password].
- * 
- * Returns a JWT Bearer token that can be used for consecutive requests authorizing user according
- * to his or her roles.
+ * This script counts the number of Hyperlambda files, in addition to the combined
+ * number of nodes, within the specified folder.
  */
-execute:magic.workflows.actions.execute
-   name:authenticate
-   filename:/modules/auth/workflows/actions/authenticate.hl
-   arguments
-      username:x:@.arguments/*/username
-      password:x:@.arguments/*/password
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+.folder:/modules/cms/
+unwrap:x:+/*
+signal:magic.io.file.load-recursively
+   .:x:@.folder
+for-each:x:@signal/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         hyper2lambda:x:@.dp/#/0
+            comments:true
+         set-value:x:@hyper2lambda/0
+            strings.concat
+               .:"Generate a Hyperlambda with authorization for 'guest' roles files that "
+               get-value:x:@hyper2lambda/0
+         lambda2hyper:x:@hyper2lambda/*
+            comments:true
+         io.file.save:x:@.dp/#
+            get-value:x:@lambda2hyper
+remove-nodes:x:@signal/*

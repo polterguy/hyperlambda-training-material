@@ -1,11 +1,6 @@
-// Getting the first customer's name
-.customers
-   .
-      name:Thomas Hansen
-      email:thomas@ainiro.io
-   .
-      name:Jane Fonda
-   .
-      name:Peter Sellers
-      email:peter@sellers.com
-get-value:x:@.customers/0/*/name
+/*
+ * Opens a database connection and executes some arbitrary SQL,
+ * returning results as a record set.
+ */
+mysql.connect:magic
+   mysql.select:select * from roles

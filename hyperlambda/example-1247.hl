@@ -1,13 +1,15 @@
-// Conditional execution using if
-.value:int:42
-.result
-if
-   mt:x:@.value
-      .:int:10
-   .lambda
-      set-value:x:@.result
-         .:Value is greater than 10
-else
-   set-value:x:@.result
-      .:Value is less than or equal to 10
-// Notice, [else] does not require a [.lambda] node
+// Encodes the specified HTML
+.html:@"<html>
+<body>
+  <h1>Quarterly Newsletter - Q1 2025</h1>
+  <p>Our Q1 results are now available.</p>
+  <ul>
+    <li>Total revenue increased by <strong>15%</strong> compared to Q4 2024</li>
+    <li>Customer satisfaction reached <strong>94%</strong></li>
+  </ul>
+  <p>View the <a href=""https://company.com/reports/q1-2025"">full report</a>.</p>
+</body>
+</html>"
+
+// HTML encodes the above HTML
+strings.html-encode:x:@.html

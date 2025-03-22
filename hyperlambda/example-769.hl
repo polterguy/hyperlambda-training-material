@@ -1,8 +1,8 @@
-// Simplified [if] referencing input argument
-.arguments
-   foo:bool:true
-.dest
+// Create a task, then schedule it
+tasks.create:task-id-xyx
+   .lambda
 
-if:x:@.arguments/*/foo
-   set-value:x:@.dest
-      .:yup!
+      log.info:It is the 1st of the month, any month, and the time is 5AM at night.
+
+tasks.schedule:task-id-xyx
+   repeats:**.01.05.00.00

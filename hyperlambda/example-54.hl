@@ -1,13 +1,13 @@
+// Use else-if to check multiple conditions in sequence
 
-// Counts items from your DATABASE_NAME and TABLE_NAME.
-data.connect:DATABASE_NAME
-   database-type:sqlite
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:TABLE_NAME
-      columns
-         count(*)
-            as:count
-      limit:long:1
+.result
+if
+   .:bool:false
+   .lambda
+      set-value:x:../*/.result
+         .:failure
+else-if
+   .:bool:true
+   .lambda
+      set-value:x:../*/.result
+         .:OK

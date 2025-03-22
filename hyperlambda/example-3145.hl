@@ -1,30 +1,27 @@
 
-// Ensures our system messages are updated during deployments
-io.file.list:/modules/finovo/system-messages/
+// Write a Hyperlambda snippet that evaluates HTTP response codes using a switch case without a default option.
 
-// Opening up database connection.
-data.connect:magic
+// Switch case comparison for HTTP response codes.
+.http_code:int:404
+.result
+switch:x:@.http_code
+   case:int:200
 
-   // Looping through each system message and updating our machine learning type accordingly.
-   for-each:x:@io.file.list/*
+      // If response code is 200.
+      set-value:x:@.result
+         .:Success
+   case:int:400
 
-      // Loading file.
-      io.file.load:x:@.dp/#
+      // If response code is 400.
+      set-value:x:@.result
+         .:Bad Request
+   case:int:404
 
-      // Finding type name
-      .type
-      strings.split:x:@.dp/#
-         .:/
-      strings.split:x:-/0/-
-         .:.
-      set-value:x:@.type
-         get-value:x:@strings.split/0
+      // If response code is 404.
+      set-value:x:@.result
+         .:Not Found
+   case:int:500
 
-      // Updating type name's system message.
-      data.update
-         table:ml_types
-         values
-            system_message:x:@io.file.load
-         where
-            and
-               type.eq:x:@.type
+      // If response code is 500.
+      set-value:x:@.result
+         .:Internal Server Error

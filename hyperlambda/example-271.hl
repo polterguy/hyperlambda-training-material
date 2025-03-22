@@ -1,11 +1,13 @@
-// How the named sibling node works
-.data
-   .not-found:value
-get-value:x:@.not-found
+// eq returns false if values are not equal or types differ
+.a:5
+.b:int:5
+eq
+   get-value:x:@.a
+   get-value:x:@.b
 
-/*
- * The above named sibling iterator traverses the node hierarchy from the identity node and upwards,
- * until it finds a node with the name specified. In the example above the name is `.data`.
- *
- * After execution, the value of the [get-value] slot will become 'value'
- */
+// Result after execution
+.a:5
+.b:int:5
+eq:bool:false
+   get-value:5
+   get-value:int:5

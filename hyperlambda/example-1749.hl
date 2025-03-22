@@ -1,5 +1,11 @@
-// Changing a node's name
-.data
-   old-name:some-value
-set-name:x:@.data/*/old-name
-   .:new-name
+
+// Example: Split a comma-separated string.
+strings.split:a,b,c
+   .:,
+
+/*
+ * Resulting parts:
+ * .:a
+ * .:b
+ * .:c
+ */

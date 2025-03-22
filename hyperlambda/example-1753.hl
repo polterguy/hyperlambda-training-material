@@ -1,4 +1,8 @@
-// Getting configuration setting and assigning the value to [.result]
-.result
-set-value:x:@.result
-   config.get:"magic:smtp:host"
+
+// Example: Remove a substring by replacing it with an empty string.
+.sentence:Apples and oranges
+strings.replace:x:@.sentence
+   .:"and "
+   .:
+
+// Result: "Apples oranges" (removed "and ")

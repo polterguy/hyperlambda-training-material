@@ -1,9 +1,33 @@
 
-// Create a Hyperlambda snippet that inserts a new department node before 'HR' inside '.departments'.
+// Create a Hyperlambda script to update one record in a specified table in a database with optional filtering arguments.
+.arguments
 
-// Inserts a new department node before "HR" inside ".departments".
-.departments
-   HR
-insert-before:x:@.departments/*/HR
-   .
-      IT:New department added before HR
+// Opening up our database connection.
+data.connect:{database}
+   database-type:{database-type}
+
+   // Invoking our update slot.
+   data.update
+      database-type:{database-type}
+      table:{table}
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning the correct status code.
+   response.status.set:202
+
+   // Returning success to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.update

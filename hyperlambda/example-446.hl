@@ -1,8 +1,14 @@
 
-// Example: Remove a substring by replacing it with an empty string.
-.sentence:Apples and oranges
-strings.replace:x:@.sentence
-   .:"and "
-   .:
+// Evaluates specified [.lambda] if condition evaluates to true.
+if
+   or
+      eq:x:@SOME_EXPRESSION
+         .:SOME_VALUE
+      eq:x:@SOME_OTHER_EXPRESSION
+         .:SOME_OTHER_VALUE
+   .lambda
 
-// Result: "Apples oranges" (removed "and ")
+      // Lambda evaluates if condition is true.
+else
+
+   // Lambda evaluated if condition is NOT true.

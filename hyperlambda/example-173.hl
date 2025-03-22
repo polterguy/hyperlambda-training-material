@@ -1,9 +1,8 @@
-// Returns a list of programming languages using return-nodes
-slots.create:get.languages
-   return-nodes
-      languages
-         .:Python
-         .:JavaScript
-         .:Go
+// Evaluates specified [.lambda] if condition evaluates to true.
+if:x:@SOME_EXPRESSION
 
-execute:get.languages
+   // Lambda evaluates if condition is true.
+
+else
+
+   // Lambda evaluated if condition is NOT true.

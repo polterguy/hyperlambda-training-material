@@ -1,11 +1,9 @@
-/*
- * Compares duration (in minutes) from three different tasks and returns the shortest one.
- */
-.tasks
-   task1:int:60
-   task2:int:45
-   task3:int:90
-math.min
-   get-value:x:@.tasks/*/task1
-   get-value:x:@.tasks/*/task2
-   get-value:x:@.tasks/*/task3
+// Returns a list of programming languages using return-nodes
+slots.create:get.languages
+   return-nodes
+      languages
+         .:Python
+         .:JavaScript
+         .:Go
+
+execute:get.languages

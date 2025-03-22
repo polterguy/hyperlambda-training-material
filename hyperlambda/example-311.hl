@@ -1,8 +1,10 @@
-/*
- * Example: Replace a substring that exists in the text.
- */
-.original:"Hello world"
-strings.replace:x:@.original
-   .:world
-   .:there
-// Result: "Hello there"
+// Tries verifying role, then executes different logic based on access level.
+
+.result
+try
+   auth.ticket.verify:superuser
+   set-value:x:@.result
+      .:Superuser access granted
+.catch
+   set-value:x:@.result
+      .:You are not a superuser

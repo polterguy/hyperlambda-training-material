@@ -1,10 +1,3 @@
-// Connects to the 'cosmos' database and retrieves all records from the 'galaxies' table, ordering them by 'name' in ascending order.
-pgsql.connect:cosmos
-   pgsql.read
-      table:galaxies
-      columns
-         name
-         type
-      order:name
-      direction:asc
-      limit:int:10
+// Increments a value by 1 using lambda expressions
+.counter:int:5
+math.increment:x:@.counter

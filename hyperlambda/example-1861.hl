@@ -1,16 +1,7 @@
-/*
- * Save this file as `/modules/users/endpoints/assign-role.hl`
- * This exposes an HTTP POST endpoint at `/users/assign-role`
- *
- * The endpoint requires a `userId` and `role` to proceed with role assignment.
- */
-
-.arguments
-   userId
-   role
-
-validators.mandatory:x:@.arguments/*/userId
-validators.mandatory:x:@.arguments/*/role
-
-yield
-   message:Role assigned (simulated)
+// Deletes a student record from the 'students' table where the major is 'Biology'.
+sqlite.connect:university
+   sqlite.delete
+      table:students
+      where
+         and
+            major:Biology

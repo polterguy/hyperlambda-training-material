@@ -1,7 +1,12 @@
-// This snippet uses the '-' iterator to get the previous sibling of a given node.
-.sequence
-   first:A
-   second:B
-   third:C
-get-value:x:@.sequence/*/second/-  
-// The expression finds "second" under .sequence, then '-' returns its previous sibling ("first"), so the get-value yields "A".
+
+// Generate a Hyperlambda snippet that iterates through a list of users and logs their names.
+
+// Iterates through a list of users and logs their names.
+.users
+   user1:Alice
+   user2:Bob
+   user3:Charlie
+for-each:x:@.users/*
+
+   // Logging each user name.
+   log.info:x:@.dp/#

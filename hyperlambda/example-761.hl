@@ -1,5 +1,2 @@
-// Example: Create a slot and then delete it
-slots.create:foo
-   return-value:int:57
-
-slots.delete:foo
+// Return task named 'task-id'
+tasks.get:task-id

@@ -1,18 +1,6 @@
-// Converts the specified lambda to XML
-lambda2xml
-   customers
-      customer
-         name
-            #text:John Doe
-         email
-            #text:john@doe.com
 
-/*
-Result;
-<customers>
-  <customer>
-    <name>John Doe</name>
-    <email>john@doe.com</email>
-  </customer>
-</customers>
- */
+// Example: Check for a special character in a string.
+
+// Returns true
+strings.contains:Hello, world!
+   .:!

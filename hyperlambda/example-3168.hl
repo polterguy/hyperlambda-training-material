@@ -1,17 +1,27 @@
 
-// Executes the specified SuiteQL towards your NetSuite account
+// Returns the training snippet with the specified [id] to the caller.
 .arguments
 
-   // Mandatory SuiteQL query you want to execute.
-   q:string
+   // Mandatory argument and the primary key and ID of the training snippet to return
+   id:int
+.type:public
 
-// Ensuring user is authorized to invoking endpoint.
-auth.ticket.verify:netsuite
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+validators.integer:x:@.arguments/*/id
+   min:int:0
 
-// Forwarding heavy lifting to workflow file.
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/modules/netsuite/workflows/workflows/netsuite-query.hl
+// Opening up our database connection.
+data.connect:[generic|magic]
 
-// Returning result to caller.
-return-nodes:x:@execute-file/*
+   // Finding our snippet from the database.
+   data.read
+      table:ml_training_snippets
+      columns
+         prompt
+         completion
+         uri
+      where
+         and
+            id.eq:x:@.arguments/*/id
+   return-nodes:x:@data.read/*

@@ -1,22 +1,26 @@
-
-// Provide a Hyperlambda example where a boolean status is evaluated using a switch case with a default option.
-
-// Switch case comparison for boolean values.
-.status:bool:true
-.result
-switch:x:@.status
-   case:bool:true
-
-      // If status is true.
-      set-value:x:@.result
-         .:Status is active
-   case:bool:false
-
-      // If status is false.
-      set-value:x:@.result
-         .:Status is inactive
-   default
-
-      // If the value does not match true/false.
-      set-value:x:@.result
-         .:Invalid status
+// Creates a new stacked chart
+image.chart:stacked
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring
+         .:int:2
+         .:int:5
+         .:int:10
+      Summer
+         .:int:4
+         .:int:7
+         .:int:10
+      Autumn
+         .:int:2
+         .:int:5
+         .:int:4
+   ticks
+      .:Spring
+      .:Summer
+      .:Autumn
+   legend
+      .:Phones
+      .:Computers
+      .:Tablets

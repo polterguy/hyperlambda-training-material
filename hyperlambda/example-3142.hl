@@ -1,40 +1,27 @@
 
-// Returns subsidiary companies from specified org number
+// Write a Hyperlambda script to load a specified file and return it as 'application/octet-stream' with appropriate headers.
 .arguments
-   org_number:string
+   access_token:string
+   file:string
+.type:internal
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/org_number
-set-value:x:@.arguments/*/org_number
-   strings.replace-not-of:x:@.arguments/*/org_number
-      .:0123456789
-      .:
+validators.mandatory:x:@.arguments/*/file
+validators.mandatory:x:@.arguments/*/access_token
 
-// Connecting to database.
-data.connect:[finovo|finovo]
-   database-type:pgsql
-
-   // Retrieving items.
-   data.read
-      database-type:pgsql
-      table:group_structure
-      columns
-         org_number
-         company_name
-         company_country_name
-         owned_percent
-      where
-         and
-            group_mother_orgnumber.eq:x:@.arguments/*/org_number
-            org_number.neq:x:@.arguments/*/org_number
-      limit:-1
-
-   // Verifying the company has subsidiaries.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         return
-            result:"This company doesn't have any subsidiaries"
-
-   // Returning result to caller.
-   return-nodes:x:@data.read/*
+/*
+ * Loading file and returning it, as text content to caller, making
+ * sure we return the correct Content-Type in the process.
+ */
+strings.split:x:@.arguments/*/file
+   .:/
+strings.concat
+   .:"attachment; filename=\""
+   get-value:x:@strings.split/0/-
+   .:"\""
+response.headers.set
+   Content-Type:application/octet-stream
+   Content-Disposition:x:@strings.concat
+   Access-Control-Expose-Headers:Content-Disposition
+io.stream.open-file:x:@.arguments/*/file
+return:x:-

@@ -1,13 +1,5 @@
-
-// Loop while a condition is true (increment counter and add items)
-.i:int:0
-.list
-while
-   lt
-      get-value:x:@.i
-      .:int:3
-   .lambda
-      add:x:@.list
-         .
-            item
-      math.increment:x:@.i
+// mte returns true if the left value is greater than or equal to the right
+.x:int:5
+mte
+   get-value:x:@.x
+   .:int:5

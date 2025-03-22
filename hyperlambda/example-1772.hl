@@ -1,7 +1,8 @@
-// Define a slot that returns a single string
-slots.create:giveAnswer  
-   return-value:Forty Two
 
-// Invoke 'giveAnswer'
-signal:giveAnswer  
-// The result is "Forty Two"
+// Example: Trim specific characters from the end of a string.
+
+// The trailing "xyz" will be removed
+strings.trim-end:abcxyzxyz
+   .:xyz
+
+// Result: "abc"

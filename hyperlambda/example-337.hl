@@ -1,8 +1,18 @@
-/*
- * Example: Use another slot's output as part of the concatenation.
- */
-.prefix:"Value: "
+
+// Create a Hyperlambda script to return a Magic CAPTCHA challenge
+.arguments
+.type:public
+
+// Generating cryptographically secure random text.
+crypto.random
 strings.concat
-   get-value:x:@.prefix
-   strings.to-upper:example
-// Result: "Value: EXAMPLE"
+   .:c_
+   get-value:x:@crypto.random
+cache.set:x:@strings.concat
+   expiration:long:30
+   value:valid
+
+// Generating gibberish text.
+unwrap:x:+/*
+return
+   result:x:@strings.concat

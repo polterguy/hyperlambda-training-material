@@ -1,13 +1,26 @@
 
-// Provide a Hyperlambda example where a comment's body is retrieved from an API.
+// Write a Hyperlambda script to invoke a specified action with given values.
+.arguments
+   action:string
+   values:*
 
-// Invokes an HTTP GET endpoint to fetch a comment's body.
-http.get:"https://jsonplaceholder.typicode.com/comments/1"
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/action
 
-   // Converts JSON to lambda.
-   convert:true
+// Figuring out what slot to invoke.
+.slot
+set-value:x:@.slot
+   strings.concat
+      .:magic.questionnaires.action.
+      get-value:x:@.arguments/*/action
 
-// Stores the comment body in [.comment_body]
-.comment_body
-set-value:x:@.comment_body
-   get-value:x:@http.get/*/content/*/body
+// Parametrising slot.
+add:x:./*/signal
+   get-nodes:x:@.arguments/*/values/*
+
+// Invoking slot.
+signal:x:@.slot
+
+// Returning success to caller.
+return
+   result:success

@@ -1,8 +1,5 @@
-// Create a context object and referencing it in its scope
-.result
-context:foo
-   value:bar
-   .lambda
+// Convert a value to a double-precision floating-point number (double)
 
-      set-value:x:@.result
-         get-context:foo
+.src:5
+convert:x:-
+   type:double

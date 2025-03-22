@@ -1,6 +1,5 @@
 
-// Connect using a named connection string "foo" and database "bar", then count records
-data.connect:[foo|bar]
-   data.scalar:select count(*) from users
+// Return the HTTP verb of the current request
+request.verb
 
-   // [foo|bar] uses connection string "foo" and database "bar" from configuration
+// Result ==> One of get, post, put, patch, or delete

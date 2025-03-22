@@ -1,9 +1,15 @@
-// If statement with an invalid condition should throw an exception
+/*
+ * Invalid: This expression tries to access `settings` directly after `@.config`
+ * without using a `*` iterator in between, which is required to traverse children.
+ *
+ * This expression will NOT find the [settings] nodes since it is not using a children iterator
+ * between the `@.config` iterator and the `settings` iterator.
+ */
 
-.result
-if
-   .:bool:true
-   .:bool:true
-   .lambda
-      set-value:x:../*/.result
-         .:OK
+.config
+   settings
+      theme:dark
+get-value:x:@.config/settings
+
+// Correct expression would be
+:x:@.config/*/settings

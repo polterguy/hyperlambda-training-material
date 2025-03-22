@@ -1,8 +1,8 @@
+// Subtract multiple values sequentially from a base number
+math.subtract:int:20
 
-// How to use string builder in Hyperlambda
-strings.builder
-   strings.builder.append:Hello
-   strings.builder.append:" "
-   strings.builder.append:world
+   // first subtract 5 from 20 -> intermediate result 15
+   .:int:5
 
-// Results in; Hello world
+   // then subtract 3 from 15 -> final result 12
+   .:int:3

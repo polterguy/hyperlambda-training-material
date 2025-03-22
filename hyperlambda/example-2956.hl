@@ -1,203 +1,121 @@
 
-// Lists all columns in some MySQL table.
-slots.create:magic.db.pgsql.columns
+// Create a function that returns minimum, maximum, average, or sum from the SubscriptionPlan table in the saas database based on specified conditions.
+.arguments
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/database
-   validators.mandatory:x:@.arguments/*/table
+   // Function to aggregate upon. Argument is mandatory and legal values are min, max, sum or avg
+   aggregate_function:string
 
-   // Opens up our connection
-   .connection:[postgres]
-   if
-      and
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .:
-      .lambda
-         set-value:x:@.connection
-            strings.concat
-               .:[
-               get-value:x:@.arguments/*/connection-string
-               .:|
-               get-value:x:@.arguments/*/database
-               .:]
-   else
-      set-value:x:@.connection
-         strings.concat
-            .:[generic|
-            get-value:x:@.arguments/*/database
-            .:]
-   pgsql.connect:x:@.connection
+   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME.
+   aggregate_column:string
 
-      // Making sure we support table names with special characters.
+   // Optional logical operator for filtering arguments, can be either 'or' or 'and'. Defaults to and.
+   operator:string
+   SubscriptionPlan.PlanId.mt:long
+   SubscriptionPlan.PlanId.lt:long
+   SubscriptionPlan.PlanId.mteq:long
+   SubscriptionPlan.PlanId.lteq:long
+   SubscriptionPlan.PlanId.neq:long
+   SubscriptionPlan.PlanId.eq:long
+   SubscriptionPlan.PlanName.like:string
+   SubscriptionPlan.PlanName.mt:string
+   SubscriptionPlan.PlanName.lt:string
+   SubscriptionPlan.PlanName.mteq:string
+   SubscriptionPlan.PlanName.lteq:string
+   SubscriptionPlan.PlanName.neq:string
+   SubscriptionPlan.PlanName.eq:string
+   SubscriptionPlan.MonthlyPrice.mt:decimal
+   SubscriptionPlan.MonthlyPrice.lt:decimal
+   SubscriptionPlan.MonthlyPrice.mteq:decimal
+   SubscriptionPlan.MonthlyPrice.lteq:decimal
+   SubscriptionPlan.MonthlyPrice.neq:decimal
+   SubscriptionPlan.MonthlyPrice.eq:decimal
+   SubscriptionPlan.MonthlyQuota.mt:long
+   SubscriptionPlan.MonthlyQuota.lt:long
+   SubscriptionPlan.MonthlyQuota.mteq:long
+   SubscriptionPlan.MonthlyQuota.lteq:long
+   SubscriptionPlan.MonthlyQuota.neq:long
+   SubscriptionPlan.MonthlyQuota.eq:long
+   SubscriptionPlan.Features.like:string
+   SubscriptionPlan.Features.mt:string
+   SubscriptionPlan.Features.lt:string
+   SubscriptionPlan.Features.mteq:string
+   SubscriptionPlan.Features.lteq:string
+   SubscriptionPlan.Features.neq:string
+   SubscriptionPlan.Features.eq:string
+
+// Sanity checking mandatory arguments.
+validators.mandatory:x:@.arguments/*/aggregate_function
+validators.mandatory:x:@.arguments/*/aggregate_column
+
+// Sanity checking name of aggregate function.
+validators.enum:x:@.arguments/*/aggregate_function
+   .:min
+   .:max
+   .:sum
+   .:avg
+
+// Sanity checking agggregate column name.
+validators.enum:x:@.arguments/*/aggregate_column
+   .:SubscriptionPlan.PlanId
+   .:SubscriptionPlan.PlanName
+   .:SubscriptionPlan.MonthlyPrice
+   .:SubscriptionPlan.MonthlyQuota
+   .:SubscriptionPlan.Features
+
+// Adding Cache-Control HTTP header.
+response.headers.set
+   Cache-Control:private, max-age=50
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:admin
+
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
+
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
+
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+      remove-nodes:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|saas]
+   database-type:sqlite
+
+   // Making sure we're using correct aggregate function.
+   set-name:x:./*/data.read/*/columns/*/aggregate_functor
       strings.concat
-         .:"\nselect c.column_name, c.is_nullable, c.data_type, c.column_default, exists(\n   select *\n      from information_schema.key_column_usage kcu  \n         join information_schema.table_constraints tc on tc.constraint_name = kcu.constraint_name \n      where tc.constraint_type = 'PRIMARY KEY' and\n         kcu.table_name = @table and \n         c.column_name = kcu.column_name and c.table_name = kcu.table_name\n   ) as is_pk\n   from information_schema.columns c\n   where c.table_name = @table and c.table_catalog = @database order by is_pk desc, c.column_name asc"
-      pgsql.select:x:@strings.concat
-         @table:x:@.arguments/*/table
-         @database:x:@.arguments/*/database
+         get-value:x:@.arguments/*/aggregate_function
+         .:(
+         get-value:x:@.arguments/*/aggregate_column
+         .:)
 
-      /*
-       * Creating our return value, by projecting it into
-       * a generic form, that does not rely upon PostgreSQL's syntactic
-       * details.
-       */
-      for-each:x:@pgsql.select/*
-         unwrap:x:+/*/*
-         .tmp
-            ""
-               name:x:@.dp/#/*/column_name
-               db:x:@.dp/#/*/data_type
+   // Removing aggregate arguments to simplify adding other arguments.
+   remove-nodes:x:@.arguments/*/[0,2]
 
-         // Checking if column is nullable.
-         if
-            eq
-               get-value:x:@.dp/#/*/is_nullable
-               .:NO
-            .lambda
-               add:x:@.tmp/*
-                  .
-                     nullable:bool:false
-         else
-            add:x:@.tmp/*
-               .
-                  nullable:bool:true
+   // Adding filtering arguments.
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
 
-         // Checking if column is a part of the primary key.
-         if
-            get-value:x:@.dp/#/*/is_pk
-            .lambda
-               add:x:@.tmp/*
-                  .
-                     primary:bool:true
-         else
-            add:x:@.tmp/*
-               .
-                  primary:bool:false
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:SubscriptionPlan
+      columns
+         aggregate_functor
+            as:result
+      where
+         and
+      limit:long:1
 
-         // Checking if column has a default value.
-         if
-            and
-               not
-                  eq
-                     get-value:x:@.dp/#/*/column_default
-                     .:
-               not
-                  eq
-                     get-value:x:@.dp/#/*/column_default
-                     .
-            .lambda
-               add:x:@.tmp/*
-                  .
-                     automatic:bool:true
-         else
-            add:x:@.tmp/*
-               .
-                  automatic:bool:false
-
-         /*
-          * Figuring our which Hyperlambda type to project
-          * its database type to.
-          */
-         .type
-
-         // Anything BUT booleans.
-         strings.regex-replace:x:@.dp/#/*/data_type
-            .:" \\([0-9,]+\\)"
-            .:
-         strings.regex-replace:x:@strings.regex-replace
-            .:" \\[[0-9,]+\\]"
-            .:
-         strings.replace:x:@strings.regex-replace
-            .:" unsigned"
-            .:
-         strings.replace:x:@strings.replace
-            .:" without time zone"
-            .:
-         strings.replace:x:@strings.replace
-            .:" with time zone"
-            .:
-         switch:x:@strings.replace
-
-            // Everything transformed into date values.
-            case:smallserial
-            case:serial
-            case:smallint
-               set-value:x:@.type
-                  .:int
-
-            // Everything transformed into date values.
-            case:timestamp
-               set-value:x:@.type
-                  .:date
-
-            // Everything transformed into decimal values.
-            case:numeric
-            case:decimal
-            case:real
-            case:money
-               set-value:x:@.type
-                  .:decimal
-
-            // Everything transformed into double.
-            case:double precision
-               set-value:x:@.type
-                  .:double
-
-            // Everything transformed into integer long values.
-            case:integer
-            case:bigint
-            case:bigserial
-            case:interval
-               set-value:x:@.type
-                  .:long
-
-            // Everything transformed into string values.
-            case:string
-            case:bit
-            case:bit varying
-            case:character
-            case:character varying
-            case:json
-            case:text
-            case:xml
-               set-value:x:@.type
-                  .:string
-
-            // Everything transformed into boolean values.
-            case:boolean
-               set-value:x:@.type
-                  .:bool
-
-            // Default/special cases.
-            default
-               if
-                  strings.starts-with:x:@strings.replace
-                     .:enum
-                  .lambda
-
-                     // Enum type
-                     set-value:x:@.type
-                        .:string
-               else
-
-                  // Defaulting to string type.
-                  set-value:x:@.type
-                     .:string
-
-         // Adding Hyperlambda type to [.tmp] above.
-         unwrap:x:+/*/*
-         add:x:@.tmp/*
-            .
-               hl:x:@.type
-
-         // Adding [.tmp] to [return-nodes] below.
-         add:x:../*/pgsql.connect/*/return-nodes
-            get-nodes:x:@.tmp/*
-
-      // Returning results to caller.
-      return-nodes
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

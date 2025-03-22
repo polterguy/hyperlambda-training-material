@@ -1,14 +1,10 @@
+slots.create:mySlot  
+   return-value:Hello
 
-/*
- * Example: Use a dynamic value from another slot as the replacement.
- * Here, replace a substring with its uppercase version using strings.to-upper.
- */
-.data:Make it lowercase
-strings.replace:x:@.data
-   .:lowercase
-   strings.to-upper:lowercase
+// Check if 'mySlot' exists
+slots.exists:mySlot  
+// Yields true (slot is defined)
 
-/*
- * After execution, "lowercase" in the original string is replaced with "LOWERCASE".
- * Result: "Make it LOWERCASE"
- */
+// Check a slot name that doesn't exist
+slots.exists:noSuch  
+// Yields false (no such slot defined)

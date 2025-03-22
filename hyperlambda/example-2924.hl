@@ -1,10 +1,8 @@
-
-// Write a Hyperlambda script to override the exception handler to return information to root users.
-log.error:x:@.arguments/*/message
-   url:x:@.arguments/*/path
-   exception:x:@.arguments/*/stack
-add:x:+
-   get-nodes:x:@.arguments/*/status
-   get-nodes:x:@.arguments/*/field
-   get-nodes:x:@.arguments/*/message
-return
+/**
+ * This example resizes an image to 300x200 pixels.
+ * The input image is "input.jpg" and will be replaced with the resized version.
+ */
+image.resize
+   file:/input.jpg
+   width:int:300
+   height:int:200

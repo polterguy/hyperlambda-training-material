@@ -1,14 +1,5 @@
-/**
- * This example generates a bar chart and returns it as a binary stream instead of saving it to a file.
- *
- * This allows you to return it directly from your Hyperlambda file, having .Net Core return it as a stream
- * instead of loading it all up into memory at the same time.
- */
-image.chart:bars
-   width:int:600
-   height:int:400
-   bars
-      Dogs:40
-      Cats:50
-      Birds:20
-return-value:x:@.image.chart
+
+// Example: Mix in a slot that returns a string to be inserted.
+strings.mixin:"Hello, {{\nstrings.to-upper:world\nreturn:x:-\n}}!"
+
+// Result: "Hello, WORLD!"

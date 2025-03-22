@@ -1,2 +1,6 @@
-// Seed crypto library
-crypto.seed:Foo Bar Whatever Some Random Seed
+
+// Example: Check if a string ends with itself.
+
+// Returns true
+strings.ends-with:Test
+   .:Test

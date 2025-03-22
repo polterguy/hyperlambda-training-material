@@ -1,16 +1,17 @@
 
-// Generate a Hyperlambda snippet that triggers a conditional lambda execution based on [.switch].
+// Write a Hyperlambda code snippet showcasing string handling, multi-line strings, and different quoting styles.
 
-// Triggers a conditional lambda execution based on [.switch].
-.switch:bool:true
-if
-   eq:x:@.switch
-      .:bool:true
-   .lambda
+// No special characters, no quotes required
+.variableOne:data
 
-      // Executes when [.switch] is true.
-      log.info:[.switch] is enabled
-else
+// Contains a colon, requires double quotes
+.variableTwo:"key:value"
 
-   // Executes when [.switch] is false.
-   log.info:[.switch] is disabled
+// Multi-line string using @ notation
+.variableThree:"alpha\nbeta"
+
+// Single-quote alternative
+.variableFour:Hyperlambda
+
+// Escaping newline character in text
+.variableFive:"code\nsnippet"

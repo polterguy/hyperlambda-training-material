@@ -1,5 +1,6 @@
+// Ensure no nodes are added if source is empty
 
-// Create a Hyperlambda script to change the name of specified nodes to a given value.
-.destination
-set-name:x:@.destination
-   .:foo
+.src
+.dest
+add:x:../*/.dest
+   get-nodes:x:../*/.src/*

@@ -1,10 +1,16 @@
-/*
- * Compares the higher of two internal max blocks (e.g., regional vs. global highs).
- */
-math.max
-   math.max
-      .:int:91
-      .:int:88
-   math.max
-      .:int:85
-      .:int:94
+
+// Write a Hyperlambda snippet that loops while [.score] is less than 50.
+
+// Loops while [.score] is less than 50.
+.score:int:0
+while
+   lt
+      get-value:x:@.score
+      .:int:50
+   .lambda
+
+      // Score increasing.
+      log.info:Increasing score
+
+      // Incrementing score.
+      math.increment:x:@.score

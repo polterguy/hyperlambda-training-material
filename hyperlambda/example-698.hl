@@ -1,15 +1,7 @@
-// Checks to see if user exists in magic database
-.arguments
-   username:string
 
-data.connect:magic
-   data.scalar:select count(*) from users where username = @username
-      @username:x:@.arguments/*/username
-   if
-      eq:x:@data.scalar
-         .:long:0
-      .lambda
-         return
-            result:User does not exist
-return
-   result:User exists
+// Connect to the "sakila" database using the default connection string (SQLite) and retrieve actors (default adapter from config)
+data.connect:sakila
+   data.read
+
+      // Reads from the "actor" table (returns first 25 records by default)
+      table:actor

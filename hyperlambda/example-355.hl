@@ -1,12 +1,6 @@
 /*
- * Example: Use a dynamic value from another slot as the replacement.
- * Here, replace a substring with its uppercase version using strings.to-upper.
+ * Fetches the `city` node from a customer’s address object via reference.
+ * Each `.customers/*/addressRef` node contains a string reference to an address node.
+ * Dereferencing it using `#` allows access to that object’s `city` field.
  */
-.data:"Make it lowercase"
-strings.replace:x:@.data
-   .:lowercase
-   strings.to-upper:lowercase
-/*
- * After execution, "lowercase" in the original string is replaced with "LOWERCASE".
- * Result: "Make it LOWERCASE"
- */
+.customer-city:x:@.customers/*/addressRef/#/*/city

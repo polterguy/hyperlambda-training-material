@@ -1,32 +1,20 @@
-
-// Ensures our system messages are updated during deployments.
-
-// Listing all system messages we've got.
-io.file.list:/modules/finovo/system-messages/
-
-// Opening up database connection.
-data.connect:magic
-
-   // Looping through each system message and updating our machine learning type accordingly.
-   for-each:x:@io.file.list/*
-
-      // Loading file.
-      io.file.load:x:@.dp/#
-
-      // Finding type name
-      .type
-      strings.split:x:@.dp/#
-         .:/
-      strings.split:x:-/0/-
-         .:.
-      set-value:x:@.type
-         get-value:x:@strings.split/0
-
-      // Updating type name's system message.
-      data.update
-         table:ml_types
-         values
-            system_message:x:@io.file.load
-         where
-            and
-               type.eq:x:@.type
+// Creates a scatter chart.
+image.chart:scatter
+   filename:/scatter.png
+   width:400
+   height:300
+   data-x
+      .:1
+      .:2
+      .:3
+      .:4
+      .:5
+   data-y
+      .:1
+      .:4
+      .:9
+      .:16
+      .:25
+   line-width:5
+   marker-size:15
+   color:#55aa5555

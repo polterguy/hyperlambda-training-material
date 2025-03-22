@@ -1,33 +1,94 @@
-
-// Write a Hyperlambda script to return the conversation starters for a specified type.
+/*
+ * Creates a new object in NetSuite of the specified [type].
+ *
+ * The [type] argument is mandatory and can be any type
+ * that NetSuite supports, such as for instance:
+ *
+ * - account
+ * - contact
+ * - customer
+ * - department
+ * - deposit
+ * - employee
+ * - invoice
+ * - etc ...
+ *
+ * The [object] argument is mandatory and contains a
+ * key/value list of fields you wish to associate
+ * with the object.
+ */
 .arguments
+
+   // Mandatory argument declaring the type of entity we want to create.
    type:string
+
+   // Mandatory argument declaring the actual content of the new entity we want to create.
+   object:*
+
+.type:public
 
 // Sanity checking invocation.
 validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/object
+validators.mandatory:x:@.arguments/*/object/*
 
-// Opening up database connection.
-data.connect:[generic|magic]
+/*
+ * Returns an access token for NetSuite.
+ *
+ * Returns a JWT token that can be used to invoke NetSuite according
+ * to your configuration settings.
+ * Notice, this will read account-id, certificate-id, and consumer-key
+ * from your configuration settings, in addition to assume your private
+ * key exists in the file '/etc/netsuite/private-key.txt'.
+ */
+execute:magic.workflows.actions.execute
+   name:netsuite-get-access-token
+   filename:/modules/netsuite/workflows/actions/netsuite-get-access-token.hl
+   arguments
 
-   // Retrieving all questions from database.
-   data.select:"\nselect conversation_starters\n\tfrom ml_types\n\twhere type = @type"
-      type:x:@.arguments/*/type
+// Creating our idempotency key to prevent replay attacks.
+guid.new
 
-   // Transforming to markdown and splitting into individual questions, but only if we have conversation starters.
-   if
+// Creating invocation URL.
+.url
+set-value:x:@.url
+   strings.concat
+      .:"https://"
+      config.get:"magic:netsuite:account-id"
+      .:.suitetalk.api.netsuite.com/services/rest/record/v1
+      .:/
+      get-value:x:@.arguments/*/type
+
+// Parametrizing our payload.
+add:x:./*/http.post/*/payload
+   get-nodes:x:@.arguments/*/object/*
+
+// Invoking our HTTP GET endpoint, now correctly parametrised.
+http.post:x:@.url
+   token:x:--/execute/=netsuite-get-access-token/*/access-token
+   headers
+      X-NetSuite-Idempotency-Key:x:@guid.new
+   payload
+
+// Converts the result to a lambda object.
+json2lambda:x:@http.post/*/content
+
+// Sanity checking above invocation.
+if
+   not
       and
-         not-null:x:@data.select/*/*/conversation_starters
-         neq:x:@data.select/*/*/conversation_starters
-            .:
-      .lambda
-         markdown2html:x:@data.select/*/*/conversation_starters
-         html2lambda:x:@markdown2html
-         for-each:x:"@html2lambda/**/li/**/\\#text"
-            unwrap:x:+/*/*
-            add:x:../*/return/*/questions
-               .
-                  .:x:@.dp/#
+         mte:x:@http.post
+            .:int:200
+         lt:x:@http.post
+            .:int:300
+   .lambda
 
-// Returning result to caller.
-return
-   questions
+      // Oops, error ...!!
+      lambda2hyper:x:@json2lambda
+      log.error:x:@lambda2hyper
+      throw:Could not create entity in NetSuite, check your log for details.
+
+// Returning our entity to caller.
+return:x:@json2lambda/*
+
+// Dependent upon NetSuite plugin being installed

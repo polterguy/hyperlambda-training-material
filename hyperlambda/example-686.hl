@@ -1,27 +1,9 @@
-/*
- * Invokes HTTP post with dynamic set of arguments and returning error if unsuccessful,
- * otherwise returns name an email of user
- */
+// Returns ALL items (limit is -1) from table1 where field1 equals 'howdy' and field2 equals 'world'
+sql.read
+   table:table1
+   limit:-1
+   where
 
-.arguments
-   id:int
-
-// Adding ALL arguments to payload.
-add:x:+/*/payload
-   get-nodes:x:@.arguments/*
-http.post:"https://logistics.example.org/get-user"
-   convert:true
-   payload
-
-if
-   and
-      mte:x:@http.post
-         .:int:200
-      lt:x:@http.post
-         .:int:300
-   .lambda
-      yield
-         name:x:@http.post/*/content/*/name
-         email:x:@http.post/*/content/*/email
-return
-   error:Something went wrong
+      and
+         field1.eq:howdy
+         field2.eq:world

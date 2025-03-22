@@ -1,6 +1,10 @@
-/*
- * Example: Check for a special character in a string.
- */
-// Returns true
-strings.contains:"Hello, world!"
-   .:!
+// Raising a custom signal
+.message:Hello from signal
+
+// Here the expression will NOT be evaluated.
+signal:custom.signal
+   message:x:@.message
+
+// Here the expression will NOT be evaluated.
+execute:custom.signal
+   message:x:@.message

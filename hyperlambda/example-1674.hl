@@ -1,63 +1,22 @@
-// This snippet demonstrates conditional logic and basic arithmetic operations
+// Switch case comparison, evaluating lambda object matching expression.
+.source:foo
+.result
+switch:x:@.source
+   case:foo
 
-// It calculates whether numbers are even or odd and categorizes them
+      // Lambda object to evaluate if expression's value equals 'foo'.
+      set-value:x:@.result
+         .:Is foo
+   case:bar
 
-// Our collection of numbers to analyze
-.numbers
-   num1:int:42
-   num2:int:17
-   num3:int:100
-   num4:int:33
-   num5:int:64
+      // Lambda object to evaluate if expression's value equals 'bar'.
+      set-value:x:@.result
+         .:Is bar
+   default
 
-// Create containers for even and odd numbers
-.even-numbers
-.odd-numbers
-
-// Iterate through each number and categorize
-for-each:x:@.numbers/*
-   
-   // Check result and categorize accordingly
-   math.modulo:x:@.dp/#
-      .:int:2
-   if
-      eq:x:@math.modulo
-         .:int:0
-      .lambda
-      
-         // Number is even
-         unwrap:x:+/*/*
-         add:x:@.even-numbers
-            .
-               number:x:@.current
-
-         // Log the even number
-         log.info:Found even number
-
-   else
-      
-      // Number is odd
-      unwrap:x:+/*/*
-      add:x:@.odd-numbers
-         .
-            number:x:@.current
-      
-      // Log the odd number
-      log.info:Found odd number
-
-// Calculate totals
-.even-count:int:0
-.odd-count:int:0
-
-for-each:x:@.even-numbers/*
-   math.increment:x:@.even-count
-
-for-each:x:@.odd-numbers/*
-   math.increment:x:@.odd-count
-
-// Log summary
-log.info:Number categorization complete
-log.info:Even count
-   count:x:@.even-count
-log.info:Odd count
-   count:x:@.odd-count
+      /*
+       * Lambda object to evaluate if expression is not matched to any
+       * of the above values.
+       */
+      set-value:x:@.result
+         .:None of the above

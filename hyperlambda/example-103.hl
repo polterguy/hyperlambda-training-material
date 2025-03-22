@@ -1,4 +1,10 @@
+// Use and to evaluate conditions sequentially
 
-// Increment a value by 1 (default step)
-.value:int:3
-math.increment:x:@.value
+.result
+if
+   and
+      .:bool:true
+      .:bool:false
+   .lambda
+      set-value:x:../*/.result
+         .:ERROR

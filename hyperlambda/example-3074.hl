@@ -1,45 +1,27 @@
+// HTTP endpoint that does an age check from employees database by username and returns true if the person 18 or more
+.arguments
+   username:string
 
-// Moves SQL scripts to the correct folder and creates the Chinook database file if it doesn't exist.
-io.file.list:/modules/sqlite-chinook/magic.startup/
-for-each:x:-/*
-   strings.split:x:@.dp/#
-      .:/
+// Connect to the database and retrieve employee's birth date
+data.connect:HR
+   data.read
+      table:employees
+      columns
+         birth_day
+      where
+         and
+            username.eq:x:@.arguments/*/username
    if
-      strings.ends-with:x:@.dp/#
-         .:.sql
+      mt
+         math.subtract
+            date.now
+            get-value:x:@data.read/*/*/birth_date
+         math.multiply
+            time
+               days:365
+            .:int:18
       .lambda
-         strings.concat
-            .:/etc/sqlite/templates/
-            get-value:x:@strings.split/0/-
-         if
-            not
-               io.file.exists:x:@strings.concat
-            .lambda
-
-               // File doesn't exists, hence moving it.
-               io.file.move:x:@.dp/#
-                  .:/etc/sqlite/templates/
-               log.info:SQL script moved into etc folder
-                  filename:x:@.dp/#
-
-// Creates the chinook database file.
-if
-   not
-      io.file.exists:/data/chinook.db
-   .lambda
-
-      // Creating a default database file to store database in.
-      io.file.save:/data/chinook.db
-         .:
-      log.info:Chinook database file created
-         filename:/data/chinook.db
-
-      // Loads and executes the chinook.sql script.
-      io.file.load:/etc/sqlite/templates/chinook.sql
-      sqlite.connect:chinook
-         sqlite.execute:x:@io.file.load
-      log.info:The chinook database was successfully created
-         filename:/etc/sqlite/templates/chinook.sql
-
-      // Evicting cache item related to SQLite.
-      cache.set:magic.sql.databases.sqlite.generic
+         return
+            result:bool:true
+return
+   result:bool:false

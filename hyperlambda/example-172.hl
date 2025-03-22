@@ -1,10 +1,13 @@
-// Doubles a given number using math.multiply and yields the result
-slots.create:double.value
-   math.multiply
-      get-value:x:@.arguments/*/number
-      .:int:2
-   yield
-      result:x:@math.multiply
+// Retrieve orders that are either pending OR processing
+data.connect:shopDB
 
-execute:double.value
-   number:int:7
+   // CRUD read ...
+   data.read
+      table:orders
+      limit:-1
+      where
+
+         // Either status equals "pending" OR department not equal "hr"
+         or
+            status.eq:"pending"
+            department.neq:"hr"

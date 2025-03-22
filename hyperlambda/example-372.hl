@@ -1,8 +1,26 @@
 /*
- * Example: Split on a substring that is not present.
+ * Posts a dynamic set of arguments to a user info API.
+ * Returns full name and contact email on success; error message otherwise.
  */
-strings.split:"hello"
-   .:,
-/*
- * Result: The string remains "hello" as a single part (no split)
- */
+
+.arguments
+   id:int
+
+add:x:+/*/payload
+   get-nodes:x:@.arguments/*
+http.post:"https://api.example.com/user/profile"
+   convert:true
+   payload
+
+if
+   and
+      mte:x:@http.post
+         .:int:200
+      lt:x:@http.post
+         .:int:300
+   .lambda
+      yield
+         full_name:x:@http.post/*/content/*/full_name
+         contact_email:x:@http.post/*/content/*/contact_email
+return
+   error:Unable to retrieve user profile

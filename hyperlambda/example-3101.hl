@@ -1,41 +1,33 @@
 
-// Read or list records from your categories table in your cms database
+/*
+ * Creates a new Stripe payment for the given [customer_id], using the
+ * specified [payment_method_id], for the given [amount], in the given [currency].
+ * 
+ * Will use your Stripe API token found from your settings as it's interacting
+ * with the Stripe API.
+ */
 .arguments
+   amount:int
 
-   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+// ... more code here ...
 
-   // Offset into the dataset of where to start retrieving records
+// Executing action from Stripe plugin doing the heavy lifting ...
+execute:magic.workflows.actions.execute
+   name:stripe-payment-create
+   filename:/modules/stripe/workflows/actions/stripe-payment-create.hl
+   arguments
 
-   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
+      // Will use the [customer_id] from a previous action
+      customer_id:x:--/execute/=stripe-customer-create/*/customer_id
 
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   categories.id.eq:long
-   categories.name.like:string
-   categories.name.eq:string
-   categories.description.like:string
-   categories.description.eq:string
+      // Will use the [payment_method_id] from a previous action
+      payment_method_id:x:--/execute/=stripe-payment-method-create/*/payment_method_id
+      amount:x:@.arguments/*/amount
+      currency:usd
+      description:Payment from Magic
+      metadata
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:guest
+         // Notice, since we're using [execute] we don't have to use [unwrap], since all expressions are automatically unwrapped when using [execute].
+         username:x:@.arguments/*/username
 
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:categories
-      columns
-         categories.id
-         categories.name
-         categories.description
-      where
-         and
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+// This code depends upon the Stripe plugin being installed

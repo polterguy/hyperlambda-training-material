@@ -1,14 +1,8 @@
-
-// Define slot 'foo' with an initial return value
-slots.create:foo
-   return-value:First version
-
-// Invoke 'foo' (will yield "First version")
-signal:foo
-
-// Redefine (override) slot 'foo' with new logic
-slots.create:foo
-   return-value:Second version
-
-// Invoke 'foo' again (now yields "Second version")
-signal:foo
+/**
+ * This example tries to crop an image by removing too many pixels,
+ * causing an error since the total crop size exceeds the image dimensions.
+ */
+image.crop
+   file:/input.jpg
+   left:int:500
+   right:int:500

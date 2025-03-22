@@ -1,2 +1,8 @@
-// Example: Return the length of some string found through an expression
-strings.length:x:@.source
+
+// Example: Replace all occurrences of a substring.
+.text:abababab
+strings.replace:x:@.text
+   .:ab
+   .:AB
+
+// Result: "ABABABAB"

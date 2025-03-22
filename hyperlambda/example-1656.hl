@@ -1,8 +1,5 @@
-
-// Example: Use variables to supply the string and prefix to check.
-.text:Sample
-.prefix:Sam
-
-// Returns true
-strings.starts-with:x:@.text
-   get-value:x:@.prefix
+// Example of how to use [strings.concat] to concatenate two or more strings together.
+strings.concat
+   .:foo
+   .:-
+   .:bar

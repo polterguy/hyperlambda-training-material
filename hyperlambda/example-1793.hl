@@ -1,18 +1,6 @@
-// Hyperlambda [if] with greater than or equal
-.age:int:19
-.access-status
-if
-   mte:x:@.age
-      .:int:18
-   .lambda
-      set-value:x:@.access-status
-         .:allowed
+/*
+ * If `.data` exists but has no children, `get-nodes` should return nothing.
+ */
 
-/* JavaScript equivalent of Hyperlambda [if] with greater than or equal
-const age = 18;
-let accessStatus;
-
-if (age >= 18) {
-  accessStatus = "allowed";
-}
-*/
+.data
+get-nodes:x:@.data/*

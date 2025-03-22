@@ -1,6 +1,10 @@
+/*
+ * This Hyperlambda snippet checks if a node has no children.
+ * 
+ * 1. The `.dest` node is created without any children.
+ * 2. The `exists` slot is used to check for child nodes.
+ * 3. The result will be `false` since there are no children in `.dest`.
+ */
 
-// Example: Check if a string contains a given substring (present case).
-
-// Returns true
-strings.contains:MagicLambda
-   .:Lambda
+.dest
+exists:x:-/*

@@ -1,14 +1,7 @@
-/*
- * Save this file as `/modules/search/endpoints/query.hl`
- * This exposes an HTTP POST endpoint at `/search/query`
- *
- * It requires a `query` string in `.arguments`, which is used for filtering or searching.
- */
-
-.arguments
-   query
-
-validators.mandatory:x:@.arguments/*/query
-
-yield
-   result:Search results for query (simulated)
+// This example connects to the 'hospital' database and deletes a patient record from the 'patients' table where the diagnosis is 'Cold'.
+sqlite.connect:hospital
+   sqlite.delete
+      table:patients
+      where
+         and
+            diagnosis:Cold

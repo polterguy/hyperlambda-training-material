@@ -1,16 +1,13 @@
 
-// Provide a Hyperlambda example where a value increases until [.value] is greater than 15.
+// Provide a Hyperlambda example where a user's phone number is fetched from an API.
 
-// Increases value until [.value] is greater than 15.
-.value:int:5
-while
-   lt
-      get-value:x:@.value
-      .:int:15
-   .lambda
+// Fetches a user's phone number.
+http.get:"https://jsonplaceholder.typicode.com/users/3"
 
-      // Logging current value.
-      log.info:Increasing value
+   // Converts JSON response.
+   convert:true
 
-      // Incrementing value.
-      math.increment:x:@.value
+// Stores the phone number in [.phone]
+.phone
+set-value:x:@.phone
+   get-value:x:@http.get/*/content/*/phone

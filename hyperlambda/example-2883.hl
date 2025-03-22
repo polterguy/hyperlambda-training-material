@@ -1,26 +1,31 @@
-
-// Write a Hyperlambda script to delete all existing vectors for a specified model.
+// Hyperlambda endpoint that takes two arguments, calculates the modulo, and then returns true if it's 0, otherwise false
 .arguments
-   type:string
-.type:internal
+   arg1:int
+   arg2:int
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+.type:public
+.accept:application/json
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+// Sanity checking invocation
+validators.mandatory:x:@.arguments/*/arg1
+validators.mandatory:x:@.arguments/*/arg2
 
-// Connecting to database.
-data.connect:[generic|magic]
+// Calculating modulo
+math.modulo
+   get-value:x:@.arguments/*/arg1
+   get-value:x:@.arguments/*/arg2
 
-   // Deleting VSS data.
-   data.execute:delete from vss_ml_training_snippets where rowid in (select id as rowid from ml_training_snippets where type = @type)
-      @type:x:@.arguments/*/type
+// Checking if modulo result is 0
+if
+   eq:x:@math.modulo
+      .:int:0
+   .lambda
+      set-value:x:../*/return/*/result
+         .:bool:true
+else
+   set-value:x:../*/return/*/result
+      .:bool:false
 
-   // Deleting embeddings.
-   data.execute:update ml_training_snippets set embedding = null where type = @type
-      @type:x:@.arguments/*/type
-
-// Returning success to caller.
+// Returning result to caller
 return
-   result:success
+   result

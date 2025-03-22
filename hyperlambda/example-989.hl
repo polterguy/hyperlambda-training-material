@@ -1,9 +1,8 @@
-/*
- * Retrieves the value of a specific node.
- *
- * 1. The `.foo` node contains `"hello world"`.
- * 2. The `get-value` slot retrieves its value.
- */
-
-.foo:hello world
-get-value:x:@.foo
+// Update the [foo] node's value to 'hello'
+.data
+   n1
+      n2
+         n3
+            foo:howdy
+set-value:x:@.data/*/n1/*/n2/*/n3/*/foo
+   .:hello

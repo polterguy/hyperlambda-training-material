@@ -1,66 +1,79 @@
 
-// Write a Hyperlambda script to delete a specified column from your database.
+// Updates an existing object in NetSuite of the specified type
 .arguments
-   databaseType:string
-   connectionString:string
-   databaseName:string
-   tableName:string
-   columnName:string
-   generate:bool
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Mandatory argument declaring the type of entity we want to create.
+   type:string
+
+   // Mandatory argument declaring the ID of the entity we should update.
+   id:long
+
+   // Mandatory argument declaring the actual content of the new entity we want to create.
+   object:*
+.type:public
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/connectionString
-validators.mandatory:x:@.arguments/*/databaseName
-validators.mandatory:x:@.arguments/*/tableName
-validators.mandatory:x:@.arguments/*/columnName
-validators.mandatory:x:@.arguments/*/databaseType
-validators.enum:x:@.arguments/*/databaseType
-   .:mysql
-   .:sqlite
-   .:pgsql
-   .:mssql
+validators.mandatory:x:@.arguments/*/id
+validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/object
+validators.mandatory:x:@.arguments/*/object/0
 
-// SQL that executes to modify DDL.
-.sql
-set-value:x:@.sql
+/*
+ * Returns an access token for NetSuite.
+ * 
+ * Returns a JWT token that can be used to invoke NetSuite according to your configuration settings.
+ * Notice, this will read account-id, certificate-id, and consumer-key from your configuration settings,
+ * in addition to assume your private key exists in the file '/etc/netsuite/private-key.txt'.
+ */
+execute:magic.workflows.actions.execute
+   name:netsuite-get-access-token
+   filename:/modules/netsuite/workflows/actions/netsuite-get-access-token.hl
+   arguments
+
+// Creating our idempotency key to prevent replay attacks.
+guid.new
+
+// Creating invocation URL.
+.url
+set-value:x:@.url
    strings.concat
-      .:"alter table "
-      get-value:x:@.arguments/*/tableName
-      .:" drop column "
-      get-value:x:@.arguments/*/columnName
-      .:;
+      .:"https://"
+      config.get:"magic:netsuite:account-id"
+      .:.suitetalk.api.netsuite.com/services/rest/record/v1
+      .:/
+      get-value:x:@.arguments/*/type
+      .:/
+      get-value:x:@.arguments/*/id
 
-// Checking if caller only wants to generate SQL statement.
-if:x:@.arguments/*/generate
-   unwrap:x:+/*
-   return
-      sql:x:@.sql
+// Parametrizing our payload.
+add:x:./*/http.patch/*/payload
+   get-nodes:x:@.arguments/*/object/*
 
-// Creating our database connection and executing SQL.
-strings.concat
-   .:[
-   get-value:x:@.arguments/*/connectionString
-   .:|
-   get-value:x:@.arguments/*/databaseName
-   .:]
-data.connect:x:-
-   database-type:x:@.arguments/*/databaseType
-   data.execute:x:@.sql
-      database-type:x:@.arguments/*/databaseType
+// Invoking our HTTP GET endpoint, now correctly parametrised.
+http.patch:x:@.url
+   token:x:--/execute/=netsuite-get-access-token/*/access-token
+   headers
+      X-NetSuite-Idempotency-Key:x:@guid.new
+      Content-Type:application/json; charset=UTF-8
+   payload
 
-// Flushing database cache.
-strings.concat
-   .:magic.sql.databases.
-   get-value:x:@.arguments/*/databaseType
-   :.
-   get-value:x:@.arguments/*/connectionString
-cache.set:x:-
+// Sanity checking above invocation.
+if
+   not
+      and
+         mte:x:@http.patch
+            .:int:200
+         lt:x:@http.patch
+            .:int:300
+   .lambda
 
-// Returning result to caller.
-unwrap:x:+/*
+      // Oops, error ...!!
+      convert:x:@http.patch/*/content
+         type:string
+      log.error:Could not delete entity in NetSuite
+         response:x:@convert
+      throw:Could not delete entity in NetSuite, check your log for details.
+
+// Returning success to caller.
 return
    result:success
-   sql:x:@.sql

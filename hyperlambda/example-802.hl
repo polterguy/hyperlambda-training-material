@@ -1,5 +1,13 @@
-// Returns all nodes from some expression
-.data
-   foo1
-   foo2
-get-nodes:x:-/*
+
+// Write a Hyperlambda script to list all folders in a specified folder.
+.arguments
+   folder:string
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Listing all folders in specified folder.
+io.folder.list:x:@.arguments/*/folder
+
+// Returning results of above invocation to caller.
+return-nodes:x:@io.folder.list/*

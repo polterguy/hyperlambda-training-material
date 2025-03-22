@@ -1,18 +1,30 @@
-// Clones all fields from user1 to user2, adding all the same nodes to user2 as exists in user1
-.users
-   user1
-      name:Alice
-      role:admin
-      active:yes
-   user2
-for-each:x:@.users/*/user1/*
 
-   // Changing name of our [foo] node below
-   set-name:x:+/+/*/*
-      get-name:x:@.dp/#
+// Write a Hyperlambda script to create a scheduled task that resets no_requests at the first day of the month, with conditions for SQLite.
+if
+   eq
+      config.get:"magic:databases:default"
+      .:sqlite
+   .lambda
 
-   // Evaluating expression in [foo] node
-   unwrap:x:+/*/*
-   add:x:@.users/*/user2
-      .
-         foo:x:@.dp/#
+      // Wrapping in try/catch in case task already exists.
+      try
+
+         // Deleting old task if existing.
+         tasks.list:reset-no_requests
+         if
+            exists:x:@tasks.list/*
+            .lambda
+               tasks.delete:x:@tasks.list/0/*/id
+
+         // Creating task that periodically deletes old historical requests.
+         tasks.create:reset-no_requests
+            description:Resets no_requests at the first day of the month
+            repeats:**.01.01.01.01
+            .lambda
+               sqlite.connect:magic
+                  sqlite.execute:update ml_types set no_requests = 0
+               log.info:All machine learning models had their no_requests values reset
+      .catch
+
+         // Task already exists.
+         console.log:Task to reset no_requests already exists

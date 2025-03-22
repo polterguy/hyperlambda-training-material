@@ -1,15 +1,10 @@
-// Hyperlambda [set-value]
-.data
-   item1:apple
-   item2:banana
-.item:item2
-set-value:x:@.data/*/{@.item}
-   .:orange
+/*
+ * This Hyperlambda snippet checks if a non-existent node is null.
+ *
+ * 1. The `.data` node exists but has no `missing` child.
+ * 2. The `null` slot checks if `missing` is null.
+ * 3. The expected output is `true`.
+ */
 
-// Results in:
 .data
-   item1:apple
-   item2:orange
-.item:item2
-set-value:x:@.data/*/{@.item}
-   .:orange
+null:x:@.data/*/missing

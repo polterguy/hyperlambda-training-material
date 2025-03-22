@@ -1,5 +1,7 @@
-/*
- * Example: URL-encode a URL (especially characters like : / and spaces).
- */
-strings.url-encode:"https://example.com/foo bar"
-// Result: "https%3A%2F%2Fexample.com%2Ffoo%20bar"
+// Insert a node after a specified existing node
+.list
+   item1
+   item2
+insert-after:x:@.list/*/item1
+   .
+      inserted

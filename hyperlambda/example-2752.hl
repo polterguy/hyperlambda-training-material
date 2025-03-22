@@ -1,40 +1,45 @@
 
-// Create a Hyperlambda action to publish a web socket message with a specified 'channel' and 'args'. Optionally include 'roles' to restrict notifications. Validate mandatory fields.
+// Creates training data and inserts into fine-tuning database such that it can be exported later.
 .arguments
-   channel
-      type:string
-      mandatory:bool:true
-   args
-      type:key-value
-      mandatory:bool:true
-   roles
-      type:array
-      mandatory:bool:false
-.icon:send
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/channel
-validators.mandatory:x:@.arguments/*/args
+   // Mandatory argument being file number to generate training data for. When listing Hyperlambda files, this will generate training data for the nth file listed, allowing us to loop for as long as have have additional files, incrementing the file-no argument for each iteration.
+   file-no:int
+.type:public
 
-// Decorating invocation.
-add:x:./*/sockets.signal/*/args
-   get-nodes:x:@.arguments/*/args/*
+// Listing files recursively.
+io.file.list-recursively:/
 
-// Checking if we've got a [roles] declaration and if so decorating invocation.
+// Pruning out everything but Hyperlambda files.
+.file
+for-each:x:@io.file.list-recursively/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         unwrap:x:+/*/*
+         add:x:@.file
+            .
+               .:x:@.dp/#
+
+// Checking if we've dealt with all files.
 if
-   and
-      exists:x:@.arguments/*/roles
-      not-null:x:@.arguments/*/roles
+   mt
+      get-value:x:@.arguments/*/file-no
+      get-count:x:@.file/*
    .lambda
+      return
+         result:There are no more files, you have handled all files.
 
-      // Decorating invocation with comma separated list of roles.
-      strings.join:x:@.arguments/*/roles
-         .:,
-      unwrap:x:+/*/*
-      add:x:../*/sockets.signal
-         .
-            roles:x:@strings.join
+// Loading nth file.
+.hyperlambda
+strings.concat
+   .:@.file/
+   get-value:x:@.arguments/*/file-no
+set-x:x:+
+   convert:x:@strings.concat
+      type:x
+io.file.load
 
-// Publishing socket message.
-sockets.signal:x:@.arguments/*/channel
-   args
+// Returning Hyperlambda file to caller.
+yield
+   hyperlambda:x:@io.file.load

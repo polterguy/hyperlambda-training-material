@@ -1,18 +1,24 @@
-// Dynamically accesses settings keys and stores their values as comma separated list in .result using extrapolated expressions
-.settings
-   apiKey:XYZ-123
-   secretKey:ABC-987
-   region:us-east
-.result
-for-each:x:@.settings/*
-   get-name:x:@.dp/#
-   set-value:x:@.result
-      strings.concat
-         get-value:x:@.result
-         get-value:x:@.dp/#
-         .:,
 
-// Removing last comma.
-set-value:x:@.result
-   strings.trim-end:x:@.result
-      .:,
+// Create a Hyperlambda script that returns the setup status of the system, ensuring the user is authorized.
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Checking if JWT secret has been changed.
+config.get:"magic:auth:secret"
+if
+   or
+      null:x:@config.get
+      lt
+         strings.length:x:@config.get
+         .:int:50
+   .lambda
+
+      // System has not been setup.
+      return
+         result:bool:false
+
+// Returns results of above invocations to caller.
+return
+   result:bool:true

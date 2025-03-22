@@ -1,43 +1,62 @@
 
-// Write a Hyperlambda script to delete a specified folder on the server, including uninstalling a module if necessary.
+// Creates a contact in HubSpot
 .arguments
-   folder:string
+   email:string
+   firstname:string
+   lastname:string
+   phone:string
+   company:string
+   website:string
+   lifecyclestage:string
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Sanity checking invoation.
+validators.mandatory:x:@.arguments/*/email
 
-/*
- * Checking if this is a module folder, and if so, we uninstall module before actually
- * deleting it.
- */
-strings.split:x:@.arguments/*/folder
-   .:/
+// Retrieving token from configuration and verifying it exists.
+config.get:"magic:hubspot:token"
 if
-   and
-      eq
-         get-count:x:@strings.split/*
-         .:int:2
-      eq
-         get-value:x:@strings.split/0
-         .:modules
+   or
+      eq:x:@config.get
+         .:
+      null:x:@config.get
    .lambda
 
-      // 'modules' folder, checking if it's got an uninstall file, and if so, executing it.
-      strings.concat
-         get-value:x:@.arguments/*/folder
-         .:uninstall.hl
-      if
-         io.file.exists:x:@strings.concat
-         .lambda
+      // Oops ...!!
+      throw:No authorization token found in your configuration
+         public:bool:true
+         status:int:500
+.token
+set-value:x:@.token
+   strings.concat
+      .:"Bearer "
+      get-value:x:@config.get
 
-            // Uninstall file exists
-            log.info:Uninstalling module
-               module:x:@strings.concat
-            io.file.execute:x:@strings.concat
+// Creating our contact in HubSpot.
+add:x:./*/http.post/*/payload/*/properties
+   get-nodes:x:@.arguments/*
+http.post:"https://api.hubapi.com/crm/v3/objects/contacts"
+   convert:true
+   headers
+      Authorization:x:@.token
+      Content-Type:application/json; charset=utf8
+   payload
+      properties
 
-// Deletes the specified folder.
-io.folder.delete:x:@.arguments/*/folder
+// Verifying above invocation was a success.
+if
+   neq:x:@http.post
+      .:int:201
+   .lambda
+
+      // Oops ...!!
+      lambda2hyper:x:@http.post
+      log.error:Could not create contact in HubSpot
+         message:x:@lambda2hyper
+      throw:Something went wrong as we tried to post a contact to HubSpot, check your log for details.
+         status:int:500
+         public:bool:true
 
 // Returning success to caller.
-return
+yield
    result:success
+   id:x:@http.post/*/content/*/id

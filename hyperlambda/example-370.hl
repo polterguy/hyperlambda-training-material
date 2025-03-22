@@ -1,11 +1,24 @@
 /*
- * Example: Split a comma-separated string.
+ * Validates a session ID by POSTing it to an authentication API.
+ * If the HTTP status code is within 200–299, the response content is returned.
  */
-strings.split:"a,b,c"
-   .:,
-/*
- * Resulting parts:
- * .:a
- * .:b
- * .:c
- */
+
+.arguments
+   id:int
+
+http.post:"https://auth.example.com/api/validate-session"
+   convert:true
+   payload
+      session_id:x:@.arguments/*/id
+
+if
+   and
+      mte:x:@http.post
+         .:int:200
+      lt:x:@http.post
+         .:int:300
+   .lambda
+      yield
+         result:x:@http.post/*/content/*
+else
+   throw:Session validation failed

@@ -1,9 +1,6 @@
-/*
- * Accesses a setting from a user-specific preferences section.
- *
- * The expression dynamically resolves the user's ID from `.arguments/*/userId`,
- * turning the path into something like: `@.preferences/*/u123/*/theme`
- *
- * Ideal for multi-user preference handling with per-user customization.
- */
-.user-preference:x:@.preferences/*/{@.arguments/*/userId}/*/theme
+// Creates a new record in table1 with field1 and field2 having values
+sql.create
+   table:table1
+   values
+      field1:howdy
+      field2:world

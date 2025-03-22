@@ -1,9 +1,14 @@
-// Defines a custom slot that enforces 'admin' role before continuing.
+// Use or in comparison to check multiple conditions
 
-slots.create:admin.only.action
-   auth.ticket.verify:admin
-
-   // Admin-only logic executed here ...
-
-// Usage:
-execute:admin.only.action
+.foo1:OK
+if
+   or
+      eq
+         get-value:x:../*/.foo1
+         .:OK
+      eq
+         get-value:x:../*/.foo1
+         .:ERROR
+   .lambda
+      set-value:x:../*/.result
+         .:MATCH

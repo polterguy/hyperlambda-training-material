@@ -1,35 +1,42 @@
 
-// Create a Hyperlambda endpoint for a CRUD create endpoint that creates an item in the users table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+/*
+ * Sends an email
+ * 
+ * Send an email to the specified `email` and `name` with the specified `subject` and `body`.
+ */
 .arguments
-   username:string
-   password:string
-.type:crud-create
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Mandatory name of contact to send email to
+   name:string
 
-// Sanity checking invocation
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/password
-eval:x:+
-signal:transformers.hash-password
-   reference:x:@.arguments/*/password
+   // Mandatory email address of contact to send email to
+   email:string
 
-// Opening up database connection.
-data.connect:[generic|magic]
+   // Mandatory subject of email
+   subject:string
 
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
+   // Mandatory body of email
+   body:string
 
-   // Creating our record.
-   data.create
-      table:users
-      return-id:bool:false
-      values
+// Making sure workflow is discoverable as such from machine learning component.
+.type:public
 
-   // Returning result of above invoction to caller.
-   response.status.set:201
-   unwrap:x:+/*
-   return
-      result:success
+/*
+ * Send an email to the specified [name]/[email] recipient, with the specified [subject] and [body].
+ *
+ * Optionally supply [from] and [from-email] as name/email sender, and/or [reply-to] and [reply-to-email]
+ * as the email to reply to. If you don't supply [from] or [from-email] then this action will use the
+ * default sender settings from your configuration.
+ */
+execute:magic.workflows.actions.execute
+   name:email
+   filename:/misc/workflows/actions/misc/email.hl
+   arguments
+      name:x:@.arguments/*/name
+      email:x:@.arguments/*/email
+      subject:x:@.arguments/*/subject
+      body:x:@.arguments/*/body
+      html:bool:true
+
+return
+   result:success

@@ -1,19 +1,9 @@
 
-// Scrape the specified URL and returns the raw HTML
-.arguments
+// Provide a Hyperlambda example where 'chapter0' is inserted before 'chapter1' inside '.book'.
 
-   // Mandatory argument and the actual URL to scrape.
-   url:string
-
-// Making endpoint public allows it to be consumed as an AI function
-.type:public
-
-// Invokes some HTTP GET resource.
-execute:magic.workflows.actions.execute
-   name:http-get
-   filename:/misc/workflows/actions/http/http-get.hl
-   arguments
-      url:x:@.arguments/*/url
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// Inserts a "chapter0" node before "chapter1" inside ".book".
+.book
+   chapter1
+insert-before:x:@.book/*/chapter1
+   .
+      chapter0:Introduction chapter

@@ -1,10 +1,6 @@
-// Execute an action if all conditions are true
-
-.result
-if
-   and
-      .:bool:true
-      .:bool:true
-   .lambda
-      set-value:x:../*/.result
-         .:OK
+// This snippet uses the '^xxx' iterator to find an ancestor by name.
+.grandparent
+   parent
+      target:found me
+get-name:x:@.grandparent/*/*/target/^.grandparent  
+// Starting from 'target', '^grandparent' climbs up to the nearest ancestor named "grandparent". get-name then returns ".grandparent".

@@ -1,35 +1,17 @@
 
-// Imports training snippets into the specified [type].
-.arguments
-   type
-      type:string
-      mandatory:bool:true
-   snippets
-      type:*
-      mandatory:bool:true
-   meta
-      type:string
-      mandatory:bool:false
-      default:imported
-.icon:chat_bubble
+// Create a Hyperlambda snippet that handles HTTP request failures using a try/catch/finally block.
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+// Handles HTTP request failures inside a try/catch/finally block
+try
 
-// Connecting to database.
-data.connect:[generic|magic]
+   // Performing HTTP request
+   http.get:"https://invalid-url.com"
+      convert:true
+.catch
 
-   // Looping through each record specified in [snippets] collection.
-   for-each:x:@.arguments/*/snippets/*
+   // Logging the error
+   log.error:x:@.arguments/*/message
+.finally
 
-      // Verifying prompt is not null.
-      if:x:@.dp/#/*/prompt
-
-         // Inserting into database.
-         data.create
-            table:ml_training_snippets
-            values
-               type:x:@.arguments/*/type
-               prompt:x:@.dp/#/*/prompt
-               completion:x:@.dp/#/*/completion
-               meta:x:@.arguments/*/meta
+   // Logging completion
+   log.info:HTTP request attempt finished

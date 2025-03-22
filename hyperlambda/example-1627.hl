@@ -1,14 +1,23 @@
+// Hyperlambda [if] with else branch
+.status:inactive
+.display-class
+if
+   eq:x:@.status
+      .:active
+   .lambda
+      set-value:x:@.display-class
+         .:green
+else
+   set-value:x:@.display-class
+      .:red
 
-// Write a Hyperlambda script to return a specified CSS file to the caller, with options for position, color, link, start, and end.
-.arguments
-   file:string
-   position:string
-   color:string
-   link:string
-   start:string
-   end:string
-   v:string
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/include-style.css.get.hl
-return:x:-
+/* JavaScript equivalent of Hyperlambda [if] with else branch
+const status = "inactive";
+let displayClass;
+
+if (status === "active") {
+  displayClass = "green";
+} else {
+  displayClass = "red";
+}
+*/

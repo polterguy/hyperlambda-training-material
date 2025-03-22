@@ -1,4 +1,11 @@
-
-// Return specified lambda from Hyperlambda file or endpoint
-return
-   result:Hello from Magic Backend
+// Creates 10 new child items of [.list]
+.i:long:0
+.list
+while
+   neq:x:@.i
+      .:long:10
+   .lambda
+      add:x:@.list
+         .
+            item
+      math.increment:x:@.i

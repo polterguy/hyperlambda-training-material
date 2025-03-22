@@ -1,46 +1,19 @@
 
-// CRUD / Create Hyperlambda that creates one record in your comments table in your cms database
-.arguments
+// Provide a Hyperlambda example where numbers are summed while the sum remains below 100.
 
-   // post_id column value
-   post_id:long
+// Summing numbers while sum remains below 100
+.no:int:0
+.sum:int:0
+while
+   lt
+      get-value:x:@.sum
+      .:int:100
+   .lambda
 
-   // user_id column value
-   user_id:long
+      // Adding to sum.
+      set-value:x:@.sum
+         math.add:x:@.sum
+            get-value:x:@.no
 
-   // content column value
-   content:string
-
-   // created_at column value
-   created_at:date
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:comments
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+      // Incrementing counter.
+      math.increment:x:@.no

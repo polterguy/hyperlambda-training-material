@@ -1,5 +1,13 @@
+/*
+ * Retrieves the values of the second direct child of [.data] regardless of its name
+ *
+ * After execution the value of the [.first-value] node will be Sasha.
+ */
 
-// Convert a numeric string to an integer type
-.str:42
-convert:x:@.str
-   type:int
+.first-value
+.data
+   alpha:John
+   beta:Jane
+   gamma:Sasha
+set-value:x:@.first-value
+   .:x:@.data/2

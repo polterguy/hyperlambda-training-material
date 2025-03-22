@@ -1,3 +1,13 @@
-// How do you declare a variable that contains a node reference in Hyperlambda?
+// Executing the Hyperlambda changes the node hierarchy
 
-.reference-node:node:".data\n   name:Thomas\n   email:thomas@ainiro.io"
+// This Hyperlambda
+.no:int:0
+set-value:x:@.no
+   math.modulo
+      .:int:20
+      .:int:7
+
+// Creates this result
+.no:int:6
+set-value:x:@.no
+   math.modulo:int:6

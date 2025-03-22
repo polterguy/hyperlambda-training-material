@@ -1,2 +1,5 @@
-// Example: Convert a PDF file to text.
-pdf2text:/foo/bar.pdf
+
+// [and] returns true only if all arguments are true
+and
+   .:bool:true
+   .:bool:true

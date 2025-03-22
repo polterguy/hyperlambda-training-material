@@ -1,20 +1,16 @@
 
-// Generate a Hyperlambda snippet that updates an employee record in the 'hr_db' database within the 'employees' table.
+// Create a Hyperlambda snippet that loops while [.stock] is above 0.
 
-// Updates an employee record in the "hr_db" database within the "employees" table.
-.arguments
-   employee_id:int
-data.connect:hr_db
-   database-type:mysql
+// Loops while [.stock] is above 0.
+.stock:int:5
+while
+   gt
+      get-value:x:@.stock
+      .:int:0
+   .lambda
 
-   // Updating the employee's department and salary.
-   data.update
-      database-type:mysql
-      table:employees
-      values
-         department:Finance
-         salary:decimal:75000.00
-      where
-         and
-            employee_id.eq:x:@.arguments/*/employee_id
-   return:x:@data.update
+      // Logging stock status.
+      log.info:Stock available
+
+      // Decrementing stock.
+      math.decrement:x:@.stock

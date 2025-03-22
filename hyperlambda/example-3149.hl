@@ -1,16 +1,6 @@
-
-// AI function for CSRegs
+// HTTP endpoint that ensures specified name parameter is between 5 and 100 characters in length
 .arguments
-   query:string
-   full_query:string
-execute:magic.workflows.actions.execute
-   name:execute-workflow
-   filename:/misc/workflows/actions/misc/execute-workflow.hl
-   arguments
-      workflow:/modules/openai/workflows/workflows/keyword-context-and-vss-search.hl
-      arguments
-         _type:csregs2
-         query:x:@.arguments/*/query
-         full_query:x:@.arguments/*/full_query
-         max_tokens:int:12000
-return-nodes:x:@execute/*
+   name:string
+validators.string:x:@.arguments/*/name
+   min:5
+   max:100

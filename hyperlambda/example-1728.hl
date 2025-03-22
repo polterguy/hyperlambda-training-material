@@ -1,16 +1,17 @@
+/*
+ * Save this file as `/modules/stats/endpoints/set-level.hl`
+ * This exposes an HTTP POST endpoint at `/stats/set-level`
+ *
+ * Requires `level` to be present and within the range 1–10.
+ */
 
-// Write a Hyperlambda snippet that loops while [.score] is less than 50.
+.arguments
+   level:int
 
-// Loops while [.score] is less than 50.
-.score:int:0
-while
-   lt
-      get-value:x:@.score
-      .:int:50
-   .lambda
+validators.mandatory:x:@.arguments/*/level
+validators.integer:x:@.arguments/*/level
+   min:int:1
+   max:int:10
 
-      // Score increasing.
-      log.info:Increasing score
-
-      // Incrementing score.
-      math.increment:x:@.score
+yield
+   result:Level accepted

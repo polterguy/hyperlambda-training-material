@@ -1,5 +1,4 @@
-/*
- * Example: Capitalize only the very first character of a multi-word string.
- */
-// Result: "Hello world"
-strings.capitalize:"hello world"
+
+// Example: Create a slot
+slots.create:foo
+   return-value:int:57

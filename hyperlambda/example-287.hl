@@ -1,20 +1,13 @@
-// Converts from XML to lambda
-.xml:@"<customers>
-   <customer>
-      <name>John Doe</name>
-      <email>john@doe.com</email>
-   </customer>
-</customers>"
-xml2lambda:x:-
 
-/*
-Result:
-xml2lambda
-   customers
-      customer
-         name
-            #text:John Doe
-         email
-            #text:john@doe.com
-
- */
+// Create a Hyperlambda script to create a BlowFish hash of the first argument with an individual salt and return the hashed value.
+slots.create:transformers.hash-password
+   get-value:x:@.arguments/0/#
+   crypto.password.hash:x:-
+   if
+      not
+         eq
+            get-value:x:@crypto.password.hash
+            .
+      .lambda
+         set-value:x:@.arguments/0/#
+            get-value:x:@crypto.password.hash

@@ -1,8 +1,11 @@
-// Define and use a context object
+/*
+ * This example sets [.result] to the value of the first node named "email"
+ * found as a child of [.contact-info].
+ */
 
 .result
-context:foo
-   value:bar
-   .lambda
-      set-value:x:@.result
-         get-context:foo
+.contact-info
+   name:John Doe
+   email:john@example.com
+set-value:x:@.result
+   .:x:@.contact-info/*/email

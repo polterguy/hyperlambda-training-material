@@ -1,13 +1,16 @@
 
-// What types does Hyperlambda support?
-Hyperlambda supports various types including:
-- `string`, `int`, `bool`, `decimal`, `double`, `float`
-- `date` (serialized as UTC time)
-- `guid`, `time`, `char`, `byte`, `sbyte`
-Example of type declarations:
-```
-.foo:int:5
-.bar:bool:true
-.baz:hello
-```
-If no type is specified, `string` is assumed.
+// Write a Hyperlambda snippet that handles file read errors using a try/catch/finally block.
+
+// Handles file read errors inside a try/catch/finally block
+try
+
+   // Attempting to read a non-existent file
+   file.read:/invalid/path/to/file.txt
+.catch
+
+   // Logging the error
+   log.error:x:@.arguments/*/message
+.finally
+
+   // Logging completion
+   log.info:File read attempt finished

@@ -1,14 +1,8 @@
 
-// Write a Hyperlambda script to list all folders in a specified folder.
-.arguments
-   folder:string
-.type:internal
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Listing all folders in specified folder.
-io.folder.list:x:@.arguments/*/folder
-
-// Returning results of above invocation to caller.
-return-nodes:x:@io.folder.list/*
+// Execute Hyperlambda file with arguments
+.args
+   foo1:bar1
+   foo2:bar2
+execute-file:/whatever-file.hl
+   arg1:x:@.args/*/foo1
+   arg2:x:@.args/*/foo2

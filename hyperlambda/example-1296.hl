@@ -1,21 +1,9 @@
 
-// Hyperlambda [if] with regex match
-.email:user@example.com
-.is-valid
-strings.matches:x:@.email
-   .:"^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
-if
-   exists:x:@strings.matches/*
-   .lambda
-      set-value:x:@.is-valid
-         .:bool:true
+// Returns items from your DATABASE_NAME and TABLE_NAME.
+data.connect:DATABASE_NAME
+   database-type:sqlite
 
-/*
- * JavaScript equivalent of Hyperlambda [if] with regex match
- * const email = "user@example.com";
- * let isValid;
- * 
- * if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
- * isValid = true;
- * }
- */
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:TABLE_NAME

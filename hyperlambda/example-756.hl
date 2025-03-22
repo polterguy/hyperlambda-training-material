@@ -1,2 +1,2 @@
-// Retrieves the value of foo1 argument using expressions
-get-value:x:@.arguments/*/foo1
+// Execute a task once
+tasks.execute:foo-bar-task-4

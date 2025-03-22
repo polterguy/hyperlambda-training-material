@@ -1,29 +1,22 @@
+// The following code will execute a Hyperlambda file called 'greet-user.hl'
+execute-file:/modules/my_module/greet-user.hl
+   name:Alice
+   age:int:30
 
-// Returns all types of cloudlets the system supports.
+// Assumes a Hyperlambda file such as the following exists in '/modules/my_module/greet-user.hl'
+.arguments
+   name:string
+   age:int
 
-// Opening up our database connection.
-data.connect:[generic|hub]
+// Concatenating name and age into a greeting
+strings.concat
+   get-value:x:@.arguments/*/name
+   .:" is "
+   get-value:x:@.arguments/*/age
+   .:" years old."
 
-   // Reading data from database.
-   data.read
-      table:plans
-      columns
-         name
-         description
-         cpu
-         memory
-         storage
-         max_timeout
-         max_upload
-         price
-         price_reference
-         yearly_price
-         yearly_price_reference
-         frontend
-         bandwidth
-      where
-         and
-            enabled.eq:bool:true
+// Returning the greeting to caller.
+yield
+   greeting:x:@strings.concat
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+// When executed the above Hyperlambda file will return 'Alice is 30 years old.'

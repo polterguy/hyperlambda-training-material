@@ -1,2 +1,6 @@
-// Gets all nodes in .env that have a value equal to "dev"
-.value-equals:x:@.env/*/=dev
+// This code reads a markdown guide, corrects the misspelling "definately" to "definitely", and saves the updated content to the same file.
+io.file.load:/docs/guide.md
+io.file.save:/docs/guide.md
+   strings.replace:x:@io.file.load
+      .:definately
+      .:definitely

@@ -1,4 +1,3 @@
+// How do you declare a decimal number in Hyperlambda?
 
-// Change HTTP headers
-response.headers.set
-   Content-Type:text/plain
+.account-balance:decimal:10987.6543

@@ -1,15 +1,25 @@
+
 /*
- * Invalid: This expression tries to access `settings` directly after `@.config`
- * without using a `*` iterator in between, which is required to traverse children.
- *
- * This expression will NOT find the [settings] nodes since it is not using a children iterator
- * between the `@.config` iterator and the `settings` iterator.
+ * Compiles a snippet of C# code down to a library,
+ * for then to dynamically load it as a plugin.
  */
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.Private.CoreLib
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.signals.contracts
+   code:"\n\n// Example C# code creating a Hyperlambda slot.\nusing System;\nusing magic.node;\nusing magic.node.extensions;\nusing magic.signals.contracts;\n\n// Our slot class.\n[Slot(Name = \"foo\")]\npublic class Foo : ISlot\n{\n   public void Signal(ISignaler signaler, Node input)\n   {\n      input.Value = $\"Hi {input.GetEx<string>()}, how may I assist you?\";\n   }\n}"
+   assembly-name:foo.dll
 
-.config
-   settings
-      theme:dark
-get-value:x:@.config/settings
+// Loading assembly from raw bytes now that we've created it.
+system.plugin.load:x:@system.compile
 
-// Correct expression would be
-:x:@.config/*/settings
+// Executing [foo] slot now dynamically injected into AppDomain.
+.name:John Doe
+foo:x:@.name
+
+// Unloading plugin.
+system.plugin.unload:foo.dll

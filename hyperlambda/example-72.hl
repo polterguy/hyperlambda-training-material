@@ -1,37 +1,30 @@
 
-// Returns Stripe customers.
-.arguments
-   limit:int
-   starting_after:string
-   email:string
+// Create a Hyperlambda script to get an access token for NetSuite using a private key, account ID, certificate ID, and consumer key.
+.key
+set-value:x:@.key
+   io.file.load:/etc/netsuite/private-key.txt
 
-/*
- * Ensures user is authorized to access endpoint.
- * 
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
+// Account id
+.account-id
+set-value:x:@.account-id
+   config.get:"magic:netsuite:account-id"
+validators.mandatory:x:@.account-id
 
-/*
- * Retrieves charges from Stripe.
- * 
- * Will use your Stripe API token found from your settings as it's interacting
- * with the Stripe API.
- */
-execute:magic.workflows.actions.execute
-   name:stripe-customers-get
-   filename:/modules/stripe/workflows/actions/stripe-customers-get.hl
-   arguments
-      limit:x:@.arguments/*/limit
-      email:x:@.arguments/*/email
-      starting_after:x:@.arguments/*/starting_after
+// Certificate id
+.certificate-id
+set-value:x:@.certificate-id
+   config.get:"magic:netsuite:certificate-id"
+validators.mandatory:x:@.certificate-id
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// Consumer key
+.consumer-key
+set-value:x:@.consumer-key
+   config.get:"magic:netsuite:consumer-key"
+validators.mandatory:x:@.consumer-key
+
+// Invoking slot doing the heavy lifting.
+netsuite.get-access-token
+   private-key:x:@.key
+   account-id:x:@.account-id
+   certificate-id:x:@.certificate-id
+   consumer-key:x:@.consumer-key

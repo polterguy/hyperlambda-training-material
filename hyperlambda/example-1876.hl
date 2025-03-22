@@ -1,6 +1,5 @@
-// This code loads a package.json file, updates the version number from "1.0.0" to "1.1.0", and writes the changes back to the file.
-io.file.load:/package.json
-io.file.save:/package.json
-   strings.replace:x:@io.file.load
-      .:@"version"": ""1.0.0"
-      .:@"version"": ""1.1.0"
+// This code uses the sqlite.scalar slot to execute a SQL query that calculates the average value in the 'height' column.
+// Returns a single scalar representing the average height of trees.
+
+sqlite.connect:forest
+   sqlite.scalar:select avg(height) from trees

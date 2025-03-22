@@ -1,11 +1,2 @@
-// While loop for 20 iterations logging a message
-.no:int:0
-while
-   lt
-      get-value:@.no
-      .:int:20
-   .lambda
-
-      // Executing log inside the loop
-      log.info:"Howdy from while"
-      math.increment:@.no
+// This snippet defines a node with a GUID value.
+.recordId:guid:123e4567-e89b-12d3-a456-426614174000

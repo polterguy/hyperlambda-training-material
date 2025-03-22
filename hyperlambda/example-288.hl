@@ -1,4 +1,34 @@
-// Returns the operating system to caller
-system.os
 
-// Results in (for Mac); Darwin 23.1.0 Darwin Kernel Version 23.1.0: Mon Oct  9 21:32:11 PDT 2023; root:xnu-10002.41.9~7/RELEASE_ARM64_T6030
+// Create a Hyperlambda script that returns the manifests for all installed apps, ensuring the user is authorized.
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+/*
+ * Listing all folders in the modules folders, traveres each folder,
+ * checking for a manifest file, and if existing returning the manifest
+ * to caller.
+ */
+io.folder.list:/modules/
+for-each:x:@io.folder.list/*
+
+   // Retrieving manifest.hl file's information, if existing.
+   strings.concat
+      get-value:x:@.dp/#
+      .:manifest.hl
+   if
+      io.file.exists:x:@strings.concat
+      .lambda
+
+         // Loading file, transforming to lambda, and returning to caller.
+         io.file.load:x:@strings.concat
+         hyper2lambda:x:@io.file.load
+         add:x:+/*/*
+            get-nodes:x:@hyper2lambda/*
+         add:x:../*/return
+            .
+               .
+
+// Returning result to caller.
+return

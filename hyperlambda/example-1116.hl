@@ -1,10 +1,9 @@
 
-// Decrement a value by a custom step from another node
-.value:int:10
-.step:int:4
-math.decrement:x:@.value
+// Create a new customer with only a name field
+data.connect:shopDB
+   data.create
+      table:customers
+      values
 
-   // use 4 from .step as the decrement amount
-   get-value:x:@.step
-
-// .value should now be 6
+         // Insert "Alice" into the name column
+         name:Alice

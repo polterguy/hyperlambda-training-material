@@ -1,8 +1,4 @@
-
-// Example: Allowed set includes all characters in the input (no replacements occur).
-.input:ABC123
-strings.replace-not-of:x:@.input
-   .:ABC123
-   .:#
-
-// Result: "ABC123" (unchanged, since all characters were allowed)
+// Loads the /README.md text file and sets the value of [.res] to the content of the file.
+.res
+set-value:x:@.res
+   io.file.load:/README.md

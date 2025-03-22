@@ -1,8 +1,8 @@
 
-// Example: Trim specific characters from both ends.
+// How to use string builder in Hyperlambda
+strings.builder
+   strings.builder.append:Hello
+   strings.builder.append:" "
+   strings.builder.append:world
 
-// The character "?" at both ends will be removed
-strings.trim:??hello??
-   .:?
-
-// Result: "hello"
+// Results in; Hello world

@@ -1,16 +1,15 @@
 
-// Write a Hyperlambda snippet that loops while [.progress] is not equal to 100.
+// Create a Hyperlambda endpoint to count the number of tasks in the system given an optional filter.
+.arguments
+   filter:string
 
-// Loops while [.progress] is not equal to 100.
-.progress:int:0
-while
-   neq
-      get-value:x:@.progress
-      .:int:100
-   .lambda
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-      // Logging progress.
-      log.info:Processing...
+// Retrieves all scheduled tasks in the system.
+tasks.count:x:@.arguments/*/filter
 
-      // Increasing progress.
-      math.increment:x:@.progress
+// Returning the results of the evaluation to caller.
+unwrap:x:+/*
+return-nodes
+   count:x:@tasks.count

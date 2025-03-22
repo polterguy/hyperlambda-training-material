@@ -1,8 +1,24 @@
 /*
- * Example: Replace only whole word matches using word boundaries.
+ * Sends a POST request to an internal user service with a user ID.
+ * Verifies that the status code is 2xx and yields the full response content.
  */
-.phrase:"apple apples applepie"
-strings.regex-replace:x:@.phrase
-   .:"\\bapple\\b"
-   .:"fruit"
-// Result: "fruit apples applepie"
+
+.arguments
+   id:int
+
+http.post:"https://internal.api.example.com/users/lookup"
+   convert:true
+   payload
+      userId:x:@.arguments/*/id
+
+if
+   and
+      mte:x:@http.post
+         .:int:200
+      lt:x:@http.post
+         .:int:300
+   .lambda
+      yield
+         result:x:@http.post/*/content/*
+else
+   throw:User lookup failed

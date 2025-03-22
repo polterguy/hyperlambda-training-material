@@ -1,2 +1,8 @@
-// This snippet defines a node with an unsigned short (UInt16) value.
-.maxCount:ushort:123
+
+// Example: Extract a substring given a start index and length.
+.text:HelloWorld
+strings.substring:x:@.text
+   .:5
+   .:3
+
+// Result: "Wor"

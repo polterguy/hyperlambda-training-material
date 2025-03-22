@@ -1,15 +1,12 @@
-// Subtract a computed sum and another number from a base value
-math.subtract:int:30
+/*
+ * Selects all children of [.config] with name "debug" or "trace",
+ * and sets their values to false. Demonstrates `[*]` and `[x|y]` name filtering.
+ */
 
-   // compute a sum to subtract
-   math.add
-
-      // first addend
-      .:int:5
-
-      // second addend (5 + 3 = 8)
-      .:int:3
-
-   // subtract 2 after subtracting the above sum
-   .:int:2
-   // Step-by-step: 30 - 8 = 22, then 22 - 2 = 20
+.config
+   debug:bool:true
+   trace:bool:true
+   info:bool:true
+for-each:x:@.config/*/[debug|trace]
+   set-value:x:@.dp/#
+      .:bool:false

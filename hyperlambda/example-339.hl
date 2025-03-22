@@ -1,6 +1,6 @@
-/*
- * Example: Check if a string contains a given substring (present case).
- */
-// Returns true
-strings.contains:MagicLambda
-   .:Lambda
+// eq should throw an error when given more than two values
+
+eq
+   .:foo1
+   .:foo2
+   .:foo3

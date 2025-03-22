@@ -1,8 +1,6 @@
-// Adding expressions as new nodes but unwrapping expressions before executing [add]
-.data
-   foo:some value
-unwrap:x:+/*/*
-add:x:@.data
-   .
-      bar:x:@.data/*/foo
-// Both nodes will contain the values of the above [foo] nodes after [add].
+// Fetch a few film titles and release years using a raw SQL query
+data.connect:sakila
+
+   // MUST be inside a [data.connect] slot
+   data.select:SELECT title, release_year FROM film LIMIT 3
+   // Executes the SQL directly on the database and returns up to 3 rows

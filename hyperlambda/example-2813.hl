@@ -1,16 +1,9 @@
 
-// Write a Hyperlambda script to return a specified log item based on its ID.
-.arguments
-   id:string
+// Create a Hyperlambda if condition that checks a variable 'foo'. Log a message if the condition is true.
+if
+   eq:x:@.arguments/*/foo
+      .:bool:true
+   .lambda
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/id
-
-// Invoking slot responsible for returning item.
-log.get:x:@.arguments/*/id
-
-// Returning result of above invocation to caller.
-return-nodes:x:-/*
+      // Condition is true.
+      log.info:Condition is true

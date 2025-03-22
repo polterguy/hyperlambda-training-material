@@ -1,18 +1,19 @@
+// Hyperlambda [if] with not operator
+.is-weekend:bool:false
+.schedule
+if
+   not
+      eq:x:@.is-weekend
+         .:bool:true
+   .lambda
+      set-value:x:@.schedule
+         .:Work day
 
-// Create a Hyperlambda action to join specified 'values' into a single string with an optional 'separator'. Return the joined result.
-.arguments
-   values
-      type:array
-      mandatory:bool:true
-   separator
-      type:string
-      mandatory:bool:false
-.icon:settings
+/* JavaScript equivalent of Hyperlambda [if] with not operator
+const isWeekend = false;
+let schedule;
 
-// Joining strings.
-strings.join:x:@.arguments/*/values/*
-   get-value:x:@.arguments/*/separator
-
-// Returning result to caller.
-yield
-   result:x:@strings.join
+if (!isWeekend) {
+  schedule = "Work day";
+}
+*/

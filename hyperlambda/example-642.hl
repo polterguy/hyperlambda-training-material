@@ -1,10 +1,4 @@
-// How to serve different support contact info based on user role?
-.support
-if
-   auth.ticket.in-role:premium
-   .lambda
-      set-value:x:@.support
-         .:Email us at premium-support@example.com
-else
-   set-value:x:@.support
-      .:Please visit our help center
+// Creates a log item with some additional fields
+log.info:Some log entry
+   username:foo
+   ip:123.123.123.123

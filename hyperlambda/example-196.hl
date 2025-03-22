@@ -1,22 +1,9 @@
+// Create a new customer with only a name field
+data.connect:shopDB
 
-// Write a Hyperlambda script for an OpenAI chat endpoint to handle conversations using 'gpt-xxx' models, with an option to stream response tokens.
-.arguments
-   prompt:string
-   type:string
-   references:bool
-   chat:bool
-   recaptcha_response:string
-   user_id:string
-   session:string
-   stream:bool
-   data:string
-   referrer:string
-.type:public
+   data.create
+      table:customers
+      values
 
-// Forwarding to get Hyperlambda file.
-add:x:+
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/chat.get.hl
-
-// Returning result to caller.
-return-nodes:x:-/*
+         // Insert "Alice" into the name column
+         name:"Alice"

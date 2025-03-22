@@ -1,24 +1,20 @@
 
-// Creates a contact in HubSpot
-.arguments
-   email:string
-   first_name:string
-   last_name:string
-   phone:string
-   company:string
-   website:string
-   lifecyclestage:string
-.type:public
+// Hyperlambda [if] with string comparison
+.user-type:admin
+.access-level
+if
+   eq:x:@.user-type
+      .:admin
+   .lambda
+      set-value:x:@.access-level
+         .:full
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/email
-
-// Forwarding request to our HTTP POST Hyperlambda file.
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/modules/hubspot/contacts.post.hl
-
-// Returning whatever above invocation returned.
-add:x:./*/return
-   get-nodes:x:@execute-file/*
-return
+/*
+ * JavaScript equivalent of Hyperlambda [if] with string comparison
+ * const userType = "admin";
+ * let accessLevel;
+ * 
+ * if (userType === "admin") {
+ * accessLevel = "full";
+ * }
+ */

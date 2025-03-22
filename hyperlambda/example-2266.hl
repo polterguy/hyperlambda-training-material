@@ -1,21 +1,14 @@
-
-// Example of [whitelist] execution, where only two slots are legal
-.result
-whitelist
-   vocabulary
-      set-value
-      return
-   .lambda
-
-      // Inside of this [.lambda] object, we can only invoke [set-value], and no other slots!
-      set-value:x:@.result
-         .:foo
-
-      // Notice, the next line will throw an exception if you remove its "." character,
-
-      // because [add] is not whitelisted in our above [vocabulary] declaration!
-      .add:x:@.result
-         .
-            foo:bar
-      return
-         result:success
+// Transfers all metrics dynamically from .input/stats into .output using key names
+.input
+   stats
+      cpu:int:70
+      ram:int:4096
+      disk:int:512
+.output
+   cpu
+   ram
+   disk
+for-each:x:@.input/*/stats/*
+   get-name:x:@.dp/#
+   set-value:x:@.output/*/{@get-name}
+      get-value:x:@.dp/#

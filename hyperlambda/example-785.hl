@@ -1,9 +1,2 @@
-// Evaluates to false.
-or
-   .:bool:false
-   .:bool:false
-
-// Evaluates to true.
-or
-   .:bool:false
-   .:bool:true
+// Create a random new GUID
+guid.new

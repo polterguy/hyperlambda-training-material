@@ -1,74 +1,32 @@
 
-// Slot responsible for hard deletion of an existing cloudlet.
-slots.create:hub.cloudlets.hard-delete
+/*
+ * Inserts training data into database
+ * 
+ * Saves training data for using to fine-tune an LLM.
+ */
+.arguments
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/cluster
-   validators.mandatory:x:@.arguments/*/name
+   // Mandatory prompt used to generate specified Hyperlambda
+   prompt:string
 
-   // Invoking soft delete first.
-   add:x:+
-      get-nodes:x:@.arguments/*
-   signal:hub.cloudlets.delete
+   // Mandatory reference to Hyperlambda file.
+   file-no:int
 
-   // Figuring out base URL of Kubernetes REST API.
-   .base-url
-   strings.concat
-      .:"magic:hub:"
-      get-value:x:@.arguments/*/cluster
-      .:":manager-url"
-   set-value:x:@.base-url
-      config.get:x:@strings.concat
+// Public files can be used as AI functions in machine learning types.
+.type:public
 
-   // Figuring out Kubernetes namespace cloudlets exists in.
-   .namespace
-   set-value:x:@.namespace
-      config.get:"magic:hub:default-namespace"
+// Getting Hyperlambda.
+execute-file:/modules/fine-tune/workflows/create-training-data.hl
+   file-no:x:@.arguments/*/file-no
 
-   // Retrieving token that's required to invoke Kubernetes REST API.
-   .token
-   strings.concat
-      .:"magic:hub:"
-      get-value:x:@.arguments/*/cluster
-      .:":token"
-   set-value:x:@.token
-      strings.concat
-         .:"Bearer "
-         config.get:x:@strings.concat/@strings.concat
+// Inserting item.
+data.connect:fine-tune
+   data.create
+      table:hyperlambda
+      values
+         prompt:x:@.arguments/*/prompt
+         code:x:@execute-file/*/hyperlambda
 
-   // Invoking Web API responsible for deleting volume claim.
-   .url
-   set-value:x:@.url
-      strings.concat
-         get-value:x:@.base-url
-         .:/api/v1/namespaces/
-         get-value:x:@.namespace
-         .:/persistentvolumeclaims/
-         get-value:x:@.arguments/*/name
-   http.delete:x:@.url
-      headers
-         Authorization:x:@.token
-
-   // Sanity checking above invocation
-   if
-      not
-         and
-            mte:x:@http.delete
-               .:int:200
-            lt:x:@http.delete
-               .:int:300
-      .lambda
-
-         // Oops, web API didn't return success
-         log.error:Kubernetes could not delete volume claim
-            status:x:@http.post
-            response:x:@http.post/*/content
-            cluster:x:@.arguments/*/cluster
-            name:x:@.arguments/*/name
-   else
-
-      // Logging the fact that we successfully deleted ingress.
-      log.debug:Kubernetes volume claim successfully deleted
-         cluster:x:@.arguments/*/cluster
-         name:x:@.arguments/*/name
-         response:x:@http.post/*/content
+// Returning success.
+return
+   result:success

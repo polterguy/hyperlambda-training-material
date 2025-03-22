@@ -1,27 +1,27 @@
 
-// Create a function to return all existing payment subscription plans in the system. The function should find and execute all slots that declare subscription plans, each returning a name, description, price, currency, period (month or year), and Stripe price ID. The function should loop through these slots, execute them to retrieve the subscription plans, and return the plans to the caller. This setup allows the system to handle Stripe subscriptions effectively.
-slots.vocabulary:stripe.subscriptions.plans.
+// Write a Hyperlambda snippet that evaluates HTTP response codes using a switch case without a default option.
 
-// Looping through each slot returned above and executing it.
-for-each:x:@slots.vocabulary/*
+// Switch case comparison for HTTP response codes.
+.http_code:int:404
+.result
+switch:x:@.http_code
+   case:int:200
 
-   // Changing slot invocation name.
-   set-value:x:./*/execute
-      get-value:x:@.dp/#
+      // If response code is 200.
+      set-value:x:@.result
+         .:Success
+   case:int:400
 
-   /*
-    * Executing slot to retrieve supported providers.
-    * 
-    * Notice, name of slot (value of node) is dynamically created above.
-    */
-   execute
+      // If response code is 400.
+      set-value:x:@.result
+         .:Bad Request
+   case:int:404
 
-   // Looping through all providers returned above to return them to client.
-   for-each:x:@execute/*
+      // If response code is 404.
+      set-value:x:@.result
+         .:Not Found
+   case:int:500
 
-      // Returning subscription plan to caller.
-      add:x:../*/return
-         get-nodes:x:@.dp/#
-
-// Returning subscription plans to caller.
-return
+      // If response code is 500.
+      set-value:x:@.result
+         .:Internal Server Error

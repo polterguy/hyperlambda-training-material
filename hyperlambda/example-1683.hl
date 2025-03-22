@@ -1,13 +1,9 @@
-// Create a new RSA key pair and encrypt a message using its public key before finally decrypting it
-crypto.rsa.create-key
-   key-size:int:2048
-
-// Encrypt a message using RSA public key
-.message
-   content:Secret Message
-crypto.rsa.encrypt:x:@.message/*/content
-   public-key:x:@crypto.rsa.create-key/*/public
-
-// Decrypting message we encrypted above
-crypto.rsa.decrypt:x:-
-   private-key:x:@crypto.rsa.create-key/*/private
+/*
+ * Converts a lambda structure to Hyperlambda text while including inline comments.
+ * Preserves [..] nodes when converting back to text.
+ */
+.log
+   info:This is structured
+   ..:This is a comment that will be preserved
+lambda2hyper:x:-/*
+   comments:bool:true

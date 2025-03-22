@@ -1,10 +1,27 @@
 
-// Handling a signal with arguments
-.data
-   first-name:John
-   last-name:Doe
-execute:user.full-name
-   first-name:x:@.data/*/first-name
-   last-name:x:@.data/*/last-name
+// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the users table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
+.arguments
+   username:string
+.type:crud-delete
 
-// Above the expressions will be evaluated passing in the values of [first-name] and [last-name] to the slot
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
+validators.mandatory:x:@.arguments/*/username
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      table:users
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

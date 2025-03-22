@@ -1,12 +1,10 @@
-// Increment first, then add item
-.i:int:0
-.list
-while
-   lt
-      get-value:x:@.i
-      .:int:3
-   .lambda
-      math.increment:x:@.i
-      add:x:@.list
-         .
-            item
+
+// Create a Hyperlambda action to ensure a specified 'arg' is given. Validate the mandatory field.
+.arguments
+   arg
+      type:string
+      mandatory:bool:true
+.icon:shield
+
+// Invoking validator.
+validators.mandatory:x:@.arguments/*/arg

@@ -1,31 +1,32 @@
 
-// Create a Hyperlambda script for an endpoint that counts items in the questions table in the magic database, ensuring the user is authorized and handling optional filters.
+// Delete endpoint deleting one record from your products table in your shopping-cart-demo database.
 .arguments
-   questions.question_id.eq:long
-   questions.question.like:string
-   questions.question.eq:string
-   questions.questionnaire.like:string
-   questions.questionnaire.eq:string
+
+   // Primary key of record to delete
+   product_id:long
 
 // Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+auth.ticket.verify:root,admin
+
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/product_id
 
 // Opening up our database connection.
-data.connect:[generic|magic]
+data.connect:[generic|shopping-cart-demo]
    database-type:sqlite
-   add:x:+/*/where/*
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
       get-nodes:x:@.arguments/*
 
-   // Reading data from database.
-   data.read
+   // Deleting item from database.
+   data.delete
       database-type:sqlite
-      table:questions
-      columns
-         count(*)
-            as:count
+      table:products
       where
          and
-      limit:long:1
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

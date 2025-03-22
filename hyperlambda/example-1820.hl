@@ -1,8 +1,10 @@
-// Getting substring from a string
-.data:Hyperlambda is awesome
-.result
-strings.substring:x:@.data
-   .:int:0
-   .:int:11
-set-value:x:@.result
-   get-value:x:@strings.substring
+
+// Creates a bar chart
+image.chart:bars
+   filename:/chart.png
+   width:600
+   height:300
+   bars
+      Spring:int:2
+      Summer:int:5
+      Autumn:int:10

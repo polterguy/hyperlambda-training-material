@@ -1,21 +1,19 @@
-// Converts the specified lambda to XML
+// Evaluate all lambda objects under the current node sequentially (result becomes 'Second')
+.res:
 .lambda
-   customers
-      customer
-         name
-            #text:John Doe
-         email
-            #text:john@doe.com
+   set-value:x:@.res
+      .:First
+.lambda
+   set-value:x:@.res
+      .:Second
+eval:x:../*/.lambda
 
-// Expression referencing above [.lambda] node's children nodes
-lambda2xml:x:@.lambda/*
-
-/*
-Resulting Hyperlambda;
-lambda2xml:@"<customers>
-  <customer>
-    <name>John Doe</name>
-    <email>john@doe.com</email>
-  </customer>
-</customers>"
- */
+// Result after executing above lambda
+.res:Second
+.lambda
+   set-value:x:@.res
+      .:First
+.lambda
+   set-value:x:@.res
+      .:Second
+eval:x:../*/.lambda

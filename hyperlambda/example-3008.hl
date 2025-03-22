@@ -1,50 +1,30 @@
 
-// Returns all roles [username] belongs to.
+// Returns all types of cloudlets the system supports.
+
+// Accepts NO arguments!
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-.icon:supervisor_account
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Connecting to database.
-data.connect:[generic|magic]
+// Opening up our database connection.
+data.connect:[generic|hub]
 
-   // Verifying user exists.
+   // Reading data from database.
    data.read
-      table:users
+      table:plans
       columns
-         username
-      where
-         and
-            username.eq:x:@.arguments/*/username
+         name
+         description
+         cpu
+         memory
+         storage
+         price
+         enabled
+         max_upload
+         max_timeout
+         price_reference
+         bandwidth
 
-   // Verifying above invocation returned something.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-
-         // Oops ...!!
-         throw:No such user
-            username:x:@.arguments/*/username
-
-   // Selecting all roles user belongs to.
-   data.read
-      table:users_roles
-      columns
-         role
-      where
-         and
-            user.eq:x:@.arguments/*/username
-
-   // Parametrizing [return] invocation below.
-   for-each:x:@data.read/*
-      unwrap:x:+/*/*
-      add:x:../*/return
-         .
-            .:x:@.dp/#/*/role
-
-// Returning roles to user.
-return
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

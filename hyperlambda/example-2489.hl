@@ -1,18 +1,17 @@
 
-// Create a Hyperlambda snippet that executes [.lambda] if [.status] does not equal Ready.
+// Demonstrate Hyperlambda string assignments, including special character handling, multi-line strings, and escape sequences.
 
-// Executes [.lambda] if [.status] does not equal Ready.
-.status:Ready
-if
+// Simple string without special characters
+.keyA:simple
 
-   // [neq] checks inequality.
-   neq:x:@.status
-      .:Ready
-   .lambda
+// Special character (colon) requires quotes
+.keyB:"config:set"
 
-      // Executes when [.status] is not Ready.
-      log.info:[.status] is NOT Ready
-else
+// Multi-line string example
+.keyC:"This is\nmulti-line"
 
-   // Executes when [.status] is Ready.
-   log.info:[.status] is Ready
+// Alternative single quotes usage
+.keyD:alternate
+
+// Escape newline inside string
+.keyE:"Hello\nHyperlambda"

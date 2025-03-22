@@ -1,17 +1,8 @@
-/* This Hyperlambda snippet checks if the user's age is 18 or older.
-   If true, it updates the [status] node with "Adult". Otherwise, it sets it to "Minor". */
 
-.user
-   name:John Doe
-   age:int:22
-.status
+// Example: Use variables to supply the string and prefix to check.
+.text:Sample
+.prefix:Sam
 
-if
-   mte:x:@.user/*/age
-      .:int:18
-   .lambda
-      set-value:x:@.status
-         .:Adult
-else
-   set-value:x:@.status
-      .:Minor
+// Returns true
+strings.starts-with:x:@.text
+   get-value:x:@.prefix

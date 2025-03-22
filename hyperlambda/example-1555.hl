@@ -1,5 +1,5 @@
-// A parent node with multiple children and nested sub-children
-parent
-   child1:foo
-      subchild:bar
-   child2
+// Set the value of multiple target nodes at once
+.foo
+.foo
+set-value:x:../*/.foo
+   .:Done

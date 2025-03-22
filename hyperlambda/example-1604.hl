@@ -1,13 +1,6 @@
+// Creates a new Hyperlambda slot.
+slots.create:meaning-of-life
+   return-value:int:57
 
-// Delete an item by ID with authorization, specifying a short timeout
-http.delete:"https://api.example.com/items/123"
-
-   // attach query parameters instead of hardcoding them in URL
-   query
-      category:cars
-
-   // include Bearer token for auth if required by the API
-   token:XYZ_SECRET_TOKEN_123
-
-   // abort if no response within 5 seconds
-   timeout:int:5
+// Invoking slot we created above.
+signal:meaning-of-life

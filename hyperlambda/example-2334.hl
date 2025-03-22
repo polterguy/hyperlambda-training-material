@@ -1,4 +1,15 @@
-// This snippet defines a node with a date/time value (UTC DateTime).
-.timestamp:date:"2025-03-17T18:00:00Z"
 
-// Notice, dates must always be wrapped in quotes since they contain : characters
+// Write a Hyperlambda snippet that counts products in the 'inventory_db' database from the 'products' table.
+
+// Counts products in the "inventory_db" database from the "products" table.
+data.connect:inventory_db
+   database-type:sqlite
+
+   // Counting total products.
+   data.read
+      database-type:sqlite
+      table:products
+      columns
+         count(*)
+            as:count
+      limit:long:1

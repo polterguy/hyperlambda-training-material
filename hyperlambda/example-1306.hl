@@ -1,8 +1,4 @@
-
-// Example: Trim specific characters from both ends.
-
-// The character "?" at both ends will be removed
-strings.trim:??hello??
-   .:?
-
-// Result: "hello"
+// [or] returns true if at least one argument is true
+or
+   .:bool:false
+   .:bool:true

@@ -1,41 +1,57 @@
 
-// Create a Hyperlambda script to return the Magic CAPTCHA JavaScript library, substituting the public key dynamically.
+// Update endpoint updating one record in your crawl_urls table in your scraper database.
 .arguments
-   v:string
 
-// Getting server auth secret.
-config.get:"magic:auth:secret"
+   // crawl_url_id column value being primary key of record to update
+   crawl_url_id:long
 
-// Double hashing auth secret using SHA256 to avoid predictable hash values.
-crypto.hash.sha256:x:@config.get
-crypto.hash.sha256:x:-
+   // url column's new value
+   url:string
 
-// Loading JavaScript file.
-.file
-if
-   io.file.exists:/system/misc/magic-captcha.min.js
-   .lambda
+   // type column's new value
+   type:string
 
-      // We have a minified file.
-      set-value:x:@.file
-         load-file:/system/misc/magic-captcha.min.js
-else
+// Type of endpoint
+.type:crud-update
 
-   // We don't have a minified file.
-   set-value:x:@.file
-      load-file:/system/misc/magic-captcha.js
+// Sanity checking invocation, making sure primary key(s) are specified.
+validators.mandatory:x:@.arguments/*/crawl_url_id
 
-/*
- * Dynamically substituting public key in file with public key that was generated
- * specifically for current server.
- */
-strings.replace:x:@.file
-   .:[[public-key]]
-   get-value:x:@crypto.hash.sha256
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
 
-// Applying correct HTTP headers.
-response.headers.set
-   Content-Type:text/javascript
+// Opening up our database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
 
-// Returning result to caller.
-return:x:@strings.replace
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
+
+   // Invoking our update slot.
+   data.update
+      database-type:sqlite
+      table:crawl_urls
+      values
+      where
+         and
+
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning the correct status code.
+   response.status.set:202
+
+   // Returning success to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.update

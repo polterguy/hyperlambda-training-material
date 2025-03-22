@@ -1,5 +1,5 @@
-// Sets value of multiple nodes at the same time
-.foo
-.foo
-set-value:x:../*/.foo
-   .:SUCCESS
+// Convert a value to a decimal number
+
+.src:5
+convert:x:-
+   type:decimal

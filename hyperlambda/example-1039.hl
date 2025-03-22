@@ -1,7 +1,8 @@
-/**
- * This example checks if "/tmp/logs.txt" exists before deleting it.
- */
-io.file.exists:/tmp/logs.txt
-if:x:-
-   .lambda
-      io.file.delete:/tmp/logs.txt
+
+// Example: Concatenate a string and a number (the number is converted to a string).
+.number:int:42
+strings.concat
+   .:"Answer: "
+   get-value:x:@.number
+
+// Result: "Answer: 42"

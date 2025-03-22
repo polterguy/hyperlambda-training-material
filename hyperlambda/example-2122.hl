@@ -1,5 +1,5 @@
-// Convert an empty value to a node (should return an empty node)
+// What is the default type if you omit the type declaration in Hyperlambda?
 
-.src
-convert:x:-
-   type:node
+.message:Hello from the other side
+
+// The default type is string

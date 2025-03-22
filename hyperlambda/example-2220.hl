@@ -1,7 +1,14 @@
-// Deletes a student record from the 'students' table where the major is 'Biology'.
-sqlite.connect:university
-   sqlite.delete
-      table:students
-      where
-         and
-            major:Biology
+
+// Create a Hyperlambda script to evaluate a lambda for as long as a condition is true, with a counter and logging.
+.no:int:0
+while
+   lt
+      get-value:x:@.no
+      .:int:20
+   .lambda
+
+      // Your lambda goes here.
+      log.info:Howdy from while
+
+      // Incrementing counter.
+      math.increment:x:@.no

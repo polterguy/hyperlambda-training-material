@@ -1,8 +1,5 @@
-// How to create Hyperlambda that imports training material from Shopify?
-log.info:Ingesting data from Shopify
-signal:shopify.products.ingest
-   secret:shpat_YOUR_SHOPIFY_API_KEY_HERE
-   shop:YOUR-STORE-NAME-HERE
-   type:YOUR-MACHINE-LEARNING-TYPE-HERE
-   base_url:"https://YOUR-WEBSITE-HERE.COM"
-log.info:Done ingesting data from Shopify
+/*
+ * Sends a simple JSON payload to a POST endpoint.
+ */
+http.post:"https://api.example.com/users"
+   payload:@"{""name"": ""Alice"", ""email"": ""alice@example.com""}"

@@ -1,6 +1,13 @@
 
-// Publish a socket message for user1, 2, and 3
-sockets.signal:foo.bar
-   users:user1, user2, user3
-   args
-      howdy:world
+// Loops for 5 iterations, adding a static node each iteration
+.no:int:0
+.res
+while
+   lt
+      get-value:x:@.no
+      .:int:5
+   .lambda
+      add:x:@.res
+         .
+            foo
+      math.increment:x:@.no

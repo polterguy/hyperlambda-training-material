@@ -1,5 +1,20 @@
+
+// Create a Hyperlambda action to set specified HTTP headers in a response. Use 'headers' as a key-value input to determine which headers to set.
+.arguments
+   headers
+      type:key-value
+      mandatory:bool:true
+.icon:http
+
 /*
- * Sends a simple JSON payload to a POST endpoint.
+ * Iterating through each header from above invocation and checking if caller is interested in it,
+ * and if caller wants this particular header, we make sure we return it below.
  */
-http.post:"https://api.example.com/users"
-   payload:@"{""name"": ""Alice"", ""email"": ""alice@example.com""}"
+for-each:x:@.arguments/*/headers/*
+
+   // Adding currently iterated HTTP header.
+   add:x:../*/response.headers.set
+      get-nodes:x:@.dp/#
+
+// Invoking slot responsible for setting response HTTP headers.
+response.headers.set

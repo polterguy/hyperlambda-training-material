@@ -1,49 +1,40 @@
 
-// Deletes the specified cloudlet
+// Create one record in your PlaylistTrack table in your chinook database
 .arguments
-   cloudlet_name:string
 
-/*
- * Ensures the specified [arg] was given.
- *
- * This action will throw an exception with a descriptive text explaining if the argument is missing.
- */
-execute:magic.workflows.actions.execute
-   name:validators-mandatory
-   filename:/misc/workflows/actions/security/validators-mandatory.hl
-   arguments
-      arg:x:@.arguments/*/cloudlet_name
+   // PlaylistId column value
+   PlaylistId:long
 
-/*
- * Ensures user is authorized to access endpoint.
- *
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
+   // TrackId column value
+   TrackId:long
 
-/*
- * Returns the username of the currently authenticated user,
- * or null if user isn't authenticated.
- */
-execute:magic.workflows.actions.execute
-   name:username-get
-   filename:/misc/workflows/actions/security/username-get.hl
-   arguments
+// Meta data description for endpoint
 
-// Deletes the specified cloudlet
-execute:magic.workflows.actions.execute
-   name:hub-cloudlets-delete
-   filename:/modules/hub/workflows/actions/hub-cloudlets-delete.hl
-   arguments
-      cloudlet_name:x:@.arguments/*/cloudlet_name
-      username:x:--/execute/=username-get/*/username
+// Type of endpoint
+.type:crud-create
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:PlaylistTrack
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

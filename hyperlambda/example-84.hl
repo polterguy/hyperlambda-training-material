@@ -1,14 +1,26 @@
 
-// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table.
+// Retrieves all URLs from sitemap on specified website.
+.url:"https://ainiro.io"
 
-// Queries messages from the messaging database and chat_logs table.
-data.connect:messaging_db
+// will contain all URLs from website
+.urls
 
-   // Using SQLite.
-   database-type:sqlite
+// Retrieving main sitemap.
+strings.concat
+   get-value:x:@.url
+   .:"/sitemap.xml"
+http.get:x:@strings.concat
+xml2lambda:x:@http.get/*/content
 
-   // Fetching chat history.
-   data.read
-      database-type:sqlite
-      table:chat_logs
-      limit:100
+// Iterating through each URL referenced in main sitemap.
+for-each:x:@xml2lambda/*/sitemapindex/*/sitemap/*/loc/*/\#text
+
+   // Getting XML from currently iterated sitemap subset.
+   unwrap:x:+/*/*
+   http.get:x:@.dp/#
+   xml2lambda:x:@http.get/*/content
+   for-each:x:@xml2lambda/*/urlset/*/url/*/loc/*/\#text
+      unwrap:x:+/*/*
+      add:x:@.urls
+         .
+            .:x:@.dp/#

@@ -1,3 +1,9 @@
-// How do you declare a variable containing a lambda expression in Hyperlambda?
-
-.filter-expression:x:@.data/*/name
+/**
+ * This example checks if the folder "/logs/" exists.
+ * If it does, [.result] is set to "Folder exists".
+ */
+.result
+io.folder.exists:/logs/
+if:x:-
+   set-value:x:@.result
+      .:Folder exists

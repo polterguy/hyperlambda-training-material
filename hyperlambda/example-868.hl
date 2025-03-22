@@ -1,2 +1,6 @@
-// Thiw will throw an exception since the role doesn't exist
-auth.ticket.verify:non-existing-role
+
+// Example: Split on a substring that is not present.
+strings.split:hello
+   .:,
+
+// Result: The string remains "hello" as a single part (no split)

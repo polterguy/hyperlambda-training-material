@@ -1,63 +1,55 @@
 
-// Write a Hyperlambda script to upload, unzip, and overwrite a specified folder.
+// Action that compiles the specified C# code and loads into the AppDomain
 .arguments
-   file:*
-   folder:string
-
-// Endpoint can accept form-data
-.accept:multipart/form-data
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   assembly-name
+      type:string
+      mandatory:bool:true
+      default:your-assembly-name.dll
+   recompile
+      type:bool
+      mandatory:bool:true
+      default:bool:true
+   references
+      type:array
+      mandatory:bool:true
+      default
+         .:netstandard
+         .:System.Runtime
+         .:System.ComponentModel
+         .:System.Private.CoreLib
+         .:magic.node
+         .:magic.node.extensions
+         .:magic.signals.contracts
+   code
+      type:csharp
+      mandatory:bool:true
+      default:"using System;\nusing magic.node;\nusing magic.node.extensions;\nusing magic.signals.contracts;\n\n[Slot(Name = \"get-employee-details\")]\npublic class Foo : ISlot\n{\n    public void Signal(ISignaler signaler, Node input)\n    {\n        switch (input.GetEx<string>().ToLower())\n        {\n            case \"john\":\n                input.Add(new Node(\"title\", \"cmo\"));\n                input.Add(new Node(\"phone\", \"92929292\"));\n                input.Add(new Node(\"email\", \"john@doe.come\"));\n                break;\n        }\n        input.Value = null;\n    }\n}"
+.icon:rocket_launch
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
-validators.mandatory:x:@.arguments/*/file/*/name
-validators.mandatory:x:@.arguments/*/file/*/stream
-validators.mandatory:x:@.arguments/*/folder
+validators.mandatory:x:@.arguments/*/code
+validators.mandatory:x:@.arguments/*/references
+validators.mandatory:x:@.arguments/*/assembly-name
 
-// Making sure specified file is a ZIP file.
-strings.split:x:@.arguments/*/file/*/name
-   .:.
+/*
+ * We only compile C# code if it does not already exist in AppDomain,
+ * unless caller explicitly specifies [recompile] as true.
+ */
+system.plugin.list
 if
-   not
-      eq
-         get-value:x:@strings.split/0/-
-         .:zip
+   or
+      get-value:x:@.arguments/*/recompile
+      not-exists:x:"@system.plugin.list/*/\"={@.arguments/*/assembly-name}\""
    .lambda
 
-      // Oops, not a ZIP file ...
-      throw:You can only upload ZIP files
-         public:true
-         status:415
+      // Parametrizing [system.compile] invocation.
+      add:x:./*/system.compile
+         get-nodes:x:@.arguments/*/references
+         get-nodes:x:@.arguments/*/assembly-name
+         get-nodes:x:@.arguments/*/code
 
-// Emptying folder.
-io.folder.list:x:@.arguments/*/folder
-   display-hidden:true
-for-each:x:-/*
-   io.folder.delete:x:@.dp/#
-io.file.list:x:@.arguments/*/folder
-   display-hidden:true
-for-each:x:-/*
-   io.file.delete:x:@.dp/#
+      // Compiling C# code.
+      system.compile
 
-// Figuring out full path of ZIP file as it should be saved.
-.filename
-set-value:x:@.filename
-   strings.concat
-      get-value:x:@.arguments/*/folder
-      get-value:x:@.arguments/*/file/*/name
-
-// Saving stream to file.
-io.stream.save-file:x:@.filename
-   get-value:x:@.arguments/*/file/*/stream
-
-// Unzipping file.
-io.file.unzip:x:@.filename
-
-// Deleting ZIP file.
-io.file.delete:x:@.filename
-
-// Returning success to caller.
-return-nodes
-   result:Success
+      // Loading assembly into AppDomain.
+      system.plugin.load:x:@system.compile

@@ -1,5 +1,7 @@
+// Define a dynamic slot 'greet' (using alias for slots.create)
+slots.create:greet  
+   return-value:Hi there
 
-// [and] returns true only if all arguments are true
-and
-   .:bool:true
-   .:bool:true
+// Invoke 'greet'
+signal:greet  
+// The signal node's value is "Hi there"

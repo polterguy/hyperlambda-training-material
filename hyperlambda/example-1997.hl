@@ -1,17 +1,11 @@
-// Executing the following Hyperlambda results in the following
-
-// When executing the following Hyperlambda
-data.connect:magic
-   database-type:sqlite
-   data.create
-      database-type:sqlite
-      table:log_entries
-      values
-         content:Foo bar log content
-         type:info
-
-// We end up with this result
-data.connect
-   data.create:long:75152
-
-// Notice how lists are declared with nodes having names of "." or even sometimes ""
+// Create an endpoint taking a name argument, check the name, if it's 'Thomas' then return 'Hello boss', otherwise return 'Hello stranger'.
+.arguments
+   name:string
+if
+   eq:x:@.arguments/*/name
+      .:Thomas
+   .lambda
+      return
+         result:Hello boss
+return
+   result:Hello stranger

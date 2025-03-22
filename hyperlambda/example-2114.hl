@@ -1,5 +1,13 @@
-// Convert a base64-encoded value to a string
 
-.src:bytes:ICA=
-convert:x:-
-   type:string
+// Example: Use variables to supply the string and delimiter.
+.text:x|y|z
+.delim:|
+strings.split:x:@.text
+   get-value:x:@.delim
+
+/*
+ * Resulting parts:
+ * .:x
+ * .:y
+ * .:z
+ */

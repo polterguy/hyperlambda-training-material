@@ -1,12 +1,11 @@
-// Iterating over nested nodes to update their values
-.inventory
-   part1
-      name:engine
-      status:available
-   part2
-      name:wheel
-      status:out-of-stock
 
-for-each:x:@.inventory/*
-   set-value:x:@.dp/#/*/status
-      .:checked
+// Generate a Hyperlambda snippet that copies nodes from [.input] and appends them into [.output].
+
+// Copies nodes from [.input] and appends into [.output]
+.input
+   itemA:dataA
+   itemB:dataB
+   itemC:dataC
+.output
+add:x:@.output
+   get-nodes:x:@.input/*

@@ -1,14 +1,10 @@
-// Example: Concatenate 6 strings, one being an expression reference
-.bar:Bar
-strings.concat
-   .:Thomas
-   .:" "
-   .:Hansen
-   .:" "
-   .:Foo
-   .:" "
-   get-value:x:@.bar
+// Among the chosen few, we must find "Neo" in the prophecy.
 
-/*
- * Resulting in "Thomas Hansen Foo Bar" after invocation.
- */
+.matrix
+   candidate1:Morpheus
+   candidate2:Neo
+   candidate3:Trinity
+
+get-value:x:@.matrix/*/candidate2
+
+// The result is "Neo" because he is the chosen one.

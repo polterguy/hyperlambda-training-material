@@ -1,13 +1,5 @@
-/*
- * This example demonstrates implicit conversion for non-null object to
- * boolean. If an object is not bool, but it is non-null, during boolean
- * conversion it will automatically be defined as "true".
- */
-.result
-.foo:whatever
-if:x:-
-   set-value:x:@.result
-      .:Yup!
-else
-   set-value:x:@.result
-      .:Nope!
+
+// Example: URL-decode a string with reserved characters.
+strings.url-decode:100%2525%2520free%2520%2526%2520easy
+
+// Result: "100% free & easy"

@@ -1,11 +1,12 @@
-/*
- * This Hyperlambda snippet joins `table1` and `table2` on `id`.
- */
 
-data.read
-   table:table1
-      join:table2
-         type:inner
-         on
-            and
-               table1.id.eq:table2.ref_id
+// Retrieve orders that are either pending OR processing
+data.connect:shopDB
+   data.read
+      table:orders
+      limit:-1
+      where
+
+         // Either status equals "pending" OR department not equal "hr"
+         or
+            status.eq:pending
+            department.neq:hr

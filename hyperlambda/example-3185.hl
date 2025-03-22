@@ -1,5 +1,8 @@
+// Add nodes retrieved from a source to a destination
 
-// Create a function that returns a list of animals to the caller.
-auth.ticket.verify:guest, root, admin
-io.file.load:/modules/hub/magic.startup/misc/animals.json
-return:x:-
+.dest
+.src
+   foo1:bar1
+   foo2:bar2
+add:x:../*/.dest
+   get-nodes:x:../*/.src/*

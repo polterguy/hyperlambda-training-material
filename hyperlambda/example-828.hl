@@ -1,5 +1,8 @@
-// Create a cache item and lists all cache items
-cache.set:cache-item-key
-   expiration:5
-   value:Howdy world
-cache.list
+/*
+ * This Hyperlambda snippet retrieves 10 records, skipping the first 20.
+ */
+
+data.read
+   table:orders
+   limit:10
+   offset:20

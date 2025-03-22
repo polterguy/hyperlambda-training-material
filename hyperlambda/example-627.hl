@@ -1,19 +1,2 @@
-// Evaluate all lambda objects under the current node sequentially (result becomes 'Second')
-.res:
-.lambda
-   set-value:x:@.res
-      .:First
-.lambda
-   set-value:x:@.res
-      .:Second
-eval:x:../*/.lambda
-
-// Result after executing above lambda
-.res:Second
-.lambda
-   set-value:x:@.res
-      .:First
-.lambda
-   set-value:x:@.res
-      .:Second
-eval:x:../*/.lambda
+// Validate values of [.arg] is a valid email address
+validators.email:x:@.arg

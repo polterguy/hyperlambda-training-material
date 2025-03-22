@@ -1,44 +1,45 @@
 
-// Removes the specified [roles] from the specified [username].
+// Creates an item in your types table in your [generic|onboarding] database according to the specified arguments.
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-   roles
-      type:array
-      mandatory:bool:true
-.icon:supervisor_account
+   name:string
+   description:string
+   cpu:decimal
+   memory:int
+   storage:int
+   price:decimal
+   max_upload:int
+   max_timeout:int
+   enabled:bool
+   price_reference:string
+   bandwidth:string
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/roles
+validators.mandatory:x:@.arguments/*/name
+validators.mandatory:x:@.arguments/*/description
+validators.mandatory:x:@.arguments/*/cpu
+validators.mandatory:x:@.arguments/*/memory
+validators.mandatory:x:@.arguments/*/storage
+validators.mandatory:x:@.arguments/*/price
+validators.mandatory:x:@.arguments/*/enabled
 
-// Connecting to database.
-data.connect:[generic|magic]
+// Opening up database connection.
+data.connect:[generic|hub]
 
-   // Verifying user exists.
-   data.read
-      table:users
-      columns
-         username
-      where
-         and
-            username.eq:x:@.arguments/*/username
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
 
-   // Verifying above invocation returned something.
-   if
-      not-exists:x:@data.read/*
-      .lambda
+   // Creating our record.
+   data.create
+      table:plans
+      return-id:bool:false
+      values
 
-         // Oops ...!!
-         throw:No such user
-            username:x:@.arguments/*/username
-
-   // Removing [roles] from [username]
-   for-each:x:@.arguments/*/roles/*
-      data.delete
-         table:users_roles
-         where
-            and
-               user.eq:x:@.arguments/*/username
-               role.eq:x:@.dp/#
+   // Returning result of above invoction to caller.
+   response.status.set:201
+   unwrap:x:+/*
+   return
+      result:success

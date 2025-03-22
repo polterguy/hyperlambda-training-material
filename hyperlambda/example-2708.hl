@@ -1,33 +1,63 @@
 
-// Create a Hyperlambda action to create a log entry with a specified 'type' (info, error, fatal, debug) and 'message'. Include optional 'args' for additional parameters.
+// Create a Hyperlambda action to execute a SQL select statement with specified 'database-type', 'connection-string', 'database', and 'sql'. Include optional 'params'. Validate mandatory fields and enums.
 .arguments
-   type
+   database-type
       type:enum
       mandatory:bool:true
       values
-         .:info
-         .:error
-         .:fatal
-         .:debug
-   message
+         .:sqlite
+         .:mssql
+         .:mysql
+         .:pgsql
+   connection-string
       type:string
       mandatory:bool:true
-   args
+   database
+      type:string
+      mandatory:bool:true
+   sql
+      type:sql
+      mandatory:bool:true
+   params
       type:key-value
       mandatory:bool:false
-.icon:account_balance
+.icon:cloud_download
 
-// Lambda object actually creating our log entry.
-.invoke-log
-   name:x:@.arguments/*/message
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/sql
+validators.enum:x:@.arguments/*/database-type
+   .:sqlite
+   .:mssql
+   .:mysql
+   .:pgsql
 
-// Parametrising invocation.
-set-name:x:@.invoke-log/*/name
+// Applying defaults.
+validators.default:x:@.arguments
+   connection-string:generic
+   database-type:sqlite
+   database:magic
+
+// Connection string to actually use as we connect.
+.connection-string
+
+// Caller supplied an explicit [connection-string] argument.
+set-value:x:@.connection-string
    strings.concat
-      .:log.
-      get-value:x:@.arguments/*/type
-add:x:@.invoke-log/*
-   get-nodes:x:@.arguments/*/args/*
+      .:[
+      get-value:x:@.arguments/*/connection-string
+      .:|
+      get-value:x:@.arguments/*/database
+      .:]
 
-// Invoking lambda object responsible for creating our log entry.
-eval:x:@.invoke-log
+// Connecting to database.
+data.connect:x:@.connection-string
+   database-type:x:@.arguments/*/database-type
+
+   // Parametrizing SQL.
+   add:x:./*/data.select
+      get-nodes:x:@.arguments/*/params/*
+
+   // Executing SQL.
+   data.select:x:@.arguments/*/sql
+      database-type:x:@.arguments/*/database-type
+   return-nodes:x:@data.select/*

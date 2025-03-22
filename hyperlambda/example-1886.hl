@@ -1,5 +1,16 @@
+// Basic usage of the [switch] slot to determine a result based on a car part
+.part:engine
+.result
+switch:x:@.part
 
-// Example: Convert a string with letters and numbers to uppercase.
+   case:engine
+      set-value:x:@.result
+         .:This is an engine
 
-// Result: "MIXEDCASE123"
-strings.to-upper:MixedCase123
+   case:wheel
+      set-value:x:@.result
+         .:This is a wheel
+
+   default
+      set-value:x:@.result
+         .:Unknown car part

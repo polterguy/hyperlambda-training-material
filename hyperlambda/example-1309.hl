@@ -1,8 +1,17 @@
 
-// Example: Replace all occurrences of a substring.
-.text:abababab
-strings.replace:x:@.text
-   .:ab
-   .:AB
+// Demonstrate Hyperlambda string assignments, including special character handling, multi-line strings, and escape sequences.
 
-// Result: "ABABABAB"
+// Simple string without special characters
+.keyA:simple
+
+// Special character (colon) requires quotes
+.keyB:"config:set"
+
+// Multi-line string example
+.keyC:"This is\nmulti-line"
+
+// Alternative single quotes usage
+.keyD:alternate
+
+// Escape newline inside string
+.keyE:"Hello\nHyperlambda"

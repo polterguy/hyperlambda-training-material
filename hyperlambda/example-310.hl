@@ -1,3 +1,5 @@
-// Loads the /modules/foo.txt file and logs its content.
-io.file.load:/modules/foo.txt
-log.info:x:-
+// Inside an API endpoint, ensures only 'admin' can update user data.
+
+auth.ticket.verify:admin
+
+// Continue with update logic...

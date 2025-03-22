@@ -1,16 +1,11 @@
-// Using [for-each] with [if] and [else] to check and update car part statuses
-.car-parts
-   engine:available
-   wheel:out-of-stock
-   door:available
 
-for-each:x:@.car-parts/*
-   if
-      eq:x:@.dp/#
-         .:available
-      .lambda
-         set-value:x:@.dp/#
-            .:checked
-   else
-      set-value:x:@.dp/#
-         .:needs restocking
+// Write a Hyperlambda snippet that extracts nodes from [.data_source] and places them into [.data_target].
+
+// Extracts nodes from [.data_source] and places them into [.data_target]
+.data_source
+   attrOne:valOne
+   attrTwo:valTwo
+   attrThree:valThree
+.data_target
+add:x:@.data_target
+   get-nodes:x:@.data_source/*

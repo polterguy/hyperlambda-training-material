@@ -1,26 +1,19 @@
 
-// Write a Hyperlambda script to delete all existing vectors for a specified model.
+// Hyperlambda endpoint taking arguments. The SQL query selects distinct email, first name, last name, and genre name of customers who listen to rock music from the Chinook database.
 .arguments
-   type:string
-.type:internal
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+   filter:string
 
 // Connecting to database.
-data.connect:[generic|magic]
+data.connect:chinook
+   database-type:sqlite
 
-   // Deleting VSS data.
-   data.execute:delete from vss_ml_training_snippets where rowid in (select id as rowid from ml_training_snippets where type = @type)
-      @type:x:@.arguments/*/type
+   // Parametrizing [data.select].
+   add:x:./*/data.select
+      get-nodes:x:@.arguments/*
 
-   // Deleting embeddings.
-   data.execute:update ml_training_snippets set embedding = null where type = @type
-      @type:x:@.arguments/*/type
+   // Executing [data.select] slot with our SQL.
+   data.select:"\n/*\n * Selects details from all customers that are listening to rock.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect distinct c.Email, c.FirstName, c.LastName, g.name\n  from Customer c\n    inner join Invoice i on c.CustomerId = i.CustomerId\n    inner join InvoiceLine ii on i.InvoiceId = ii.InvoiceId\n    inner join Track t ON ii.TrackId = t.TrackId\n    inner join Genre g ON t.GenreId = g.GenreId\n  where g.Name like @filter\n  order by c.Email\n"
+      database-type:sqlite
 
-// Returning success to caller.
-return
-   result:success
+   // Returning a result of above invocation to caller.
+   return-nodes:x:@data.select/*

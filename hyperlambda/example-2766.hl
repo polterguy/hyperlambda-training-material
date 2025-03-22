@@ -1,17 +1,55 @@
 
-// Create a Hyperlambda endpoint that saves the specified configuration object to appsettings.json, ensuring the user is authorized.
-.arguments:*
+// Create a Hyperlambda script for a CRUD read endpoint with paging, sorting, and filtering that selects records from the questions table in the magic database, returning question_id, question, and questionnaire, ensuring authentication and authorization for root and admin roles.
+.arguments
+   limit:long
+   offset:long
+   order:string
+   direction:string
+   questions.question_id.eq:long
+   questions.question.like:string
+   questions.question.eq:string
+   questions.questionnaire.like:string
+   questions.questionnaire.eq:string
+.type:crud-read
 
-// Ensuring user is authorized to access endpoint.
+// Verifying user is authorized to access endpoint.
 auth.ticket.verify:root
 
-// Converting input arguments to JSON.
-lambda2json:x:@.arguments/*
-   format:true
+// Opening up our database connection.
+data.connect:[generic|magic]
+   database-type:sqlite
 
-// Saving the specified config object to the 'appsettings.json' file.
-config.save:x:@lambda2json
+   // Parametrising our read invocation with ordering arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
 
-// Returning success to caller.
-return
-   result:success
+   // Parametrising our read invocation with paging arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:questions
+      columns
+         questions.question_id
+         questions.question
+         questions.questionnaire
+         questions.type
+         questions.context
+         questions.name
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

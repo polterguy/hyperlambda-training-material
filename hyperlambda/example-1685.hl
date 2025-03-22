@@ -1,2 +1,5 @@
-// Filters .fields nodes to get BOTH 'username' and 'email' nodes
-.or-names:x:@.fields/*/[username|email]
+// Subtract a discount from the original price
+.price:int:100
+math.subtract
+   get-value:x:@.price
+   .:int:20

@@ -1,13 +1,5 @@
+// Manifest with version and module name
+version:v2.0.0
+module_name:hub-api
 
-// Write a Hyperlambda snippet that fetches album details from an API.
-
-// Fetches album details from an API.
-http.get:"https://jsonplaceholder.typicode.com/albums/1"
-
-   // Converts JSON response.
-   convert:true
-
-// Sets [.album_title] to the album title
-.album_title
-set-value:x:@.album_title
-   get-value:x:@http.get/*/content/*/title
+// Manifests are required for modules that are to be installed from the plugins component

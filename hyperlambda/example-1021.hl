@@ -1,6 +1,4 @@
-/**
- * This example converts "input.jpg" to "output.png".
- */
-image.convert
-   file:/input.jpg
-   output:/output.png
+// Sets a date field dynamically during runtime
+.result
+set-value:x:@.result
+   .:date:"2025-03-22T15:45:00Z"

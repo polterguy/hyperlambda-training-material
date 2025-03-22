@@ -1,22 +1,7 @@
+// First, create a dynamic slot 'hello'
+slots.create:hello  
+   return-value:Hello
 
-// Write a Hyperlambda script to return true if OpenAI is configured and can be used.
-.arguments
-.type:internal
-
-// Making sure user has access to invoked endpoint.
-auth.ticket.verify:root
-
-// Checking if configuration setting for OpenAI API key exists.
-config.get:"magic:openai:key"
-if
-   eq:x:@config.get
-      .
-   .lambda
-
-      // No API key found for OpenAI
-      return
-         result:bool:false
-
-// OpenAI API key exists.
-return
-   result:bool:true
+// Invoke the 'hello' slot
+signal:hello  
+// The signal node now holds the value "Hello"

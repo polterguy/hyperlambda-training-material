@@ -1,3 +1,5 @@
-// Return 'foo' task including its schedules
-tasks.get:foo
-   schedules:true
+// Convert a string to an expression
+
+.src:foo/bar
+convert:x:-
+   type:x

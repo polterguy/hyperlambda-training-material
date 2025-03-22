@@ -1,17 +1,59 @@
 
-// Hyperlambda endpoint taking arguments. This SQL query retrieves and returns the names of artists and the titles of their albums from the Chinook database, ordering the results by artist name and limiting the output to 50 records.
+// Create a Hyperlambda script for a CRUD read endpoint that returns items from the users_roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
+   limit:long
+   offset:long
+   order:string
+   direction:string
+   operator:string
+   role.eq:string
+   user.eq:string
 
-// Making sure user is authorized to invoke endpoint.
-auth.ticket.verify:enterprise
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Connecting to database.
-data.connect:chinook
-   database-type:sqlite
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/operator
+   .:or
+   .:and
 
-   // Executing [data.select] slot with our SQL.
-   data.select:"\n/*\n * Script to join artists to albums in your Chinook database.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect ar.Name, al.Title\n  from Album al\n    inner join Artist ar on al.ArtistId = ar.ArtistId\n  order by ar.Name\n  limit 50\n"
-      database-type:sqlite
+/*
+ * Checking if user supplied an [operator] argument, and if so
+ * changing the boolean operator for comparison operations.
+ */
+if
+   exists:x:@.arguments/*/operator
+   .lambda
 
-   // Returning a result of above invocation to caller.
-   return-nodes:x:@data.select/*
+      // User provided a boolean comparison [operator] argument.
+      set-name:x:../*/data.connect/*/data.read/*/where/0
+         get-value:x:@.arguments/*/operator
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Parametrising our read invocation.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/operator
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      table:users_roles
+      columns
+         users_roles.role
+         users_roles.user
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

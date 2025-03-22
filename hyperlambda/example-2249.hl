@@ -1,40 +1,11 @@
-// Creating new nodes dynamically for each item in the list
-.car-parts
-   engine
-   wheel
-   door
 
-.results
+// Provide a Hyperlambda example where nodes from [.origin] are moved and integrated into [.destination_node].
 
-for-each:x:@.car-parts/*
-   get-name:x:@.dp/#
-   unwrap:x:+/*/*/*/name
-   add:x:@.results
-      .
-         .
-            name:x:@get-name
-            status:checked
-
-// Result after execution:
-.car-parts
-   engine
-   wheel
-   door
-.results
-   .
-      name:engine
-      status:checked
-   .
-      name:wheel
-      status:checked
-   .
-      name:door
-      status:checked
-for-each:x:@.car-parts/*
-   get-name:x:@.dp/#
-   unwrap:x:+/*/*/*/name
-   add:x:@.results
-      .
-         .
-            name:x:@get-name
-            status:checked
+// Moves nodes from [.origin] and integrates them into [.destination_node]
+.origin
+   field1:content1
+   field2:content2
+   field3:content3
+.destination_node
+add:x:@.destination_node
+   get-nodes:x:@.origin/*

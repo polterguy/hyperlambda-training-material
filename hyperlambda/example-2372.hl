@@ -1,40 +1,16 @@
 
-// Create one record in your Playlist table in your chinook database.
-.arguments
+// Generate a Hyperlambda snippet that loops until [.requests] reach 10.
 
-   // PlaylistId column value
-   PlaylistId:long
+// Loops until [.requests] reach 10.
+.requests:int:1
+while
+   lt
+      get-value:x:@.requests
+      .:int:10
+   .lambda
 
-   // Name column value
-   Name:string
+      // Handling request.
+      log.info:Processing request
 
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:Playlist
-      return-id:bool:false
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      result:success
+      // Incrementing request counter.
+      math.increment:x:@.requests

@@ -1,14 +1,13 @@
-// Sums all product prices inside items and sets total in total
-.cart
-   items
-      item1
-         price:int:15
-      item2
-         price:int:25
-      item3
-         price:int:10
-   total:int:0
-for-each:x:@.cart/*/items/*
-   set-value:x:@.cart/*/total
-      math.add:x:@.cart/*/total
-         get-value:x:@.dp/#/*/price
+
+// Generate a Hyperlambda snippet that invokes an HTTP GET endpoint to fetch a user's email.
+
+// Invokes an HTTP GET endpoint to fetch a user's email.
+http.get:"https://jsonplaceholder.typicode.com/users/1"
+
+   // Ensures response is automatically converted from JSON to lambda.
+   convert:true
+
+// Sets [.email] to the user's email
+.email
+set-value:x:@.email
+   get-value:x:@http.get/*/content/*/email

@@ -1,23 +1,15 @@
-// Connects to sakila and returns items from film, joining on film_actor and actor
-data.connect:sakila
+
+// Write a Hyperlambda snippet that counts messages in the 'messaging_db' database from the 'chat_logs' table.
+
+// Counts messages in the "messaging_db" database from the "chat_logs" table.
+data.connect:messaging_db
+   database-type:sqlite
+
+   // Counting total chat messages.
    data.read
-
+      database-type:sqlite
+      table:chat_logs
       columns
-         title
-         description
-         last_name
-         first_name
-
-      table:film
-
-         join:film_actor
-            type:inner
-            on
-               and
-                  film.film_id:film_actor.film_id
-
-            join:actor
-               type:inner
-               on
-                  and
-                     film_actor.actor_id:actor.actor_id
+         count(*)
+            as:count
+      limit:long:1

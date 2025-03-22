@@ -1,6 +1,9 @@
-// Creates a new Hyperlambda slot.
-slots.create:meaning-of-life
-   return-value:int:57
+/*
+ * Retrieving the name of a deeply nested node.
+ * Results in `"child"` being returned
+ */
 
-// Invoking slot we created above.
-signal:meaning-of-life
+.data
+   parent
+      child:42
+get-name:x:@.data/*/*

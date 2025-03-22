@@ -1,11 +1,17 @@
 
-// Generate a Hyperlambda snippet that retrieves all customers from 'crm_db'.
+// Generate a Hyperlambda snippet covering string assignments, multi-line text, and escape sequences.
 
-// Retrieves all customers from "crm_db".
-.result
-data.connect:crm_db
-   database-type:mysql
-   data.select:"select id, name, email from customers where status='active'"
-      database-type:mysql
-   add:x:@.result
-      get-nodes:x:@data.select/*
+// Basic assignment without quotes
+.field1:dataItem
+
+// Requires quotes for colon
+.field2:"log:entry"
+
+// Multi-line notation
+.field3:"Header\nFooter"
+
+// Alternative quote usage
+.field4:line-segment
+
+// Escape sequence example
+.field5:"next\nstep"

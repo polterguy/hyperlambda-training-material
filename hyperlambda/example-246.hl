@@ -1,18 +1,14 @@
-/*
- * Sends an email with explicitly provided SMTP settings inline.
- * Useful when overriding global or default configurations.
- */
 
-mail.smtp.send
-   smtp
-      host:smtp.example.com
-      port:int:587
-      username:your-username
-      password:your-password
-      enableSsl:bool:true
-   message
-      to
-         recipient:john.doe@example.com
-      subject:SMTP Settings Inline
-      entity:text/plain
-         content:This email was sent using inline SMTP configuration.
+// Evaluates specified [.lambda] if condition evaluates to true.
+if
+   and
+      eq:x:@SOME_EXPRESSION
+         .:SOME_VALUE
+      eq:x:@SOME_OTHER_EXPRESSION
+         .:SOME_OTHER_VALUE
+   .lambda
+
+      // Lambda evaluates if condition is true.
+else
+
+   // Lambda evaluated if condition is NOT true.

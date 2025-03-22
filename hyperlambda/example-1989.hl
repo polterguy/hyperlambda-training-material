@@ -1,9 +1,10 @@
-// Executing the Hyperlambda changes the node hierarchy
 
-// This Hyperlambda
-.no:int:0
-math.increment:x:@.no
-
-// Creates this result
-.no:int:1
-math.increment:x:@.no
+// Evaluate all lambda objects under the current node sequentially (result becomes 'Second')
+.res:
+.lambda
+   set-value:x:@.res
+      .:First
+.lambda
+   set-value:x:@.res
+      .:Second
+eval:x:../*/.lambda

@@ -1,73 +1,72 @@
 
-// Create a Hyperlambda endpoint to send an email to the cloudlet owner with a specified body, transforming the body into HTML.
+// Read endpoint with paging, sorting, filtering selecting records from your spice_urls table.
 .arguments
 
-   // Mandatory argument being the body of the email. This can be Markdown at which point it will be automatically transformed to HTML before the email is sent.
-   body:string
-.type:public
+   // Number of records to return
+   limit:long
 
-// HTML encodes the specified [html] and returns to caller.
-execute:magic.workflows.actions.execute
-   name:html-encode-body
-   filename:/misc/workflows/actions/misc/html-encode.hl
-   arguments
-      html:x:@.arguments/*/body
+   // Offset into the dataset of where to start retrieving records
+   offset:long
 
-// HTML encodes the specified [html] and returns to caller.
-execute:magic.workflows.actions.execute
-   name:html-encode-subject
-   filename:/misc/workflows/actions/misc/html-encode.hl
-   arguments
-      html:x:@.arguments/*/subject
+   // What column to order by
+   order:string
 
-// Transforms the specified [markdown] to HTML and returns to caller.
-execute:magic.workflows.actions.execute
-   name:markdown2html
-   filename:/misc/workflows/actions/misc/markdown2html.hl
-   arguments
-      markdown:x:--/execute/=html-encode-body/*/content
+   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
+   direction:string
 
-/*
- * Returns the specified [key] configuration setting.
- * 
- * Notice, to traverse into for instance magic.foo.bar, you'll have to colon separate
- * your path as follows "magic:foo:bar".
- */
-execute:magic.workflows.actions.execute
-   name:config-name
-   filename:/misc/workflows/actions/misc/config.hl
-   arguments
-      key:"magic:smtp:from:name"
+   // spice_urls table spice_url_id column equality exact match filtering
+   spice_urls.spice_url_id.eq:long
 
-/*
- * Returns the specified [key] configuration setting.
- * 
- * Notice, to traverse into for instance magic.foo.bar, you'll have to colon separate
- * your path as follows "magic:foo:bar".
- */
-execute:magic.workflows.actions.execute
-   name:config-email
-   filename:/misc/workflows/actions/misc/config.hl
-   arguments
-      key:"magic:smtp:from:address"
+   // spice_urls table url column wildcard filtering with SQL like '%' comparison
+   spice_urls.url.like:string
 
-/*
- * Send an email to the specified [name]/[email] recipient, with the specified [subject] and [body].
- * 
- * Optionally supply [from] and [from-email] as name/email sender, and/or [reply-to] and [reply-to-email]
- * as the email to reply to. If you don't supply [from] or [from-email] then this action will use the
- * default sender settings from your configuration.
- */
-execute:magic.workflows.actions.execute
-   name:email
-   filename:/misc/workflows/actions/misc/email.hl
-   arguments
-      subject:Email from Magic Cloudlet
-      html:bool:true
-      body:x:--/execute/=markdown2html/*/html
-      reply-to:x:--/execute/=config-name/*/value
-      name:x:--/execute/=config-name/*/value
-      email:x:--/execute/=config-email/*/value
-      reply-to-email:x:--/execute/=config-email/*/value
-return
-   result:success
+   // spice_urls table url column equality exact match filtering
+   spice_urls.url.eq:string
+
+   // spice_urls table type column wildcard filtering with SQL like '%' comparison
+   spice_urls.type.like:string
+
+   // spice_urls table type column equality exact match filtering
+   spice_urls.type.eq:string
+
+// Type of endpoint
+.type:crud-read
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up our database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
+
+   // Parametrising our read invocation with ordering arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/order
+      get-nodes:x:@.arguments/*/direction
+   remove-nodes:x:@.arguments/*/order
+   remove-nodes:x:@.arguments/*/direction
+
+   // Parametrising our read invocation with paging arguments if specified.
+   add:x:./*/data.read
+      get-nodes:x:@.arguments/*/limit
+      get-nodes:x:@.arguments/*/offset
+   remove-nodes:x:@.arguments/*/limit
+   remove-nodes:x:@.arguments/*/offset
+
+   // Parametrising our read invocation with filtering arguments.
+   add:x:./*/data.read/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:spice_urls
+      columns
+         spice_urls.spice_url_id
+         spice_urls.url
+         spice_urls.type
+      where
+         and
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

@@ -1,17 +1,23 @@
 
-// Create a Hyperlambda script to delete a task due with a specified ID.
+// Authenticates the user with the specified [username] and [password].
 .arguments
-   id:long
+   username
+      type:string
+      mandatory:bool:true
+   password
+      type:string
+      mandatory:bool:true
+.icon:shield
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/id
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Invokes slot responsible for authenticating caller.
+execute:magic.auth.authenticate
+   username:x:@.arguments/*/username
+   password:x:@.arguments/*/password
 
-// Deletes task due instance.
-tasks.schedule.delete:x:@.arguments/*/id
-
-// Returns success to caller.
-return-nodes
-   result:Success
+// Returning resulting ticket/token to caller.
+yield
+   ticket:x:@execute/*/ticket

@@ -1,5 +1,6 @@
-/**
- * This example creates a new folder "/data/reports/".
- * If the folder already exists, an error will occur.
- */
-io.folder.create:/data/reports/
+
+// Example: Contains check is case-sensitive.
+
+// Returns false
+strings.contains:MagicLambda
+   .:lambda

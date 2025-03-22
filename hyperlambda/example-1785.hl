@@ -1,3 +1,10 @@
-// (Assume no dynamic slots exist at this point)
-slots.vocabulary  
-// Returns an empty list (no slot names to report)
+
+// Evaluate all lambda objects under the current node sequentially (result becomes 'Second')
+.res:
+.lambda
+   set-value:x:@.res
+      .:First
+.lambda
+   set-value:x:@.res
+      .:Second
+eval:x:../*/.lambda

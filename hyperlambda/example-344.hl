@@ -1,6 +1,7 @@
-/*
- * Example: Check if a string ends with a substring that is not at the end.
- */
-// Returns false
-strings.ends-with:HelloWorld
-   .:Universe
+// [exists] returns false if the expression finds no nodes
+.empty
+exists:x:@.empty/*
+
+// Result:
+.empty
+exists:bool:false

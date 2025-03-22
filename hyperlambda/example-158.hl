@@ -1,19 +1,10 @@
-// Checks if the user's age is greater than 18 and yields the boolean result
-slots.create:check.age
-   if
-      mt:x:@.arguments/*/age
-         .:int:18
-      .lambda
-         yield
-            allowed:bool:true
-   else
-      yield
-         allowed:bool:false
+// Executing the Hyperlambda changes the node hierarchy
 
-// Returns true
-execute:check.age
-   age:int:22
+// This Hyperlambda
+strings.concat
+   .:foo
+   .:-
+   .:bar
 
-// Returns false
-execute:check.age
-   age:int:15
+// Creates this result
+strings.concat:foo-bar

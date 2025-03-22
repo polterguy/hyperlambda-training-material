@@ -1,3 +1,11 @@
-// Example: Check if string ends with some specific part
-strings.ends-with:Thomas Hansen Is Cool
-   .:Cool
+// Posts a user profile with nested address information
+http.post:"https://api.example.com/user/profile"
+   convert:true
+   payload
+      name:Emily Zhang
+      email:emily@example.com
+      address
+         street:123 Main St
+         city:Springfield
+         postal_code:12345
+         country:USA

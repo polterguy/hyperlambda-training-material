@@ -1,10 +1,6 @@
-// Checks for the 'manager' role and sets result accordingly.
-
-.result
-try
-   auth.ticket.verify:manager
-   set-value:x:@.result
-      .:Access granted
-.catch
-   set-value:x:@.result
-      .:Access denied
+// Creates a JWT token
+auth.ticket.create
+   username:foo
+   roles
+      .:howdy
+      .:world

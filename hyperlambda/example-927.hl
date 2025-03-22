@@ -1,2 +1,8 @@
-// Sleeps the main thread for 1 second, or 1000 milliseconds.
-sleep:1000
+
+// Example: Trim specific characters from the beginning of a string.
+
+// The leading "xyz" will be removed
+strings.trim-start:xyzabcxyz
+   .:xyz
+
+// Result: "abcxyz"

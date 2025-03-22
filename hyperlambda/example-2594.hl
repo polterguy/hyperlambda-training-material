@@ -1,16 +1,9 @@
 
-// Write a Hyperlambda snippet that handles file read errors using a try/catch/finally block.
+// Create a Hyperlambda endpoint that returns all endpoints in the system along with their associated meta information, ensuring the user is authorized to access the endpoint.
 
-// Handles file read errors inside a try/catch/finally block
-try
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // Attempting to read a non-existent file
-   file.read:/invalid/path/to/file.txt
-.catch
-
-   // Logging the error
-   log.error:x:@.arguments/*/message
-.finally
-
-   // Logging completion
-   log.info:File read attempt finished
+// Returns all endpoints to caller.
+endpoints.list
+return-nodes:x:@endpoints.list/*

@@ -1,5 +1,8 @@
+// Custom endpoint or Hyperlambda file taking mandatory two arguments
+.arguments
+   arg1:string
+   arg2:date
 
-// Example: Mix in a simple inline expression (2+2 inside curly braces).
-strings.mixin:"The result is {{\nmath.add\n   .:int:2\n   .:int:2\nreturn:x:-\n}}"
-
-// Result: "The result is 4"
+validators.mandatory:x:@.arguments/*/arg1
+validators.mandatory:x:@.arguments/*/arg2
+// If either of the arguments don't exists, the above will throw an exception

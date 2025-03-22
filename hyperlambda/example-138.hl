@@ -1,15 +1,13 @@
 
-// CRUD endpoint that counts items from your Categories table in your northwind database
+// Counts items from your CustomerDemographics table in your northwind database
 .arguments
-   Categories.CategoryID.eq:long
-   Categories.CategoryName.like:string
-   Categories.CategoryName.eq:string
-   Categories.Description.like:string
-   Categories.Description.eq:string
-   Categories.Picture.like:string
-   Categories.Picture.eq:string
+   CustomerDemographics.CustomerTypeID.like:string
+   CustomerDemographics.CustomerTypeID.eq:string
+   CustomerDemographics.CustomerDesc.like:string
+   CustomerDemographics.CustomerDesc.eq:string
 
 // Meta data description for endpoint
+.description:Counts items from your CustomerDemographics table in your northwind database
 
 // Type of endpoint
 .type:crud-count
@@ -23,7 +21,7 @@ data.connect:[generic|northwind]
    // Reading data from database.
    data.read
       database-type:sqlite
-      table:Categories
+      table:CustomerDemographics
       columns
          count(*)
             as:count

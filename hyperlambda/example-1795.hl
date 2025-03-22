@@ -1,23 +1,11 @@
-// Hyperlambda [if] with or condition
-.payment:pending
-.shipment:ready
-.notification
-if
-   or
-      eq:x:@.payment
-         .:pending
-      eq:x:@.shipment
-         .:delayed
-   .lambda
-      set-value:x:@.notification
-         .:Action needed
+/*
+ * This Hyperlambda snippet retrieves the value of a node.
+ *
+ * 1. The `.data` node has a child `foo` with the value `"bar"`.
+ * 2. The `get-value` slot retrieves the value of `foo`.
+ * 3. The expected output is `"bar"`.
+ */
 
-/* JavaScript equivalent of Hyperlambda [if] with or condition
-const payment = "pending";
-const shipment = "ready";
-let notification;
-
-if (payment === "pending" || shipment === "delayed") {
-  notification = "Action needed";
-}
-*/
+.data
+   foo:bar
+get-value:x:@.data/*/foo

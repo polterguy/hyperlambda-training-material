@@ -1,2 +1,3 @@
-// Execute a Hyperlambda file
-io.file.execute:/misc/some-hyperlambda-file.hl
+// URL encode [.x]
+.x:thomas@servergardens.com
+strings.url-encode:x:@.x

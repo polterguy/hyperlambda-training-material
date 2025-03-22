@@ -1,14 +1,10 @@
-
-// Switch-case with a default when no case matches
-.val:baz
-.result
-switch:x:@.val
-   case:foo
-      set-value:x:@.result
-         .:First
-   case:bar
-      set-value:x:@.result
-         .:Second
-   default
-      set-value:x:@.result
-         .:None
+// Example of how to send an email using Hyperlambda.
+mail.smtp.send
+   message
+      to
+         Thomas Hansen:thomas@gaiasoul.com
+      from
+         Testing Gmail:testing.anarchy@gmail.com
+      subject:This is subject
+      entity:text/plain
+         content:This is body

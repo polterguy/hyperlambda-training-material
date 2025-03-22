@@ -1,5 +1,8 @@
 
-// Returns the operating system to caller
-system.os
+// Executes any Hyperlambda segments found in string, passing in arguments, and substitutes Hyperlambda segment with result of execution
+.mixin:"The sum of your arguments is {{\nmath.add\n   get-value:x:@.arguments/*/arg1\n   get-value:x:@.arguments/*/arg2\n// Whatever we return here substitutes the mixin in the result\nreturn:x:-}}"
+strings.mixin:x:-
+   arg1:int:2
+   arg2:int:3
 
-// Results in (for Mac); Darwin 23.1.0 Darwin Kernel Version 23.1.0: Mon Oct  9 21:32:11 PDT 2023; root:xnu-10002.41.9~7/RELEASE_ARM64_T6030
+// Result ==> "The sum of your arguments is 5"

@@ -1,20 +1,19 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the ml_types table in the magic database with a type matching the argument, ensuring authentication and authorization for root roles.
+// Delete endpoint deleting one record from your items table in your shopping-cart-demo database.
 .arguments
-   type:string
+
+   // Primary key of record to delete
+   item_id:long
 
 // Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+auth.ticket.verify:root,admin
 
 // Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/item_id
 
 // Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Deleting referenced rows in vss_ml_training_snippets
-   data.execute:"delete from vss_ml_training_snippets where rowid in\n   (select id as rowid from ml_training_snippets where type = @type)"
-      type:x:@.arguments/*/type
+data.connect:[generic|shopping-cart-demo]
+   database-type:sqlite
 
    // Parametrising our delete invocation.
    add:x:./*/data.delete/*/where/*/and
@@ -22,7 +21,8 @@ data.connect:[generic|magic]
 
    // Deleting item from database.
    data.delete
-      table:ml_types
+      database-type:sqlite
+      table:items
       where
          and
 

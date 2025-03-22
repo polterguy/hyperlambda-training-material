@@ -1,6 +1,6 @@
+// Check if a value is greater than or equal to another
 
-// Example: Use a variable as the input to lowercase.
-.text:LOWER ME
-
-// Result: "lower me"
-strings.to-lower:x:@.text
+.foo1:int:7
+mte
+   get-value:x:../*/.foo1
+   .:int:5

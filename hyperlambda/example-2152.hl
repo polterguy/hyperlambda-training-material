@@ -1,11 +1,55 @@
-/*
- * This Hyperlambda snippet demonstrates formatting a decimal number with two decimal places.
- *
- * 1. The `.foo` node is defined as a decimal with a value of `57`.
- * 2. The `format` slot applies the pattern `"{0:0.00}"`, ensuring two decimal places.
- * 3. The result will be `"57.00"`.
- */
 
-.foo:decimal:57
-format:x:-
-   pattern:"{0:0.00}"
+// Searches through your training data for records matching a filtering condition
+.arguments
+   _type:string
+
+   // Mandatory argument and becomes an SQL LIKE type of condition snippets must match to be considered.
+   query:string
+
+   // Maximum number of tokens to return.
+   max_tokens:int
+.type:public
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/_type
+validators.mandatory:x:@.arguments/*/query
+
+// Applying defaults.
+validators.default:x:@.arguments
+   max_tokens:int:4000
+
+// Opening up our database connection.
+data.connect:[generic|magic]
+
+   // Creating our filter string
+   .filter
+   set-value:x:@.filter
+      strings.concat
+         .:%
+         get-value:x:@.arguments/*/query
+         .:%
+   data.read
+      table:ml_training_snippets
+      columns
+         id
+         prompt
+         completion
+         uri
+      where
+         or
+            prompt.like:x:@.filter
+            completion.like:x:@.filter
+   .cont:bool:true
+   while:x:@.cont
+      lambda2hyper:x:@data.read/*
+      if
+         lt
+            openai.tokenize:x:@lambda2hyper
+            convert:x:@.arguments/*/max_tokens
+               type:int
+         .lambda
+            set-value:x:@.cont
+               .:bool:false
+      else
+         remove-nodes:x:@data.read/0/-
+   return-nodes:x:@data.read/*

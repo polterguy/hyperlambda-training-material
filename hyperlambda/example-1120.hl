@@ -1,5 +1,15 @@
+// Subtract a computed sum and another number from a base value
+math.subtract:int:30
 
-// Returns the operating system to caller
-system.os
+   // compute a sum to subtract
+   math.add
 
-// Results in (for Mac); Darwin 23.1.0 Darwin Kernel Version 23.1.0: Mon Oct  9 21:32:11 PDT 2023; root:xnu-10002.41.9~7/RELEASE_ARM64_T6030
+      // first addend
+      .:int:5
+
+      // second addend (5 + 3 = 8)
+      .:int:3
+
+   // subtract 2 after subtracting the above sum
+   .:int:2
+   // Step-by-step: 30 - 8 = 22, then 22 - 2 = 20

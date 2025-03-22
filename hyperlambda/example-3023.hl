@@ -1,4 +1,7 @@
 
-// Shopping Cart Demo module version and name.
-version:v1.0.0
-module_name:Shopping Cart Demo
+// Creates our image cache folder.
+if
+   not
+      io.folder.exists:/etc/hub/image-cache/
+   .lambda
+      io.folder.create:/etc/hub/image-cache/

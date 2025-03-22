@@ -1,34 +1,15 @@
 
-// Lists all database in your MySQL instance.
-slots.create:magic.db.pgsql.databases
+// Create a new product with name and price fields
+data.connect:shopDB
+   data.create
+      table:products
+      values
+         name:Coffee Mug
 
-   // Opens up our connection
-   .connection:[postgres]
-   if
-      and
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .:
-      .lambda
-         set-value:x:@.connection
-            strings.concat
-               .:[
-               get-value:x:@.arguments/*/connection-string
-               .:|
-               .:postgres]
-   pgsql.connect:x:@.connection
+         // Use decimale
+         price:decimal:9.99
 
-      // Runs our query
-      pgsql.select:select datname from pg_database
+         // Use bool type for a boolean column
+         in_stock:bool:true
 
-      // Renaming "Database" nodes.
-      set-name:x:@pgsql.select/*/*
-         .:db
-
-      // Returns the remaining databases to caller.
-      return-nodes:x:@pgsql.select/*
+   // After execution, the node's value will contain the new record's ID (if available)

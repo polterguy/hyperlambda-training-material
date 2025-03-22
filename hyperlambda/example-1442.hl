@@ -1,27 +1,8 @@
 
-// Creates a new stacked chart
-image.chart:stacked
-   filename:/chart.png
-   width:600
-   height:300
-   bars
-      Spring
-         .:int:2
-         .:int:5
-         .:int:10
-      Summer
-         .:int:4
-         .:int:7
-         .:int:10
-      Autumn
-         .:int:2
-         .:int:5
-         .:int:4
-   ticks
-      .:Spring
-      .:Summer
-      .:Autumn
-   legend
-      .:Phones
-      .:Computers
-      .:Tablets
+// Example: Remove all digits from a string using a regex.
+.original:abc123xyz
+strings.regex-replace:x:@.original
+   .:"\\d+"
+   .:
+
+// Result: "abcxyz"

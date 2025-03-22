@@ -1,9 +1,13 @@
-/*
- * Example: Concatenate all strings stored as children of a list node.
- */
-.items
-   .:Red
-   .:Green
-   .:Blue
-strings.concat:x:@.items/*
-// Result: "RedGreenBlue"
+
+// Loop while a condition is true (increment counter and add items)
+.i:int:0
+.list
+while
+   lt
+      get-value:x:@.i
+      .:int:3
+   .lambda
+      add:x:@.list
+         .
+            item
+      math.increment:x:@.i

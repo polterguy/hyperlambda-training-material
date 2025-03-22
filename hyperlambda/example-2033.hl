@@ -1,11 +1,4 @@
-// HTTP endpoint that selects users from database and returns as YAML
-.arguments
+// This snippet defines a node with a date/time value (UTC DateTime).
+.timestamp:date:"2025-03-17T18:00:00Z"
 
-// Connect to the database and retrieve contacts
-data.connect:crm
-   data.read
-      table:contacts
-   response.headers.set
-      Content-Type:application/yaml
-   lambda2yaml:x:@data.read/*
-   return:x:@lambda2yaml
+// Notice, dates must always be wrapped in quotes since they contain : characters

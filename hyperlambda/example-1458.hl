@@ -1,12 +1,54 @@
-// Sequential modulus operations
-.x:int:14
-math.modulo
 
-   // 14
-   get-value:x:@.x
+// Write a Hyperlambda script to return all available themes from the backend.
+.arguments
+.type:internal
 
-   // 14 mod 5 = 4
-   .:int:5
+// Making sure user has access to invoked endpoint.
+auth.ticket.verify:root
 
-   // then 4 mod 2 = 0 (final result)
-   .:int:2
+// Checking if custom CSS file exists.
+.result
+
+// Listing custom files.
+if
+   io.folder.exists:/etc/system/openai/css/chat/
+   .lambda
+      io.file.list:/etc/system/openai/css/chat/
+      for-each:x:@io.file.list/*
+         if
+            strings.ends-with:x:@.dp/#
+               .:css
+            .lambda
+               strings.split:x:@.dp/#
+                  .:/
+               strings.split:x:@strings.split/0/-
+                  .:.
+               unwrap:x:+/*/*
+               add:x:@.result
+                  .
+                     .:x:@strings.split/0
+
+// Listing system files.
+if
+   io.folder.exists:/system/openai/front.files/chat/
+   .lambda
+      io.file.list:/system/openai/front.files/chat/
+      for-each:x:@io.file.list/*
+         if
+            strings.ends-with:x:@.dp/#
+               .:css
+            .lambda
+               strings.split:x:@.dp/#
+                  .:/
+               strings.split:x:@strings.split/0/-
+                  .:.
+               if
+                  not-exists:x:"@.result/*/\"={@strings.split/0}\""
+                  .lambda
+                     unwrap:x:+/*/*
+                     add:x:@.result
+                        .
+                           .:x:@strings.split/0
+
+// Returning result to caller.
+return-nodes:x:@.result/*

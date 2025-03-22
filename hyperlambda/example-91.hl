@@ -1,46 +1,64 @@
 
-// How does CRUD slots in Hyperlambda
+// Create a Hyperlambda script that returns the Google OpenID provider configuration, generating a nonce if required.
+slots.create:magic.openid.providers.google
 
-// Hyperlambda has 4 basic CRUD slots, you can examples of these below.
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/createNonce
 
-// [data.create]
-data.create
-   table:table1
-   values
-      column1:value1
-      column2:value2
-      column3:value3
+   // Getting client ID for Google from configuration.
+   .client-id
+   set-value:x:@.client-id
+      config.get:"magic:oidc:google:client-id"
 
-// Read
-data.read
-   table:table1
+   // Checking to see if we've got Google provider configured.
+   if
+      not-null:x:@.client-id
+      .lambda
 
-   // Optional
-   limit:5
+         // Buffer for nonce.
+         .nonce
 
-   // Optional
-   offset:5
+         // Checking if caller wants us to generate a nonce.
+         if
+            eq:x:@.arguments/*/createNonce
+               .:bool:true
+            .lambda
 
-   // Optional
-   order
-      column1
-      column2
+               // Creating a unique nonce.
+               set-value:x:@.nonce
+                  crypto.random
+                     min:20
+                     max:30
 
-   // Optional
-   direction:desc
+               /*
+                * Storing nonce to avoid replay attacks.
+                * 
+                * Notice, nonce is only stored for 60 minutes, implying the configuration
+                * returned below can only be used within 60 minutes of having been generated.
+                * 
+                * And we store the issuer value in cache such that we can verify later that the id_token
+                * was created by the correct issuer.
+                */
+               cache.set:x:@.nonce
+                  value:"https://accounts.google.com"
+                  expiration:3600
 
-// Update
-data.update
-   table:table1
-   values
-      column1:new-value
-   where
-      and
-         id.eq:PRIMARY-KEY-OF-RECORD-TO-UPDATE
+               // Making sure we return nonce to caller.
+               add:x:@.lambda/@.lambda/*/add/*/*
+                  .
+                     nonce:x:@.nonce
+                     url:"https://accounts.google.com/o/oauth2/v2/auth"
+                     client_id:x:@.client-id
+                     response_type:id_token
+                     scope:openid email profile
 
-// Delete
-data.delete
-   table:table1
-   where
-      and
-         id.eq:PRIMARY-KEY-OF-RECORD-TO-UPDATE
+         // Returning providers to caller.
+         unwrap:x:+/*/*/*
+         add:x:../*/return
+            .
+               .
+                  name:Google
+                  issuer:"https://accounts.google.com"
+
+   // Returning result to caller.
+   return

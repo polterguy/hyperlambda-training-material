@@ -1,10 +1,11 @@
-// Using a double-quoted string with an escaped newline character
-.message:"Hello\nWorld"
-
-// Using a single-quoted string (literal, escapes are not processed)
-.text:'Hello\nWorld'
-
-// Using @ prefix for a multi-line string (preserves line breaks)
-.multi_line:@"First line
-Second line
-Third line"
+// [yaml2json] example no. 2
+.yaml:@"
+books:
+  - title: ""The Great Gatsby""
+    author: ""F. Scott Fitzgerald""
+    year: 1925
+  - title: ""1984""
+    author: ""George Orwell""
+    year: 1949
+"
+yaml2json:x:@.yaml

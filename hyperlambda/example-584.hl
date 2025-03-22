@@ -1,5 +1,6 @@
 
-// Example: Convert a string with letters and numbers to lowercase.
+// Example: Ends-with check is case-sensitive.
 
-// Result: "mixedcase123"
-strings.to-lower:MixedCase123
+// Returns false
+strings.ends-with:Hello
+   .:LLO

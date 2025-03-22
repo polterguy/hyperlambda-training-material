@@ -1,15 +1,23 @@
 
-// Ensure that the roles for paid users exists in the system
-signal:magic.auth.ensure-role
-   role:basic
-   description:A user with the basic subscription
+// Create a Hyperlambda script to demonstrate a switch case comparison evaluating lambda objects based on the expression's value.
+.source:foo
+.result
+switch:x:@.source
+   case:foo
 
-// Professional role.
-signal:magic.auth.ensure-role
-   role:professional
-   description:A user with the professional subscription
+      // Lambda object to evaluate if expression's value equals 'foo'.
+      set-value:x:@.result
+         .:Is foo
+   case:bar
 
-// Enterprise role.
-signal:magic.auth.ensure-role
-   role:enterprise
-   description:A user with the enterprise subscription
+      // Lambda object to evaluate if expression's value equals 'bar'.
+      set-value:x:@.result
+         .:Is bar
+   default
+
+      /*
+       * Lambda object to evaluate if expression is not matched to any
+       * of the above values.
+       */
+      set-value:x:@.result
+         .:None of the above

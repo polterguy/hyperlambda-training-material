@@ -1,6 +1,5 @@
-
-// Fetch a few film titles and release years using a raw SQL query
-data.connect:sakila
-   data.select:SELECT title, release_year FROM film LIMIT 3
-
-   // Executes the SQL directly on the database and returns up to 3 rows
+/**
+ * This example moves the folder "/backups/old/" to "/backups/archived/".
+ */
+io.folder.move:/backups/old/
+   .:/backups/archived/

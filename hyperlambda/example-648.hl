@@ -1,13 +1,2 @@
-// Build an HTTP GET endpoint that retrieves a paginated list of contacts from the CRM database.
-// Save as /modules/contacts/list.get.hl
-// It takes `limit` and `offset` as query parameters and returns matching records.
-.arguments
-   limit:int
-   offset:int
-
-data.connect:[generic|crm]
-   data.read
-      table:contacts
-      limit:x:@.arguments/*/limit
-      offset:x:@.arguments/*/offset
-   return-nodes:x:@data.read/*
+// Verifies the currently authenticated user belongs to root, admin or user roles
+auth.ticket.verify:root, admin, user

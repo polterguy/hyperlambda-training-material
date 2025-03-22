@@ -1,2 +1,10 @@
-// Clear all cache items starting out with 'foo.bar' as their key
-cache.clear:foo.bar
+/*
+ * This Hyperlambda snippet retrieves records where both `status = active` and `role = admin`.
+ */
+
+data.read
+   table:users
+   where
+      and
+         status.eq:active
+         role.eq:admin

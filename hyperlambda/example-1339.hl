@@ -1,8 +1,5 @@
+// Connects to crm PostgreSQL database using generic connection string
+pgsql.connect:[generic|crm]
 
-// Example: Trim specific characters from the beginning of a string.
-
-// The leading "xyz" will be removed
-strings.trim-start:xyzabcxyz
-   .:xyz
-
-// Result: "abcxyz"
+   // Notice, you can only de-reference the connection created above inside the 'scope' of the [pgsql.connect] slot
+   pgsql.select:select * from contacts

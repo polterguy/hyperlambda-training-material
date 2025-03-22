@@ -1,18 +1,13 @@
 
-// Create a Hyperlambda script to delete a task due with a specified ID.
+// Retrieves all shopping cart items for the current [session].
 .arguments
-   id:long
-.type:internal
+   _session:string
+.type:public
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/id
+// Opening up our database connection.
+data.connect:[generic|shopping-cart-demo]
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Deletes task due instance.
-tasks.schedule.delete:x:@.arguments/*/id
-
-// Returns success to caller.
-return-nodes
-   result:Success
+   // Reading items from our items table.
+   data.select:"\nselect i.item_id, i.quantity, p.name, p.description, p.image_url, p.price\n   from items i inner join products p on i.product_id = p.product_id\n   where i.session_id = @session"
+      @session:x:@.arguments/*/_session
+   return:x:@data.select/*

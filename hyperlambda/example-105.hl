@@ -1,11 +1,16 @@
 
-// Creates a bar chart with given categories and values
-.image
-image:charts.bar
-   filename:chart.png
-   width:int:600
-   height:int:300
-   data
-      Spring:int:2
-      Summer:int:5
-      Autumn:int:10
+// Vectorizing the specified [type].
+.arguments
+   type
+      type:string
+      mandatory:bool:true
+.icon:chat_bubble
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+
+// Vectorizing model.
+unwrap:x:+/*/*
+fork
+   signal:magic.ai.vectorise
+      type:x:@.arguments/*/type

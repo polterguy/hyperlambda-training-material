@@ -1,8 +1,11 @@
-
-// Example: Remove a substring by replacing it with an empty string.
-.sentence:Apples and oranges
-strings.replace:x:@.sentence
-   .:"and "
-   .:
-
-// Result: "Apples oranges" (removed "and ")
+// Connects to the 'aquarium' database and retrieves fish species from the 'fishes' table where the habitat is 'Freshwater'.
+pgsql.connect:aquarium
+   pgsql.read
+      table:fishes
+      columns
+         species
+         habitat
+      where
+         and
+            habitat:Freshwater
+      limit:int:5

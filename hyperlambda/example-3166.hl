@@ -1,26 +1,17 @@
 
-// Returns IDs of the specified type to caller
-.arguments
+// Create a Hyperlambda endpoint that saves the specified configuration object to appsettings.json, ensuring the user is authorized.
+.arguments:*
 
-   // Type of objects you want to retrieve. Mandatory.
-   type:string
+// Ensuring user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // Optional query for retrieval.
-   q:string
+// Converting input arguments to JSON.
+lambda2json:x:@.arguments/*
+   format:true
 
-   // Optional maximum number of objects to return.
-   limit:long
+// Saving the specified config object to the 'appsettings.json' file.
+config.save:x:@lambda2json
 
-   // Optional offset of where to start retrieving objects.
-   offset:long
-
-// Ensuring user is authorized to invoking endpoint.
-auth.ticket.verify:netsuite
-
-// Forwarding heavy lifting to workflow file.
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/modules/netsuite/workflows/workflows/netsuite-list-records.hl
-
-// Returning result to caller.
-return-nodes:x:@execute-file/*
+// Returning success to caller.
+return
+   result:success

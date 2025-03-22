@@ -1,22 +1,17 @@
-
-// Provide a Hyperlambda example where a boolean status is evaluated using a switch case with a default option.
-
-// Switch case comparison for boolean values.
-.status:bool:true
-.result
-switch:x:@.status
-   case:bool:true
-
-      // If status is true.
-      set-value:x:@.result
-         .:Status is active
-   case:bool:false
-
-      // If status is false.
-      set-value:x:@.result
-         .:Status is inactive
-   default
-
-      // If the value does not match true/false.
-      set-value:x:@.result
-         .:Invalid status
+// Creates a new invoice and checks for success
+.invoice.status:unknown
+http.post:"https://billing.example.com/api/v1/invoices"
+   convert:true
+   payload
+      customer_id:int:101
+      amount:decimal:299.99
+      currency:NOK
+if
+   and
+      mte:x:@http.post
+         .:int:200
+      lt:x:@http.post
+         .:int:300
+   .lambda
+      set-value:x:@.invoice.status
+         .:Invoice created successfully

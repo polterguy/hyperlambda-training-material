@@ -1,4 +1,8 @@
-// Validate [date] argument is between some date range
-validators.date:x:@.arguments/*/date
-   min:date:"2005-01-21T23:59:47"
-   max:date:"2023-01-21T23:59:47"
+// Sends invoice data to a billing system using HTTP POST
+http.post:"https://billing.example.com/api/v1/invoices"
+   convert:true
+   payload
+      customer_id:int:42
+      amount:decimal:199.95
+      currency:USD
+      due_date:date:"2025-04-15"

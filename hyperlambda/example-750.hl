@@ -1,6 +1,8 @@
-// Show me an example lambda object with 3 nodes, the third node having two children with values. Use random names and values.
-foo:bar
-foo:int:5
-foo
-   child1:its-value
-   child2:its-value
+// Create a MIME message with Markdown
+mime.create:multipart/mixed
+   entity:text/plain
+      content:Some text content
+   entity:text/markdown
+      headers
+         Content-Disposition:attachment; filename=README.md
+      content:Some Markdown content here

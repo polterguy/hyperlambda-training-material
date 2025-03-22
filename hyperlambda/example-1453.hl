@@ -1,12 +1,13 @@
-// Add several integer constants together
-math.add
-   .:int:1
+// Create a new RSA key pair and encrypt a message using its public key before finally decrypting it
+crypto.rsa.create-key
+   key-size:int:2048
 
-   // 1+2 = 3
-   .:int:2
+// Encrypt a message using RSA public key
+.message
+   content:Secret Message
+crypto.rsa.encrypt:x:@.message/*/content
+   public-key:x:@crypto.rsa.create-key/*/public
 
-   // 3+3 = 6
-   .:int:3
-
-   // 6+4 = 10 (final result)
-   .:int:4
+// Decrypting message we encrypted above
+crypto.rsa.decrypt:x:-
+   private-key:x:@crypto.rsa.create-key/*/private

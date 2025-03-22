@@ -1,2 +1,2 @@
-// How do I URL encode email argument?
-strings.url-encode:x:@.arguments/*/email
+// Execute the task named 'create-backup'
+tasks.execute:create-backup

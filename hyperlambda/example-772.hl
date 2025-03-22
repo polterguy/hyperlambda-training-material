@@ -1,12 +1,8 @@
-// Switch lambda
-.val:foo
-.result
-switch:x:@.val
+// Create a task, then schedule it
+tasks.create:task-id-555
+   .lambda
 
-   case:bar
-      set-value:x:@.result
-         .:Oops
+      log.info:It is the 10PM now.
 
-   case:foo
-      set-value:x:@.result
-         .:Success!
+tasks.schedule:task-id-555
+   repeats:**.**.22.00.00

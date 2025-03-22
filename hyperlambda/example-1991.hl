@@ -1,13 +1,12 @@
-// Executing the Hyperlambda changes the node hierarchy
-
-// This Hyperlambda
-.no:int:0
-set-value:x:@.no
-   math.modulo
-      .:int:20
-      .:int:7
-
-// Creates this result
-.no:int:6
-set-value:x:@.no
-   math.modulo:int:6
+// Hyperlambda that lists all files from '/modules/chinook/', check if they're Hyperlambda files, and if yes, adds the file path to a [.result] node
+.result
+io.file.list:/modules/chinook/
+for-each:x:@io.file.list/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         unwrap:x:+/*/*
+         add:x:@.result
+            .
+               .:x:@.dp/#

@@ -1,11 +1,12 @@
-// Updates the status of all employees in .company/staff/* to "active"
-.company
-   staff
-      emp1
-         name:Alice
-         status:inactive
-      emp2
-         name:Bob
-         status:inactive
-set-value:x:@.company/*/staff/*/*/status
-   .:active
+// While loop increments counter and adds items
+.list
+.i:int:0
+while
+   lt
+      get-value:x:@.i
+      .:int:3
+   .lambda
+      math.increment:x:@.i
+      add:x:@.list
+         .
+            item

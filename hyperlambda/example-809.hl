@@ -1,6 +1,10 @@
-// Example: Replace hansen with tjobing hansen
-.foo:thomas hansen
+/*
+ * This Hyperlambda snippet demonstrates the basic usage of `compose`.
+ *
+ * 1. The `compose` slot is used to combine multiple iterators.
+ */
 
-strings.replace:x:-
-   .:hansen
-   .:tjobing hansen
+compose
+   .:@.data
+   .:*
+   .:value

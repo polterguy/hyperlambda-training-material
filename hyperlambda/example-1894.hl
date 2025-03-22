@@ -1,8 +1,20 @@
+// Using [switch] with complex conditions for car part actions
+.action:replace
+.result
+switch:x:@.action
 
-// Example: Trim specific characters from the end of a string.
+   case:install
+      set-value:x:@.result
+         .:Installing the car part
 
-// The trailing "xyz" will be removed
-strings.trim-end:abcxyzxyz
-   .:xyz
+   case:remove
+      set-value:x:@.result
+         .:Removing the car part
 
-// Result: "abc"
+   case:replace
+      set-value:x:@.result
+         .:Replacing the car part
+
+   default
+      set-value:x:@.result
+         .:Invalid action

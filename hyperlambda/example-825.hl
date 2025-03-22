@@ -1,5 +1,7 @@
-// Return some cache item, setting its default value if not existing
-cache.try-get:cache-key
-   expiration:5
-   .lambda
-      return:Howdy world
+/*
+ * This Hyperlambda snippet is missing a required table name.
+ *
+ * Result: Throws exception
+ */
+
+data.read

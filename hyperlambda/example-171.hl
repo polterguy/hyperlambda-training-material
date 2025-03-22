@@ -1,7 +1,8 @@
-// Returns a configuration settings
-slots.create:generate.config
-   return-nodes
-      users:int:3
-      timeout:int:30
+// Connect to the "sakila" database using the default connection string (SQLite) and retrieve actors (default adapter from config)
+data.connect:sakila
 
-execute:generate.config
+   // Using our CRUD read slot
+   data.read
+
+      // Reads from the "actor" table (returns first 25 records by default)
+      table:actor

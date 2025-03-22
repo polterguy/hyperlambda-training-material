@@ -1,30 +1,10 @@
 
-// Returns all types of cloudlets the system supports.
+// Example: Use variables for the string, start index, and length.
+.text:Magic
+.start:int:1
+.len:int:3
+strings.substring:x:@.text
+   get-value:x:@.start
+   get-value:x:@.len
 
-// Accepts NO arguments!
-.arguments
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Opening up our database connection.
-data.connect:[generic|hub]
-
-   // Reading data from database.
-   data.read
-      table:plans
-      columns
-         name
-         description
-         cpu
-         memory
-         storage
-         price
-         enabled
-         max_upload
-         max_timeout
-         price_reference
-         bandwidth
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*
+// Result: "agi"

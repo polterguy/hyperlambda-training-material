@@ -1,5 +1,20 @@
-// Convert a value to an integer
 
-.src:5
-convert:x:-
-   type:int
+// Hyperlambda [if] with not equal condition
+.status:pending
+.action-required
+if
+   neq:x:@.status
+      .:complete
+   .lambda
+      set-value:x:@.action-required
+         .:bool:true
+
+/*
+ * JavaScript equivalent of Hyperlambda [if] with not equal condition
+ * const status = "pending";
+ * let actionRequired;
+ * 
+ * if (status !== "complete") {
+ * actionRequired = true;
+ * }
+ */

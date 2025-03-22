@@ -1,3 +1,21 @@
-// Divide 100 by 4
-math.divide:int:100
-   :int:4
+
+// Hyperlambda [if] with regex match
+.email:user@example.com
+.is-valid
+strings.matches:x:@.email
+   .:"^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+if
+   exists:x:@strings.matches/*
+   .lambda
+      set-value:x:@.is-valid
+         .:bool:true
+
+/*
+ * JavaScript equivalent of Hyperlambda [if] with regex match
+ * const email = "user@example.com";
+ * let isValid;
+ * 
+ * if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+ * isValid = true;
+ * }
+ */

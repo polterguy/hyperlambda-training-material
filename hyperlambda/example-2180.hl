@@ -1,12 +1,30 @@
-/*
- * This Hyperlambda snippet demonstrates an error when multiple nodes match.
- *
- * 1. The `.data` node has multiple children.
- * 2. The `get-value` slot is used with a wildcard selector `*`, which returns multiple nodes.
- * 3. This will cause a HyperlambdaException because `get-value` expects exactly one node.
- */
 
-.data
-   foo1:bar1
-   foo2:bar2
-get-value:x:@.data/*
+// Returns [max_urls] matching specified query by searching DuckDuckGo.
+.arguments
+   query
+      type:string
+      mandatory:bool:true
+   max_urls
+      type:int
+      default:int:10
+.icon:extension
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/query
+
+// Applying default values for optional arguments.
+validators.default:x:@.arguments
+   max_urls:int:10
+
+// Converting to integer to make sure we've got the right type.
+set-value:x:@.arguments/*/max_urls
+   convert:x:@.arguments/*/max_urls
+      type:int
+
+// Retrieving context.
+execute:magic.http.duckduckgo-search
+   query:x:@.arguments/*/query
+   max:x:@.arguments/*/max_urls
+
+// Returning result to caller.
+return-nodes:x:@execute/*

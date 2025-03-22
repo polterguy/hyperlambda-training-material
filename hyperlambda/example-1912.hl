@@ -1,6 +1,8 @@
+// Demonstrating nested [and] and [or] slots
+or
+   and
+      .:bool:true
+      .:bool:false
+   .:bool:true
 
-// Invokes some dynamic slot and sets the value of [.res] to the result of the invocation
-signal:SOME_DYNAMIC_SLOT
-.res
-set-value:x:@.res
-   get-value:x:@signal
+// Becomes true

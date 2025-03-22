@@ -1,24 +1,8 @@
-/*
- * Validates a session ID by POSTing it to an authentication API.
- * If the HTTP status code is within 200–299, the response content is returned.
- */
+// Returns ALL items (limit is -1) from table1 where field1 equals 'howdy'
+sql.read
+   table:table1
+   limit:-1
+   where
 
-.arguments
-   id:int
-
-http.post:"https://auth.example.com/api/validate-session"
-   convert:true
-   payload
-      session_id:x:@.arguments/*/id
-
-if
-   and
-      mte:x:@http.post
-         .:int:200
-      lt:x:@http.post
-         .:int:300
-   .lambda
-      yield
-         result:x:@http.post/*/content/*
-else
-   throw:Session validation failed
+      and
+         field1.eq:howdy

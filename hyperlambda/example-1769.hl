@@ -1,10 +1,6 @@
-slots.create:mySlot  
-   return-value:Hello
 
-// Check if 'mySlot' exists
-slots.exists:mySlot  
-// Yields true (slot is defined)
+// Example: No trim characters at start (string remains unchanged).
 
-// Check a slot name that doesn't exist
-slots.exists:noSuch  
-// Yields false (no such slot defined)
+// Result: "abc"
+strings.trim-start:abc
+   .:z

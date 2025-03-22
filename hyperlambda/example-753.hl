@@ -1,11 +1,6 @@
-// Show me all different ways we can create a string, with example data
+// Create a task with description.
+tasks.create:foo-bar-task-2
+   description:This task will do a little bit of foo and some bar afterwards.
+   .lambda
 
-// Single quotes
-.foo:'howdy world this is a string'
-
-// Double quotes
-.foo:"Howdy world, another string\nNew line here ..."
-
-// Multiline strings
-.foo:@"Notice how the new line doesn't end the string
-    here!"
+      log.info:Executing foo-bar-task-2

@@ -1,10 +1,35 @@
-/*
- * This Hyperlambda snippet incorrectly groups by `role` without using an aggregate function.
- */
 
-data.read
-   table:users
-   columns
-      role
-   group
-      role
+// CRUD endpoint that counts items from your Categories table in your northwind database
+.arguments
+   Categories.CategoryID.eq:long
+   Categories.CategoryName.like:string
+   Categories.CategoryName.eq:string
+   Categories.Description.like:string
+   Categories.Description.eq:string
+   Categories.Picture.like:string
+   Categories.Picture.eq:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-count
+
+// Opening up our database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
+
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:Categories
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

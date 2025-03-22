@@ -1,23 +1,17 @@
-// Hyperlambda [if] with else branch
-.status:inactive
-.display-class
-if
-   eq:x:@.status
-      .:active
-   .lambda
-      set-value:x:@.display-class
-         .:green
-else
-   set-value:x:@.display-class
-      .:red
 
-/* JavaScript equivalent of Hyperlambda [if] with else branch
-const status = "inactive";
-let displayClass;
+// Provide a Hyperlambda example with string variables, covering cases of colons, multi-line strings, and escaped characters.
 
-if (status === "active") {
-  displayClass = "green";
-} else {
-  displayClass = "red";
-}
-*/
+// No special characters, so no quotes required
+.text1:sample
+
+// Contains a colon, requiring quotes
+.text2:"sample:value"
+
+// Multi-line string, using @ notation
+.text3:"lineA\nlineB"
+
+// Alternative quoting with single quotes
+.text4:test
+
+// Escaped newline within a string
+.text5:"first\nsecond"

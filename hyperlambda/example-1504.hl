@@ -1,4 +1,6 @@
-// Shorthand mte with an expression as the left-hand side
-.val:int:7
-mte:x:@.val
-   .:int:5
+// Remove all nodes matching the expression (delete item2)
+.data
+   foo1
+   foo2
+   foo3
+remove-nodes:x:@.data/*/foo2

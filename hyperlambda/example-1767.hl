@@ -1,10 +1,8 @@
-// Create a temporary slot 'temp'
-slots.create:temp  
-   return-value:Temporary
 
-// Delete the dynamic slot 'temp'
-slots.delete:temp
+// Example: Trim specific characters from the beginning of a string.
 
-// Check if 'temp' still exists
-slots.exists:temp  
-// Returns false (since 'temp' was removed)
+// The leading "xyz" will be removed
+strings.trim-start:xyzabcxyz
+   .:xyz
+
+// Result: "abcxyz"

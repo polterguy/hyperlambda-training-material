@@ -1,22 +1,15 @@
-
-// Tracks an order in Shopify.
-.arguments
-   order:string
-.type:public
-
-// Retrieving secret and shop.
-.secret
-set-value:x:@.secret
-   config.get:"magic:shopify:secret"
-.shop
-set-value:x:@.shop
-   config.get:"magic:shopify:shop"
-
-// Invoking slot to do the heavy work.
-execute:shopify.orders.track
-   secret:x:@.secret
-   shop:x:@.shop
-   order_no:x:@.arguments/*/order
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+/*
+ * Example: Embed multiple inline expressions in a single string.
+ */
+strings.mixin:@"Sum {{
+math.add
+   .:int:1
+   .:int:2
+return:x:-
+}} and Product {{
+math.multiply
+   .:int:3
+   .:int:4
+return:x:-
+}}"
+// Result: "Sum 3 and Product 12"

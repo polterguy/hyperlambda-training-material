@@ -1,6 +1,9 @@
-/*
- * Example: String consisting entirely of trim characters (result is empty).
- */
-// Result: "" (empty string)
-strings.trim-end:"xxx"
-   .:"x"
+// Executing the Hyperlambda changes the node hierarchy
+
+// This Hyperlambda
+.no:int:0
+math.increment:x:@.no
+
+// Creates this result
+.no:int:1
+math.increment:x:@.no

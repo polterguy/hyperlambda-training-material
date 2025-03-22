@@ -1,48 +1,32 @@
 
-// Create a Hyperlambda action to hash a specified input using an optional algorithm (default is SHA 256). Validate the algorithm and return the hash result.
-.arguments
+// Create a global exception handler in Hyperlambda that logs error messages, URLs, and stack traces. It should check if the 'public' argument exists and is true or if the user has the 'root' role to decide whether to propagate the exception message to the client. If not, return a generic error message.
+log.error:x:@.arguments/*/message
+   url:x:@.arguments/*/path
+   exception:x:@.arguments/*/stack
 
-   // Notice, this is action syntax
-   input
-      type:string
-      mandatory:bool:true
-   algorithm
-      type:enum
-      mandatory:bool:false
-      values
-         .:sha1
-         .:md5
-         .:sha256
-         .:sha384
-         .:sha512
-.icon:settings
-
-// Sanity checking invocation.
-validators.enum:x:@.arguments/*/algorithm
-   .:sha1
-   .:md5
-   .:sha256
-   .:sha384
-   .:sha512
-
-// Checking if caller wants to override the default hashing algorithm.
+/*
+ * Notice, unless the [public] argument exists, and is true,
+ * we return a "generic" error to caller to make sure we don't
+ * disclose any security information originating from exceptions.
+ */
 if
-   and
-      exists:x:@.arguments/*/algorithm
-      not-null:x:@.arguments/*/algorithm
-      neq:x:@.arguments/*/algorithm
-         .:
+   or
+      auth.ticket.in-role:root
+      and
+         exists:x:@.arguments/*/public
+         or
+            get-value:x:@.arguments/*/public
+            convert:x:@.arguments/*/public
+               type:bool
    .lambda
 
-      // Overriding hashing algorithm by changing name of slot we invoke below.
-      set-name:x:../*/crypto.hash
-         strings.concat
-            .:crypto.hash.
-            get-value:x:@.arguments/*/algorithm
+      // Exception message is supposed to propagate to client.
+      set-value:x:../*/return/*/message
+         get-value:x:@.arguments/*/message
 
-// Hashing string.
-crypto.hash:x:@.arguments/*/input
-
-// Returning result to caller.
-yield
-   result:x:./-
+// Parametrizing return invocation.
+add:x:+
+   get-nodes:x:@.arguments/*/status
+   get-nodes:x:@.arguments/*/field
+return
+   message:Guru meditation, come back when Universe is in order!

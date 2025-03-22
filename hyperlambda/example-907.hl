@@ -1,4 +1,12 @@
-// Resize the specified image
-image.resize:/some-image.png
-   height:250
-   type:png
+
+// How do I traverse Hyperlambda nodes in C#?
+You can traverse Hyperlambda nodes in C# using the `HyperlambdaParser.Parse` method. Example:
+```csharp
+var root = HyperlambdaParser.Parse(hyperlambda);
+foreach (var idxChild in root.Children)
+{
+   var name = idxChild.Name;
+   var value = idxChild.Value;
+}
+```
+This loops through all child nodes and retrieves their names and values.

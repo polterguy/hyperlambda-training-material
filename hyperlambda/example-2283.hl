@@ -1,24 +1,27 @@
 
-// Create a Hyperlambda script that returns the setup status of the system, ensuring the user is authorized.
-.type:internal
+// Create a Hyperlambda snippet that executes [.lambda] only if both conditions are met.
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Checking if JWT secret has been changed.
-config.get:"magic:auth:secret"
+// Executes [.lambda] only if both conditions are met.
+.output
+.numA:int:6
+.numB:int:12
 if
-   or
-      null:x:@config.get
-      lt
-         strings.length:x:@config.get
-         .:int:50
+   and
+
+      // Less than check
+      lt:x:@.numA
+         .:int:7
+
+      // Greater than check
+      mt:x:@.numB
+         .:int:11
    .lambda
 
-      // System has not been setup.
-      return
-         result:bool:false
+      // Setting [.output] to true
+      set-value:x:@.output
+         .:bool:true
+else
 
-// Returns results of above invocations to caller.
-return
-   result:bool:true
+   // Setting [.output] to false
+   set-value:x:@.output
+      .:bool:false

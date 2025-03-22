@@ -1,6 +1,10 @@
-// Handle missing values in comparison
 
-.foo1
-eq
-   get-value:x:../*/.foo1
-   .:OK
+// Iterates through timestamps and logs them.
+.timestamps
+   time1:date:"2025-03-15T14:30:00.000Z"
+   time2:date:"2025-03-16T09:00:00.000Z"
+   time3:date:"2025-03-17T18:45:00.000Z"
+for-each:x:@.timestamps/*
+
+   // Logging each timestamp.
+   log.info:x:@.dp/#

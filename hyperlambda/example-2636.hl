@@ -1,27 +1,42 @@
 
-// Create a Hyperlambda action to execute a specified workflow file with optional arguments. Validate the workflow parameter and return the execution result.
+// Returns all cloudlets in the system.
 .arguments
-   workflow
-      type:workflow
-      mandatory:bool:true
+   name:string
+   limit:int
+   offset:int
+
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
    arguments
-      type:key-value
-      mandatory:bool:false
-.icon:settings
+      roles
+         .:root
+         .:gpt
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/workflow
+/*
+ * Returns the username of the currently authenticated user,
+ * or null if user isn't authenticated.
+ */
+execute:magic.workflows.actions.execute
+   name:username-get
+   filename:/misc/workflows/actions/security/username-get.hl
+   arguments
 
-// Parametrising [execute-file].
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*/arguments/*
+// Returns all cloudlets in the system.
+execute:magic.workflows.actions.execute
+   name:hub-cloudlets-get
+   filename:/modules/hub/workflows/actions/hub-cloudlets-get.hl
+   arguments
+      username:x:--/execute/=username-get/*/username
+      name:x:@.arguments/*/name
+      limit:x:@.arguments/*/limit
+      offset:x:@.arguments/*/offset
 
-// Executing file.
-execute-file:x:@.arguments/*/workflow
-
-// Parametrising [return] invocation.
-add:x:./*/return
-   get-nodes:x:@execute-file/*
-
-// Returning result of execution to caller.
-return
+// Returns the result of your last action.
+return-nodes:x:@execute/*

@@ -1,12 +1,33 @@
-// Delete an item by ID with authorization, specifying a short timeout
-http.delete:"https://api.example.com/items/123"
 
-   // attach query parameters instead of hardcoding them in URL
-   query
-      category:cars
+// Delete one record from your Artist table in your chinook database
+.arguments
 
-   // include Bearer token for auth if required by the API
-   token:XYZ_SECRET_TOKEN_123
+   // Primary key of record to delete, mandatory argument
+   ArtistId:long
 
-   // abort if no response within 5 seconds
-   timeout:int:5
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/ArtistId
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Artist
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

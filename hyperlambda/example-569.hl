@@ -1,17 +1,16 @@
-// Use nested data.connect to interact with two databases in one snippet
-data.connect:MainDB
-   data.read
 
-      // Query orders from MainDB
-      table:orders
+// Write a Hyperlambda script to return a specified log item based on its ID.
+.arguments
+   id:string
 
-   // Insert a log in LogsDB
-   data.connect:LogsDB
-      data.create
-         table:log_storage
-         values
-            message:"Checked orders"
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   data.read
-      // Back to MainDB connection (still open) to re-query orders
-      table:orders
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+
+// Invoking slot responsible for returning item.
+log.get:x:@.arguments/*/id
+
+// Returning result of above invocation to caller.
+return-nodes:x:-/*

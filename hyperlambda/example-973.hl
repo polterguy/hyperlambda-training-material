@@ -1,10 +1,11 @@
-/*
- * This Hyperlambda snippet demonstrates the basic usage of `compose`.
- *
- * 1. The `compose` slot is used to combine multiple iterators.
- */
-
-compose
-   .:@.data
-   .:*
-   .:value
+// How can I use [and] to require two conditions to be true?
+.a:bool:true
+.b:bool:true
+.status
+if
+   and
+      get-value:x:@.a
+      get-value:x:@.b
+   .lambda
+      set-value:x:@.status
+         .:Both are true

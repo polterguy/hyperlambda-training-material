@@ -1,7 +1,19 @@
-/*
- * Formatting a large number with thousand separators.
- */
 
-.foo:int:1234567
-format:x:-
-   pattern:"{0:N0}"
+// Scrape the specified URL and returns the raw HTML
+.arguments
+
+   // Mandatory argument and the actual URL to scrape.
+   url:string
+
+// Making endpoint public allows it to be consumed as an AI function
+.type:public
+
+// Invokes some HTTP GET resource.
+execute:magic.workflows.actions.execute
+   name:http-get
+   filename:/misc/workflows/actions/http/http-get.hl
+   arguments
+      url:x:@.arguments/*/url
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

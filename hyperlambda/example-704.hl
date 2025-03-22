@@ -1,16 +1,8 @@
-
-// Generate a Hyperlambda snippet that evaluates specified [.check] if condition evaluates to true.
-
-// Evaluates specified [.check] if condition evaluates to true.
-.check:bool:true
-if
-   eq:x:@.check
-      .:bool:true
-   .lambda
-
-      // Lambda evaluates if condition is true.
-      log.info:[.check] is true
-else
-
-   // Lambda evaluated if condition is NOT true.
-   log.info:[.check] is false
+// Sends an email using SMTP settings from configuration
+mail.smtp.send
+   message
+      to
+         Jane Doe:jane@doe.com
+      subject:Subject line
+      entity:text/plain
+         content:Body content

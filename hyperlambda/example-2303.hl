@@ -1,18 +1,10 @@
-
-// Create a Hyperlambda action to ensure a specified 'value' is given and matches one of the specified 'values'. Validate mandatory fields.
-.arguments
-   value
-      type:string
-      mandatory:bool:true
-   values
-      type:array
-      mandatory:bool:true
-.icon:shield
-
-// Parametrising validator.
-add:x:./*/validators.enum
-   get-nodes:x:@.arguments/*/values/*
-
-// Invoking validators, making sure value is mandatory.
-validators.mandatory:x:@.arguments/*/value
-validators.enum:x:@.arguments/*/value
+// Adds a user's two financial balances and stores the result in .totals/sum
+.user
+   balance1:decimal:125.75
+   balance2:decimal:320.50
+.totals
+   sum
+set-value:x:@.totals/*/sum
+   math.add
+      get-value:x:@.user/*/balance1
+      get-value:x:@.user/*/balance2

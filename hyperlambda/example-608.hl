@@ -1,8 +1,3 @@
-
-// Example: Extract entire string by using its full length.
-.subject:Test
-strings.substring:x:@.subject
-   .:0
-   .:4
-
-// Result: "Test"
+// Decrement [.arg]'s value by 2
+math.decrement:x:@.arg
+   .:int:2

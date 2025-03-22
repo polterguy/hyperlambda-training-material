@@ -1,7 +1,10 @@
+// How the named sibling node works
+.data:value
+get-value:x:@.data
 
-// Generate a Hyperlambda snippet that scrapes a BBC News article.
-
-// Example snippet scraping a BBC News article.
-signal:magic.http.scrape-url
-   url:"https://www.bbc.com/news/world-65973926"
-   semantics:bool:true
+/*
+ * The above named sibling iterator traverses the node hierarchy from the identity node and upwards,
+ * until it finds a node with the name specified. In the example above the name is `.data`.
+ *
+ * After execution, the value of the [get-value] slot will become 'value'
+ */

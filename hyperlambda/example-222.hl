@@ -1,46 +1,21 @@
 
-// Develop a function to delete an existing Stripe subscription using a specified subscription ID. The function should validate the subscription ID, retrieve the Stripe API token, and construct the appropriate REST URL. It should make a DELETE request to the Stripe API to remove the subscription. Handle any errors by logging and throwing exceptions to ensure robust error management.
-.arguments
-   subscription_id
-      type:string
-      mandatory:bool:true
-.icon:payment
+// Create a new order and update product stock in one atomic transaction
+data.connect:shopDB
+   data.transaction.create
+      data.create
+         table:orders
+         values
+            customer_id:42
+            total:100.00
+      data.update
+         table:products
+         values
+            stock:long:50
+         where
+            and
+               product_id:123
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/subscription_id
+      // Commit the transaction to save both changes
+      data.transaction.commit
 
-// Retrieving token to use for invocations towards Stripe.
-.token
-set-value:x:-
-   strings.concat
-      .:"Bearer "
-      config.get:"magic:stripe:token"
-
-// Creating our REST URL.
-.url
-set-value:x:@.url
-   strings.concat
-      .:"https://api.stripe.com/v1/subscriptions/"
-      get-value:x:@.arguments/*/subscription_id
-
-// Invoking Stripe REST API.
-http.delete:x:@.url
-   headers
-      Authorization:x:@.token
-   convert:true
-
-// Sanity checking above invocation.
-if
-   mte
-      get-value:x:@http.delete
-      .:int:400
-   .lambda
-
-      // Oops, something went wrong ...!!
-      lambda2hyper:x:@http.post
-      log.error:Something went wrong while invoking Stripe API to delete subscription
-         result:x:@lambda2hyper
-         provider:Stripe
-      throw:Something went wrong while invoking Stripe API to delete subscription
-         public:true
-         status:500
+   // Both the new order and the stock update are committed together

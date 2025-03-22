@@ -1,31 +1,30 @@
 
-// Write a Hyperlambda script to install a specified module by executing all magic.startup Hyperlambda files inside it.
-slots.create:magic.modules.install-module
+// Delete one record from your Genre table in your chinook database.
+.arguments
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/module
+   // Primary key of record to delete, mandatory argument
+   GenreId:long
 
-   /*
-    * Loops through all files recursively from within the module's
-    * "magic.startup" folder.
-    */
-   strings.concat
-      .:/modules/
-      get-value:x:@.arguments/*/module
-      .:/
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:admin,basic
+validators.mandatory:x:@.arguments/*/GenreId
 
-   // Executing all magic.startup Hyperlambda files inside module.
-   io.file.list-recursively:x:@strings.concat
-   for-each:x:@io.file.list-recursively/*
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
 
-      // Checking if file is a startup Hyperlambda file.
-      if
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Genre
+      where
          and
-            strings.contains:x:@.dp/#
-               .:/magic.startup/
-            strings.ends-with:x:@.dp/#
-               .:.hl
-         .lambda
 
-            // Executing file.
-            io.file.execute:x:@.dp/#
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

@@ -1,17 +1,29 @@
+/*
+ * This Hyperlambda snippet demonstrates retrieving exception details.
+ * The `catch` block extracts information such as message, status, and type from the thrown exception.
+ * Expected behavior:
+ * - `.throws` should be `true`.
+ * - `.status` should be `500` (default error status).
+ * - `.public` should be `false`.
+ * - `.message` should be `"foo"`.
+ * - `.type` should be `"magic.node.extensions.HyperlambdaException"`.
+ */
 
-// Write a Hyperlambda script to list all folders in a specified folder recursively, with options to display hidden and system folders.
-.arguments
-   folder:string
-   sys:bool
-.type:internal
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Listing all folders in specified folder.
-io.folder.list-recursively:x:@.arguments/*/folder
-   display-hidden:bool:true
-   display-system:x:@.arguments/*/sys
-
-// Returning results of above invocation to caller.
-return-nodes:x:@io.folder.list-recursively/*
+.throws:bool:false
+.status
+.public
+.message
+.type
+try
+   throw:foo
+.catch
+   set-value:x:@.throws
+      .:bool:true
+   set-value:x:@.status
+      get-value:x:@.arguments/*/status
+   set-value:x:@.public
+      get-value:x:@.arguments/*/public
+   set-value:x:@.message
+      get-value:x:@.arguments/*/message
+   set-value:x:@.type
+      get-value:x:@.arguments/*/type

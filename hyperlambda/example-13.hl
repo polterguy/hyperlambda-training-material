@@ -1,34 +1,21 @@
 
-// Lists all database in your MySQL instance.
-slots.create:magic.db.mysql.databases
+// Search the web
+.arguments
 
-   // Opens up our connection
-   .connection:[information_schema]
-   if
-      and
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .
-         not
-            eq
-               get-value:x:@.arguments/*/connection-string
-               .:
-      .lambda
-         set-value:x:@.connection
-            strings.concat
-               .:[
-               get-value:x:@.arguments/*/connection-string
-               .:|
-               .:information_schema]
-   mysql.connect:x:@.connection
+   // Mandatory argument being the actual query to submit to DuckDuckGo.
+   query:string
 
-      // Runs our query
-      mysql.select:show databases
+   // Optional argument being the maximum number of tokens to return.
+   max_tokens:int
+.type:public
 
-      // Renaming "Database" nodes.
-      set-name:x:@mysql.select/*/*
-         .:db
+// Returns [max_tokens] context for the specified [query] by searching DuckDuckGo.
+execute:magic.workflows.actions.execute
+   name:openai-context-from-search
+   filename:/modules/openai/workflows/actions/openai-context-from-search.hl
+   arguments
+      query:x:@.arguments/*/query
+      max_tokens:x:@.arguments/*/max_tokens
 
-      // Returns the remaining databases to caller.
-      return-nodes:x:@mysql.select/*
+// Returns the result of your last action.
+return-nodes:x:@execute/*

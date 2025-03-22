@@ -1,3 +1,14 @@
-// Invokes an HTTP GET endpoint, and returns the result.
-http.get:"https://jsonplaceholder.typicode.com/users/1"
-   convert:true
+// Exchange name with value, and value with name, in all nodes, for the following [.data] segment
+.data
+   n1:v1
+      n2:v2
+   n3:v3
+      n4:v4
+         n5:v5
+   n6:v6
+for-each:x:@.data/**
+   get-name:x:@.dp/#
+   set-name:x:@.dp/#
+      get-value:x:@.dp/#
+   set-value:x:@.dp/#
+      get-value:x:@get-name

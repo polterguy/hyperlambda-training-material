@@ -1,11 +1,10 @@
-// The prophecy foretells a name, which we retrieve dynamically.
+// Retrieve a list of items with a filter, automatically parsing JSON response
+http.get:"https://api.example.com/items"
 
-.prophecy:hero-of-time
-.legends
-   hero-of-time:Link
-   dark-lord:Ganon
-   sage:Zelda
+   // attach query parameters instead of hardcoding them in URL
+   query
+      category:books
+      limit:10
 
-get-value:x:@.legends/*/{@.prophecy}
-
-// The result is "Link" since the prophecy node references "hero-of-time".
+   // auto-convert JSON response to lambda object
+   convert:bool:true

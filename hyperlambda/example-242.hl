@@ -1,21 +1,18 @@
-/*
- * Sends a plain text email where 'to', 'subject', and 'body' are dynamically
- * retrieved from other nodes using expressions.
- */
 
-.recipient-email:john.doe@example.com
-.email-subject:Greetings
-.email-body:Hello John, this is a dynamically generated email.
+// Executing the following Hyperlambda results in the following
 
-// Unwrapping all descendant nodes of [mail.smtp.send]
-unwrap:x:+/**
-mail.smtp.send
-   message
-      to
-         .
-            email:x:@.recipient-email
-      subject:x:@.email-subject
-      entity:text/plain
-         content:x:@.email-body
+// When executing the following Hyperlambda
+data.connect:magic
+   database-type:sqlite
+   data.create
+      database-type:sqlite
+      table:log_entries
+      values
+         content:Foo bar log content
+         type:info
 
-// Notice, when using [mail.smtp.send] with expressions we HAVE to invoke [unwrap] to evaluate these BEFORE we execute the slot.
+// We end up with this result
+data.connect
+   data.create:long:75152
+
+// Notice how lists are declared with nodes having names of "." or even sometimes ""

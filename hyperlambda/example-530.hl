@@ -1,33 +1,35 @@
 
-// Counts items from your CustomerDemographics table in your northwind database
+// CRUD Hyperlambda file that deletes one record from your categories table in your cms database
 .arguments
-   CustomerDemographics.CustomerTypeID.like:string
-   CustomerDemographics.CustomerTypeID.eq:string
-   CustomerDemographics.CustomerDesc.like:string
-   CustomerDemographics.CustomerDesc.eq:string
+
+   // Primary key of record to delete, mandatory argument
+   id:long
 
 // Meta data description for endpoint
-.description:Counts items from your CustomerDemographics table in your northwind database
 
 // Type of endpoint
-.type:crud-count
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/id
 
 // Opening up our database connection.
-data.connect:[generic|northwind]
+data.connect:[generic|cms]
    database-type:sqlite
-   add:x:+/*/where/*
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
       get-nodes:x:@.arguments/*
 
-   // Reading data from database.
-   data.read
+   // Deleting item from database.
+   data.delete
       database-type:sqlite
-      table:CustomerDemographics
-      columns
-         count(*)
-            as:count
+      table:categories
       where
          and
-      limit:long:1
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

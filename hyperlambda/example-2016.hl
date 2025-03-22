@@ -1,9 +1,18 @@
+// Hyperlambda that searches for specified query.
+.arguments
+   query:string
+   full_query:string
 
-// Create a task that executes on two specific dates, in addition to repeating every 3 hours and 5 seconds
-tasks.create:foo-bar-task-3
-   due:date:"2025-01-01T23:59:27.000"
-   repeats:5.seconds
-   repeats:3.hours
-   due:date:"2030-01-01T23:59:27.000"
-   .lambda
-      log.info:Executing foo-bar-task-2
+execute:magic.workflows.actions.execute
+   name:execute-workflow
+   filename:/misc/workflows/actions/misc/execute-workflow.hl
+   arguments
+      workflow:/modules/openai/workflows/workflows/keyword-context-and-vss-search.hl
+      arguments
+         _type:csregs2
+         query:x:@.arguments/*/query
+         full_query:x:@.arguments/*/full_query
+         max_tokens:int:12000
+
+// Returns the result of last action
+return-nodes:x:@execute/*

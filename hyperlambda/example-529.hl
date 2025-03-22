@@ -1,53 +1,18 @@
 
-// Count unique and distinct items from your CustomerDemographics table in your northwind database
-.arguments
+// Create a Hyperlambda endpoint that saves the specified configuration object to appsettings.json, ensuring the user is authorized.
+.arguments:*
+.type:internal
 
-   // Argument is mandatory and must be in the format of TABLE_NAME.COLUMN_NAME
-   distinct_column:string
-   CustomerDemographics.CustomerTypeID.like:string
-   CustomerDemographics.CustomerTypeID.eq:string
-   CustomerDemographics.CustomerDesc.like:string
-   CustomerDemographics.CustomerDesc.eq:string
+// Ensuring user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Meta data description for endpoint
-.description:Count unique and distinct items from your CustomerDemographics table in your northwind database
+// Converting input arguments to JSON.
+lambda2json:x:@.arguments/*
+   format:true
 
-// Type of endpoint
-.type:crud-count-distinct
+// Saving the specified config object to the 'appsettings.json' file.
+config.save:x:@lambda2json
 
-// Sanity checking that distinct column was passed in.
-validators.mandatory:x:@.arguments/*/distinct_column
-
-// Sanity checking distinct column's name.
-validators.enum:x:@.arguments/*/distinct_column
-   .:CustomerDemographics.CustomerTypeID
-   .:CustomerDemographics.CustomerDesc
-
-// Opening up our database connection.
-data.connect:[generic|northwind]
-   database-type:sqlite
-
-   // Making sure we're using correct function.
-   set-name:x:./*/data.read/*/columns/*/distinct_functor
-      strings.concat
-         .:"count(distinct "
-         get-value:x:@.arguments/*/distinct_column
-         .:)
-
-   // Removing distinct argument to simplify adding other arguments.
-   remove-nodes:x:@.arguments/*/distinct_column
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:CustomerDemographics
-      columns
-         distinct_functor
-            as:count
-      where
-         and
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+// Returning success to caller.
+return
+   result:success

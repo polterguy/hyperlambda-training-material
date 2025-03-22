@@ -1,16 +1,27 @@
-// Changes the value of all nodes having a name of [foo]
-.data
-   foo
-      bar
-   hello
-      howdy
-         foo
-      some-node
-         some-other-node
-            foo
 
-// ** expression yields ALL descendants
-set-value:x:@.data/**/foo
-   .:touched
+// Write a Hyperlambda snippet that determines if conditions are satisfied and executes [.lambda].
 
-// After execution, all above nodes having the name of 'foo' will have their values changed
+// Determines if conditions are satisfied and executes [.lambda].
+.status
+.metricX:int:5
+.metricY:int:15
+if
+   or
+
+      // Less than condition
+      lt:x:@.metricX
+         .:int:6
+
+      // Greater than condition
+      mt:x:@.metricY
+         .:int:14
+   .lambda
+
+      // Setting [.status] to true
+      set-value:x:@.status
+         .:bool:true
+else
+
+   // Setting [.status] to false
+   set-value:x:@.status
+      .:bool:false

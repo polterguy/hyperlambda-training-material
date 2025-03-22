@@ -1,9 +1,13 @@
-// Executing the Hyperlambda changes the node hierarchy
-
-// This Hyperlambda
-math.add
-   .:int:20
-   .:int:7
-
-// Creates this result
-math.add:int:27
+// Create Hyperlambda file that returns true if a file specified as an argument exists on the server.
+.arguments
+   file:string
+   query:string
+io.file.load:x:@.arguments/*/file
+if
+   strings.contains:x:@io.file.load
+      .:x:@.arguments/*/query
+   .lambda
+      return
+         result:bool:true
+return
+   result:bool:false

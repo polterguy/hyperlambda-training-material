@@ -1,16 +1,34 @@
 
-// Create a Hyperlambda snippet that formats user profile details.
+// Lists all database in your MySQL instance.
+slots.create:magic.db.pgsql.databases
 
-// Hyperlambda file that formats user profile details.
-.arguments
-   username:string
-   role:string
-   country:string
-strings.concat
-   get-value:x:@.arguments/*/username
-   .:" is a "
-   get-value:x:@.arguments/*/role
-   .:" from "
-   get-value:x:@.arguments/*/country
-yield
-   result:x:@strings.concat
+   // Opens up our connection
+   .connection:[postgres]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               .:postgres]
+   pgsql.connect:x:@.connection
+
+      // Runs our query
+      pgsql.select:select datname from pg_database
+
+      // Renaming "Database" nodes.
+      set-name:x:@pgsql.select/*/*
+         .:db
+
+      // Returns the remaining databases to caller.
+      return-nodes:x:@pgsql.select/*

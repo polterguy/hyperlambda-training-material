@@ -1,4 +1,13 @@
 
-// Define the version and module name for a Stripe integration module. Ensure the version is set to 'v2.0.0' and the module name is 'stripe'. This setup is crucial for maintaining version control and module identification within the system.
-version:v2.0.0
-module_name:stripe
+// Generate a Hyperlambda snippet that fetches a todo item from an API.
+
+// Fetches a todo item from an API.
+http.get:"https://jsonplaceholder.typicode.com/todos/1"
+
+   // Converts response.
+   convert:true
+
+// Sets [.task] to the todo title
+.task
+set-value:x:@.task
+   get-value:x:@http.get/*/content/*/title

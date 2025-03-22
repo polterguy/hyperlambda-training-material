@@ -1,16 +1,13 @@
-// Define a DELETE endpoint that removes a user based on their unique ID.
-// Filename - /modules/users/delete.delete.hl
-// Only admin users can perform this action, and the ID is passed as a query parameter.
 
-.arguments
-   id:int
+// Write a Hyperlambda script to ensure the cache folder exists and empty it for JavaScript files.
+if
+   not
+      io.folder.exists:/etc/cache/
+   .lambda
+      io.folder.create:/etc/cache/
+else
 
-auth.ticket.verify:admin
-
-data.connect:[generic|users]
-   data.delete
-      table:users
-      where
-         and
-            id.eq:x:@.arguments/*/id
-   return-nodes:x:@data.delete/*
+   // Empties cache folder for JavaScript files.
+   io.file.list:/etc/cache/
+   for-each:x:@io.file.list/*
+      io.file.delete:x:@.dp/#

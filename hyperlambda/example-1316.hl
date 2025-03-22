@@ -1,27 +1,18 @@
 
-// Write a Hyperlambda snippet that determines if conditions are satisfied and executes [.lambda].
+// Provide a Hyperlambda example where [.lambda] runs when [.message] is different from Welcome Home.
 
-// Determines if conditions are satisfied and executes [.lambda].
-.status
-.metricX:int:5
-.metricY:int:15
+// Runs [.lambda] when [.message] is different from Welcome Home.
+.message:Welcome Home
 if
-   and
 
-      // Less than condition
-      lt:x:@.metricX
-         .:int:6
-
-      // Greater than condition
-      mt:x:@.metricY
-         .:int:14
+   // Condition ensures inequality.
+   neq:x:@.message
+      .:Welcome Home
    .lambda
 
-      // Setting [.status] to true
-      set-value:x:@.status
-         .:bool:true
+      // Runs when [.message] is different.
+      log.info:[.message] is NOT Welcome Home
 else
 
-   // Setting [.status] to false
-   set-value:x:@.status
-      .:bool:false
+   // Runs when [.message] is exactly Welcome Home.
+   log.info:[.message] is Welcome Home

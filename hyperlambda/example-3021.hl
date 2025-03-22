@@ -1,19 +1,19 @@
 
-// Hyperlambda endpoint taking arguments. The SQL query selects distinct email, first name, last name, and genre name of customers who listen to rock music from the Chinook database.
+// Returns a single plan based on size.
 .arguments
-   filter:string
+   size
+      type:string
+      mandatory:bool:true
 
-// Connecting to database.
-data.connect:chinook
-   database-type:sqlite
+// Returning correct price_reference according to size
+switch:x:@.arguments/*/size
+   case:small
+      return
+         price_reference:price_1OfS7kCoiv3SyDZGr1droJZF
+   case:large
+      return
+         price_reference:price_1OfS8NCoiv3SyDZGCyJh8X62
+   default
 
-   // Parametrizing [data.select].
-   add:x:./*/data.select
-      get-nodes:x:@.arguments/*
-
-   // Executing [data.select] slot with our SQL.
-   data.select:"\n/*\n * Selects details from all customers that are listening to rock.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect distinct c.Email, c.FirstName, c.LastName, g.name\n  from Customer c\n    inner join Invoice i on c.CustomerId = i.CustomerId\n    inner join InvoiceLine ii on i.InvoiceId = ii.InvoiceId\n    inner join Track t ON ii.TrackId = t.TrackId\n    inner join Genre g ON t.GenreId = g.GenreId\n  where g.Name like @filter\n  order by c.Email\n"
-      database-type:sqlite
-
-   // Returning a result of above invocation to caller.
-   return-nodes:x:@data.select/*
+      // Oops ...!!
+      throw:I can only handle small and large size

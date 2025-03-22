@@ -1,16 +1,4 @@
+// Returns the operating system to caller
+system.os
 
-// Provide a Hyperlambda example where a new order is inserted into the 'ecommerce_db' database and its 'orders' table.
-
-// Inserts a new order into the "ecommerce_db" database and its "orders" table.
-data.connect:ecommerce_db
-   database-type:mssql
-
-   // Storing order details.
-   data.create
-      database-type:mssql
-      table:orders
-      values
-         order_id:int:12345
-         user_id:int:1001
-         total:decimal:199.99
-         order_date:date:"2025-04-01T00:00:00.000"
+// Results in (for Mac); Darwin 23.1.0 Darwin Kernel Version 23.1.0: Mon Oct  9 21:32:11 PDT 2023; root:xnu-10002.41.9~7/RELEASE_ARM64_T6030

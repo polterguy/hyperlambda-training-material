@@ -1,17 +1,30 @@
 
-// Generate a Hyperlambda snippet covering string assignments, multi-line text, and escape sequences.
+// Create a Hyperlambda script for an endpoint that counts items in the questionnaires table in the magic database, ensuring the user is authorized and handling optional filters.
+.arguments
+   questionnaires.name.like:string
+   questionnaires.name.eq:string
+   questionnaires.type.like:string
+   questionnaires.type.eq:string
 
-// Basic assignment without quotes
-.field1:dataItem
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Requires quotes for colon
-.field2:"log:entry"
+// Opening up our database connection.
+data.connect:[generic|magic]
+   database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
 
-// Multi-line notation
-.field3:"Header\nFooter"
+   // Reading data from database.
+   data.read
+      database-type:sqlite
+      table:questionnaires
+      columns
+         count(*)
+            as:count
+      where
+         and
+      limit:long:1
 
-// Alternative quote usage
-.field4:line-segment
-
-// Escape sequence example
-.field5:"next\nstep"
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

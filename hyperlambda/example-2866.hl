@@ -1,26 +1,31 @@
 
-// Write a Hyperlambda script to invoke a specified action with given values.
+// Create a Hyperlambda script for a CRUD create endpoint that creates an item in the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
 .arguments
-   action:string
-   values:*
+   name:string
+   description:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/action
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Figuring out what slot to invoke.
-.slot
-set-value:x:@.slot
-   strings.concat
-      .:magic.questionnaires.action.
-      get-value:x:@.arguments/*/action
+// Sanity checking invocation
+validators.regex:x:@.arguments/*/name
+   regex:"^[A-Za-z0-9\\-_]*$"
 
-// Parametrising slot.
-add:x:./*/signal
-   get-nodes:x:@.arguments/*/values/*
+// Opening up database connection.
+data.connect:[generic|magic]
 
-// Invoking slot.
-signal:x:@.slot
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
 
-// Returning success to caller.
-return
-   result:success
+   // Creating our record.
+   data.create
+      table:roles
+      return-id:bool:false
+      values
+
+   // Returning result of above invoction to caller.
+   response.status.set:201
+   unwrap:x:+/*
+   return
+      result:success

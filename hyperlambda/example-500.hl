@@ -1,11 +1,27 @@
 
-/*
- * Runs during startup of Magic, and basically just ensures the module's database exists,
- * and is updated by running migration scripts after attempting to create the database.
- * 
- * If the database doesn't exist, this script will create it by executing the "white-label.xxx.sql"
- * SQL file where xxx is your currently default database type.
- */
-signal:magic.modules.ensure-database
-   module:white-label
-   database:white-label
+// Create a Hyperlambda action to execute a specified workflow file with optional arguments. Validate the workflow parameter and return the execution result.
+.arguments
+   workflow
+      type:workflow
+      mandatory:bool:true
+   arguments
+      type:key-value
+      mandatory:bool:false
+.icon:settings
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/workflow
+
+// Parametrising [execute-file].
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*/arguments/*
+
+// Executing file.
+execute-file:x:@.arguments/*/workflow
+
+// Parametrising [return] invocation.
+add:x:./*/return
+   get-nodes:x:@execute-file/*
+
+// Returning result of execution to caller.
+return

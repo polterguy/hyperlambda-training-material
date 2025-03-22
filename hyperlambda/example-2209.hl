@@ -1,4 +1,14 @@
-// This example hashes a string using SHA384 and returns the hash in fingerprint format.
-.data:Secure your data
-crypto.hash.sha384:x:@.data
-   format:fingerprint
+
+// Create a Hyperlambda script that returns a specified configuration setting using a 'key' argument. The key is mandatory and should be a string. Include an icon for settings.
+.arguments
+   key:string
+
+// This becomes the icon in the toolbox
+.icon:settings
+
+// Retrieves config entry.
+config.get:x:@.arguments/*/key
+
+// Returns result of above invocation to caller.
+yield
+   value:x:@config.get

@@ -1,5 +1,9 @@
-
-// Example: Mix in a slot that returns a string to be inserted.
-strings.mixin:"Hello, {{\nstrings.to-upper:world\nreturn:x:-\n}}!"
-
-// Result: "Hello, WORLD!"
+// Check if the file 'README.md' includes the keyword 'Hyperlambda'
+io.file.load:/README.md
+if
+   strings.contains:x:@io.file.load
+      .:Hyperlambda
+   .lambda
+      log.info:"'Hyperlambda' found in file"
+else
+   log.info:"'Hyperlambda' not found in file"

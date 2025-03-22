@@ -1,5 +1,8 @@
-/**
- * This example tries to load a non-existing file "/docs/missing.txt".
- * It should throw an error.
- */
-io.file.load:/docs/missing.txt
+
+// Example: Concatenate strings when one part is empty.
+strings.concat
+   .:Hello
+   .:
+   .:World
+
+// Result: "HelloWorld"

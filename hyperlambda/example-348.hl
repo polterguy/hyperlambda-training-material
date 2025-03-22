@@ -1,6 +1,9 @@
 /*
- * Example: Check if a string ends with itself.
+ * Retrieves a translation string from the `.translations` node based on a dynamic language code.
+ *
+ * For example, if `.language` contains `"fr"`, the full expression becomes:
+ * `@.translations/*/fr/*/greeting`
+ *
+ * Perfect for dynamic internationalization and localization.
  */
-// Returns true
-strings.ends-with:Test
-   .:Test
+.translated-greeting:x:@.translations/*/{@.language}/*/greeting

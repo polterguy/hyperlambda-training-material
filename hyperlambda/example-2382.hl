@@ -1,19 +1,13 @@
 
-// Limit the slots that can be invoked within a code block
-.result
-whitelist
-   vocabulary
-      set-value
-      return
-   .lambda
+// Write a Hyperlambda snippet that fetches album details from an API.
 
-      // Allowed: this uses whitelisted [set-value]
-      set-value:x:@.result
-         .:foo
+// Fetches album details from an API.
+http.get:"https://jsonplaceholder.typicode.com/albums/1"
 
-      // Disallowed if dot is removed: [add] is not whitelisted
-      .add:x:@.result
-         .
-            extra:bar
-      return
-         status:success
+   // Converts JSON response.
+   convert:true
+
+// Sets [.album_title] to the album title
+.album_title
+set-value:x:@.album_title
+   get-value:x:@http.get/*/content/*/title

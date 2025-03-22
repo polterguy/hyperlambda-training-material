@@ -1,6 +1,16 @@
-// Example: Capitalise a string
-strings.capitalize:thomas
-
 /*
- * Resulting in "Thomas" after invocation.
+ * Evaluates different cases based on a variable.
  */
+
+.value:hello
+.result
+switch:x:@.value
+   case:hello
+      set-value:x:@.result
+         .:Matched Hello!
+   case:world
+      set-value:x:@.result
+         .:Matched World!
+   default
+      set-value:x:@.result
+         .:No match found.

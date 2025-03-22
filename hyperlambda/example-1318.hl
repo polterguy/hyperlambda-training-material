@@ -1,26 +1,22 @@
 
-// Write a Hyperlambda script to return a specified TXT training data file to the client.
+// Write a Hyperlambda script to return true if OpenAI is configured and can be used.
 .arguments
-   file:string
+.type:internal
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
+// Making sure user has access to invoked endpoint.
+auth.ticket.verify:root
 
-// Figuringout full path of file.
-strings.concat
-   .:/etc/system/openai/pdf/
-   get-value:x:@.arguments/*/file
+// Checking if configuration setting for OpenAI API key exists.
+config.get:"magic:openai:key"
+if
+   eq:x:@config.get
+      .
+   .lambda
 
-// Getting our response HTTP headers sorted out.
-strings.concat
-   .:"attachment; filename=\""
-   get-value:x:@.arguments/*/file
-   .:"\""
-response.headers.set
-   Content-Type:text/plain
-   Content-Disposition:x:@strings.concat
-   Access-Control-Expose-Headers:Content-Disposition
+      // No API key found for OpenAI
+      return
+         result:bool:false
 
-// Returning file to caller.
-io.stream.open-file:x:@strings.concat/@strings.concat
-return:x:-
+// OpenAI API key exists.
+return
+   result:bool:true

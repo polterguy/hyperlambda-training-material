@@ -1,27 +1,17 @@
 
-// Create a Hyperlambda snippet that executes [.lambda] only if both conditions are met.
+// Changes the value of all nodes having a name of [foo]
+.data
+   foo
+      bar
+   hello
+      howdy
+         foo
+      some-node
+         some-other-node
+            foo
 
-// Executes [.lambda] only if both conditions are met.
-.output
-.numA:int:6
-.numB:int:12
-if
-   and
+// ** expression yields ALL descendants
+set-value:x:@.data/**/foo
+   .:touched
 
-      // Less than check
-      lt:x:@.numA
-         .:int:7
-
-      // Greater than check
-      mt:x:@.numB
-         .:int:11
-   .lambda
-
-      // Setting [.output] to true
-      set-value:x:@.output
-         .:bool:true
-else
-
-   // Setting [.output] to false
-   set-value:x:@.output
-      .:bool:false
+// After execution, all above nodes having the name of 'foo' will have their values changed

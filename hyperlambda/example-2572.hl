@@ -1,9 +1,13 @@
+/*
+ * Conditionally updates [.status] to "OK" if the node named "health" 
+ * after it has a value of "good". This uses `@.health` to access named sibling.
+ */
 
-// Write a Hyperlambda snippet that inserts a 'middle' node after 'start' inside '.sequence'.
-
-// Inserts a "middle" node after "start" inside ".sequence".
-.sequence
-   start
-insert-after:x:@.sequence/*/start
-   .
-      middle:Intermediate step
+.status
+.health:good
+if
+   eq:x:@.health
+      .:good
+   .lambda
+      set-value:x:@.status
+         .:OK

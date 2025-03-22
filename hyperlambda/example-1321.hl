@@ -1,45 +1,41 @@
 
-// Counts items from your pages table in your cms database
+/*
+ * Returns parent company from specified org number.
+ * 
+ * Returns the company the specified org number is owned by.
+ */
 .arguments
+   org_number:string
+.type:public
 
-   // Number of records to return, defaults to 25 if not specified. Pass in -1 to return all records.
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/org_number
+set-value:x:@.arguments/*/org_number
+   strings.replace-not-of:x:@.arguments/*/org_number
+      .:0123456789
+      .:
 
-   // Offset into the dataset of where to start retrieving records
+// Connecting to database.
+data.connect:[finovo|finovo]
+   database-type:pgsql
 
-   // Fully qualified name of column to order by, must be in TABLE_NAME.COLUMN_NAME format
-
-   // What direction to order, can be 'asc' or 'desc' implying ascending and descending
-   pages.id.eq:long
-   pages.title.like:string
-   pages.title.eq:string
-   pages.content.like:string
-   pages.content.eq:string
-   pages.created_at.eq:date
-
-// Meta data description for endpoint
-
-// Type of endpoint
-.type:crud-count
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:guest
-
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
+   // Retrieving items.
    data.read
-      database-type:sqlite
-      table:pages
+      database-type:pgsql
+      table:group_structure
       columns
-         count(*)
-            as:count
+         group_mother_orgnumber
       where
          and
-      limit:long:1
+            org_number.eq:x:@.arguments/*/org_number
+      limit:-1
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+   // Verifying the company has a parent company.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+         return
+            result:"This company doesn't have any parent company"
+
+   // Returning result to caller.
+   return-nodes:x:@data.read/*

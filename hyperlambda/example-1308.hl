@@ -1,4 +1,11 @@
+// Adds a 2-hour offset to a given timestamp and yields the updated date
+slots.create:offset.timestamp
+   math.add
+      get-value:x:@.arguments/*/timestamp
+      time
+         hours:int:2
+   yield
+      updated:x:@math.add
 
-// Convert from YAML to lambda and back again
-yaml2lambda:x:@.yaml
-lambda2yaml:x:-/*
+execute:offset.timestamp
+   timestamp:date:"2025-03-22T10:00:00Z"

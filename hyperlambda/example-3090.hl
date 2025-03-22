@@ -1,62 +1,49 @@
 
-// Creates a contact in HubSpot
+// Create endpoint inserting one record into your products table in your shopping-cart-demo database.
 .arguments
-   email:string
-   firstname:string
-   lastname:string
-   phone:string
-   company:string
-   website:string
-   lifecyclestage:string
 
-// Sanity checking invoation.
-validators.mandatory:x:@.arguments/*/email
+   // name column value
+   name:string
 
-// Retrieving token from configuration and verifying it exists.
-config.get:"magic:hubspot:token"
-if
-   or
-      eq:x:@config.get
-         .:
-      null:x:@config.get
-   .lambda
+   // description column value
+   description:string
 
-      // Oops ...!!
-      throw:No authorization token found in your configuration
-         public:bool:true
-         status:int:500
-.token
-set-value:x:@.token
-   strings.concat
-      .:"Bearer "
-      get-value:x:@config.get
+   // sku column value
+   sku:string
 
-// Creating our contact in HubSpot.
-add:x:./*/http.post/*/payload/*/properties
-   get-nodes:x:@.arguments/*
-http.post:"https://api.hubapi.com/crm/v3/objects/contacts"
-   convert:true
-   headers
-      Authorization:x:@.token
-      Content-Type:application/json; charset=utf8
-   payload
-      properties
+   // price column value
+   price:decimal
 
-// Verifying above invocation was a success.
-if
-   neq:x:@http.post
-      .:int:201
-   .lambda
+   // image_url column value
+   image_url:string
 
-      // Oops ...!!
-      lambda2hyper:x:@http.post
-      log.error:Could not create contact in HubSpot
-         message:x:@lambda2hyper
-      throw:Something went wrong as we tried to post a contact to HubSpot, check your log for details.
-         status:int:500
-         public:bool:true
+// Meta data description for endpoint
 
-// Returning success to caller.
-yield
-   result:success
-   id:x:@http.post/*/content/*/id
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:products
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

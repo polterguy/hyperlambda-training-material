@@ -1,30 +1,47 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the questions table in the magic database with a question_id matching the argument, ensuring authentication and authorization for root and admin roles.
+// Create endpoint inserting one record into your products table in your shopping-cart-demo database.
 .arguments
-   question_id:long
+
+   // name column value
+   name:string
+
+   // description column value
+   description:string
+
+   // sku column value
+   sku:string
+
+   // price column value
+   price:decimal
+
+   // image_url column value
+   image_url:string
+
+// Type of endpoint
+.type:crud-create
 
 // Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+auth.ticket.verify:root,admin
 
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/question_id
-
-// Opening up our database connection.
-data.connect:[generic|magic]
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
    database-type:sqlite
 
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
       get-nodes:x:@.arguments/*
 
-   // Deleting item from database.
-   data.delete
+   // Creating our record.
+   data.create
       database-type:sqlite
-      table:questions
-      where
-         and
+      table:products
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
 
    // Returning result of above invocation to caller.
    unwrap:x:+/*
    return
-      affected:x:@data.delete
+      id:x:@data.create

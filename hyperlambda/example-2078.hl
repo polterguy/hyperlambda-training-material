@@ -1,6 +1,2 @@
-// Compare two values for equality
-
-.foo1:OK
-eq
-   get-value:x:../*/.foo1
-   .:OK
+// This snippet defines a node with a double (floating-point) value.
+.ratio:double: 0.000123

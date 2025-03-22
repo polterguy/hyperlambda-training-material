@@ -1,41 +1,14 @@
+// Divide a number by a dynamic value and then by a static value
+.dividend:int:24
+.divisor:int:4
 
-// Delete one record from your roles table in your cms database
-.arguments
+math.divide
 
-   // Primary key of record to delete, mandatory argument
-   id:long
+   // fetches 24
+   get-value:x:@.dividend
 
-// Meta data description for endpoint
+   // divides 24 by 4 -> result 6
+   get-value:x:@.divisor
 
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:guest
-validators.mandatory:x:@.arguments/*/id
-
-// Opening up our database connection.
-data.connect:[generic|cms]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:roles
-      where
-         and
-
-   // Publishing socket message.
-   add:x:./*/sockets.signal/*/args
-      get-nodes:x:@.arguments/*
-   sockets.signal:cms.roles.delete
-      args
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+   // divides 6 by 2 -> result 3
+   .:int:2

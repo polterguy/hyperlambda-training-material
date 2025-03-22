@@ -1,4 +1,6 @@
-// Injects [foo1] node with 'bar1' value unless [.arguments] already contains a [foo1] node
-.arguments
-validators.default:x:@.arguments
-   foo1:bar1
+// Invokes Dog CEO API using HTTP GET to fetch a random dog image
+.dog-image
+http.get:"https://dog.ceo/api/breeds/image/random"
+   convert:true
+set-value:x:@.dog-image
+   get-value:x:@http.get/*/content/*/message

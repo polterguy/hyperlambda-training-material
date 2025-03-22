@@ -1,49 +1,38 @@
 
-// Create a Hyperlambda endpoint to evaluate given Hyperlambda code and return the results.
+// Create endpoint inserting one record into your spice_urls table in your scraper database.
 .arguments
-   hyperlambda:string
-   args:*
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // url column value
+   url:string
 
-// Transforms Hyperlambda 2 lambda object.
-hyper2lambda:x:@.arguments/*/hyperlambda
+   // type column value
+   type:string
 
-// Converts all input arguments to their expected type.
-for-each:x:@.arguments/*/args/*
+// Type of endpoint
+.type:crud-create
 
-   // Getting name of currently iterated argument.
-   get-name:x:@.dp/#
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
 
-   // Checking if this is a workflow type of argument declaration or an endpoint type of declaration.
-   if
-      exists:x:@hyper2lambda/*/.arguments/*/{@get-name}/*/type
-      .lambda
+// Opening up database connection.
+data.connect:[generic|scraper]
+   database-type:sqlite
 
-         // Workflow type of argument declaration, converting argument value accordingly.
-         set-value:x:@.dp/#
-            convert:x:@.dp/#
-               type:x:@hyper2lambda/*/.arguments/*/{@get-name}/*/type
-   else
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
 
-      // Endpoint type of argument declaration, converting argument value accordingly.
-      set-value:x:@.dp/#
-         convert:x:@.dp/#
-            type:x:@hyper2lambda/*/.arguments/*/{@get-name}
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:spice_urls
+      return-id:bool:true
+      values
 
-/*
- * Removing [.arguments] declaration from Hyperlambda we're about to execute,
- * such that we can add the input arguments to the Hyperlambda file correctly.
- */
-remove-nodes:x:@hyper2lambda/*/.arguments/*
+   // Returning the correct status code.
+   response.status.set:201
 
-// Adding input arguments specified by caller.
-add:x:./*/invoke
-   get-nodes:x:@.arguments/*/args/*
-
-// Evaluating Hyperlambda, now with the correct root node.
-invoke:x:@hyper2lambda
-
-// Returning the results of the evaluation to caller.
-return-nodes:x:@invoke/*
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

@@ -1,13 +1,6 @@
 
-// Create a Hyperlambda snippet that retrieves access logs from the security database and access_logs table.
-
-// Retrieves access logs from the security database and access_logs table.
-data.connect:security_db
-
-   // PostgreSQL database used.
-   database-type:pgsql
-
-   // Querying access logs without sorting or limiting.
-   data.read
-      database-type:pgsql
-      table:access_logs
+// Append multiple new nodes to a destination node. Nodes to add are specified as arguments
+.arguments:*
+.parent
+add:x:@.parent
+   get-nodes:x:@.arguments/*

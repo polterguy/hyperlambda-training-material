@@ -1,16 +1,10 @@
-// Basic usage of the [switch] slot to determine a result based on a car part
-.part:engine
-.result
-switch:x:@.part
 
-   case:engine
-      set-value:x:@.result
-         .:This is an engine
+// Generate a Hyperlambda snippet that adds multiple nodes into the specified target's children collection.
 
-   case:wheel
-      set-value:x:@.result
-         .:This is a wheel
-
-   default
-      set-value:x:@.result
-         .:Unknown car part
+// Adds multiple nodes into the specified target's children collection.
+.target
+add:x:@.target
+   .
+      entry1:data1
+      entry2:data2
+      entry3:data3

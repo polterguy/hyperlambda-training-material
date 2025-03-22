@@ -1,56 +1,52 @@
 
-// Create a Hyperlambda script for an endpoint that counts items in the ml_types table in the magic database, ensuring the user is authorized and handling optional filters.
-.arguments
-   ml_types.type.like:string
-   ml_types.type.eq:string
-   ml_types.model.like:string
-   ml_types.model.eq:string
-   ml_types.greeting.like:string
-   ml_types.greeting.eq:string
-   ml_types.max_tokens.eq:long
-   ml_types.max_context_tokens.eq:long
-   ml_types.max_request_tokens.eq:long
-   ml_types.temperature.eq:double
-   ml_types.base_url.like:string
-   ml_types.base_url.eq:string
-   ml_types.contact_us.like:string
-   ml_types.contact_us.eq:string
-   ml_types.lead_email.like:string
-   ml_types.lead_email.eq:string
-   ml_types.api_key.like:string
-   ml_types.api_key.eq:string
-   ml_type.twilio_account_sid.like:string
-   ml_type.twilio_account_sid.eq:string
-   ml_types.webhook_incoming.like:string
-   ml_types.webhook_incoming.eq:string
-   ml_types.webhook_outgoing.like:string
-   ml_types.webhook_outgoing.eq:string
-   ml_types.webhook_incoming_url.like:string
-   ml_types.webhook_incoming_url.eq:string
-   ml_types.initial_questionnaire.like:string
-   ml_types.initial_questionnaire.eq:string
-   ml_types.webhook_outgoing_url.like:string
-   ml_types.webhook_outgoing_url.eq:string
-   ml_types.system_message.like:string
-   ml_types.system_message.eq:string
+// Create Hyperlambda that creates or updates a default OpenAI machine learning model in the database. Include model details like 'model', 'max_tokens', 'temperature', etc. Handle exceptions with logging.
+try
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Connecting to Magic database.
+   data.connect:[generic|magic]
 
-// Opening up our database connection.
-data.connect:[generic|magic]
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
+      // Checking if default model has already been created.
+      data.read
+         table:ml_types
+         where
+            and
+               type.eq:default
+      if
+         not-exists:x:@data.read/*/*
+         .lambda
 
-   // Reading data from database.
-   data.read
-      table:ml_types
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
+            // Creating default generic model.
+            data.create
+               table:ml_types
+               values
+                  type:default
+                  model:gpt-4o
+                  max_tokens:int:12000
+                  max_context_tokens:int:12000
+                  max_request_tokens:int:12000
+                  temperature:decimal:0.3
+                  supervised:int:1
+                  cached:int:1
+                  auth:root
+                  greeting:Hi there, how can I help you?
+                  system_message:You are a helpful assistant. If I ask you to create code for me, then return only the code and no explanation without any Markdown or ``` characters. If I ask you to modify my existing code, then modify my last code according to my instructions and return the entire modified code back to me.
+      else
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+         // Updating existing type
+         data.update
+            table:ml_types
+            values
+               model:gpt-4o
+               max_tokens:int:12000
+               max_context_tokens:int:12000
+               max_request_tokens:int:12000
+               temperature:decimal:0.3
+               supervised:int:1
+            where
+               and
+                  type.eq:default
+.catch
+
+   // Doing some basic logging.
+   log.info:Something went wrong as we tried to create default type
+      message:x:@.arguments/*/message

@@ -1,8 +1,2 @@
-// Composing a dynamic node expression from parts
-compose
-   .:..
-   .:*
-   .:.data
-   .:*
-
-// The above will construct an expression resembling the following :x:../*/.data/*
+// Convert a large integer to its word representation
+int2words:1200050

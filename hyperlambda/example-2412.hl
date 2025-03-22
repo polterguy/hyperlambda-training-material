@@ -1,55 +1,9 @@
 
-// Searches through your training data for records matching a filtering condition
-.arguments
-   _type:string
+// Create a Hyperlambda snippet that inserts a new department node before 'HR' inside '.departments'.
 
-   // Mandatory argument and becomes an SQL LIKE type of condition snippets must match to be considered.
-   query:string
-
-   // Maximum number of tokens to return.
-   max_tokens:int
-.type:public
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/_type
-validators.mandatory:x:@.arguments/*/query
-
-// Applying defaults.
-validators.default:x:@.arguments
-   max_tokens:int:4000
-
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Creating our filter string
-   .filter
-   set-value:x:@.filter
-      strings.concat
-         .:%
-         get-value:x:@.arguments/*/query
-         .:%
-   data.read
-      table:ml_training_snippets
-      columns
-         id
-         prompt
-         completion
-         uri
-      where
-         or
-            prompt.like:x:@.filter
-            completion.like:x:@.filter
-   .cont:bool:true
-   while:x:@.cont
-      lambda2hyper:x:@data.read/*
-      if
-         lt
-            openai.tokenize:x:@lambda2hyper
-            convert:x:@.arguments/*/max_tokens
-               type:int
-         .lambda
-            set-value:x:@.cont
-               .:bool:false
-      else
-         remove-nodes:x:@data.read/0/-
-   return-nodes:x:@data.read/*
+// Inserts a new department node before "HR" inside ".departments".
+.departments
+   HR
+insert-before:x:@.departments/*/HR
+   .
+      IT:New department added before HR

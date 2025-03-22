@@ -1,44 +1,56 @@
 
-// Counts items from your crawl_urls table in your scraper database.
-.arguments
+// Resizes the specified image.
+if
+   not
+      strings.starts-with:x:@.arguments/*/img
+         .:/assets/images/
+   .lambda
+      throw:Not an image
 
-   // crawl_urls table crawl_url_id column equality exact match filtering
-   crawl_urls.crawl_url_id.eq:long
+// Figuring out path of image.
+.path
+set-value:x:@.path
+   strings.concat
+      .:/etc/www
+      get-value:x:@.arguments/*/img
 
-   // crawl_urls table url column wildcard filtering with SQL like '%' comparison
-   crawl_urls.url.like:string
+// Returning correct MIME type.
+response.headers.set
+   Content-Type:image/webp
+   Cache-Control:public, max-age=31536000
 
-   // crawl_urls table url column equality exact match filtering
-   crawl_urls.url.eq:string
+// Checking if image is cached on disc.
+.cache-file-name
+lambda2hyper:x:@.arguments
+crypto.hash.sha1:x:@lambda2hyper
+set-value:x:@.cache-file-name
+   strings.concat
+      .:/etc/hub/image-cache/
+      get-value:x:@crypto.hash.sha1
+if
+   io.file.exists:x:@.cache-file-name
+   .lambda
+      io.stream.open-file:x:@.cache-file-name
+      return:x:-
 
-   // crawl_urls table type column wildcard filtering with SQL like '%' comparison
-   crawl_urls.type.like:string
+// Checking if user did not provide any [width] or [height] arguments, at which point we simply convert it to webp.
+if
+   and
+      not-exists:x:@.arguments/*/width
+      not-exists:x:@.arguments/*/height
+   .lambda
+      add:x:+
+         get-nodes:x:@.arguments/*/type
+      image.convert:x:@.path
+      return:x:-
 
-   // crawl_urls table type column equality exact match filtering
-   crawl_urls.type.eq:string
-
-// Type of endpoint
-.type:crud-count
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up our database connection.
-data.connect:[generic|scraper]
-   database-type:sqlite
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:crawl_urls
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+// Loading image
+add:x:./*/image.resize
+   get-nodes:x:@.arguments/*/width
+   get-nodes:x:@.arguments/*/height
+   get-nodes:x:@.arguments/*/type
+image.resize:x:@.path
+io.stream.save-file:x:@.cache-file-name
+   get-value:x:@image.resize
+io.stream.open-file:x:@.cache-file-name
+return:x:-

@@ -1,4 +1,2 @@
-// Using eq with an expression as the left-hand side (LHS)
-.foo:bar
-eq:x:@.foo
-   .:bar
+// Convert HTML to Markdown
+html2markdown:x:@.html

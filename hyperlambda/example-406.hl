@@ -1,8 +1,7 @@
-/*
- * Example: Remove all non-digit characters from a string (keep only digits).
+/**
+ * This example attempts to convert an image without specifying a different output format.
+ * It should trigger an error since conversion requires a new file format.
  */
-.mixed:"Phone: 555-1234!"
-strings.replace-not-of:x:@.mixed
-   .:0123456789
-   .:""
-// Result: "5551234" (only digits remain)
+image.convert
+   file:input.jpg
+   output:input.jpg

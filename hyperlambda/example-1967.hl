@@ -1,13 +1,18 @@
+// Loop inside a process node
 
-// Generate a Hyperlambda snippet that fetches a todo item from an API.
+// This node will not be executed by default since it starts with a "." character
+.process
+   .i:int:0
+   .list
+   while
+      lt
+         get-value:x:@.i
+         .:int:3
+      .lambda
+         add:x:@.list
+            .
+               item
+         math.increment:x:@.i
 
-// Fetches a todo item from an API.
-http.get:"https://jsonplaceholder.typicode.com/todos/1"
-
-   // Converts response.
-   convert:true
-
-// Sets [.task] to the todo title
-.task
-set-value:x:@.task
-   get-value:x:@http.get/*/content/*/title
+// Now we're executing lambda object explicitly
+eval:x:@.process

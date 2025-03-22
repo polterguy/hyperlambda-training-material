@@ -1,11 +1,8 @@
-// Connects to the 'aquarium' database and retrieves fish species from the 'fishes' table where the habitat is 'Freshwater'.
-pgsql.connect:aquarium
-   pgsql.read
-      table:fishes
-      columns
-         species
-         habitat
-      where
-         and
-            habitat:Freshwater
-      limit:int:5
+
+// Provide a Hyperlambda example where a set of nodes is inserted into the referenced destination expression.
+
+// Inserts a set of nodes into the referenced destination expression.
+.endpoint
+add:x:@.endpoint
+   .
+      param:setting

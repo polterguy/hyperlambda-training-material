@@ -1,9 +1,23 @@
 
-// Provide a Hyperlambda example where a new node is inserted before 'step1' inside '.process'.
+// Create a Hyperlambda script to delete one record from a specified table in a database with optional filtering arguments.
+.arguments
 
-// Inserts a new node before "step1" inside ".process".
-.process
-   step1
-insert-before:x:@.process/*/step1
-   .
-      init:Initialization step
+// Opening up our database connection.
+data.connect:{database}
+   database-type:{database-type}
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:{database-type}
+      table:{table}
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

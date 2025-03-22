@@ -1,14 +1,2 @@
-// Use or in comparison to check multiple conditions
-.result
-.foo1:OK
-if
-   or
-      eq
-         get-value:x:../*/.foo1
-         .:OK
-      eq
-         get-value:x:../*/.foo1
-         .:ERROR
-   .lambda
-      set-value:x:../*/.result
-         .:MATCH
+// This snippet defines a node with an unsigned int (UInt32) value.
+.uAmount:uint:1000

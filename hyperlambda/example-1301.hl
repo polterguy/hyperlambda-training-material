@@ -1,5 +1,5 @@
 
-// Example: Convert a mixed-case sentence to uppercase.
+// Example: Get the length of a basic string.
 
-// Result: "HELLO WORLD!"
-strings.to-upper:Hello World!
+// Returns 6
+strings.length:OpenAI

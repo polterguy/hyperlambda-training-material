@@ -1,2 +1,15 @@
-// This snippet defines a node with a float value (alias of single).
-.pi:float:3.14
+
+// Create a Hyperlambda snippet that counts transactions in the 'finance_db' database from the 'transactions' table.
+
+// Counts transactions in the "finance_db" database from the "transactions" table.
+data.connect:finance_db
+   database-type:pgsql
+
+   // Counting total transactions.
+   data.read
+      database-type:pgsql
+      table:transactions
+      columns
+         count(*)
+            as:count
+      limit:long:1

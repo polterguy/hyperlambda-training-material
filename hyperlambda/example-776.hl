@@ -1,5 +1,6 @@
-// Not equals checking value of [.src]
-.src:int:5
-neq
-   get-value:x:@.src
-   .:int:5
+// Execute Hyperlambda from a string that creates a log item
+.hl:@"log.info:""This was logged from a piece of text"""
+
+hyper2lambda:x:-
+
+eval:x:-

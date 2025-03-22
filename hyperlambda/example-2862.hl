@@ -1,20 +1,21 @@
 
-// Create a Hyperlambda action to set specified HTTP headers in a response. Use 'headers' as a key-value input to determine which headers to set.
-.arguments
-   headers
-      type:key-value
-      mandatory:bool:true
-.icon:http
-
-/*
- * Iterating through each header from above invocation and checking if caller is interested in it,
- * and if caller wants this particular header, we make sure we return it below.
- */
-for-each:x:@.arguments/*/headers/*
-
-   // Adding currently iterated HTTP header.
-   add:x:../*/response.headers.set
-      get-nodes:x:@.dp/#
-
-// Invoking slot responsible for setting response HTTP headers.
-response.headers.set
+// KPI file for how many activities was closed each day
+.name:Open activities
+.description:The next 10 open activities
+.enabled:bool:true
+.type:table
+.lambda
+   data.connect:robo-crm
+      data.read
+         table:activities
+         columns
+            type
+            username
+            due
+         where
+            and
+               closed.eq
+               due.neq
+         order:due
+         limit:10
+      return-nodes:x:@data.read/*

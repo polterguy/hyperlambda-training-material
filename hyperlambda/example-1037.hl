@@ -1,7 +1,8 @@
-/**
- * This example copies "/videos/movie.mp4" to "/backup/movie_backup.mp4".
- * The original file remains unchanged.
- */
-io.file.copy
-   from:/videos/movie.mp4
-   to:/backup/movie_backup.mp4
+
+// Example: Use another slot's output as part of the concatenation.
+.prefix:"Value: "
+strings.concat
+   get-value:x:@.prefix
+   strings.to-upper:example
+
+// Result: "Value: EXAMPLE"

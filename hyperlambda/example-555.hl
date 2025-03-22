@@ -1,15 +1,9 @@
-// List cities and their country names by joining the city and country tables
-data.connect:sakila
-   data.read
-      table:city
-      join
-         inner
-            table:country
-            on
-               city.country_id
-               country.country_id
-      columns
-         city.city
-         country.country
-      limit:5
-   // Inner join on country_id returns city-country pairs
+// Checks if some node does not exists. 3rd invocation will be false
+.src1
+   foo:foo
+.src2
+   foo
+.src3
+not-null:x:@.src1/*
+not-null:x:@.src2/*
+not-null:x:@.src3/*

@@ -1,50 +1,18 @@
 
-// Returns a stacked chart image to caller. Values is a mandatory comma separated list of values.
-.arguments:*
-.type:public
+// Create a Hyperlambda switch/case condition that checks an 'input-value'. Log a message if the value is 'foo', another message if the value is 'bar', and a default message if the value is neither.
+switch:x:@.arguments/*/input-value
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/legend
+   case:foo
 
-// Creating our individual bars.
-.bars
-for-each:x:@.arguments/*
-   get-name:x:@.dp/#
-   if
-      not
-         strings.starts-with:x:@get-name
-            .:legend
-      .lambda
+      // [input-value] was equal to "foo".
+      log.info:Value was foo
 
-         // Adding primary node for bar.
-         set-name:x:+/*/*
-            get-value:x:@get-name
-         add:x:@.bars
-            .
-               .
+   case:bar
 
-         // Adding values for individual cells.
-         add:x:@.bars/0/-
-            strings.split:x:@.dp/#
-               .:,
+      // [input-value] was equal to "bar".
+      log.info:Value was bar
 
-// Creating our legend.
-add:x:../*/image.chart/*/legend
-   strings.split:x:@.arguments/*/legend
-      .:,
+   default
 
-// Parametrizing [image.chart] invocation.
-add:x:../*/image.chart/*/bars
-   get-nodes:x:@.bars/*
-image.chart:stacked
-   width:800
-   height:500
-   bars
-   legend
-
-// Applying correct HTTP header.
-response.headers.set
-   Content-Type:image/png
-
-// Returning chart to caller.
-return:x:@image.chart
+      // [input-value] was neither foo nor bar.
+      log.info:Value was neither foo nor bar

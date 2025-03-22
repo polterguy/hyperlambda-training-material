@@ -1,8 +1,16 @@
-// Define a source node and add it to a destination
+/*
+ * Finds all "email" nodes that are children of any node named "user",
+ * and changes their values to "hidden@example.com". This demonstrates deep
+ * lambda expression chaining with `@`, `*`, and named iterators.
+ */
 
-.src
-   key1:value1
-   key2:value2
-.dest
-add:x:../*/.dest
-   get-nodes:x:../*/.src/*
+.users
+   user
+      name:Alice
+      email:alice@example.com
+   user
+      name:Bob
+      email:bob@example.com
+for-each:x:@.users/*/user/*/email
+   set-value:x:@.dp/#
+      .:hidden@example.com

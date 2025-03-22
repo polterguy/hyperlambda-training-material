@@ -1,15 +1,10 @@
+// Create a temporary slot 'temp'
+slots.create:temp  
+   return-value:Temporary
 
-// Conditional execution using if
-.value:int:42
-.result
-if
-   mt:x:@.value
-      .:int:10
-   .lambda
-      set-value:x:@.result
-         .:Value is greater than 10
-else
-   set-value:x:@.result
-      .:Value is less than or equal to 10
+// Delete the dynamic slot 'temp'
+slots.delete:temp
 
-// Notice, [else] does not require a [.lambda] node
+// Check if 'temp' still exists
+slots.exists:temp  
+// Returns false (since 'temp' was removed)

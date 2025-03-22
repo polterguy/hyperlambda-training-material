@@ -1,21 +1,10 @@
+// Using a double-quoted string with an escaped newline character
+.message:"Hello\nWorld"
 
-// Search the web and returns only the URLs found
-.arguments
+// Using a single-quoted string (literal, escapes are not processed)
+.text:'Hello\nWorld'
 
-   // Mandatory argument being the actual query to submit to DuckDuckGo.
-   query:string
-
-   // Optional argument being how many URLs to return. Defaults to 10 if not specified.
-   max_urls:int
-.type:public
-
-// Returns [max_urls] for the specified [query] by searching DuckDuckGo.
-execute:magic.workflows.actions.execute
-   name:openai-urls-search
-   filename:/modules/openai/workflows/actions/openai-urls-search.hl
-   arguments
-      query:x:@.arguments/*/query
-      max_urls:x:@.arguments/*/max_urls
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// Using @ prefix for a multi-line string (preserves line breaks)
+.multi_line:@"First line
+Second line
+Third line"

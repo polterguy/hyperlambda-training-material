@@ -1,10 +1,5 @@
-
-// Example: Use variables for the string, start index, and length.
-.text:Magic
-.start:int:1
-.len:int:3
-strings.substring:x:@.text
-   get-value:x:@.start
-   get-value:x:@.len
-
-// Result: "agi"
+// Sets the value of [.res] to the number of records we've got in our table1 table in our foo database
+.res
+data.connect:foo
+   set-value:x:@.res
+      data.scalar:select count(*) from table1

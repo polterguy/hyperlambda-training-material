@@ -1,17 +1,4 @@
-// Execute Hyperlambda action
-.arguments
-   filter:string
-
-// Returns artists and count of records per artist, sorted by artist having the most albums.
-execute:magic.workflows.actions.execute
-
-   // Name used to reference action further down in your Hyperlambda code
-   name:chinook-albums-count
-
-   // file containing action
-   filename:/etc/workflows/actions/chinook-albums-count.hl
-   arguments
-      filter:x:@.arguments/*/filter
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+/*
+ * Sends a simple GET request to fetch a public web page.
+ */
+http.get:"https://docs.ainiro.io"

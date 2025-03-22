@@ -1,11 +1,6 @@
-
-// Example: Use a variable for the regex pattern.
-.pattern:[A-Z]+
-source:abcDEFghi
-strings.matches:x:@.source
-   get-value:x:@.pattern
-
-/*
- * Resulting matches:
- * .:DEF
+/**
+ * This example tries to resize an image without specifying width or height.
+ * This should trigger an error.
  */
+image.resize
+   file:/input.jpg

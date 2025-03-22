@@ -1,8 +1,11 @@
-// Create a task, then schedule it
-tasks.create:task-id-xyx
+// How can I validate if a user has both email and password using [and]?
+.email:bool:true
+.password:bool:true
+.validation
+if
+   and
+      get-value:x:@.email
+      get-value:x:@.password
    .lambda
-
-      log.info:It is the 1st of the month, any month, and the time is 5AM at night.
-
-tasks.schedule:task-id-xyx
-   repeats:**.01.05.00.00
+      set-value:x:@.validation
+         .:User is valid

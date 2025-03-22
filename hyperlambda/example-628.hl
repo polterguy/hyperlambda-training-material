@@ -1,11 +1,4 @@
-// Inline lambda execution by providing the lambda body as children
-.res
-eval
-   set-value:x:@.res
-      .:Inline
-
-// Result
-.res:Inline
-eval
-   set-value:x:@.res
-      .:Inline
+// Validate [enum_value] argument is either 'val1' or 'val2'
+validators.enum:x:@.arguments/*/enum_value
+   .:val1
+   .:val2

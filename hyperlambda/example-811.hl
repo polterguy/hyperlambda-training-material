@@ -1,9 +1,6 @@
-// Changes the value of all nodes in [.data]
-.data
-   foo1
-   foo2
+/*
+ * This Hyperlambda snippet retrieves all records from `table1`.
+ */
 
-for-each:x:-/*
-
-   set-value:x:@.dp/#
-      .:hello
+data.read
+   table:table1

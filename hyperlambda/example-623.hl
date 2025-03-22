@@ -1,25 +1,2 @@
-
-// Hyperlambda [if] with else branch
-.status:inactive
-.display-class
-if
-   eq:x:@.status
-      .:active
-   .lambda
-      set-value:x:@.display-class
-         .:green
-else
-   set-value:x:@.display-class
-      .:red
-
-/*
- * JavaScript equivalent of Hyperlambda [if] with else branch
- * const status = "inactive";
- * let displayClass;
- * 
- * if (status === "active") {
- * displayClass = "green";
- * } else {
- * displayClass = "red";
- * }
- */
+// Validate [email] argument is a valid email address
+validators.email:x:@.arguments/*/email

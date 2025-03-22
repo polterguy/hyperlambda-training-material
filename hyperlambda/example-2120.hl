@@ -1,5 +1,14 @@
-// Convert an empty value to an integer (should return 0)
+// Hyperlambda endpoint that returns true if the specified text contains 'xyz'
+.arguments
+   arg:string
 
-.src
-convert:x:-
-   type:int
+// Making sure argument was given
+validators.mandatory:x:@.arguments/*/arg
+
+// Checking if 'xyz' exists in string
+strings.contains:x:@.arguments/*/arg
+   .:xyz
+
+// Returning result to caller
+yield
+   result:x:@strings.contains

@@ -1,18 +1,10 @@
-// Use else-if to check multiple value comparisons
-
-.result
-.src:int:2
-if
-   eq
-      get-value:x:@.src
-      .:int:1
-   .lambda
-      set-value:x:../*/.result
-         .:OK
-else-if
-   eq
-      get-value:x:@.src
-      .:int:2
-   .lambda
-      set-value:x:../*/.result
-         .:ERROR
+// This snippet uses the '**' iterator to retrieve all descendant nodes.
+.tree
+   branch1
+      leaf1:A
+   branch2
+      leaf2:B
+for-each:x:@.tree/**   
+   set-value:x:@.dp/#
+      :visited
+// The expression @.tree/** selects all descendants of .tree (branch1, leaf1, branch2, leaf2). The loop marks each found node by setting its value to "visited".

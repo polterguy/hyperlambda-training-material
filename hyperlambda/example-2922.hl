@@ -1,29 +1,35 @@
 
-// Write a Hyperlambda script to return the default database type the system is using and options for alternative database types.
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Retrieving database section from configuration.
-config.section:"magic:databases"
-
-// Adding default database type to return value.
-add:x:../*/return
-   get-nodes:x:@config.section/*/default
-
 /*
- * Iterating through each optional database type,
- * and making sure we return those too, making sure
- * we remove 'default' parts before iterating.
+ * Returns a bar chart image to caller.
+ * 
+ * Values is a mandatory comma separated list of values.
  */
-remove-nodes:x:@config.section/*/default
-for-each:x:@config.section/*
-   set-value:x:+/*/*
-      get-name:x:@.dp/#
-   add:x:../*/return/*/options
-      .
-         .
+.arguments:*
+.type:public
 
-// Returning result of above to caller.
-return
-   options
+// Creating our individual bars.
+.bars
+for-each:x:@.arguments/*
+
+   // Adding primary node for bar.
+   unwrap:x:+/+/*/*
+   set-name:x:+/*/*
+      get-name:x:@.dp/#
+   add:x:@.bars
+      .
+         .:x:@.dp/#
+
+// Parametrizing [image.chart] invocation.
+add:x:../*/image.chart/*/bars
+   get-nodes:x:@.bars/*
+image.chart:bars
+   width:800
+   height:500
+   bars
+
+// Applying correct HTTP header.
+response.headers.set
+   Content-Type:image/png
+
+// Returning chart to caller.
+return:x:@image.chart

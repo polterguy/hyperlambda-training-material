@@ -1,3 +1,8 @@
-// Return specified lambda from Hyperlambda file or endpoint
-return
-   result:Hello from Magic Backend
+// Creates a semaphore
+semaphore:foo-bar
+   /*
+    * Only one thread will be allowed entrance into this piece of
+    * code at the same time, ensuring synchronized access, for cases
+    * where you cannot allow more than one thread to enter at the
+    * same time.
+    */

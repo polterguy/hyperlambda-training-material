@@ -1,7 +1,14 @@
-// This example connects to the 'music_store' database and deletes an album record from the 'albums' table where the artist is 'The Beatles'.
-sqlite.connect:music_store
-   sqlite.delete
-      table:albums
-      where
-         and
-            artist:The Beatles
+
+// Create a Hyperlambda script to demonstrate a try/catch/finally block with logging.
+try
+
+   // Perform your unsafe operation here.
+   throw:Some error is thrown here
+.catch
+
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:x:@.arguments/*/message
+.finally
+
+   // If an exception is triggered, this lambda will be evaluated.
+   log.info:Try finished evaluating

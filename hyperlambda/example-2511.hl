@@ -1,16 +1,15 @@
 
-// Generate a Hyperlambda snippet that fetches product details from the inventory database and products table.
+// Create a Hyperlambda script to return cryptographically secure random text based on specified arguments.
+.arguments
+   min:long
+   max:long
 
-// Fetches product details from the inventory database and products table.
-data.connect:inventory_db
+// Generating gibberish text.
+add:x:./*/crypto.random
+   get-nodes:x:@.arguments/*
+crypto.random
 
-   // MySQL database type selected.
-   database-type:mysql
-
-   // Retrieving product records.
-   data.read
-      database-type:mysql
-      table:products
-      sort
-         created_at
-      direction:asc
+// Generating gibberish text.
+unwrap:x:+/*
+return
+   result:x:@crypto.random

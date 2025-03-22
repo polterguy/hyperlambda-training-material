@@ -1,13 +1,14 @@
 
-// Provide a Hyperlambda example where a user's phone number is fetched from an API.
+// Hyperlambda endpoint taking arguments. The SQL query retrieves distinct customer details who have purchased tracks from the "Rock" genre.
+.arguments
 
-// Fetches a user's phone number.
-http.get:"https://jsonplaceholder.typicode.com/users/3"
+// Connecting to database.
+data.connect:chinook
+   database-type:sqlite
 
-   // Converts JSON response.
-   convert:true
+   // Executing [data.select] slot with our SQL.
+   data.select:"\n/*\n * Selects details from all customers that are listening to rock.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect distinct c.Email, c.FirstName, c.LastName, g.name\n  from Customer c\n    inner join Invoice i on c.CustomerId = i.CustomerId\n    inner join InvoiceLine ii on i.InvoiceId = ii.InvoiceId\n    inner join Track t ON ii.TrackId = t.TrackId\n    inner join Genre g ON t.GenreId = g.GenreId\n  where g.Name = \"Rock\"\n  order by c.Email\n"
+      database-type:sqlite
 
-// Stores the phone number in [.phone]
-.phone
-set-value:x:@.phone
-   get-value:x:@http.get/*/content/*/phone
+   // Returning a result of above invocation to caller.
+   return-nodes:x:@data.select/*

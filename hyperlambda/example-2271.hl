@@ -1,14 +1,18 @@
 
-// Mark a specific order as shipped
-data.connect:shopDB
-   data.update
-      table:orders
-      values
-         status:shipped
-      where
+// Provide a Hyperlambda example where [.lambda] runs when [.message] is different from Welcome Home.
 
-         // Only update the order with ID 12345
-         and
-            order_id.eq:12345
+// Runs [.lambda] when [.message] is different from Welcome Home.
+.message:Welcome Home
+if
 
-   // Without a WHERE clause, all orders would be updated!
+   // Condition ensures inequality.
+   neq:x:@.message
+      .:Welcome Home
+   .lambda
+
+      // Runs when [.message] is different.
+      log.info:[.message] is NOT Welcome Home
+else
+
+   // Runs when [.message] is exactly Welcome Home.
+   log.info:[.message] is Welcome Home

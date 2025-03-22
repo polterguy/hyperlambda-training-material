@@ -1,25 +1,8 @@
-// If/else-if and else lambda object
-.src:int:3
-.dest
-if
-   eq
-      get-value:x:@.src
-      .:int:1
+// Create a task, then schedule it
+tasks.create:task-id
    .lambda
 
-      set-value:x:@.dest
-         .:yup!
+      log.info:It is the 5th or the 15th of January or February, and the time is 5AM at night.
 
-else-if
-   eq
-      get-value:x:@.src
-      .:int:2
-   .lambda
-
-      set-value:x:@.dest
-         .:yup2.0!
-
-else
-
-   set-value:x:@.dest
-      .:nope
+tasks.schedule:task-id
+   repeats:01|02.5|15.05.00.00

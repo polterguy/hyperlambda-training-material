@@ -1,15 +1,7 @@
 
-// Provide a Hyperlambda example where orders are counted in the 'ecommerce_db' database from the 'orders' table.
-
-// Counts orders in the "ecommerce_db" database from the "orders" table.
-data.connect:ecommerce_db
-   database-type:mssql
-
-   // Counting total orders.
-   data.read
-      database-type:mssql
-      table:orders
-      columns
-         count(*)
-            as:count
-      limit:long:1
+// Define a Hyperlambda POST endpoint that handles file uploads and returns the uploaded file name.
+.arguments
+   file
+yield
+   message:File uploaded successfully
+   filename:x:@.arguments/*/file/name

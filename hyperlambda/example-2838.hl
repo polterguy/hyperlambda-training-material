@@ -1,21 +1,37 @@
 
-// Write a Hyperlambda script for an OpenAI chat endpoint to handle conversations using 'gpt-xxx' models, with an option to stream response tokens.
+// Delete one record from your categories table in your cms database
 .arguments
-   prompt:string
-   type:string
-   references:bool
-   chat:bool
-   recaptcha_response:string
-   user_id:string
-   session:string
-   stream:bool
-   data:string
-   referrer:string
 
-// Forwarding to get Hyperlambda file.
-add:x:+
-   get-nodes:x:@.arguments/*
-execute-file:/system/openai/chat.get.hl
+   // Primary key of record to delete, mandatory argument
+   id:long
 
-// Returning result to caller.
-return-nodes:x:-/*
+// Meta data description for endpoint
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+validators.mandatory:x:@.arguments/*/id
+
+// Opening up our database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:categories
+      where
+         and
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.categories.delete
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

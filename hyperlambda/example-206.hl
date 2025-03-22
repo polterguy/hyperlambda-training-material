@@ -1,18 +1,7 @@
-// We must ALWAYS add an [.arguments] node at the top of a file if we want to execute it
-.arguments
-   content:string
-if
+// Connects to crm SQLite database using generic connection string
+data.connect:[generic|crm]
 
-   // Return true if content contains 'FOO' string anywhere
-   strings.contains:x:@.arguments/*/content
-      .:FOO
-   .lambda
-      return
-         result:bool:true
-      
-return
-   result:bool:false
+   // Notice, you can only de-reference the connection created above inside the 'scope' of the [data.connect] slot
+   data.select:select * from contacts
 
-// If you save the above as a Hyperlambda file you can execute the file as follows
-execute-file:/YOUR_FOLDER/YOUR_FILE.hl
-   content:SOME_CONTENT_HERE
+// The default database type to use is SQLite

@@ -1,8 +1,5 @@
-// Access previous sibling's value
-.day1:Monday
-.day2:Tuesday
-.result
-set-value:x:@.result
-   get-value:x:@.day2/-
+// Convert an empty value to a string (should return an empty string)
 
-// Sets the result node to Monday
+.src
+convert:x:-
+   type:string

@@ -1,5 +1,8 @@
-
-// Ensure that the partner roles exist, which is needed to create cloudlets.
-signal:magic.auth.ensure-role
-   role:partner
-   description:An AINIRO partner that can create demo cloudlets.
+/*
+ * Example: Remove all digits from a string using a regex.
+ */
+.original:"abc123xyz"
+strings.regex-replace:x:@.original
+   .:"\\d+"
+   .:""
+// Result: "abcxyz"

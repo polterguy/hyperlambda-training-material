@@ -1,4 +1,10 @@
-// Convert [.foo]'s value to int
-.foo:57
-convert:x:-
-   type:int
+/*
+ * This Hyperlambda snippet filters results using `WHERE`.
+ */
+
+data.read
+   table:table1
+   where
+      and
+         column1.eq:42
+         column2.like:%example%

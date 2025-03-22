@@ -1,14 +1,16 @@
-
-// Create a Hyperlambda snippet demonstrating parallel execution with multiple [fork] calls.
-
-/*
- * Demonstrates parallel execution with [fork].
- * The logs are executed in separate threads.
- */
-fork
-   sleep:500
-   log.info:First async log
-fork
-   sleep:1000
-   log.info:Second async log
-log.info:Main thread log
+// Tries to fetch a random cat fact, with error handling if the request fails
+.cat-fact
+http.get:"https://meowfacts.herokuapp.com/"
+   convert:true
+if
+   and
+      mte:x:@http.get
+         .:int:200
+      lt:x:@http.get
+         .:int:300
+   .lambda
+      set-value:x:@.cat-fact
+         get-value:x:@http.get/*/content/*/data/0
+else
+   set-value:x:@.cat-fact
+      .:Failed to fetch cat fact

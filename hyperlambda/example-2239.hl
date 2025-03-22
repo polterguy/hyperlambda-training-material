@@ -1,16 +1,10 @@
-// Using [switch] with numeric values to set a result for car part quantities
-.quantity:int:4
+
+// Create a Hyperlambda snippet that appends several key-value pairs into the given result node.
+
+// Appends several key-value pairs into the given result node.
 .result
-switch:x:@.quantity
-
-   case:int:1
-      set-value:x:@.result
-         .:One car part
-
-   case:int:4
-      set-value:x:@.result
-         .:Four car parts
-
-   default
-      set-value:x:@.result
-         .:Unknown quantity
+add:x:@.result
+   .
+      keyA:valA
+      keyB:valB
+      keyC:valC

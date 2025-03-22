@@ -1,8 +1,16 @@
 
-// Write a Hyperlambda snippet that pushes elements into the designated node's children collection.
+// Create a Hyperlambda snippet that formats user profile details.
 
-// Pushes elements into the designated node's children collection.
-.container
-add:x:@.container
-   .
-      name:description
+// Hyperlambda file that formats user profile details.
+.arguments
+   username:string
+   role:string
+   country:string
+strings.concat
+   get-value:x:@.arguments/*/username
+   .:" is a "
+   get-value:x:@.arguments/*/role
+   .:" from "
+   get-value:x:@.arguments/*/country
+yield
+   result:x:@strings.concat

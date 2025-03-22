@@ -1,16 +1,6 @@
 
-// Write a Hyperlambda snippet that queries inventory data from the warehouse database and items table.
-
-// Queries inventory data from the warehouse database and items table.
-data.connect:warehouse_db
-
-   // SQLite database used.
-   database-type:sqlite
-
-   // Fetching item records.
-   data.read
-      database-type:sqlite
-      table:items
-      sort
-         updated_at
-      direction:desc
+// neq returns true if two values are different
+.src:int:5
+neq
+   get-value:x:@.src
+   .:int:10

@@ -1,14 +1,43 @@
 
-// Create a new RSA key pair and encrypt a message using its public key before finally decrypting it
-crypto.rsa.create-key
-   key-size:int:2048
+// Associates the specified [username] with the specified [roles] roles.
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   roles
+      type:array
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Encrypt a message using RSA public key
-.message
-   content:Secret Message
-crypto.rsa.encrypt:x:@.message/*/content
-   public-key:x:@crypto.rsa.create-key/*/public
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/roles
 
-// Decrypting message we encrypted above
-crypto.rsa.decrypt:x:-
-   private-key:x:@crypto.rsa.create-key/*/private
+// Connecting to database.
+data.connect:[generic|magic]
+
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
+
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Associating user with specified [roles].
+   for-each:x:@.arguments/*/roles/*
+      data.create
+         table:users_roles
+         values
+            user:x:@.arguments/*/username
+            role:x:@.dp/#

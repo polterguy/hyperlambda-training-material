@@ -1,6 +1,4 @@
-// Evaluating an inline declared lambda object
 
-.src
-eval:x:@.src
-   set-value:x:@.src
-      .:OK
+// Create a Hyperlambda script to execute a specified file with a 'vectorize' option set to true.
+execute-file:/modules/xplain/import2xplain-kennisbank-plus-caos.hl
+   vectorize:bool:true

@@ -1,33 +1,13 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the ml_types table in the magic database with a type matching the argument, ensuring authentication and authorization for root roles.
-.arguments
-   type:string
-.type:crud-delete
+// Create a Hyperlambda snippet that fetches the company name of a user from an API.
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+// Fetches the company name of a user.
+http.get:"https://jsonplaceholder.typicode.com/users/2"
 
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/type
+   // Converts JSON response.
+   convert:true
 
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Deleting referenced rows in vss_ml_training_snippets
-   data.execute:"delete from vss_ml_training_snippets where rowid in\n   (select id as rowid from ml_training_snippets where type = @type)"
-      type:x:@.arguments/*/type
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      table:ml_types
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Sets [.company_name] to the user's company name
+.company_name
+set-value:x:@.company_name
+   get-value:x:@http.get/*/content/*/company/*/name

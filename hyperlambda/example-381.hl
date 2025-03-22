@@ -1,5 +1,3 @@
-/*
- * Example: Convert a lowercase string to uppercase.
- */
-// Result: "HELLO"
-strings.to-upper:hello
+// Retrieves the value of .input/*/payload using dereferencing
+// This assumes the value of [age] is of type `node` and that it contains an [age] node
+.age-value:x:@.input/*/payload/#/*/age

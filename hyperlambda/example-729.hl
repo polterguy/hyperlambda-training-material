@@ -1,4 +1,2 @@
-// Generate random string 50 to 100 characters in length
-crypto.random
-   min:50
-   max:100
+// Dynamically load a plugin/assembly
+system.plugin.load:/etc/foo.dll

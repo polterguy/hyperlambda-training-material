@@ -1,5 +1,14 @@
 
-// Example: Convert an already uppercase string (no change).
+// Write a Hyperlambda script to return the OpenAI API key to the caller.
+.arguments
 
-// Result: "HELLO"
-strings.to-upper:HELLO
+// Making sure user has access to invoked endpoint.
+auth.ticket.verify:root
+
+// Reading OpenAI API key from configuration.
+config.get:"magic:openai:key"
+
+// Returning key to caller.
+unwrap:x:+/*
+return
+   result:x:@config.get

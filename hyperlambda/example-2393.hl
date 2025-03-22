@@ -1,19 +1,9 @@
 
-// Switching based on a value inside an anonymous lambda object, returning true if it's a workday.
-.lambda
+// Create a Hyperlambda snippet that inserts a new status node after 'pending' inside '.statuses'.
 
-   // Switching with multiple cases
-   switch:x:@.arguments/*/day
-      case:monday
-      case:tuesday
-      case:wednesday
-      case:thursday
-      case:friday
-         return:bool:true
-      case:saturday
-      case:sunday
-         return:bool:false
-      default
-         .result:Invalid day
-invoke:x:@.lambda
-   day:monday
+// Inserts a new status node after "pending" inside ".statuses".
+.statuses
+   pending
+insert-after:x:@.statuses/*/pending
+   .
+      approved:Status updated

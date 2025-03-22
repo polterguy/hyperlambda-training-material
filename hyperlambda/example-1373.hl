@@ -1,12 +1,5 @@
-
-// Retrieve orders that are either pending OR processing
-data.connect:shopDB
-   data.read
-      table:orders
-      limit:-1
-      where
-
-         // Either status equals "pending" OR department not equal "hr"
-         or
-            status.eq:pending
-            department.neq:hr
+// Sends a user input to a validator file that checks the email format
+.input
+   email:john@example.com
+execute-file:/modules/validate/email.hl
+   address:x:@.input/*/email

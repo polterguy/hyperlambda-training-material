@@ -1,14 +1,11 @@
-/*
- * This Hyperlambda calculates the sum of all child node values of [.numbers],
- * and assigns the result to [.total]. Demonstrates use of [for-each] and expression iterators.
- */
 
-.total:int:0
-.numbers
-   one:int:10
-   two:int:20
-   three:int:30
-for-each:x:@.numbers/*
-   set-value:x:@.total
-      math.add:x:@.total
-         .:x:@.dp/#
+// Generate a Hyperlambda snippet that retrieves product inventory from 'inventory_db'.
+
+// Retrieves product inventory from "inventory_db".
+.result
+data.connect:inventory_db
+   database-type:mysql
+   data.select:select product_id, name, stock, price from products where stock > 0 order by stock asc
+      database-type:mysql
+   add:x:@.result
+      get-nodes:x:@data.select/*

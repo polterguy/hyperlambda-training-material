@@ -1,8 +1,22 @@
+
+// Create a Hyperlambda snippet that compiles a C# file 'logger.cs' into a library and loads it dynamically.
+
 /*
- * Example: Remove all digits from a string using a regex.
+ * Compiles a C# file "logger.cs" into a library and loads it dynamically.
+ * This assumes "logger.cs" exists in "/etc/" and contains a slot named [log_message].
  */
-.original:"abc123xyz"
-strings.regex-replace:x:@.original
-   .:"\\d+"
-   .:""
-// Result: "abcxyz"
+io.file.load:/etc/logger.cs
+system.compile
+   references
+      .:netstandard
+      .:System.Runtime
+      .:System.IO
+      .:System.Private.CoreLib
+      .:magic.node
+      .:magic.node.extensions
+      .:magic.signals.contracts
+   code:x:@io.file.load
+   assembly-name:logger.dll
+
+// Loading the compiled assembly.
+system.plugin.load:x:@system.compile

@@ -1,24 +1,12 @@
-
-// Creates a new training snippet from the specified [url]
-.arguments
-   _type:string
-
-   // Mandatory and is the URL from where to scrape training data from
-   url:string
-.type:public
-
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/_type
-validators.mandatory:x:@.arguments/*/url
-execute:magic.ai.url.scrape
-   url:x:@.arguments/*/url
-   type:x:@.arguments/*/_type
-   threshold:int:150
-   summarize:bool:true
-   lists:bool:false
-   images:bool:true
-   code:bool:false
-
-// Re-vectorising the type.
-execute:magic.ai.vectorise
-   type:x:@.arguments/*/_type
+// Use else-if after an if to check an alternate condition
+.result
+if
+   .:bool:false
+   .lambda
+      set-value:x:@.result
+         .:One
+else-if
+   .:bool:true
+   .lambda
+      set-value:x:@.result
+         .:Two

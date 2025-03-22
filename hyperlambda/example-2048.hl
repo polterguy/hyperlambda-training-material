@@ -1,10 +1,7 @@
-// Execute an action if at least one condition is true
-
-.result
-if
-   or
-      .:bool:false
-      .:bool:true
-   .lambda
-      set-value:x:../*/.result
-         .:OK
+// This snippet uses the '+' iterator to get the next sibling of a given node.
+.sequence
+   alpha:X
+   beta:Y
+   gamma:Z
+get-value:x:@.sequence/*/beta/+  
+// The expression finds "beta" under .sequence, then '+' returns its next sibling ("gamma"), so the get-value yields "Z".

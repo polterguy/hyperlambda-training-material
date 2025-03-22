@@ -1,8 +1,10 @@
-/*
- * Example: Pattern not found yields an empty result set.
- */
-strings.matches:"no digits here"
-   .:"\\d+"
-/*
- * Result: No child nodes (no matches found)
- */
+// Construct a GET endpoint that fetches all user records from the database.
+// Filename - /modules/admin/users.get.hl
+// Access is restricted to users with the `admin` role.
+
+auth.ticket.verify:admin
+
+data.connect:[generic|users]
+   data.read
+      table:users
+   return-nodes:x:@data.read/*

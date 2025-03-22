@@ -1,10 +1,7 @@
-/*
- * Example: Mix in a simple inline expression (2+2 inside curly braces).
- */
-strings.mixin:@"The result is {{
-math.add
-   .:int:2
-   .:int:2
-return:x:-
-}}"
-// Result: "The result is 4"
+// How can I check if use is logged in?
+auth.ticket.get
+
+// If the user is logged in, the above will return something such as follows:
+auth.ticket.get:root
+   roles
+      :root

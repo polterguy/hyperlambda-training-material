@@ -1,16 +1,14 @@
+/*
+ * Loads the file and counts the number of lines by splitting on `\n`.
+ */
 
-// Create a Hyperlambda snippet that adds a new product to the 'inventory_db' database and its 'products' table.
+io.file.load:/README.md
+strings.split:x:@io.file.load
 
-// Adds a new product to the "inventory_db" database and its "products" table.
-data.connect:inventory_db
-   database-type:pgsql
+   // We must ALWAYS use double quotes if we're adding special characters, or escaped characters, such as for instance \n
+   .:"\n"
 
-   // Creating a product entry.
-   data.create
-      database-type:pgsql
-      table:products
-      values
-         product_id:int:2005
-         name:Laptop
-         price:decimal:999.99
-         stock:int:50
+// This node will have its value becoming the number of lines from the file
+.number-of-lines-in-file
+set-value:x:-
+   get-count:x:@strings.split/*

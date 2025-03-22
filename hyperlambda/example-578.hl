@@ -1,7 +1,17 @@
-// Connects to erp SQLite database using external connection string
-data.connect:[external|erp]
-
-   // You can only de-reference the connection created above inside the 'scope' of the [data.connect] slot
-   data.select:select * from contacts
-
-// The default database type to use is SQLite
+// Sort children nodes of [.data] by name
+sort:x:@.data/*
+   if
+      lt:x:@.lhs/#/*/name
+         get-value:x:@.rhs/#/*/name
+      .lambda
+         set-value:x:@.result
+            .:int:-1
+   else-if
+      mt:x:@.lhs/#/*/name
+         get-value:x:@.rhs/#/*/name
+      .lambda
+         set-value:x:@.result
+            .:int:1
+   else
+      set-value:x:@.result
+         .:int:0

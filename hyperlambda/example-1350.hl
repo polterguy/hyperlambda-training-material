@@ -1,12 +1,14 @@
-// How do I loop through and update stock levels until a threshold is met?
-.stock:int:2
-.warehouse
-while
-   lt
-      get-value:x:@.stock
-      .:int:5
-   .lambda
-      add:x:@.warehouse
-         .
-            .:Restocking item
-      math.increment:x:@.stock
+/*
+ * This Hyperlambda snippet demonstrates nested `try` blocks with `finally`.
+ * The inner `try` block throws an exception, but the `finally` block still executes.
+ * Expected behavior: `.throws` should be `true`.
+ */
+
+.throws:bool:false
+try
+   try
+      throw:foo
+   .finally
+      set-value:x:@.throws
+         .:bool:true
+.catch

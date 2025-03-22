@@ -1,7 +1,41 @@
-// Connects to crm SQLite database using generic connection string
-data.connect:[generic|crm]
 
-   // Notice, you can only de-reference the connection created above inside the 'scope' of the [data.connect] slot
-   data.select:select * from contacts
+/*
+ * Returns parent company from specified org number.
+ * 
+ * Returns the company the specified org number is owned by.
+ */
+.arguments
+   org_number:string
+.type:public
 
-// The default database type to use is SQLite
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/org_number
+set-value:x:@.arguments/*/org_number
+   strings.replace-not-of:x:@.arguments/*/org_number
+      .:0123456789
+      .:
+
+// Connecting to database.
+data.connect:[finovo|finovo]
+   database-type:pgsql
+
+   // Retrieving items.
+   data.read
+      database-type:pgsql
+      table:group_structure
+      columns
+         group_mother_orgnumber
+      where
+         and
+            org_number.eq:x:@.arguments/*/org_number
+      limit:-1
+
+   // Verifying the company has a parent company.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+         return
+            result:"This company doesn't have any parent company"
+
+   // Returning result to caller.
+   return-nodes:x:@data.read/*

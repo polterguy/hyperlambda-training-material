@@ -1,3 +1,5 @@
-// How do you declare a float (single-precision) in Hyperlambda?
 
-.ratio:float:0.75
+// Example: Convert an uppercase string to lowercase.
+
+// Result: "hello"
+strings.to-lower:HELLO

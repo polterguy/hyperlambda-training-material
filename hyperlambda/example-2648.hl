@@ -1,19 +1,18 @@
 
-// Create a Hyperlambda script to return a Magic CAPTCHA challenge
+// Returns all plans that exist.
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-// By having an empty [.arguments] node such as follows, no arguments are allowed
-.arguments
+// Returns all plans in the system.
+execute:magic.workflows.actions.execute
+   name:hub-plans-get
+   filename:/modules/hub/workflows/actions/hub-plans-get.hl
+   arguments
 
-// Generating cryptographically secure random text.
-crypto.random
-strings.concat
-   .:c_
-   get-value:x:@crypto.random
-cache.set:x:@strings.concat
-   expiration:long:30
-   value:valid
-
-// Generating gibberish text.
-unwrap:x:+/*
-return
-   result:x:@strings.concat
+// Returns the result of your last action.
+return-nodes:x:@execute/*

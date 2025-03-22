@@ -1,5 +1,16 @@
-// Convert a value to an unsigned short integer (ushort)
 
-.src:5
-convert:x:-
-   type:ushort
+// Create a Hyperlambda snippet that repeats logging while [.attempts] is below 3.
+
+// Repeats logging while [.attempts] is below 3.
+.attempts:int:0
+while
+   lt
+      get-value:x:@.attempts
+      .:int:3
+   .lambda
+
+      // Logging attempt.
+      log.info:Attempting task
+
+      // Increasing attempt count.
+      math.increment:x:@.attempts

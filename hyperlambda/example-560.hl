@@ -1,4 +1,9 @@
-// Count the total number of orders
-data.connect:shopDB
-   data.scalar:SELECT COUNT(*) FROM orders
-   // Returns a single value (e.g., 42) as the node's value (type long/int)
+// Example of exception handlers
+try
+   throw:Whatever
+
+.catch
+   log.info:ERROR HAPPENED!! 42, 42, 42!
+
+.finally
+   log.info:Yup, we are finally there!

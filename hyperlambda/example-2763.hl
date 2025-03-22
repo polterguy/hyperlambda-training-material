@@ -1,10 +1,5 @@
 
-// Create a Hyperlambda action to transform the result of multiple actions/arguments into a new object. Use 'params' as input and return all nodes.
-.arguments
-   params
-      type:key-value
-      mandatory:bool:false
-.icon:input
-
-// Simply returning all nodes specified as input arguments.
-return-nodes:x:@.arguments/*
+// Ensures the module's database exists and is updated by running migration scripts.
+signal:magic.modules.ensure-database
+   module:shopify
+   database:shopify

@@ -1,13 +1,37 @@
 
-// Create a Hyperlambda snippet that retrieves access logs from the security database and access_logs table.
+// Create a Hyperlambda script for a CRUD create endpoint that inserts one record into the questionnaires table in the magic database, taking name and ensuring authentication and authorization for root and admin roles.
+.arguments
+   name:string
+   type:string
+   action:string
+.type:crud-create
 
-// Retrieves access logs from the security database and access_logs table.
-data.connect:security_db
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
-   // PostgreSQL database used.
-   database-type:pgsql
+// Sanity checking name.
+validators.regex:x:@.arguments/*/name
+   regex:^[a-z0-9_-]{2,20}$
 
-   // Querying access logs without sorting or limiting.
-   data.read
-      database-type:pgsql
-      table:access_logs
+// Opening up database connection.
+data.connect:[generic|magic]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:questionnaires
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

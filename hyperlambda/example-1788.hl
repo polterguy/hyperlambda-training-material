@@ -1,18 +1,10 @@
-// Hyperlambda [if] with numeric comparison
-.temperature:int:31
-.weather-status
-if
-   mt:x:@.temperature
-      .:int:30
-   .lambda
-      set-value:x:@.weather-status
-         .:hot
+/*
+ * This Hyperlambda snippet demonstrates behavior when no nodes match.
+ *
+ * 1. The `.data` node exists but has no matching children.
+ * 2. The `get-nodes` slot is used to retrieve nonexistent nodes.
+ * 3. The output should be empty.
+ */
 
-/* JavaScript equivalent of Hyperlambda [if] with numeric comparison
-const temperature = 25;
-let weatherStatus;
-
-if (temperature > 30) {
-  weatherStatus = "hot";
-}
-*/
+.data
+get-nodes:x:@.data/*

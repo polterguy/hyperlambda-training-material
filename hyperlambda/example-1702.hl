@@ -1,2 +1,10 @@
-// Gets all nodes in .env that have a value equal to "dev"
-.value-equals:x:@.env/*/=dev
+
+// Example: Find all digit sequences in a string.
+strings.matches:abc123xyz45
+   .:"\\d+"
+
+/*
+ * Resulting matches:
+ * .:123
+ * .:45
+ */

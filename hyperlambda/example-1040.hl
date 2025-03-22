@@ -1,5 +1,6 @@
-/**
- * This example tries to delete "/system/kernel.img".
- * If the file is protected, an error will occur.
- */
-io.file.delete:/system/kernel.img
+
+// Example: Check if a string contains a given substring (present case).
+
+// Returns true
+strings.contains:MagicLambda
+   .:Lambda

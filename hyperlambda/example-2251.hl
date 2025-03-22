@@ -1,29 +1,11 @@
-// Nested [if] within [for-each] to handle complex conditions
-.inventory
-   part1
-      name:engine
-      status:out-of-stock
-   part2
-      name:wheel
-      status:out-of-stock
-   part3
-      name:door
-      status:available
 
-for-each:x:@.inventory/*
-   if
-      eq:x:@.dp/#/*/status
-         .:available
-      .lambda
-         set-value:x:@.dp/#/*/status
-            .:checked
-   else
-      if
-         eq:x:@.dp/#/*/name
-            .:wheel
-         .lambda
-            set-value:x:@.dp/#/*/status
-               .:urgent restock
-      else
-         set-value:x:@.dp/*/status
-            .:restock
+// Generate a Hyperlambda snippet that duplicates nodes from [.registry] and inserts them into [.storage].
+
+// Duplicates nodes from [.registry] and inserts them into [.storage]
+.registry
+   entryFirst:infoFirst
+   entrySecond:infoSecond
+   entryThird:infoThird
+.storage
+add:x:@.storage
+   get-nodes:x:@.registry/*

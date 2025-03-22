@@ -1,11 +1,5 @@
-// How to detect if a package is lost or delayed using [or]?
-.status:bool:false
-.timeout:bool:true
-.alert
-if
-   or
-      get-value:x:@.status
-      get-value:x:@.timeout
-   .lambda
-      set-value:x:@.alert
-         .:Package issue detected
+
+// Example: Get the length of a numeric string.
+
+// Returns 5
+strings.length:12345

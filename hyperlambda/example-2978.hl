@@ -1,29 +1,23 @@
 
-// Scrapes the specified [url] and returns as context data to caller.
-.arguments
-   url:string
+// Returns all clusters in system.
 
-/*
- * Ensures user is authorized to access endpoint.
- * 
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/modules/auth/workflows/actions/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
+// Adding 30 seconds of public caching to avoid DOS attacks from exhausting server.
+response.headers.set
+   Cache-Control:public, max-age=30
 
-// Returns [max_tokens] context from the specified [url].
-execute:magic.workflows.actions.execute
-   name:openai-context-from-url
-   filename:/modules/openai/workflows/actions/openai-context-from-url.hl
-   arguments
-      url:x:@.arguments/*/url
-      max_tokens:int:2000
+// Opening up our database connection.
+data.connect:[generic|hub]
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+   // Reading data from database.
+   data.read
+      table:clusters
+      columns
+         id
+         country
+         name
+      where
+         and
+            enabled.eq:bool:true
+
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

@@ -1,14 +1,19 @@
 
-// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table.
+// Create a Hyperlambda script to return a Magic CAPTCHA challenge
 
-// Queries messages from the messaging database and chat_logs table.
-data.connect:messaging_db
+// By having an empty [.arguments] node such as follows, no arguments are allowed
+.arguments
 
-   // Using SQLite.
-   database-type:sqlite
+// Generating cryptographically secure random text.
+crypto.random
+strings.concat
+   .:c_
+   get-value:x:@crypto.random
+cache.set:x:@strings.concat
+   expiration:long:30
+   value:valid
 
-   // Fetching chat history.
-   data.read
-      database-type:sqlite
-      table:chat_logs
-      limit:100
+// Generating gibberish text.
+unwrap:x:+/*
+return
+   result:x:@strings.concat

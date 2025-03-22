@@ -1,10 +1,13 @@
-// Raising a custom signal
-.message:Hello from signal
 
-// Here the expression will NOT be evaluated.
-signal:custom.signal
-   message:x:@.message
-
-// Here the expression will NOT be evaluated.
-execute:custom.signal
-   message:x:@.message
+// Iterating through a collection of nodes
+.data
+   item1:value1
+   item2:value2
+   item3:value3
+.result
+for-each:x:@.data/*
+   set-value:x:@.result
+      strings.concat
+         get-value:x:@.result
+         get-value:x:@.dp/#
+         .:", "

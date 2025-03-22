@@ -1,5 +1,5 @@
-/**
- * This example saves the text "Hello, Hyperlambda!" to "/logs/app.log".
- */
-io.file.save:/logs/app.log
-   .:Hello, Hyperlambda!
+// lte returns true if the left value is less than or equal to the right
+.x:int:5
+lte
+   get-value:x:@.x
+   .:int:5

@@ -1,5 +1,5 @@
-// Return substring 5 to 7 of [.input]'s value
-.input:Foo Bar Howdy World
-strings.substring:x:-
-   .:5
-   .:7
+
+// Example: Get the length of an empty string.
+
+// Returns 0
+strings.length:

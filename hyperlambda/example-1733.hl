@@ -1,18 +1,7 @@
+/*
+ * If no valid nodes exist, `get-first-value` should return null.
+ */
 
-// Create a slot 'join-strings' that joins all arguments separated by ' ' character.
-slots.create:join-strings
-   strings.join:x:@.arguments/*
-      .:" "
-   return-value:x:-
-
-// Invoke 'join-strings' using execute with expressions as arguments
-.arg:is cool!
-execute:join-strings
-   text1:Hyperlambda
-   text2:x:@.arg
-
-// The expressions are evaluated before invocation, so inside 'join-strings':
-
-// text2 becomes "is cool!",
-
-// and the returned value is "Hyperlambda is cool".
+get-first-value
+   get-value:x:@.nonexistent
+   get-value:x:@.also_missing

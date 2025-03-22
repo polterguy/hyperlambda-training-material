@@ -1,17 +1,15 @@
 
-// Write a Hyperlambda code snippet showcasing string handling, multi-line strings, and different quoting styles.
+// Write a Hyperlambda script to return all saved SQL files in the system for a specified database type.
+.arguments
+   databaseType:string
 
-// No special characters, no quotes required
-.variableOne:data
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Contains a colon, requires double quotes
-.variableTwo:"key:value"
-
-// Multi-line string using @ notation
-.variableThree:"alpha\nbeta"
-
-// Single-quote alternative
-.variableFour:Hyperlambda
-
-// Escaping newline character in text
-.variableFive:"code\nsnippet"
+// Returns all files in the "/etc/[databaseType]/templates/" folder.
+strings.concat
+   .:/etc/
+   get-value:x:@.arguments/*/databaseType
+   .:/templates/
+io.file.list:x:@strings.concat
+return-nodes:x:-/*

@@ -1,6 +1,11 @@
-
-// neq returns true if two values are different
-.src:int:5
-neq
-   get-value:x:@.src
-   .:int:10
+// Demonstrating nested [if] slots
+.result
+if
+   .:bool:true
+   .lambda
+      if
+         .:bool:false
+         .lambda
+            set-value:x:@.result
+               .:Nested condition met
+// Condition is not true

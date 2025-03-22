@@ -1,7 +1,2 @@
-/*
- * Sends a GET request to an API and includes custom headers.
- */
-http.get:"https://api.example.com/user/info"
-   headers
-      Accept:application/json
-      Authorization:Bearer eyJhbGciOi...
+// Load a binary file and returns content as raw bytes
+io.file.load.binary:/whatever-path.png

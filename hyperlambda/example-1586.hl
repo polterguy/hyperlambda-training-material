@@ -1,16 +1,9 @@
+// Define a slot that returns two pieces of data
+slots.create:getPair
+   return-nodes
+      key:Value  
+      number:int:123
 
-// Provide a Hyperlambda example where [.lambda] runs based on the boolean value of [.flag].
-
-// Runs [.lambda] based on the boolean value of [.flag].
-.flag:bool:true
-if
-   eq:x:@.flag
-      .:bool:true
-   .lambda
-
-      // Runs when [.flag] is set to true.
-      log.info:[.flag] is enabled
-else
-
-   // Runs when [.flag] is false.
-   log.info:[.flag] is disabled
+// Invoke 'getPair'
+signal:getPair
+// The result has child nodes: key = "Value" and number = 123

@@ -1,5 +1,5 @@
-// Convert a string to a base64-encoded value
 
-.src:bytes:ICA=
-convert:x:-
-   type:base64
+// Example: Convert an uppercase string to lowercase.
+
+// Result: "hello"
+strings.to-lower:HELLO

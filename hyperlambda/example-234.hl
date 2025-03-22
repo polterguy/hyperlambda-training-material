@@ -1,16 +1,16 @@
-/*
- * Finds all "email" nodes that are children of any node named "user",
- * and changes their values to "hidden@example.com". This demonstrates deep
- * lambda expression chaining with `@`, `*`, and named iterators.
- */
 
-.users
-   user
-      name:Alice
-      email:alice@example.com
-   user
-      name:Bob
-      email:bob@example.com
-for-each:x:@.users/*/user/*/email
-   set-value:x:@.dp/#
-      .:hidden@example.com
+// Hyperlambda endpoint taking two decimal numbers, then multiplying these and returning the result
+.arguments
+   no1:decimal
+   no2:decimal
+
+// Making sure argument was given
+validators.mandatory:x:@.arguments/*/no1
+validators.mandatory:x:@.arguments/*/no2
+
+// Multiplying.
+math.multiply
+   get-value:x:@.arguments/*/no1
+   get-value:x:@.arguments/*/no2
+yield
+   result:x:@math.multiply

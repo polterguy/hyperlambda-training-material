@@ -1,65 +1,19 @@
 
-// Create a Hyperlambda script for an endpoint that counts items in the ml_training_snippets table in the magic database, ensuring the user is authorized and handling optional filters.
+// Hyperlambda endpoint taking arguments. The SQL query selects distinct email, first name, last name, and genre name of customers who listen to rock music from the Chinook database.
 .arguments
-   ml_training_snippets.type.eq:string
-   ml_training_snippets.pushed.eq:long
-   ml_training_snippets.uri.like:string
-   ml_training_snippets.uri.eq:string
-   ml_training_snippets.prompt.like:string
-   ml_training_snippets.prompt.eq:string
-   ml_training_snippets.completion.like:string
-   ml_training_snippets.completion.eq:string
-   not_embedded:bool
+   filter:string
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+// Connecting to database.
+data.connect:chinook
+   database-type:sqlite
 
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Checking if caller only wants to count records without embeddings.
-   if
-      and
-         exists:x:@.arguments/*/not_embedded
-         get-value:x:@.arguments/*/not_embedded
-      .lambda
-         add:x:@data.connect/*/data.read/*/where/*/and
-            .
-               embedding.eq
-         remove-nodes:x:@.arguments/*/not_embedded
-
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.read/*/where/*/*/or
-      get-nodes:x:@.arguments/*/ml_training_snippets.prompt.like
-      get-nodes:x:@.arguments/*/ml_training_snippets.completion.like
-      get-nodes:x:@.arguments/*/ml_training_snippets.uri.like
-      get-nodes:x:@.arguments/*/ml_training_snippets.prompt.eq
-      get-nodes:x:@.arguments/*/ml_training_snippets.completion.eq
-      get-nodes:x:@.arguments/*/ml_training_snippets.uri.eq
-   remove-nodes:x:@.arguments/*/ml_training_snippets.prompt.like
-   remove-nodes:x:@.arguments/*/ml_training_snippets.completion.like
-   remove-nodes:x:@.arguments/*/ml_training_snippets.uri.like
-   remove-nodes:x:@.arguments/*/ml_training_snippets.prompt.eq
-   remove-nodes:x:@.arguments/*/ml_training_snippets.uri.eq
-   add:x:./*/data.read/*/where/*
+   // Parametrizing [data.select].
+   add:x:./*/data.select
       get-nodes:x:@.arguments/*
 
-   // Removing [or] parts unless we've got something to actually or.
-   if
-      not-exists:x:@data.connect/*/data.read/*/where/*/and/*/or/*
-      .lambda
-         remove-nodes:x:@data.connect/*/data.read/*/where/*/and/*/or
+   // Executing [data.select] slot with our SQL.
+   data.select:"\n/*\n * Selects details from all customers that are listening to rock.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect distinct c.Email, c.FirstName, c.LastName, g.name\n  from Customer c\n    inner join Invoice i on c.CustomerId = i.CustomerId\n    inner join InvoiceLine ii on i.InvoiceId = ii.InvoiceId\n    inner join Track t ON ii.TrackId = t.TrackId\n    inner join Genre g ON t.GenreId = g.GenreId\n  where g.Name like @filter\n  order by c.Email\n"
+      database-type:sqlite
 
-   // Reading data from database.
-   data.read
-      table:ml_training_snippets
-      columns
-         count(*)
-            as:count
-      where
-         and
-            or
-      limit:long:1
-
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+   // Returning a result of above invocation to caller.
+   return-nodes:x:@data.select/*

@@ -1,4 +1,11 @@
-// List tasks between 20 and 30
-tasks.list
-   offset:20
-   limit:10
+// Can I build an [or] condition with slot results?
+.a:bool:false
+.b:bool:true
+.decision
+if
+   or
+      get-value:x:@.a
+      get-value:x:@.b
+   .lambda
+      set-value:x:@.decision
+         .:Passed via OR

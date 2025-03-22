@@ -1,13 +1,8 @@
-// Switch-case with a default when no case matches
-.val:baz
-.result
-switch:x:@.val
-   case:foo
-      set-value:x:@.result
-         .:First
-   case:bar
-      set-value:x:@.result
-         .:Second
-   default
-      set-value:x:@.result
-         .:None
+// This code connects to the 'library' database and inserts a new book record into the 'books' table.
+mysql.connect:library
+   mysql.create
+      table:books
+      values
+         title:The Great Gatsby
+         author:F. Scott Fitzgerald
+         year:int:1925

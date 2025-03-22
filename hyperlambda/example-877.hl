@@ -1,2 +1,5 @@
-// Connects to bar database using foo connection string from our configuration
-data.connect:[foo|bar]
+
+// Example: Trim whitespace from both ends of a string.
+
+// Result: "hello"
+strings.trim:"   hello   "

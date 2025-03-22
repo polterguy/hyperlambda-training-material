@@ -1,6 +1,6 @@
 
-// Create an argument collection with 3 args being arg1 (string), arg2 (date) and arg3 being any type (unknown)
-.arguments
-   arg1:string
-   arg2:date
-   arg3:*
+// Example: Use a variable as the input to uppercase.
+.text:make me upper
+
+// Result: "MAKE ME UPPER"
+strings.to-upper:x:@.text

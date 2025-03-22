@@ -1,6 +1,5 @@
-/**
- * This example moves "/temp/uploaded.pdf" to "/documents/archive.pdf".
- */
-io.file.move
-   from:/temp/uploaded.pdf
-   to:/documents/archive.pdf
+
+// Example: Capitalize only the very first character of a multi-word string.
+
+// Result: "Hello world"
+strings.capitalize:hello world

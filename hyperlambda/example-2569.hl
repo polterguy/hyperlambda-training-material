@@ -1,9 +1,21 @@
 
-// Generate a Hyperlambda snippet that inserts a new node after 'item1' inside '.list'.
+// Lists all SQLite database in your default data folder.
+slots.create:magic.db.sqlite.databases
 
-// Inserts a new node after "item1" inside ".list".
-.list
-   item1
-insert-after:x:@.list/*/item1
-   .
-      item2:Inserted after item1
+   // Listing files in data folder and returning to caller.
+   io.file.list:/data/
+   for-each:x:-/*
+      if
+         strings.ends-with:x:@.dp/#
+            .:.db
+         .lambda
+            strings.split:x:@.dp/#
+               .:/
+            strings.split:x:-/0/-
+               .:.
+            unwrap:x:+/*/*/*
+            add:x:../*/return-nodes
+               .
+                  .
+                     db:x:@strings.split/0
+   return-nodes

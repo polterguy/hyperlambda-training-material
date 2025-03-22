@@ -1,20 +1,16 @@
 
-// Deletes a single object of the specified type in NetSuite
-.arguments
+// Generate a Hyperlambda snippet that logs messages while [.count] is less than 10.
 
-   // Mandatory argument declaring what type of object you want to delete.
-   type:string
+// Logs messages while [.count] is less than 10.
+.count:int:0
+while
+   lt
+      get-value:x:@.count
+      .:int:10
+   .lambda
 
-   // Mandatory argument being the id of the object you want to delete.
-   id:long
+      // Logging iteration message.
+      log.info:Iteration running
 
-// Ensuring user is authorized to invoking endpoint.
-auth.ticket.verify:netsuite
-
-// Forwarding heavy lifting to workflow file.
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/modules/netsuite/workflows/workflows/netsuite-delete-record.hl
-
-// Returning result to caller.
-return-nodes:x:@execute-file/*
+      // Incrementing counter.
+      math.increment:x:@.count

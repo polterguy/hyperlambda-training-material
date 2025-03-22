@@ -1,16 +1,10 @@
-// Using [switch] to evaluate a car part status and set a corresponding message
-.status:in-stock
-.message
-switch:x:@.status
 
-   case:in-stock
-      set-value:x:@.message
-         .:Car part is in stock
+// Provide a Hyperlambda example where structured nodes are inserted into the referenced endpoint's children.
 
-   case:out-of-stock
-      set-value:x:@.message
-         .:Car part is out of stock
-
-   default
-      set-value:x:@.message
-         .:Unknown status
+// Inserts structured nodes into the referenced endpoint's children.
+.endpoint
+add:x:@.endpoint
+   .
+      paramX:settingX
+      paramY:settingY
+      paramZ:settingZ

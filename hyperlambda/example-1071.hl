@@ -1,8 +1,5 @@
-/**
- * This example tries to crop an image by removing too many pixels,
- * causing an error since the total crop size exceeds the image dimensions.
- */
-image.crop
-   file:/input.jpg
-   left:int:500
-   right:int:500
+// lte returns false if the left value is greater than the right
+.x:int:6
+lte
+   get-value:x:@.x
+   .:int:5

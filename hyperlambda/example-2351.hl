@@ -1,15 +1,12 @@
 
-// Provide a Hyperlambda example where employees are counted in the 'hr_db' database from the 'employees' table.
+// Provide a Hyperlambda example where error codes are iterated and logged.
 
-// Counts employees in the "hr_db" database from the "employees" table.
-data.connect:hr_db
-   database-type:mssql
+// Iterates through error codes and logs them.
+.errors
+   error1:404 Not Found
+   error2:500 Internal Server Error
+   error3:403 Forbidden
+for-each:x:@.errors/*
 
-   // Counting total employees.
-   data.read
-      database-type:mssql
-      table:employees
-      columns
-         count(*)
-            as:count
-      limit:long:1
+   // Logging each error message.
+   log.info:x:@.dp/#

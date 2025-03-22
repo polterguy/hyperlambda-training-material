@@ -1,10 +1,6 @@
-/*
- * This Hyperlambda snippet filters results using `WHERE`.
- */
-
-data.read
-   table:table1
-   where
-      and
-         column1.eq:42
-         column2.like:%example%
+// How to use shorthand [if:x:expression] to simplify conditions?
+.flag:bool:true
+.message
+if:x:@.flag
+   set-value:x:@.message
+      .:Shorthand evaluated to true

@@ -1,9 +1,8 @@
 
-// Generate a Hyperlambda snippet that inserts a 'second' element after 'first' inside '.elements'.
+// Example: Trim specific characters from both ends.
 
-// Inserts a "second" element after "first" inside ".elements".
-.elements
-   first
-insert-after:x:@.elements/*/first
-   .
-      second:Added dynamically
+// The character "?" at both ends will be removed
+strings.trim:??hello??
+   .:?
+
+// Result: "hello"

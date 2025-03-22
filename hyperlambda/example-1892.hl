@@ -1,6 +1,12 @@
+// Using [switch] with boolean values to determine if a car part is available
+.available:bool:true
+.result
+switch:x:@.available
 
-// Example: No trim characters at start (string remains unchanged).
+   case:bool:true
+      set-value:x:@.result
+         .:Car part is available
 
-// Result: "abc"
-strings.trim-start:abc
-   .:z
+   case:bool:false
+      set-value:x:@.result
+         .:Car part is not available

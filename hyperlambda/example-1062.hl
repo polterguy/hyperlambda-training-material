@@ -1,17 +1,13 @@
-/*
- * This Hyperlambda snippet changes the value of [.output] to "Approved"
- * only if the [.users] node contains a child with name "status" and value "active".
- * It demonstrates use of `@`, `*`, and value matching with lambda expressions.
- */
 
-.output
-.users
-   user1
-      name:Alice
-      status:active
-if
-   eq:x:@.users/*/user1/*/status
-      .:active
-   .lambda
-      set-value:x:@.output
-         .:Approved
+// What types does Hyperlambda support?
+Hyperlambda supports various types including:
+- `string`, `int`, `bool`, `decimal`, `double`, `float`
+- `date` (serialized as UTC time)
+- `guid`, `time`, `char`, `byte`, `sbyte`
+Example of type declarations:
+```
+.foo:int:5
+.bar:bool:true
+.baz:hello
+```
+If no type is specified, `string` is assumed.

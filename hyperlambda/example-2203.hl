@@ -1,9 +1,14 @@
-// This code connects to the 'ecommerce' database and updates the price of a product in the 'products' table.
-pgsql.connect:ecommerce
-   pgsql.update
-      table:products
-      values
-         price:decimal:19.99
-      where
-         and
-            product_id:int:202
+// Transfers user preference values into the matching fields of UI state
+.preferences
+   user
+      theme:dark
+      notifications:enabled
+      layout:grid
+.ui
+   theme
+   notifications
+   layout
+for-each:x:@.preferences/*/user/*
+   get-name:x:@.dp/#
+   set-value:x:@.ui/*/{@get-name}
+      get-value:x:@.dp/#

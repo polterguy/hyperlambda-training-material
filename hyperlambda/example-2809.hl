@@ -1,166 +1,193 @@
 
-// Write a Hyperlambda script to create and migrate a module app's database by executing SQL scripts based on the database type.
-slots.create:magic.modules.ensure-database
+// Distinct Keyword Search from Genre table in chinook database.
+.arguments
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/module
-   validators.mandatory:x:@.arguments/*/database
+   // Mandatory query for records to search for
+   query:string
 
-   // Returned to caller to signal whether or not operation was a success or not.
-   .result:bool:true
+   // Optional number of records to return, defaults to 10 if not specified. Pass in -1 to return all records
+   limit:long
 
-   // Flushing cache.
-   cache.clear
+   // Optional offset into the dataset of where to start retrieving records
+   offset:long
 
-   /*
-    * Figuring out folder from where to read migration scripts and
-    * main 'create-database.sql' script.
-    */
-   .database-type:x:@.arguments/*/database-type
-   unwrap:x:-
-   if
-      null:x:@.database-type
-      .lambda
-         set-value:x:@.database-type
-            config.get:"magic:databases:default"
-   .create-database-script
-   .migration-script-folder
-   set-value:x:@.create-database-script
+// Type of endpoint
+.type:crud-search
+
+// Make sure the user has provided a query.
+validators.mandatory:x:@.arguments/*/query
+
+// Apply defaults if not specified.
+validators.default:x:@.arguments
+   limit:long:10
+
+// Split the user's query into individual keywords, separated by spaces.
+.words
+add:x:@.words
+   strings.split:x:@.arguments/*/query
+      .:" "
+
+// Enforce lower characters for each keyword, and guard against SQL injection.
+.no:int:0
+for-each:x:@.words/*
+   set-value:x:@.dp/#
+      strings.to-lower:x:@.dp/#
+
+// Specify which columns to search against.
+.columns
+   .:Name
+
+// Connect to the specified database.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Start building our SQL.
+   .sql:select *, (
+
+   // 1) Dynamically create the full text by concatenating all columns we want to search.
+   .fields
+   for-each:x:@.columns/*
       strings.concat
-         .:/modules/
-         get-value:x:@.arguments/*/module
-         .:/magic.startup/
-         get-value:x:@.arguments/*/module
-         .:.
-         get-value:x:@.database-type
-         .:.sql
-   set-value:x:@.migration-script-folder
-      strings.concat
-         .:/modules/
-         get-value:x:@.arguments/*/module
-         .:/magic.startup/db-migrations/
-         get-value:x:@.database-type
-         .:/
+         .:coalesce(
+         get-value:x:@.dp/#
+         .:", '')"
+      unwrap:x:+/*/*
+      add:x:@.fields
+         .
+            .:x:@strings.concat
+   set-value:x:@.fields
+      strings.join:x:@.fields/*
+         .:" || "
+   remove-nodes:x:@.fields/*
 
-   // Checking if database already exists.
-   strings.concat
-      .:magic.db.
-      get-value:x:@.database-type
-      .:.databases
-   signal:x:-
-   strings.concat
-      .:@signal/*/*/db/=
-      get-value:x:@.arguments/*/database
-   set-x:x:+/*/*/exists
-      convert:x:@strings.concat
-         type:x
-   if
-      not
-         exists
-      .lambda
+   // 2) Keyword density calculation
+   .no:int:0
+   for-each:x:@.words/*
 
-         // Executing create database SQL script, making sure we trap exceptions.
-         try
+      // Adding SQL parameter.
+      set-name:x:+/+/*/*
+         strings.concat
+            .:@p
+            get-value:x:@.no
+      unwrap:x:+/*/*
+      add:x:@data.connect/*/data.select
+         .
+            .:x:@.dp/#
 
-            // Loading file.
-            io.file.load:x:@.create-database-script
-
-            // Opening database connection.
-            switch:x:@.database-type
-               case:mysql
-                  mysql.connect:sys
-                     mysql.execute:x:@io.file.load
-               case:pgsql
-                  pgsql.connect:postgres
-                     strings.concat
-                        .:"create database "
-                        get-value:x:@.arguments/*/database
-                     pgsql.execute:x:-
-                        database:x:@.arguments/*/database
-                  pgsql.connect:x:@.arguments/*/database
-                     pgsql.execute:x:@io.file.load
-               case:mssql
-                  mssql.connect:master
-                     mssql.execute-batch:x:@io.file.load
-               case:sqlite
-                  strings.concat
-                     .:/data/
-                     get-value:x:@.arguments/*/database
-                     .:.db
-                  io.file.save:x:-
-                     .:
-                  sqlite.connect:x:@.arguments/*/database
-                     sqlite.execute:x:@io.file.load
-
-            // Doing some basic logging.
-            log.info:Successfully created database
-               database_name:x:@.arguments/*/database
-         .catch
-
-            // Logging exception.
-            log.error:Something went wrong when creating database
-               database:x:@.arguments/@.arguments/*/database
-               script:x:@.create-database-script
-               error:x:@.arguments/*/message
-
-   /*
-    * Making sure module has a migration script folder, and if not,
-    * returning early.
-    */
-   if
-      not
-         io.folder.exists:x:@.migration-script-folder
-      .lambda
-
-         // Module doesn't have a migration script folder.
-         return:bool:true
-
-   // Iterating through each SQL script found in folder.
-   io.file.list:x:@.migration-script-folder
-   for-each:x:@io.file.list/*
-
-      // Verifying file is an SQL file.
+      // Modifying our SQL.
       if
-         strings.ends-with:x:@.dp/#
-            .:.sql
+         eq:x:@.no
+            .:int:0
          .lambda
 
-            // Loading SQL migration script file.
-            io.file.load:x:@.dp/#
+            // First keyword => no leading plus
+            set-value:x:@.sql
+               strings.concat:x:@.sql
+                  get-value:x:@.sql
+                  .:" (length("
+                  get-value:x:@.fields
+                  .:) - length(replace(lower(
+                  get-value:x:@.fields
+                  .:), @p
+                  get-value:x:@.no
+                  .:", ''))) / length(@p"
+                  get-value:x:@.no
+                  .:)
+      else
+         set-value:x:@.sql
+            strings.concat:x:@.sql
+               get-value:x:@.sql
+               .:" + (length("
+               get-value:x:@.fields
+               .:) - length(replace(lower(
+               get-value:x:@.fields
+               .:), @p
+               get-value:x:@.no
+               .:", ''))) / length(@p"
+               get-value:x:@.no
+               .:)
+      math.increment:x:@.no
+   set-value:x:@.sql
+      strings.concat:x:@.sql
+         get-value:x:@.sql
+         .:) * 1.0 / length(
+         get-value:x:@.fields
+         .:) as keyword_density, (
 
-            // Executing file, making sure we trap exceptions.
-            try
+   // 3) Distinct keyword count => For each keyword, 1 if present, 0 if not.
+   .no:int:0
+   for-each:x:@.words/*
+      if
+         eq:x:@.no
+            .:int:0
+         .lambda
 
-               // Opening database connection.
-               data.connect:x:@.arguments/*/database
+            // First keyword => no leading plus
+            set-value:x:@.sql
+               strings.concat:x:@.sql
+                  get-value:x:@.sql
+                  .:" CASE WHEN ((length("
+                  get-value:x:@.fields
+                  .:) - length(replace(lower(
+                  get-value:x:@.fields
+                  .:), @p
+                  get-value:x:@.no
+                  .:", ''))) / length(@p"
+                  get-value:x:@.no
+                  .:)) > 0 THEN 1 ELSE 0 END
+      else
+         set-value:x:@.sql
+            strings.concat:x:@.sql
+               get-value:x:@.sql
+               .:" + CASE WHEN ((length("
+               get-value:x:@.fields
+               .:) - length(replace(lower(
+               get-value:x:@.fields
+               .:), @p
+               get-value:x:@.no
+               .:", ''))) / length(@p"
+               get-value:x:@.no
+               .:)) > 0 THEN 1 ELSE 0 END
+      math.increment:x:@.no
 
-                  // Special case for MS SQL to make sure we use batch execute.
-                  if
-                     eq
-                        get-value:x:@.database-type
-                        .:mssql
-                     .lambda
+   // Finalize "keyword_count".
+   set-value:x:@.sql
+      strings.concat:x:@.sql
+         get-value:x:@.sql
+         .:) as keyword_count
 
-                        // SQL server, ensuring we use batch execute.
-                        set-name:x:@data.connect/*/data.execute
-                           .:mssql.execute-batch
+   // 4) Finish SELECT + WHERE
+   set-value:x:@.sql
+      strings.concat:x:@.sql
+         get-value:x:@.sql
+         .:" from "
+         .:Genre
+         .:" where keyword_count > 0"
 
-                  // Executing SQL script now.
-                  data.execute:x:@io.file.load
+   // 5) Order by distinct keyword_count (higher means more distinct keywords), then keyword_density.
+   set-value:x:@.sql
+      strings.concat:x:@.sql
+         get-value:x:@.sql
+         .:" order by keyword_count desc, keyword_density desc limit "
+         get-value:x:@.arguments/*/limit
 
-                  // Logging the fact that we've executed the database migration script.
-                  log.info:Database migration script successfully executed
-                     script:x:@.dp/#
-            .catch
+   // (Optional) offset => pagination
+   if
+      exists:x:@.arguments/*/offset
+      .lambda
+         set-value:x:@.sql
+            strings.concat:x:@.sql
+               get-value:x:@.sql
+               .:" offset "
+               get-value:x:@.arguments/*/offset
 
-               // Logging exception.
-               log.error:Something went wrong as we tried to execute plugin database migration script
-                  script:x:@.dp/#
-                  error:x:@.arguments/*/message
+   // Execute the SQL
+   data.select:x:@.sql
+      database-type:sqlite
 
-               // Ensuring slot returns false.
-               set-value:x:@.result
-                  .:bool:false
+   // Remove helper fields if you don't want them in your final JSON
+   remove-nodes:x:@data.select/*/*/keyword_density
+   remove-nodes:x:@data.select/*/*/keyword_count
 
-   // Returning result of invocation to caller.
-   return
+   // Return the final result set
+   return-nodes:x:@data.select/*

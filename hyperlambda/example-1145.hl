@@ -1,3 +1,17 @@
-// How do you declare a string variable in Hyperlambda?
 
-.username:string:john_doe_92
+// Write a Hyperlambda script to return a specified log item based on its ID.
+.arguments
+   id:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/id
+
+// Invoking slot responsible for returning item.
+log.get:x:@.arguments/*/id
+
+// Returning result of above invocation to caller.
+return-nodes:x:-/*

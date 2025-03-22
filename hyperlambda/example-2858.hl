@@ -1,21 +1,5 @@
 
-// Write a Hyperlambda script to return true if OpenAI is configured and can be used.
-.arguments
-
-// Making sure user has access to invoked endpoint.
-auth.ticket.verify:root
-
-// Checking if configuration setting for OpenAI API key exists.
-config.get:"magic:openai:key"
-if
-   eq:x:@config.get
-      .
-   .lambda
-
-      // No API key found for OpenAI
-      return
-         result:bool:false
-
-// OpenAI API key exists.
-return
-   result:bool:true
+// Ensure that the role required to interact with CRM system is created
+signal:magic.auth.ensure-role
+   role:account_manager
+   description:Account manager for Robo CRM system

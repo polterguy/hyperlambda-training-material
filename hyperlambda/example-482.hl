@@ -1,4 +1,5 @@
-/* 
- * This example shows a file-level multi-line comment above code 
- */
-foo:bar
+// Example: Create a slot that returns [return-value] being integer of 57
+slots.create:foo
+   return-value:int:57
+
+slots.get:foo

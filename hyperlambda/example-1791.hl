@@ -1,18 +1,13 @@
-// Hyperlambda [if] with less than comparison
-.items-left:int:5
-.restock-alert
+
+// Write a Hyperlambda script to ensure the cache folder exists and empty it for JavaScript files.
 if
-   lt:x:@.items-left
-      .:int:10
+   not
+      io.folder.exists:/etc/cache/
    .lambda
-      set-value:x:@.restock-alert
-         .:Inventory low!
+      io.folder.create:/etc/cache/
+else
 
-/* JavaScript equivalent of Hyperlambda [if] with less than comparison
-const itemsLeft = 5;
-let restockAlert;
-
-if (itemsLeft < 10) {
-  restockAlert = "Inventory low!";
-}
-*/
+   // Empties cache folder for JavaScript files.
+   io.file.list:/etc/cache/
+   for-each:x:@io.file.list/*
+      io.file.delete:x:@.dp/#

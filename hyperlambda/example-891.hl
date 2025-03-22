@@ -1,9 +1,30 @@
-// Returns ALL items (limit is -1) from table1 where field1 equals 'howdy' and field2 equals 'world'
-sql.read
-   table:table1
-   limit:-1
-   where
 
-      and
-         field1.eq:howdy
-         field2.eq:world
+// Write a Hyperlambda script to delete a specified connection string.
+.arguments
+   databaseType:string
+   name:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/databaseType
+validators.mandatory:x:@.arguments/*/name
+validators.enum:x:@.arguments/*/databaseType
+   .:mysql
+   .:pgsql
+   .:mssql
+
+// Loading config file such that we can delete connection string from current configuration.
+config.load
+json2lambda:x:-
+
+// Deleting actual connection string from section.
+remove-nodes:x:"@json2lambda/*/magic/*/databases/*/\"{@.arguments/*/databaseType}\"/*/\"{@.arguments/*/name}\""
+lambda2json:x:@json2lambda/*
+config.save:x:-
+
+// Success, connetion string deleted.
+return
+   result:success

@@ -1,2 +1,6 @@
-// Gets the parent of .address node
-.parent:x:@.address/.
+// This code loads a markdown documentation file, replaces the heading "# Getting Started" with "# Introduction", and saves the result back to the same file.
+io.file.load:/docs/introduction.md
+io.file.save:/docs/introduction.md
+   strings.replace:x:@io.file.load
+      .:# Getting Started
+      .:# Introduction

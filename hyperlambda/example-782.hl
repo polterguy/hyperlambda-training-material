@@ -1,10 +1,4 @@
-// Conditionally setting [.result]'s value
-.result
-.arg1:foo
-
-if
-   eq:x:@.arg1
-      .:foo
-   .lambda
-      set-value:x:@.result
-         .:Yup!
+// Return configuration key with default value being value of expression to [.foo]
+.foo:foo
+config.get:"magic:foo:non-existing-key"
+   get-value:x:@.foo

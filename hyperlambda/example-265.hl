@@ -1,14 +1,6 @@
-/*
- * Loads the file and counts the number of lines by splitting on `\n`.
- */
+// Check if a value is less than or equal to another
 
-io.file.load:/README.md
-strings.split:x:@io.file.load
-
-   // We must ALWAYS use double quotes if we're adding special characters, or escaped characters, such as for instance \n
-   .:"\n"
-
-// This node will have its value becoming the number of lines from the file
-.number-of-lines-in-file
-set-value:x:-
-   get-count:x:@strings.split/*
+.foo1:int:5
+lte
+   get-value:x:../*/.foo1
+   .:int:5

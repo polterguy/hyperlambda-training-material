@@ -1,68 +1,35 @@
 
-// Create a Hyperlambda script that returns all supported OpenID Connect providers the system supports, allowing for dynamic extension with additional providers.
+// Delete one record from your InvoiceLine table in your chinook database.
 .arguments
-   createNonce:bool
 
-// Finding all slots declaring OpenID Providers.
-slots.vocabulary:magic.openid.providers.
+   // Primary key of record to delete, mandatory argument
+   InvoiceLineId:long
 
-// Looping through each slot returned above and executing it.
-for-each:x:@slots.vocabulary/*
+// Meta data description for endpoint
 
-   // Changing slot invocation name.
-   set-value:x:./*/execute
-      get-value:x:@.dp/#
+// Type of endpoint
+.type:crud-delete
 
-   /*
-    * Executing slot to retrieve supported providers.
-    * 
-    * Notice, name of slot (value of node) is dynamically created above.
-    */
-   execute
-      createNonce:x:@.arguments/*/createNonce
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/InvoiceLineId
 
-   // Looping through all providers returned above to return them to client.
-   for-each:x:@execute/*
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
 
-      // Sanity checking OpenID provider.
-      if
-         or
-            not-exists:x:@.dp/#/*/issuer
-            not-exists:x:@.dp/#/*/name
-         .lambda
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
 
-            // Oops, bogus provider ...!!
-            throw:Bogus OpenID provider
-               status:int:500
-               public:bool:true
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:InvoiceLine
+      where
+         and
 
-      /*
-       * Checking that this particular provider was not registered
-       * by some other slot invocation perviously.
-       * 
-       * This prevents having two different slots in two different modules
-       * registering the same OpenID Connect provider twice.
-       */
-      .exists:bool:false
-      for-each:x:../*/return/*
-         if
-            eq:x:@.dp/#/*/issuer
-               get-value:x:@for-each/@.dp/#/*/issuer
-            .lambda
-
-               // OpenID provider already exists.
-               set-value:x:@.exists
-                  .:bool:true
-
-      // Adding provider unless it was registered by another slot invoction.
-      if
-         eq:x:@.exists
-            .:bool:false
-         .lambda
-
-            // Adding currently iterated provider to [return] invocation below.
-            add:x:../*/return
-               get-nodes:x:@.dp/#
-
-// Returning providers to client.
-return
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

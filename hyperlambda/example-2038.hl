@@ -1,7 +1,2 @@
-// Add children nodes from source to destination
-
-.dest
-add:x:../*/.dest
-   .
-      foo1:bar1
-      foo2:bar2
+// This snippet defines a node with an sbyte (8-bit signed int) value.
+.offset:sbyte:-42

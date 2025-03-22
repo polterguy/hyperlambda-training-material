@@ -1,52 +1,143 @@
 
-// Adds an item to your shopping cart.
-.arguments
-   sku:string
-   quantity:int
-   _session:string
-.type:public
+// Slot responsible for soft deletion of an existing cloudlet.
+slots.create:hub.cloudlets.delete
 
-// Defaulting [quantity] to 1 if not specified.
-validators.default:x:@.arguments
-   quantity:int:1
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/cluster
+   validators.mandatory:x:@.arguments/*/name
 
-/*
- * Invokes the SQL CRUD Read slot with the specified parameters.
- * 
- * Provide [connection-string], [database-type], [database], and [table] to inform the action of
- * what database/table you want to execute your SQL towards, and add [and] or [or] arguments
- * to filter your returns, in addition to [limit] and [offset] to apply paging. Use [order]
- * and [direction] to sort either ascending or descending. Notice, you can only use one of [or]
- * or [and], and not both.
- */
-execute:magic.workflows.actions.execute
-   name:sql-read-products
-   filename:/misc/workflows/actions/sql/sql-read.hl
-   arguments
-      columns
-         .:product_id
-      database:shopping-cart-demo
-      table:products
-      and
-         sku:x:@.arguments/*/sku
+   // Figuring out base URL of Kubernetes REST API.
+   .base-url
+   strings.concat
+      .:"magic:hub:"
+      get-value:x:@.arguments/*/cluster
+      .:":manager-url"
+   set-value:x:@.base-url
+      config.get:x:@strings.concat
 
-/*
- * Invokes the SQL CRUD Create slot with the specified parameters.
- * 
- * Provide [connection-string], [database-type], [database], and [table] to inform the action of
- * what database/table you want to execute your SQL towards, and [values] for your actual values
- * to insert.
- */
-execute:magic.workflows.actions.execute
-   name:sql-create
-   filename:/misc/workflows/actions/sql/sql-create.hl
-   arguments
-      database:shopping-cart-demo
-      table:items
-      values
-         product_id:x:../*/execute/=sql-read-products/*/*/product_id
-         quantity:x:@.arguments/*/quantity
-         session_id:x:@.arguments/*/_session
+   // Figuring out Kubernetes namespace cloudlets exists in.
+   .namespace
+   set-value:x:@.namespace
+      config.get:"magic:hub:default-namespace"
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+   // Retrieving token that's required to invoke Kubernetes REST API.
+   .token
+   strings.concat
+      .:"magic:hub:"
+      get-value:x:@.arguments/*/cluster
+      .:":token"
+   set-value:x:@.token
+      strings.concat
+         .:"Bearer "
+         config.get:x:@strings.concat/@strings.concat
+
+   // Invoking Web API responsible for deleting deployment.
+   .url
+   set-value:x:@.url
+      strings.concat
+         get-value:x:@.base-url
+         .:/apis/apps/v1/namespaces/
+         get-value:x:@.namespace
+         .:/deployments/
+         get-value:x:@.arguments/*/name
+   http.delete:x:@.url
+      headers
+         Authorization:x:@.token
+
+   // Sanity checking above invocation
+   if
+      not
+         and
+            mte:x:@http.delete
+               .:int:200
+            lt:x:@http.delete
+               .:int:300
+      .lambda
+
+         // Oops, web API didn't return success
+         log.error:Kubernetes could not delete deployment
+            status:x:@http.post
+            response:x:@http.post/*/content
+            cluster:x:@.arguments/*/cluster
+            name:x:@.arguments/*/name
+   else
+
+      // Logging the fact that we successfully deleted deployment.
+      log.debug:Kubernetes deployment successfully deleted
+         cluster:x:@.arguments/*/cluster
+         name:x:@.arguments/*/name
+         response:x:@http.post/*/content
+
+   // Invoking Web API responsible for deleting service.
+   .url
+   set-value:x:@.url
+      strings.concat
+         get-value:x:@.base-url
+         .:/api/v1/namespaces/
+         get-value:x:@.namespace
+         .:/services/
+         get-value:x:@.arguments/*/name
+   http.delete:x:@.url
+      headers
+         Authorization:x:@.token
+
+   // Sanity checking above invocation
+   if
+      not
+         and
+            mte:x:@http.delete
+               .:int:200
+            lt:x:@http.delete
+               .:int:300
+      .lambda
+
+         // Oops, web API didn't return success
+         log.error:Kubernetes could not delete service
+            status:x:@http.post
+            response:x:@http.post/*/content
+            cluster:x:@.arguments/*/cluster
+            name:x:@.arguments/*/name
+   else
+
+      // Logging the fact that we successfully deleted service.
+      log.debug:Kubernetes service successfully deleted
+         cluster:x:@.arguments/*/cluster
+         name:x:@.arguments/*/name
+         response:x:@http.post/*/content
+
+   // Invoking Web API responsible for deleting ingress.
+   .url
+   set-value:x:@.url
+      strings.concat
+         get-value:x:@.base-url
+         .:/apis/networking.k8s.io/v1/namespaces/
+         get-value:x:@.namespace
+         .:/ingresses/
+         get-value:x:@.arguments/*/name
+   http.delete:x:@.url
+      headers
+         Authorization:x:@.token
+
+   // Sanity checking above invocation
+   if
+      not
+         and
+            mte:x:@http.delete
+               .:int:200
+            lt:x:@http.delete
+               .:int:300
+      .lambda
+
+         // Oops, web API didn't return success
+         log.error:Kubernetes could not delete ingress
+            status:x:@http.post
+            response:x:@http.post/*/content
+            cluster:x:@.arguments/*/cluster
+            name:x:@.arguments/*/name
+   else
+
+      // Logging the fact that we successfully deleted ingress.
+      log.debug:Kubernetes ingress successfully deleted
+         cluster:x:@.arguments/*/cluster
+         name:x:@.arguments/*/name
+         response:x:@http.post/*/content

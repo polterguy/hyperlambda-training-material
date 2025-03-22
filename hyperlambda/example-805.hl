@@ -1,7 +1,13 @@
-// Checks for null values, second invocation will be false
-.src1
-   foo:foo
-.src2
-   foo
-null:x:@.src1/*
-null:x:@.src2/*
+
+// Provide a Hyperlambda example where multiple loggers run in parallel.
+
+// An example of running multiple loggers in parallel.
+join
+   fork
+      log.info:Logging task 1 started
+      sleep:500
+      log.info:Logging task 1 completed
+   fork
+      log.info:Logging task 2 started
+      sleep:1000
+      log.info:Logging task 2 completed

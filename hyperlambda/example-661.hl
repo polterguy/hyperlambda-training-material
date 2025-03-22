@@ -1,9 +1,4 @@
-// How do I return a 403 header if the user is unauthorized?
-if
-   or
-      not
-         auth.ticket.in-role:rootx
-      not
-         auth.ticket.in-role:admin
-   .lambda
-      response.status.set:403
+// Connects to sakila and returns all items from actor
+data.connect:sakila
+   data.read
+      table:actor

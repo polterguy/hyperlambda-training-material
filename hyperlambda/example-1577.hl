@@ -1,35 +1,19 @@
-
-// Delete one record from your Invoice table in your chinook database.
+/*
+ * Hyperlambda file taking arguments that invokes a dynamic slot with dynamic parameters.
+ */
 .arguments
+   slot:string
+   params:*
+validators.mandatory:x:@.arguments/*/slot
 
-   // Primary key of record to delete, mandatory argument
-   InvoiceId:long
+// Forwards all arguments to [invoke].
+add:x:./*/invoke
+   get-nodes:x:@.arguments/*/params/*
 
-// Meta data description for endpoint
+// Invoke the slot dynamically
+invoke:x:@.arguments/*/slot
 
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-validators.mandatory:x:@.arguments/*/InvoiceId
-
-// Opening up our database connection.
-data.connect:[generic|chinook]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:Invoice
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Returning result
+add:x:./*/return
+   get-nodes:x:@invoke/*
+return

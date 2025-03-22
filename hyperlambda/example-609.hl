@@ -1,5 +1,7 @@
+// Negate an equality check using not
 
-// Example: Convert a lowercase string to uppercase.
-
-// Result: "HELLO"
-strings.to-upper:hello
+.foo1:OK
+not
+   eq
+      get-value:x:../*/.foo1
+      .:OK

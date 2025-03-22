@@ -1,8 +1,8 @@
 
-// Example: Concatenate a string and a number (the number is converted to a string).
-.number:int:42
-strings.concat
-   .:"Answer: "
-   get-value:x:@.number
+// Example: Use variables to supply the string and prefix to check.
+.text:Sample
+.prefix:Sam
 
-// Result: "Answer: 42"
+// Returns true
+strings.starts-with:x:@.text
+   get-value:x:@.prefix

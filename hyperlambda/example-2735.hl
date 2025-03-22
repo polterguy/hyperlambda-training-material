@@ -1,48 +1,56 @@
 
-// Create a Hyperlambda script for a CRUD update endpoint that updates one record in the questionnaires table in the magic database, filtering which item to update with name and updating type fields, ensuring authentication and authorization for root roles.
+// Counts items from your products table in your shopping-cart-demo database.
 .arguments
-   name:string
-   type:string
-   action:string
 
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/name
+   // products table product_id column equality exact match filtering
+   products.product_id.eq:long
+
+   // products table name column wildcard filtering with SQL like '%' comparison
+   products.name.like:string
+
+   // products table name column equality exact match filtering
+   products.name.eq:string
+
+   // products table description column wildcard filtering with SQL like '%' comparison
+   products.description.like:string
+
+   // products table description column equality exact match filtering
+   products.description.eq:string
+
+   // products table sku column wildcard filtering with SQL like '%' comparison
+   products.sku.like:string
+
+   // products table sku column equality exact match filtering
+   products.sku.eq:string
+
+   // products table price column equality exact match filtering
+   products.price.eq:decimal
+
+   // products table image_url column wildcard filtering with SQL like '%' comparison
+   products.image_url.like:string
+
+   // products table image_url column equality exact match filtering
+   products.image_url.eq:string
 
 // Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+auth.ticket.verify:root,admin
 
 // Opening up our database connection.
-data.connect:[generic|magic]
+data.connect:[generic|shopping-cart-demo]
    database-type:sqlite
+   add:x:+/*/where/*
+      get-nodes:x:@.arguments/*
 
-   // Parametrising our invocation.
-   add:x:./*/data.update/*/values
-      get-nodes:x:@.arguments/*/[1,1000]
-   add:x:./*/data.update/*/where/*/and
-      get-nodes:x:@.arguments/*/[0,1]
-
-   // Invoking our update slot.
-   data.update
+   // Reading data from database.
+   data.read
       database-type:sqlite
-      table:questionnaires
-      values
+      table:products
+      columns
+         count(*)
+            as:count
       where
          and
+      limit:long:1
 
-   // Verifying record exists.
-   if
-      eq
-         get-value:x:@data.update
-         .:int:0
-      .lambda
-         response.status.set:404
-         return
-            result:Record not found
-
-   // Returning the correct status code.
-   response.status.set:202
-
-   // Returning success to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.update
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*/*

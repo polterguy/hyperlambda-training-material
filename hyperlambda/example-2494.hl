@@ -1,27 +1,27 @@
 
-// Create a Hyperlambda snippet that executes [.lambda] if at least one condition is met.
+// Create a Hyperlambda action to execute a specified workflow file with optional arguments. Validate the workflow parameter and return the execution result.
+.arguments
+   workflow
+      type:workflow
+      mandatory:bool:true
+   arguments
+      type:key-value
+      mandatory:bool:false
+.icon:settings
 
-// Executes [.lambda] if at least one condition is met.
-.output
-.numA:int:6
-.numB:int:12
-if
-   or
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/workflow
 
-      // Less than check
-      lt:x:@.numA
-         .:int:7
+// Parametrising [execute-file].
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*/arguments/*
 
-      // Greater than check
-      mt:x:@.numB
-         .:int:11
-   .lambda
+// Executing file.
+execute-file:x:@.arguments/*/workflow
 
-      // Setting [.output] to true
-      set-value:x:@.output
-         .:bool:true
-else
+// Parametrising [return] invocation.
+add:x:./*/return
+   get-nodes:x:@execute-file/*
 
-   // Setting [.output] to false
-   set-value:x:@.output
-      .:bool:false
+// Returning result of execution to caller.
+return

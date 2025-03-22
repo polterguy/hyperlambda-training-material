@@ -1,20 +1,14 @@
-// How can I use [if], [else-if], and [else] for conditional branching?
-.number:int:7
-.output
-if
-   eq
-      get-value:x:@.number
-      .:int:5
-   .lambda
-      set-value:x:@.output
-         .:Five
-else-if
-   eq
-      get-value:x:@.number
-      .:int:6
-   .lambda
-      set-value:x:@.output
-         .:Six
-else
-   set-value:x:@.output
-      .:Not Five or Six
+
+// Write a Hyperlambda script to return a specified CSS file to the caller, with options for position, color, link, start, and end.
+.arguments
+   file:string
+   position:string
+   color:string
+   link:string
+   start:string
+   end:string
+   v:string
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/system/openai/include-style.css.get.hl
+return:x:-

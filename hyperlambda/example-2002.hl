@@ -1,13 +1,13 @@
-// Creates a try/catch/finally block
-try
 
-   // Perform your unsafe operation here.
-   throw:Some error is thrown here
-.catch
+// Write a Hyperlambda snippet that fetches album details from an API.
 
-   // If an exception is triggered, this lambda will be evaluated.
-   log.info:x:@.arguments/*/message
-.finally
+// Fetches album details from an API.
+http.get:"https://jsonplaceholder.typicode.com/albums/1"
 
-   // If an exception is triggered, this lambda will be evaluated.
-   log.info:Try finished evaluating
+   // Converts JSON response.
+   convert:true
+
+// Sets [.album_title] to the album title
+.album_title
+set-value:x:@.album_title
+   get-value:x:@http.get/*/content/*/title

@@ -1,17 +1,37 @@
 
-// Generate a Hyperlambda example with string variables, demonstrating quoting variations, newlines, and multi-line strings.
+// Returns Stripe charges.
+.arguments
+   limit:int
+   starting_after:string
+   customer_id:string
 
-// No special characters, no quotes needed
-.textAlpha:demo
+/*
+ * Ensures user is authorized to access endpoint.
+ * 
+ * If you don't supply a list of [roles] this action only verifies the user is authenticated,
+ * and does not care about what roles the user belongs to.
+ */
+execute:magic.workflows.actions.execute
+   name:authorize
+   filename:/misc/workflows/actions/security/authorize.hl
+   arguments
+      roles
+         .:root
+         .:gpt
 
-// String contains a colon, needs quotes
-.textBeta:"value:pair"
+/*
+ * Retrieves charges from Stripe.
+ * 
+ * Will use your Stripe API token found from your settings as it's interacting
+ * with the Stripe API.
+ */
+execute:magic.workflows.actions.execute
+   name:stripe-charges-get
+   filename:/modules/stripe/workflows/actions/stripe-charges-get.hl
+   arguments
+      limit:x:@.arguments/*/limit
+      starting_after:x:@.arguments/*/starting_after
+      customer_id:x:@.arguments/*/customer_id
 
-// Multi-line string with @ notation
-.textGamma:"first line\nsecond line"
-
-// Alternative single quotes usage
-.textDelta:quotedText
-
-// Newline escaping within a string
-.textEpsilon:"split\nline"
+// Returns the result of your last action.
+return-nodes:x:@execute/*

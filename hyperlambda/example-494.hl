@@ -1,4 +1,7 @@
-// Converting a string to integer
-.data:42
-convert:x:@.data
-   type:int
+// Example: Create a dynamic slot returning 2 nodes, then invoke it
+slots.create:foo
+   return-nodes
+      integer-value:int:57
+      string-value:Foo bar
+
+signal:foo

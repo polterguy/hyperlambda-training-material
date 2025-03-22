@@ -1,5 +1,6 @@
-
-// Example: Convert a string with letters and numbers to uppercase.
-
-// Result: "MIXEDCASE123"
-strings.to-upper:MixedCase123
+/*
+ * Example: Use a variable for the string to decode.
+ */
+.enc:"key%3Dvalue%26flag%3Dtrue"
+strings.url-decode:x:@.enc
+// Result: "key=value&flag=true"

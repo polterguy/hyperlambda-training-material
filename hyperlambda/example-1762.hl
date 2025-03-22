@@ -1,8 +1,8 @@
 
-// Example: Remove all digits from a string using a regex.
-.original:abc123xyz
-strings.regex-replace:x:@.original
-   .:"\\d+"
-   .:
+// Example: Trim specific characters from both ends.
 
-// Result: "abcxyz"
+// The character "?" at both ends will be removed
+strings.trim:??hello??
+   .:?
+
+// Result: "hello"

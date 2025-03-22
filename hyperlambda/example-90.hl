@@ -1,27 +1,21 @@
+// Use else as a fallback if no conditions match
 
-// Generate a Hyperlambda snippet that evaluates [.lambda] when at least one condition evaluates to true.
-
-// Evaluates [.lambda] when at least one condition evaluates to true.
 .result
-.factor1:int:1
-.factor2:int:20
+.src:int:3
 if
-   or
-
-      // Condition 1: Less than
-      lt:x:@.factor1
-         .:int:2
-
-      // Condition 2: More than
-      mt:x:@.factor2
-         .:int:19
+   eq
+      get-value:x:@.src
+      .:int:1
    .lambda
-
-      // Assigning true to [.result]
-      set-value:x:@.result
-         .:bool:true
+      set-value:x:../*/.result
+         .:OK
+else-if
+   eq
+      get-value:x:@.src
+      .:int:2
+   .lambda
+      set-value:x:../*/.result
+         .:ERROR
 else
-
-   // Assigning false to [.result]
-   set-value:x:@.result
-      .:bool:false
+   set-value:x:../*/.result
+      .:DEFAULT

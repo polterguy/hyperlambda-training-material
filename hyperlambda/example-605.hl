@@ -1,3 +1,2 @@
-
-// Lists all cookies in current request
-request.cookies.list
+// Decrement [.arg]'s value by 1
+math.decrement:x:@.arg

@@ -1,9 +1,31 @@
 
-// Create a Hyperlambda snippet that inserts a new department node after 'HR' inside '.departments'.
+// Returns a bar chart image to caller. Values is a mandatory comma separated list of values.
+.arguments:*
+.type:public
 
-// Inserts a new department node after "HR" inside ".departments".
-.departments
-   HR
-insert-after:x:@.departments/*/HR
-   .
-      Finance:New department added
+// Creating our individual bars.
+.bars
+for-each:x:@.arguments/*
+
+   // Adding primary node for bar.
+   unwrap:x:+/+/*/*
+   set-name:x:+/*/*
+      get-name:x:@.dp/#
+   add:x:@.bars
+      .
+         .:x:@.dp/#
+
+// Parametrizing [image.chart] invocation.
+add:x:../*/image.chart/*/bars
+   get-nodes:x:@.bars/*
+image.chart:bars
+   width:800
+   height:500
+   bars
+
+// Applying correct HTTP header.
+response.headers.set
+   Content-Type:image/png
+
+// Returning chart to caller.
+return:x:@image.chart

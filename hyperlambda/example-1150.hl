@@ -1,3 +1,11 @@
-// How do you declare a 32-bit integer in Hyperlambda?
 
-.page-views:int:1048576
+// Generate a Hyperlambda snippet that opens a connection to 'sales_db' and retrieves records from 'transactions' table.
+
+// Opens a connection to "sales_db" and retrieves records from "transactions" table.
+.result
+data.connect:sales_db
+   database-type:mysql
+   data.select:select * from transactions order by transaction_date desc limit 10
+      database-type:mysql
+   add:x:@.result
+      get-nodes:x:@data.select/*

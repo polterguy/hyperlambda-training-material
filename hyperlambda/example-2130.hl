@@ -1,16 +1,4 @@
-// Using a whitelist incorrectly should throw an exception
 
-.result
-add:x:-
-   whitelist
-      vocabulary
-         return
-         vocabulary
-      .lambda
-         .foo
-
-         // This will throw an exception (not whitelisted above)
-         set-value:x:@.foo
-            .:foo
-         vocabulary
-         return:x:-/*
+// Convert from YAML to lambda and back again
+yaml2lambda:x:@.yaml
+lambda2yaml:x:-/*

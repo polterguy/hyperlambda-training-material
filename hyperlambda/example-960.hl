@@ -1,13 +1,6 @@
-// Generate HTTP GET with query paramaters
-.query
-   foo1:bar1
-   foo2:bar2
-http.get:"https://foo.com"
-   query:x:@.query/*
 
-// Or, alternatively ...
+// Example: Use a variable to provide the input string.
+.text:Test
 
-http.get:"https://foo.com"
-   query
-      foo1:bar1
-      foo2:bar2
+// Returns 4
+strings.length:x:@.text

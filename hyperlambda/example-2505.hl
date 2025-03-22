@@ -1,14 +1,9 @@
 
-// Provide a Hyperlambda example where error logs are retrieved from the logging database and its error_logs table.
-
-// Retrieves logs from the logging database and its error_logs table.
-data.connect:logging_db
-
-   // Database type is Microsoft SQL Server.
-   database-type:mssql
-
-   // Fetching error log data.
-   data.read
-      database-type:mssql
-      table:error_logs
-      limit:50
+// Define a Hyperlambda POST endpoint that accepts a JSON payload with 'username' and 'email', and returns them in the response.
+.arguments
+   username:string
+   email:string
+yield
+   message:User created successfully
+   username:x:@.arguments/*/username
+   email:x:@.arguments/*/email

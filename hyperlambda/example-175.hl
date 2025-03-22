@@ -1,9 +1,14 @@
-// Append multiple new child nodes to a destination node
-.dest
-add:x:@.dest
-   .
-      foo1:hello
-      foo2:world
-   .
-      bar1:hi
-      bar2:planet
+// Mark a specific order as shipped
+data.connect:shopDB
+
+   // Using CRUD update slot
+   data.update
+      table:orders
+      values
+         status:"shipped"
+      where
+
+         // Only update the order with ID 12345
+         and
+            order_id.eq:12345
+   // Without a WHERE clause, all orders would be updated!

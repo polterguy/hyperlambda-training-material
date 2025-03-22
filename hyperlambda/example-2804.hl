@@ -1,45 +1,30 @@
 
-// Create a Hyperlambda script that invokes an HTTP endpoint using POST, passing in arguments as payload, ensuring the user is authorized.
-slots.create:magic.http.post
+// Returns [max_urls] matching specified query by searching DuckDuckGo.
+.arguments
+   query
+      type:string
+      mandatory:bool:true
+   max_urls
+      type:int
+      default:int:10
+.icon:extension
 
-   // Sanity checking invocation.
-   validators.mandatory:x:@.arguments/*/url
-   validators.url:x:@.arguments/*/url
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/query
 
-   // Retrieving URL.
-   .url:x:@.arguments/*/url
-   unwrap:x:@.url
-   remove-nodes:x:@.arguments/*/url
+// Applying default values for optional arguments.
+validators.default:x:@.arguments
+   max_urls:int:10
 
-   // Decorating invocation.
-   unwrap:x:./*/http.post
-   add:x:./*/http.post/*/payload
-      get-nodes:x:@.arguments/*
+// Converting to integer to make sure we've got the right type.
+set-value:x:@.arguments/*/max_urls
+   convert:x:@.arguments/*/max_urls
+      type:int
 
-   // Invoking endpoint.
-   http.post:x:@.url
-      payload
+// Retrieving context.
+execute:magic.http.duckduckgo-search
+   query:x:@.arguments/*/query
+   max:x:@.arguments/*/max_urls
 
-   // Verifying invocation was a success.
-   if
-      and
-         mte:x:@http.post
-            .:int:200
-         lt:x:@http.post
-            .:int:300
-      .lambda
-
-         // Success!
-         add:x:./*/log.info
-            get-nodes:x:@.arguments/*
-         log.info:Webhook successfull invoked
-            url:x:@.url
-   else
-
-      // Failure!
-      add:x:./*/log.info
-         get-nodes:x:@.arguments/*
-      lambda2hyper:x:@http.post/*/content
-      log.error:Webhook failed
-         url:x:@.url
-         content:x:@lambda2hyper
+// Returning result to caller.
+return-nodes:x:@execute/*

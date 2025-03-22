@@ -1,17 +1,38 @@
 
-// Write a Hyperlambda code snippet showcasing string handling, multi-line strings, and different quoting styles.
+// Lists all tables in your MySQL instance.
+slots.create:magic.db.mssql.tables
 
-// No special characters, no quotes required
-.variableOne:data
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/database
 
-// Contains a colon, requires double quotes
-.variableTwo:"key:value"
+   // Opens up our connection
+   .connection:[master]
+   if
+      and
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .
+         not
+            eq
+               get-value:x:@.arguments/*/connection-string
+               .:
+      .lambda
+         set-value:x:@.connection
+            strings.concat
+               .:[
+               get-value:x:@.arguments/*/connection-string
+               .:|
+               get-value:x:@.arguments/*/database
+               .:]
+   else
+      set-value:x:@.connection
+         strings.concat
+            .:[generic|
+            get-value:x:@.arguments/*/database
+            .:]
+   mssql.connect:x:@.connection
 
-// Multi-line string using @ notation
-.variableThree:"alpha\nbeta"
-
-// Single-quote alternative
-.variableFour:Hyperlambda
-
-// Escaping newline character in text
-.variableFive:"code\nsnippet"
+      // Runs our query
+      mssql.select:"select table_schema + '.' + table_name as \"table\"\n   from information_schema.tables\n   where table_type='base table' and table_name != 'sysdiagrams'"
+      return-nodes:x:@mssql.select/*

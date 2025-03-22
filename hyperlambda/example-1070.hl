@@ -1,10 +1,5 @@
-/**
- * This example crops 20 pixels from each side and saves the result as "cropped.jpg".
- */
-image.crop
-   file:/input.jpg
-   left:int:20
-   top:int:20
-   right:int:20
-   bottom:int:20
-   output:/cropped.jpg
+// lt returns true if the left value is less than the right value
+.x:int:4
+lt
+   get-value:x:@.x
+   .:int:5

@@ -1,8 +1,43 @@
 
-// Returns subscription plans to core framework upon requests
-slots.create:stripe.subscriptions.plans.templates
+// Create one record in your menus table in your cms database
+.arguments
 
-   // Loading template file and returning content to caller.
-   io.file.load:/etc/stripe-subscription-templates/templates.hl
-   hyper2lambda:x:@io.file.load
-   return-nodes:x:@hyper2lambda/*
+   // name column value
+   name:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:guest
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:menus
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Publishing socket message.
+   add:x:./*/sockets.signal/*/args
+      get-nodes:x:@.arguments/*
+   sockets.signal:cms.menus.post
+      args
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

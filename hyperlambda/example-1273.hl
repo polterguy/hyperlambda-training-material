@@ -1,2 +1,4 @@
-// Convert a large integer to its word representation
-int2words:1200050
+// [null] returns false if the target node exists and has a value
+.src1
+   foo:bar
+null:x:@.src1/*

@@ -1,15 +1,5 @@
-
-// Create a Hyperlambda snippet that counts transactions in the 'finance_db' database from the 'transactions' table.
-
-// Counts transactions in the "finance_db" database from the "transactions" table.
-data.connect:finance_db
-   database-type:pgsql
-
-   // Counting total transactions.
-   data.read
-      database-type:pgsql
-      table:transactions
-      columns
-         count(*)
-            as:count
-      limit:long:1
+/*
+ * Example: URL-encode a URL (especially characters like : / and spaces).
+ */
+strings.url-encode:"https://example.com/foo bar"
+// Result: "https%3A%2F%2Fexample.com%2Ffoo%20bar"

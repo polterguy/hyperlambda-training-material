@@ -1,19 +1,20 @@
 
-// Write a Hyperlambda script to save an SQL template file according to specified arguments.
+// Deletes the specified [username] from the system.
 .arguments
-   databaseType:string
-   filename:string
-   content:string
-.type:internal
+   username
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
 
-// Saving file.
-strings.concat
-   .:/etc/
-   get-value:x:@.arguments/*/databaseType
-   .:/templates/
-   get-value:x:@.arguments/*/filename
-io.file.save:x:-
-   get-value:x:@.arguments/*/content
+// Opens up database connection.
+data.connect:[generic|magic]
+
+   // Deleting user from database.
+   data.delete
+      table:users
+      where
+         and
+            username.eq:x:@.arguments/*/username

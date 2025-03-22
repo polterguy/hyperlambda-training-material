@@ -1,26 +1,10 @@
 /*
- * Authenticates the user towards the cloudlet and returns a valid JWT Bearer token
- * 
- * Pass in username and password
+ * Compares three integer test scores and returns the highest one.
  */
-.arguments
-   username:string
-   password:string
-
-/*
- * Authenticates the user with the specified [username] and [password].
- *
- * Returns a JWT Bearer token that can be used for consecutive requests authorizing user according
- * to his or her roles.
- *
- * Depends upon the 'auth' plugin that can be installed from plugins.
- */
-execute:magic.workflows.actions.execute
-   name:authenticate
-   filename:/modules/auth/workflows/actions/authenticate.hl
-   arguments
-      username:x:@.arguments/*/username
-      password:x:@.arguments/*/password
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+.result
+math.max
+   .:int:78
+   .:int:92
+   .:int:85
+set-value:x:@.result
+   .:x:@math.max

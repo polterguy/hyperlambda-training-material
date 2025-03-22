@@ -1,10 +1,38 @@
-// Adds two separate time durations to a timestamp
-.timestamp:date:"2025-03-22T05:00:00Z"
-.modified
-set-value:x:@.modified
-   math.add
-      get-value:x:@.timestamp
-      time
-         hours:int:2
-      time
-         minutes:int:45
+
+// Create one record in your CustomerDemographics table in your northwind database
+.arguments
+
+   // CustomerTypeID column value
+   CustomerTypeID:string
+
+   // CustomerDesc column value
+   CustomerDesc:string
+
+// Meta data description for endpoint
+.description:Create one record in your CustomerDemographics table in your northwind database
+
+// Type of endpoint
+.type:crud-create
+
+// Opening up database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:CustomerDemographics
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

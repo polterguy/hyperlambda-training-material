@@ -1,27 +1,16 @@
-// Creating new nodes based on conditions in [for-each]
-.car-parts
-   engine:available
-   wheel:out-of-stock
-   door:available
 
-.results
+// Create a Hyperlambda snippet that retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target].
 
-for-each:x:@.car-parts/*
-   get-name:x:@.dp/#
-   if
-      eq:x:@.dp/#
-         .:available
-      .lambda
-         unwrap:x:+/*/*/*/name
-         add:x:@.results
-            .
-               .
-                  name:x:@get-name
-                  status:checked
-   else
-      unwrap:x:+/*/*/*/name
-      add:x:@.results
-         .
-            .
-               name:x:@get-name
-               status:needs restocking
+// Retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target]
+.sourceA
+   keyX:valX
+   keyY:valY
+   keyZ:valZ
+.sourceB
+   keyM:valM
+   keyN:valN
+   keyO:valO
+.target
+add:x:@.target
+   get-nodes:x:@.sourceA/*
+   get-nodes:x:@.sourceB/*

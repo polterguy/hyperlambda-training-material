@@ -1,16 +1,24 @@
 
-// Complex if with both [and] and [or]
-.foo1:bar
-.foo2:bool:false
-.foo3:bool:true
-.result
-if
-   and
-      eq:x:@.foo1
-         .:bar
-      or
-         get-value:x:@.foo2
-         get-value:x:@.foo3
+// Create a Hyperlambda script to create a new scheduled task according to specified arguments.
+.arguments
+   id:string
+   description:string
+   hyperlambda:string
+.type:internal
+
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
+
+// Converting Hyperlambda to lambda.
+hyper2lambda:x:@.arguments/*/hyperlambda
+
+// Creates task.
+add:x:../*/tasks.create/*/.lambda
+   get-nodes:x:@hyper2lambda/*
+tasks.create:x:@.arguments/*/id
+   description:x:@.arguments/*/description
    .lambda
-      set-value:x:@.result
-         .:Yup!
+
+// Returning success to caller.
+return
+   result:success

@@ -1,7 +1,5 @@
-/*
- * Converts the [.og] lambda structure's children into a Hyperlambda text representation.
- * Useful for saving or transmitting the structure.
+/**
+ * This example saves new data to "/notes/todo.txt", overwriting its content.
  */
-.log
-   info:Generated programmatically
-lambda2hyper:x:-/*
+io.file.save:/notes/todo.txt
+   .:Buy groceries, call mom, finish project.

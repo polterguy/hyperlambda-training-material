@@ -1,8 +1,10 @@
-/*
- * This test ensures that strings can be appended to a string builder.
- * The final result should be a concatenation of all appended strings.
- */
-strings.builder
-   strings.builder.append:"howdy"
-   strings.builder.append:" world"
-get-value:x@strings.builder
+
+// Example: Join multiple strings with a comma separator.
+.input
+   .:A
+   .:B
+   .:C
+strings.join:x:@.input/*
+   .:,
+
+// Result: "A,B,C"

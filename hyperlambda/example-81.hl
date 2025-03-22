@@ -1,5 +1,6 @@
-
-// Example: Create a slot that returns [return-value] being integer of 57
-slots.create:foo
-   return-value:int:57
-slots.get:foo
+// Converting a date string to date object and assigning to another node
+.data:2023-05-17
+.dest
+set-value:x:-
+   convert:x:@.data
+      type:date

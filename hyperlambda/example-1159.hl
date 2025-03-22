@@ -1,188 +1,148 @@
 
 /*
- * Returns financial information about a company.
+ * Returns all quotes grouped by employee
+ * 
+ * Use this function to find how many quotes each employee have created in the specified period.
+ * Optionally supply [date_min] and [date_max] to filter items.
+ * Notice, if the function returns only `limit` amount of rows, there might exist additional rows, at which
+ * point you should offer the user to list the next page of rows.
  */
 .arguments
-   org_number:string
-   columns
+
+   // Optional minimum date for quotes to consider.
+   min_date:string
+
+   // Optional maximum date for quotes to consider.
+   max_date:string
+
+   // Optional maximum number of records to return. Defaults to 10 if not specified.
+   limit:long
+
+   // Optional offset into records of where to start returning items.
+   offset:long
+
+   // Optional column to order records, defaults to TotalQuotes.
+   order:string
+
+   // Optional sort direction, can be either 'ASC' or 'DESC'. Defaults to 'ASC' unless specified.
+   direction:string
+
 .type:public
 
-// Decorating function invocation.
-for-each:x:@.arguments/*/columns/*
+// Making sure user is authorised to access the workflow.
+auth.ticket.verify:mnhc-admin
 
-   /*
-    * Sanity checking column name to avoid SQL injection attacks.
-    *
-    * This makes sure we only handle columns existing in the following [.cols] segment.
-    */
-   .cols
-      .:kr_return_on_capital_percent
-      .:kr_return_on_cap_emp_percent
-      .:kr_avg_debt_eq_ratio_percent
-      .:kr_risk_buffer
-      .:kr_ebitda
-      .:kr_ebitida_margin_percent
-      .:kr_interest_coverage_ebitda
-      .:kr_ret_on_tot_cap_ebitda_perc
-      .:kr_ret_on_working_capital_perc
-      .:kr_degree_of_debt_intr_bearing
-      .:kr_operating_margin_percent
-      .:kr_profit_margin_percent
-      .:kr_gross_profit_margin_percent
-      .:kr_turnover_per_employee
-      .:kr_solidity_percent
-      .:kr_capital_turnover_times
-      .:kr_working_capital
-      .:kr_opp_prof_totnet_oppinc_perc
-      .:kr_quick_ratio_percent
-      .:kr_change_in_turnover_percent
-      .:kr_opp_result_num_of_employees
-      .:kr_cost_per_employee
-      .:kr_change_in_num_of_employees
-      .:kr_inventories_turnover_perc
-      .:kr_accounts_rec_turnover_perc
-      .:kr_liquid_assets_turnover_perc
-      .:kr_current_liab_turnover_perc
-      .:kr_degree_of_debt
-      .:kr_rate_of_return_times
-      .:kr_return_on_op_capital
-      .:kr_risk_buffer_on_op_cap_perc
-      .:kr_inventory_turnover_times
-      .:kr_du_pont_model_percent
-      .:pl_net_operating_income
-      .:pl_net_sales
-      .:pl_cost_of_sold_goods
-      .:pl_gross_profit_loss
-      .:pl_selling_expenses
-      .:pl_admin_costs
-      .:pl_research_and_dev_costs
-      .:pl_change_invent_work_prog
-      .:pl_work_perf_own_use_capital
-      .:pl_raw_mat_and_cons
-      .:pl_goods_for_resale
-      .:pl_personal_costs
-      .:pl_depr_and_write_downs
-      .:pl_item_affect_compare
-      .:pl_other_opp_income
-      .:pl_other_opp_expenses
-      .:pl_other_ext_costs
-      .:pl_operating_result
-      .:pl_result_participation_group
-      .:pl_fin_int_group_inc
-      .:pl_ext_interest_inc
-      .:pl_interest_exp_int
-      .:pl_interest_exp_ext
-      .:pl_other_fin_inc
-      .:pl_other_fin_costs
-      .:pl_prof_loss_after_fin_items
-      .:pl_extraordinary_inc
-      .:pl_extraordinary_exp
-      .:pl_group_contrib
-      .:pl_shareholder_contrib
-      .:pl_other_appropriations
-      .:pl_tax
-      .:pl_minority_intrest_and_prof
-      .:pl_net_profit_loss
-      .:bs_subscribed_capital_unpaid
-      .:bs_capt_exp_for_res_and_dev
-      .:bs_patents
-      .:bs_goodwill
-      .:bs_other_intangible_ass
-      .:bs_total_intangible_assets
-      .:bs_land_build
-      .:bs_plant_machine
-      .:bs_equip_tools_fix_and_fit
-      .:bs_machines_inventory
-      .:bs_other_tang_ass_non_dep
-      .:bs_other_mat_depreciation
-      .:bs_total_tangible_assets
-      .:bs_group_share
-      .:bs_acc_recieve_corp_group
-      .:bs_loan_co_owners
-      .:bs_other_fin_assets
-      .:bs_total_financial_assets
-      .:bs_tot_fix_assets
-      .:bs_work_on_contract
-      .:bs_inventories
-      .:bs_total_inventories
-      .:bs_accounts_receivable_trade
-      .:bs_acc_recieve_group
-      .:bs_other_acc_recieve
-      .:bs_total_accounts_receivable
-      .:bs_short_investments
-      .:bs_cash_and_bank_balances
-      .:bs_other_cur_assets
-      .:bs_total_turnover_assets
-      .:bs_tot_assets
-      .:bs_issued_share_capital
-      .:bs_share_premium_reserve
-      .:bs_revaluation_reserve
-      .:bs_other_stockholder_equity
-      .:bs_profit_loss_brought_fwd
-      .:bs_group_contribution
-      .:bs_shareholder_contribution
-      .:bs_net_profit_loss
-      .:bs_total_dividens_capacity
-      .:bs_tot_equity
-      .:bs_untaxed_reserves
-      .:bs_minority_interests
-      .:bs_provisions
-      .:bs_lt_bond_loan
-      .:bs_lt_liab_to_credit_instit
-      .:bs_lt_liab_group_ass_comp
-      .:bs_other_long_term_liab
-      .:bs_tot_long_term_debts
-      .:bs_liab_credit_inst
-      .:bs_acc_pay_trade
-      .:bs_st_liab_group_ass_comp
-      .:bs_other_short_term_liab
-      .:bs_tot_current_liabilities
-      .:bs_tot_equity_and_liab
-      .:n_months
-      .:n_account_currency_info
-      .:n_no_employees
-      .:n_account_shortage
-      .:n_account_shortage_text
-      .:n_salary_board
-      .:n_tantiem_board
-      .:n_employee_salary
-      .:n_perf_bonus_to_oth_employees
-      .:n_payroll_overhead
-      .:n_floating_charge
-      .:n_real_estate_mortgage
-      .:n_other_collateral
-      .:n_tot_collateral
-      .:n_conditional_equity
-      .:n_other_contingent_liab
-      .:n_tot_contingent_liab
-      .:n_dividend
-      .:n_accepted_bank_overdraft
-      .:n_not_used_bank_overdraft
-      .:n_net_interest_finance
-      .:n_agreed_severance_pay
-      .:n_accountant_obligation
-      .:n_type_of_statement
-      .:n_depr_goods
-      .:n_depr_sales
-      .:n_depr_admin
-      .:n_depr_rod
-      .:n_depr_other
-      .:n_depr_unspec
+// Sanity checking invocation.
+validators.enum:x:@.arguments/*/order
+   .:TotalQuotes
+   .:TotalAmount
+validators.enum:x:@.arguments/*/direction
+   .:ASC
+   .:DESC
+   .:asc
+   .:desc
+
+// Applying defaults.
+validators.default:x:@.arguments
+   order:TotalQuotes
+   direction:DESC
+
+// Getting limit value, defaulting to 10
+.limit
+set-value:x:@.limit
+   get-first-value
+      get-value:x:@.arguments/*/limit
+      .:long:10
+
+// Making sure limit is never more than 10
+if
+   or
+      eq:x:@.limit
+         .:long:-1
+      mt:x:@.limit
+         .:long:10
+   .lambda
+      set-value:x:@.limit
+         .:long:10
+      add:x:../*/mssql.connect/*/yield
+         .
+            notice:"There might be more records but the system can only retrieve a maximum of 10 records at the time. Please inform the user that you can show him the next set of records if required."
+
+// Getting offset value, defaulting to 0
+.offset
+set-value:x:@.offset
+   get-first-value
+      get-value:x:@.arguments/*/offset
+      .:long:0
+
+// Opening up database connection.
+mssql.connect:[production|MNDG_LSC18-1]
+
+   // Dynamically building our SQL.
+   .sql:@"SELECT 
+    [Salesperson Code], 
+    Name,
+    SUM([Amount]) AS TotalAmount,
+    COUNT(DISTINCT [No_]) AS TotalQuotes
+FROM addv_Cotizaciones
+WHERE [Document Type] = 0"
+
+   // Checking if we're filtering on min date.
    if
-      exists:x:@.cols/*/={@.dp/#}
+      and
+         exists:x:@.arguments/*/min_date
+         not-null:x:@.arguments/*/min_date
       .lambda
-
-         // Adding column to slot invocation.
-         set-name:x:+/*/*
-            get-value:x:@.dp/#
-         add:x:../*/execute/*/columns
+         set-value:x:@.sql
+            strings.concat
+               get-value:x:@.sql
+               .:" AND [Document Date] > @min_date"
+         convert:x:@.arguments/*/min_date
+            type:date
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/mssql.select
             .
-               foo
+               @min_date:x:@convert
 
-// Invoking helper slot.
-execute:finovo.accounts.get-data
-   org_number:x:@.arguments/*/org_number
-   columns
-      date_from
-      date_to
-return-nodes:x:-/*
+   // Checking if we're filtering on max date.
+   if
+      and
+         exists:x:@.arguments/*/max_date
+         not-null:x:@.arguments/*/max_date
+      .lambda
+         set-value:x:@.sql
+            strings.concat
+               get-value:x:@.sql
+               .:" AND [Document Date] < @max_date"
+         convert:x:@.arguments/*/max_date
+            type:date
+         unwrap:x:+/*/*
+         add:x:@mssql.connect/*/mssql.select
+            .
+               @max_date:x:@convert
+
+   // Making sure we apply grouping and ordering.
+   set-value:x:@.sql
+      strings.concat
+         get-value:x:@.sql
+         .:" GROUP BY [Salesperson Code], Name ORDER BY "
+         get-value:x:@.arguments/*/order
+         .:" "
+         get-value:x:@.arguments/*/direction
+
+   // Making sure we apply limit and offset.
+   set-value:x:@.sql
+      strings.concat
+         get-value:x:@.sql
+         .:" OFFSET "
+         get-value:x:@.offset
+         .:" ROWS FETCH NEXT "
+         get-value:x:@.limit
+         .:" ROWS ONLY"
+
+   // Executing SQL.
+   mssql.select:x:@.sql
+
+   // Returning result of above invocation to caller.
+   yield
+      result:x:@mssql.select/*

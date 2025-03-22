@@ -1,7 +1,8 @@
-// Example: Create a dynamic slot returning 2 nodes, then invoke it
-slots.create:foo
-   return-nodes
-      integer-value:int:57
-      string-value:Foo bar
+// Create a task, then schedule it
+tasks.create:task-id-qwqw
+   .lambda
 
-signal:foo
+      log.info:Executing repeating task
+
+tasks.schedule:task-id-qwqw
+   repeats:50.seconds

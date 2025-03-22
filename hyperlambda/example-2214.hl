@@ -1,8 +1,46 @@
-// This example connects to the 'music_store' database and inserts a new album record into the 'albums' table.
-sqlite.connect:music_store
-   sqlite.create
-      table:albums
-      values
-         album_name:Abbey Road
-         artist:The Beatles
-         release_year:int:1969
+
+// Develop a function to delete an existing Stripe subscription using a specified subscription ID. The function should validate the subscription ID, retrieve the Stripe API token, and construct the appropriate REST URL. It should make a DELETE request to the Stripe API to remove the subscription. Handle any errors by logging and throwing exceptions to ensure robust error management.
+.arguments
+   subscription_id
+      type:string
+      mandatory:bool:true
+.icon:payment
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/subscription_id
+
+// Retrieving token to use for invocations towards Stripe.
+.token
+set-value:x:-
+   strings.concat
+      .:"Bearer "
+      config.get:"magic:stripe:token"
+
+// Creating our REST URL.
+.url
+set-value:x:@.url
+   strings.concat
+      .:"https://api.stripe.com/v1/subscriptions/"
+      get-value:x:@.arguments/*/subscription_id
+
+// Invoking Stripe REST API.
+http.delete:x:@.url
+   headers
+      Authorization:x:@.token
+   convert:true
+
+// Sanity checking above invocation.
+if
+   mte
+      get-value:x:@http.delete
+      .:int:400
+   .lambda
+
+      // Oops, something went wrong ...!!
+      lambda2hyper:x:@http.post
+      log.error:Something went wrong while invoking Stripe API to delete subscription
+         result:x:@lambda2hyper
+         provider:Stripe
+      throw:Something went wrong while invoking Stripe API to delete subscription
+         public:true
+         status:500

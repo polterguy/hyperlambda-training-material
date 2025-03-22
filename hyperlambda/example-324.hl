@@ -1,15 +1,12 @@
-/*
- * Example: Embed multiple inline expressions in a single string.
+/**
+ * This example creates a bar chart with three bars using [image.chart].
+ * The chart is saved to a file named "/bar-chart.png".
  */
-strings.mixin:@"Sum {{
-math.add
-   .:int:1
-   .:int:2
-return:x:-
-}} and Product {{
-math.multiply
-   .:int:3
-   .:int:4
-return:x:-
-}}"
-// Result: "Sum 3 and Product 12"
+image.chart:bars
+   width:int:600
+   height:int:400
+   filename:/bar-chart.png
+   bars
+      Apples:50
+      Bananas:75
+      Cherries:30

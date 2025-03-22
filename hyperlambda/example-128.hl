@@ -1,6 +1,5 @@
+// Fetching the previously stored session message.
 
-// Example: Ends-with check is case-sensitive.
+cache.get:session.message
 
-// Returns false
-strings.ends-with:Hello
-   .:LLO
+// If the cache entry exists, this will return "Welcome back, user!".

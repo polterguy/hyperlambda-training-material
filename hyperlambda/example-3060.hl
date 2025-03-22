@@ -1,4 +1,5 @@
 
-// Hyperlambda file containing version and module name information for serp-api.
-version:v2.0.0
-module_name:serp-api
+// [and] returns true only if all arguments are true
+and
+   .:bool:true
+   .:bool:true

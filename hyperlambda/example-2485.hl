@@ -1,16 +1,17 @@
 
-// Provide a Hyperlambda example where [.lambda] runs based on the boolean value of [.flag].
+// Generate a Hyperlambda snippet with string variables, demonstrating special character handling, multi-line strings, and alternative quoting.
 
-// Runs [.lambda] based on the boolean value of [.flag].
-.flag:bool:true
-if
-   eq:x:@.flag
-      .:bool:true
-   .lambda
+// String without special characters, no need for quotes
+.simpleText:hello
 
-      // Runs when [.flag] is set to true.
-      log.info:[.flag] is enabled
-else
+// String with a colon, requires quotes
+.colonText:"hello:world"
 
-   // Runs when [.flag] is false.
-   log.info:[.flag] is disabled
+// Multi-line string using @ notation
+.multiLineText:"line1\nline2"
+
+// Using single quotes as an alternative
+.altQuoteText:example
+
+// Escaping a newline character
+.escapedNewlineText:"hello\nworld"

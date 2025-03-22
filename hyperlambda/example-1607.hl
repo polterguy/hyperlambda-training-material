@@ -1,27 +1,46 @@
 
-// Generate a Hyperlambda snippet that evaluates specified [.lambda] if both conditions are true.
+// CRUD / Create Hyperlambda that creates one record in your media table in your cms database
+.arguments
 
-// Evaluates specified [.lambda] if both conditions are true.
-.result
-.value1:int:3
-.value2:int:10
-if
-   and
+   // post_id column value
+   post_id:long
 
-      // [lt] implies "less than"
-      lt:x:@.value1
-         .:int:4
+   // file_path column value
+   file_path:string
 
-      // [mt] implies "more than"
-      mt:x:@.value2
-         .:int:9
-   .lambda
+   // file_type column value
+   file_type:string
 
-      // Changing the value of [.result] to true
-      set-value:x:@.result
-         .:bool:true
-else
+   // created_at column value
+   created_at:date
 
-   // Changing the value of [.result] to false
-   set-value:x:@.result
-      .:bool:false
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+
+// Opening up database connection.
+data.connect:[generic|cms]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:media
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

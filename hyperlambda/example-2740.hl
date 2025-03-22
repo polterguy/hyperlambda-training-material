@@ -1,34 +1,52 @@
 
-// Create a Hyperlambda script for a CRUD create endpoint that inserts one record into the questions table in the magic database, taking question and questionnaire, ensuring authentication and authorization for root and admin roles.
+// Adds an item to your shopping cart.
 .arguments
-   question:string
-   questionnaire:string
-   type:string
-   name:string
-.type:crud-create
+   sku:string
+   quantity:int
+   _session:string
+.type:public
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+// Defaulting [quantity] to 1 if not specified.
+validators.default:x:@.arguments
+   quantity:int:1
 
-// Opening up database connection.
-data.connect:[generic|magic]
-   database-type:sqlite
+/*
+ * Invokes the SQL CRUD Read slot with the specified parameters.
+ * 
+ * Provide [connection-string], [database-type], [database], and [table] to inform the action of
+ * what database/table you want to execute your SQL towards, and add [and] or [or] arguments
+ * to filter your returns, in addition to [limit] and [offset] to apply paging. Use [order]
+ * and [direction] to sort either ascending or descending. Notice, you can only use one of [or]
+ * or [and], and not both.
+ */
+execute:magic.workflows.actions.execute
+   name:sql-read-products
+   filename:/misc/workflows/actions/sql/sql-read.hl
+   arguments
+      columns
+         .:product_id
+      database:shopping-cart-demo
+      table:products
+      and
+         sku:x:@.arguments/*/sku
 
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:questions
-      return-id:bool:true
+/*
+ * Invokes the SQL CRUD Create slot with the specified parameters.
+ * 
+ * Provide [connection-string], [database-type], [database], and [table] to inform the action of
+ * what database/table you want to execute your SQL towards, and [values] for your actual values
+ * to insert.
+ */
+execute:magic.workflows.actions.execute
+   name:sql-create
+   filename:/misc/workflows/actions/sql/sql-create.hl
+   arguments
+      database:shopping-cart-demo
+      table:items
       values
+         product_id:x:../*/execute/=sql-read-products/*/*/product_id
+         quantity:x:@.arguments/*/quantity
+         session_id:x:@.arguments/*/_session
 
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+// Returns the result of your last action.
+return-nodes:x:@execute/*

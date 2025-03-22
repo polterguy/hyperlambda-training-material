@@ -1,18 +1,17 @@
 
-// Provide a Hyperlambda example where [.lambda] runs when [.message] is different from Welcome Home.
+// Generate a Hyperlambda example with string variables, demonstrating quoting variations, newlines, and multi-line strings.
 
-// Runs [.lambda] when [.message] is different from Welcome Home.
-.message:Welcome Home
-if
+// No special characters, no quotes needed
+.textAlpha:demo
 
-   // Condition ensures inequality.
-   neq:x:@.message
-      .:Welcome Home
-   .lambda
+// String contains a colon, needs quotes
+.textBeta:"value:pair"
 
-      // Runs when [.message] is different.
-      log.info:[.message] is NOT Welcome Home
-else
+// Multi-line string with @ notation
+.textGamma:"first line\nsecond line"
 
-   // Runs when [.message] is exactly Welcome Home.
-   log.info:[.message] is Welcome Home
+// Alternative single quotes usage
+.textDelta:quotedText
+
+// Newline escaping within a string
+.textEpsilon:"split\nline"

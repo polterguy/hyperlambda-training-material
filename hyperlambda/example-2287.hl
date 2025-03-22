@@ -1,17 +1,27 @@
 
-// Create a Hyperlambda snippet that fetches active orders from the e-commerce database and orders table.
+// Provide a Hyperlambda example where [.lambda] runs when all conditions evaluate to true.
 
-// Fetching active orders from the e-commerce database and orders table.
-data.connect:ecommerce_db
+// Runs [.lambda] when all conditions evaluate to true.
+.state
+.check1:int:2
+.check2:int:8
+if
+   and
 
-   // Database type set to PostgreSQL.
-   database-type:pgsql
+      // First condition: Less than
+      lt:x:@.check1
+         .:int:3
 
-   // Reading order records.
-   data.read
-      database-type:pgsql
-      table:orders
-      limit:30
-      sort
-         order_date
-      direction:desc
+      // Second condition: More than
+      mt:x:@.check2
+         .:int:7
+   .lambda
+
+      // Updating [.state] to true
+      set-value:x:@.state
+         .:bool:true
+else
+
+   // Updating [.state] to false
+   set-value:x:@.state
+      .:bool:false

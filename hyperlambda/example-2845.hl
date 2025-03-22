@@ -1,26 +1,20 @@
 
-// Write a Hyperlambda script to return a specified PDF training data file to the client.
-.arguments
-   file:string
+// Create a Hyperlambda script to format all Hyperlambda files recursively within a specified module's folder.
+.folder:/modules/YOUR-MODULE-FOLDER-HERE/
+io.file.list-recursively:x:-
+for-each:x:-/*
+   if
+      strings.ends-with:x:@.dp/#
+         .:.hl
+      .lambda
+         io.file.load:x:@.dp/#
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/file
+         // These two guys will end up formatting all Hyperlambda code the exact same way
+         hyper2lambda:x:@io.file.load
+            comments:true
+         lambda2hyper:x:@hyper2lambda/*
+            comments:true
 
-// Figuringout full path of file.
-strings.concat
-   .:/etc/system/openai/pdf/
-   get-value:x:@.arguments/*/file
-
-// Getting our response HTTP headers sorted out.
-strings.concat
-   .:"attachment; filename=\""
-   get-value:x:@.arguments/*/file
-   .:"\""
-response.headers.set
-   Content-Type:application/pdf
-   Content-Disposition:x:@strings.concat
-   Access-Control-Expose-Headers:Content-Disposition
-
-// Returning file to caller.
-io.stream.open-file:x:@strings.concat/@strings.concat
-return:x:-
+         // Saving formatted file.
+         io.file.save:x:@.dp/#
+            get-value:x:@lambda2hyper

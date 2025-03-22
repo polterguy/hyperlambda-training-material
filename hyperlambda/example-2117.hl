@@ -1,5 +1,11 @@
-// Attempting to convert an invalid base64 value should throw an error
+/*
+ * Invalid: Uses `#` iterator to dereference a value that is not a node.
+ * The value of [.scalar] is a string, not a reference to another node or
+ * a node by itself.
+ *
+ * This code will throw an exception since the `#` node will try to convert
+ * the string "hello" to a node, which throws an exception.
+ */
 
-.src:int:555
-convert:x:-
-   type:from-base64
+.scalar:hello
+get-value:x:@.scalar/#

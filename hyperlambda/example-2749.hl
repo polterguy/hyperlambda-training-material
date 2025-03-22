@@ -1,28 +1,21 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one item from the users_extra table in the magic database matching the specified arguments, ensuring authentication and authorization for root roles.
+// Removes the specified [item_id] from your shopping cart.
 .arguments
-   type:string
-   user:string
+   item_id:int
+   _session:string
+.type:public
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-validators.mandatory:x:@.arguments/*/type
-validators.mandatory:x:@.arguments/*/user
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
 
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
+   // Removing item.
    data.delete
-      table:users_extra
+      table:items
       where
          and
+            item_id.eq:x:@.arguments/*/item_id
+            session_id.eq:x:@.arguments/*/_session
 
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Returning success to caller.
+return
+   result:success

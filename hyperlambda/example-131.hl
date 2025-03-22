@@ -1,8 +1,51 @@
 
-// Example: Use variables to supply the string and prefix to check.
-.text:Sample
-.prefix:Sam
+// Create one record in your CustomerCustomerDemo table in your northwind database
+.arguments
 
-// Returns true
-strings.starts-with:x:@.text
-   get-value:x:@.prefix
+   // CustomerID column value
+   CustomerID:string
+
+   // CustomerTypeID column value
+   CustomerTypeID:string
+
+// Meta data description for endpoint
+.description:Create one record in your CustomerCustomerDemo table in your northwind database
+
+// Type of endpoint
+.type:crud-create
+.foreign-keys
+   .
+      column:CustomerID
+      table:Customers
+      foreign_column:CustomerID
+      foreign_name:CustomerID
+      long:bool:true
+   .
+      column:CustomerTypeID
+      table:CustomerDemographics
+      foreign_column:CustomerTypeID
+      foreign_name:CustomerTypeID
+      long:bool:true
+
+// Opening up database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:CustomerCustomerDemo
+      return-id:bool:false
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      result:success

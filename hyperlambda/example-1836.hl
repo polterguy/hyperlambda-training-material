@@ -1,5 +1,9 @@
-// Subtract 15 minutes from total time
-.total-time:int:120
-math.subtract
-   get-value:x:@.total-time
-   .:int:15
+// This code connects to the 'ecommerce' database and updates the price of a product in the 'products' table.
+pgsql.connect:ecommerce
+   pgsql.update
+      table:products
+      values
+         price:decimal:19.99
+      where
+         and
+            product_id:int:202

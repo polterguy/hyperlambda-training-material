@@ -1,9 +1,8 @@
-/*
- * This Hyperlambda snippet retrieves records where `name` contains "John".
- */
-
-data.read
-   table:users
-   where
-      and
-         name.like:%John%
+// How do I find all nodes with the names being 'howdy' inside [.data] and join these with '|' separator?
+.data
+   howdy:Hello
+   howdy:Howdy World
+   greetings:Howdy partner
+   phrases:Hi there
+strings.join:x:@.data/*/howdy
+   .:|

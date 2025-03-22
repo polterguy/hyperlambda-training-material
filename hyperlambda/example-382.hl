@@ -1,5 +1,2 @@
-/*
- * Example: Convert an already uppercase string (no change).
- */
-// Result: "HELLO"
-strings.to-upper:HELLO
+// Uses an extrapolated value to access a dynamic key in .settings
+.dynamic-key:x:@.settings/*/{@.arguments/*/key}

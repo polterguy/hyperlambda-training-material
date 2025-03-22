@@ -1,11 +1,17 @@
 
-// Generate a Hyperlambda snippet that opens a connection to 'sales_db' and retrieves records from 'transactions' table.
+// Write a Hyperlambda snippet demonstrating string handling, escape sequences, and multi-line formatting.
 
-// Opens a connection to "sales_db" and retrieves records from "transactions" table.
-.result
-data.connect:sales_db
-   database-type:mysql
-   data.select:select * from transactions order by transaction_date desc limit 10
-      database-type:mysql
-   add:x:@.result
-      get-nodes:x:@data.select/*
+// Plain string assignment
+.textX:plain
+
+// Special character requires quotes
+.textY:"url:path"
+
+// Multi-line format
+.textZ:"start\nend"
+
+// Single-quoted alternative
+.textQ:custom-string
+
+// Escaping newlines in a string
+.textR:"value\nbreak"

@@ -1,41 +1,89 @@
-
-// Create a Hyperlambda script for a CRUD update endpoint that updates an existing item in the roles table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+/*
+ * Allows the user to verify his or her email address
+ */
 .arguments
-   name:string
-   description:string
+   token:string
+   username:string
 
-// Verifying user is authorized to access endpoint.
-validators.mandatory:x:@.arguments/*/name
-auth.ticket.verify:root
+/*
+ * Returns the specified [key] configuration setting.
+ *
+ * Notice, to traverse into for instance magic.foo.bar, you'll have to colon separate
+ * your path as follows "magic:foo:bar".
+ */
+execute:magic.workflows.actions.execute
+   name:config
+   filename:/misc/workflows/actions/misc/config.hl
+   arguments
+      key:"magic:auth:secret"
 
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Parametrising our invocation.
-   add:x:./*/data.update/*/values
-      get-nodes:x:@.arguments/*/[1,1000]
-   add:x:./*/data.update/*/where/*/and
-      get-nodes:x:@.arguments/*/[0,1]
-
-   // Invoking our update slot.
-   data.update
-      table:roles
+/*
+ * Joins the specified [values] into a single string.
+ *
+ * Notice, the [separator] is inserted between each string. If no [separator] argument is provided,
+ * the strings will simply be concatenated instead.
+ */
+execute:magic.workflows.actions.execute
+   name:strings-join
+   filename:/misc/workflows/actions/strings/strings-join.hl
+   arguments
       values
-      where
-         and
+         .:x:@.arguments/*/username
+         .:x:--/execute/=config/*/value
+      separator:,
 
-   // Verifying record exists.
-   if
-      eq
-         get-value:x:@data.update
-         .:int:0
-      .lambda
-         response.status.set:404
-         return
-            result:Record not found
+/*
+ * Creates a hash of the specified [input].
+ *
+ * Use [algorithm] to override the default hashing algorithm used. The default hashing algorithm
+ * is SHA 256.
+ */
+execute:magic.workflows.actions.execute
+   name:hash
+   filename:/misc/workflows/actions/misc/hash.hl
+   arguments
+      input:x:--/execute/=strings-join/*/result
+      algorithm:sha256
 
-   // Returning success to caller.
-   response.status.set:202
-   unwrap:x:+/*
-   return
-      affected:x:@data.update
+/*
+ * Executes the specified [action] if the specified [condition] is true.
+ *
+ * Will pass in all arguments specified to the action. The [condition] can be two different
+ * values or expressions, and the [comparison] can be eq, neq, mt, mte, lt, lte, or some other
+ * comparison operator.
+ *
+ * The action will use the [comparison] to compare the [lhs] and [rhs] values/expressions.
+ */
+execute:magic.workflows.actions.execute
+   name:execute-action-if
+   filename:/misc/workflows/actions/misc/execute-action-if.hl
+   arguments
+      lhs:x:--/execute/=hash/*/result
+      comparison:neq
+      rhs:x:@.arguments/*/token
+      action:/misc/workflows/actions/misc/error.hl
+      arguments
+         message:Bogus token, go home!!
+         status:400
+         public:true
+
+/*
+ * Associates the specified [username] with the specified [roles] roles.
+ *
+ * Notice, does not remove roles from user, only adds roles. This action will also throw
+ * if you try to associate a user with a role the user is already associated with.
+ */
+execute:magic.workflows.actions.execute
+   name:roles-add
+   filename:/modules/auth/workflows/actions/roles-add.hl
+   arguments
+      roles
+         .:guest
+      username:x:@.arguments/*/username
+
+// Redirects the client to the specified [url].
+execute:magic.workflows.actions.execute
+   name:http-redirect
+   filename:/misc/workflows/actions/http/http-redirect.hl
+   arguments
+      url:"https://ainiro.io"

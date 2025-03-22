@@ -1,16 +1,18 @@
 
-// Generate a Hyperlambda snippet that checks every second while [.time_left] is above 0.
+// Generate a Hyperlambda snippet that evaluates specified [.lambda] if condition does not evaluate to Hello Universe.
 
-// Checks every second while [.time_left] is above 0.
-.time_left:int:5
-while
-   gt
-      get-value:x:@.time_left
-      .:int:0
+// Evaluates specified [.lambda] if condition does not evaluate to Hello Universe.
+.foo:Hello Universe
+if
+
+   // [neq] implies "not equals".
+   neq:x:@.foo
+      .:Hello Universe
    .lambda
 
-      // Logging remaining time.
-      log.info:Time remaining
+      // Lambda evaluates if condition is true.
+      log.info:[.foo] is NOT Hello Universe
+else
 
-      // Decrement time.
-      math.decrement:x:@.time_left
+   // Lambda evaluated if condition is NOT true.
+   log.info:[.foo] is Hello Universe

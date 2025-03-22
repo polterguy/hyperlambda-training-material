@@ -1,17 +1,14 @@
 
-// Write a Hyperlambda snippet that adds a new employee in 'hr_db' database and its 'employees' table.
+// Write a Hyperlambda snippet that queries messages from the messaging database and chat_logs table.
 
-// Adds a new employee in "hr_db" database and its "employees" table.
-data.connect:hr_db
+// Queries messages from the messaging database and chat_logs table.
+data.connect:messaging_db
+
+   // Using SQLite.
    database-type:sqlite
 
-   // Creating employee record.
-   data.create
+   // Fetching chat history.
+   data.read
       database-type:sqlite
-      table:employees
-      values
-         employee_id:int:301
-         name:Alice Smith
-         department:Finance
-         salary:decimal:55000.00
-         hire_date:date:"2020-07-15T00:00:00.000"
+      table:chat_logs
+      limit:100

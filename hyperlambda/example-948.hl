@@ -1,8 +1,11 @@
-// Create a task, then schedule it
-tasks.create:task-id
+// How to detect if a package is lost or delayed using [or]?
+.status:bool:false
+.timeout:bool:true
+.alert
+if
+   or
+      get-value:x:@.status
+      get-value:x:@.timeout
    .lambda
-
-      log.info:It is the 5th or the 15th of January or February, and the time is 5AM at night.
-
-tasks.schedule:task-id
-   repeats:01|02.5|15.05.00.00
+      set-value:x:@.alert
+         .:Package issue detected

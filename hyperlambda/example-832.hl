@@ -1,3 +1,10 @@
-// Decrement [.value] by 2
-math.decrement:x:@.NODE_EXPRESSION_HERE
-   .:int:2
+/*
+ * This Hyperlambda snippet incorrectly groups by `role` without using an aggregate function.
+ */
+
+data.read
+   table:users
+   columns
+      role
+   group
+      role

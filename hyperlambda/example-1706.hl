@@ -1,10 +1,18 @@
-
-// Adding expressions as new nodes but unwrapping expressions before executing [add]
+// This code loads an HTML file and replaces old brand names and slogans with updated ones.
+// It replaces "OldBrand" with "NewBrand" and "Experience the Difference" with "Elevate Everything".
 .data
-   foo:some value
-unwrap:x:+/*/*
-add:x:@.data
    .
-      bar:x:@.data/*/foo
-
-// Both nodes will contain the values of the above [foo] nodes after [add].
+      what:OldBrand
+      with:NewBrand
+   .
+      what:Experience the Difference
+      with:Elevate Everything
+.filename:/public/index.html
+.result
+set-value:x:-
+   io.file.load:x:@.filename
+for-each:x:@.data/*
+   set-value:x:@.result
+      strings.replace:x:@.result
+         get-value:x:@.dp/#/*/what
+         get-value:x:@.dp/#/*/with

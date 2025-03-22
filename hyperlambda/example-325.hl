@@ -1,8 +1,17 @@
 /*
- * Example: Mix in a slot that returns a string to be inserted.
+ * FILE: /modules/api/products/available.hl
+ *
+ * DESCRIPTION:
+ * Lists available products in stock using raw SQL.
+ * Demonstrates basic filtering logic using SQL inside [data.select].
+ *
+ * HOW TO CREATE THIS ENDPOINT:
+ * Save to `/modules/api/products/available.hl`, and it becomes available at:
+ *     GET /api/products/available
  */
-strings.mixin:@"Hello, {{
-strings.to-upper:world
-return:x:-
-}}!"
-// Result: "Hello, WORLD!"
+
+data.connect:shop
+   data.select:SELECT name, quantity FROM products WHERE quantity > 0
+
+yield
+   result:x:@data.connect/*/data.select/*

@@ -1,16 +1,16 @@
+/*
+ * Save this file as `/modules/users/endpoints/assign-role.hl`
+ * This exposes an HTTP POST endpoint at `/users/assign-role`
+ *
+ * The endpoint requires a `userId` and `role` to proceed with role assignment.
+ */
 
-// Create a Hyperlambda snippet that retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target].
+.arguments
+   userId
+   role
 
-// Retrieves nodes from [.sourceA] and [.sourceB] and adds them into [.target]
-.sourceA
-   keyX:valX
-   keyY:valY
-   keyZ:valZ
-.sourceB
-   keyM:valM
-   keyN:valN
-   keyO:valO
-.target
-add:x:@.target
-   get-nodes:x:@.sourceA/*
-   get-nodes:x:@.sourceB/*
+validators.mandatory:x:@.arguments/*/userId
+validators.mandatory:x:@.arguments/*/role
+
+yield
+   message:Role assigned (simulated)

@@ -1,6 +1,7 @@
-// Connect to magic database and returns all roles
-data.connect:magic
-   data.read
-      table:roles
-      columns
-         name
+
+// Return the URL of the current request
+request.url
+
+// Example result ==> magic/system/evaluator/evaluate
+
+// Notice, URL will always be returned as relative URL

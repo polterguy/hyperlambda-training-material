@@ -1,5 +1,16 @@
-/*
- * Example: Trim whitespace from the end of a string.
- */
-// Result: "hello"
-strings.trim-end:"hello   "
+
+// Generate a Hyperlambda snippet that evaluates specified [.check] if condition evaluates to true.
+
+// Evaluates specified [.check] if condition evaluates to true.
+.check:bool:true
+if
+   eq:x:@.check
+      .:bool:true
+   .lambda
+
+      // Lambda evaluates if condition is true.
+      log.info:[.check] is true
+else
+
+   // Lambda evaluated if condition is NOT true.
+   log.info:[.check] is false

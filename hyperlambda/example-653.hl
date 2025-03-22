@@ -1,19 +1,2 @@
-// Build a PUT endpoint to update an existing contact's name and email address.
-// Filename: /modules/contacts/update.put.hl
-// The contact's ID is required along with the new data fields to apply the update.
-
-.arguments
-   id:int
-   name:string
-   email:string
-
-data.connect:[generic|crm]
-   data.update
-      table:contacts
-      values
-         name:x:@.arguments/*/name
-         email:x:@.arguments/*/email
-      where
-         and
-            id:x:@.arguments/*/id
-   return-nodes:x:@data.update/*
+// Returns the username and role(s) of currently authenticated user
+auth.ticket.get

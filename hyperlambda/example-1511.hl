@@ -1,16 +1,7 @@
 /*
- * Loops over an array of values to find the minimum manually using [lt].
+ * If `.foo1` has no children, `for-each` should not execute the `foo2` slot.
  */
-.data
-   .:int:11
-   .:int:9
-   .:int:22
-   .:int:5
-.min:int:999
-for-each:x:@.data/*
-   if
-      lt:x:@.dp/#
-         get-value:x:@.min
-      .lambda
-         set-value:x:@.min
-            get-value:x:@.dp/#
+
+.foo1
+for-each:x:../*/.foo1/*
+   foo2

@@ -1,11 +1,10 @@
 
-// Provide a Hyperlambda example where 'hr_db' is opened to get employee details.
-
-// Opens "hr_db" and gets employee details.
-.result
-data.connect:hr_db
-   database-type:mssql
-   data.select:"select employee_id, name, department, hire_date from employees where status='active'"
-      database-type:mssql
-   add:x:@.result
-      get-nodes:x:@data.select/*
+// Write a Hyperlambda endpoint that handles JSON payloads containing a 'user' and 'action' and returns a message.
+.arguments
+   user:string
+   action:string
+return
+   message:x:@strings.concat
+      get-value:x:@.arguments/*/user
+      .:" performed action: "
+      get-value:x:@.arguments/*/action

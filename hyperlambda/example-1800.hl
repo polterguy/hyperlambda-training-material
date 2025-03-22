@@ -1,18 +1,12 @@
-// Hyperlambda [if] checking substring
-.filename:document.pdf
-.file-type
-if
-   strings.ends-with:x:@.filename
-      .:pdf
-   .lambda
-      set-value:x:@.file-type
-         .:pdf
+/*
+ * This Hyperlambda snippet demonstrates an error when multiple nodes match.
+ *
+ * 1. The `.data` node has multiple children.
+ * 2. The `get-value` slot is used with a wildcard selector `*`, which returns multiple nodes.
+ * 3. This will cause a HyperlambdaException because `get-value` expects exactly one node.
+ */
 
-/* JavaScript equivalent of Hyperlambda [if] checking substring
-const filename = "document.pdf";
-let fileType;
-
-if (filename.endsWith("pdf")) {
-  fileType = "pdf";
-}
-*/
+.data
+   foo1:bar1
+   foo2:bar2
+get-value:x:@.data/*

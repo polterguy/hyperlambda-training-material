@@ -1,14 +1,12 @@
-// Copies template field defaults into matching form inputs
-.template
-   fields
-      name:John Doe
-      age:int:40
-      email:john@example.com
-.form
-   name
-   age
-   email
-for-each:x:@.template/*/fields/*
-   get-name:x:@.dp/#
-   set-value:x:@.form/*/{@get-name}
-      get-value:x:@.dp/#
+.data
+   foo
+   world
+      foo
+         bar
+   section
+      category
+         foo
+
+// Modify "foo" nodes everywhere
+set-value:x:@.data/**/foo
+   .:Changed value

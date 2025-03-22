@@ -1,2 +1,3 @@
-// Create HTTP GET invocation
-http.get:"https://docs.ainiro.io"
+// Converts the specified image
+image.convert:/some-image.png
+   type:jpeg

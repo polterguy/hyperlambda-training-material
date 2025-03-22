@@ -1,7 +1,5 @@
 
-// Create an exception handler in Hyperlambda that logs the error and returns a status 500 response.
-log.error:x:@.arguments/*/message
-   url:x:@.arguments/*/path
-return
-   error:An error occurred in Hyperlambda processing.
-   status:int:500
+// Ensures the module's database exists and is updated by running migration scripts.
+signal:magic.modules.ensure-database
+   module:scraper
+   database:scraper

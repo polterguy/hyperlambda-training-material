@@ -1,5 +1,15 @@
-/*
- * Example: URL-decode a string with reserved characters.
- */
-strings.url-decode:100%2525%2520free%2520%2526%2520easy
-// Result: "100% free & easy"
+// Use and to require multiple conditions to be true
+
+.foo1:OK
+.foo2:OK
+if
+   and
+      eq
+         get-value:x:../*/.foo1
+         .:OK
+      eq
+         get-value:x:../*/.foo2
+         .:OK
+   .lambda
+      set-value:x:../*/.result
+         .:MATCH

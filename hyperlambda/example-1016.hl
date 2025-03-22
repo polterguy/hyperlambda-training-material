@@ -1,21 +1,5 @@
-/**
- * This example creates a stacked bar chart with two groups.
- * The chart is saved to a file named "/stacked-chart.png".
- */
-image.chart:stacked
-   width:int:600
-   height:int:400
-   filename:/stacked-chart.png
-   bars
-      Q1
-         Apples:30
-         Bananas:40
-         Cherries:20
-      Q2
-         Apples:25
-         Bananas:35
-         Cherries:30
-   legend
-      Apples
-      Bananas
-      Cherries
+
+// Example: Embed multiple inline expressions in a single string.
+strings.mixin:"Sum {{\nmath.add\n   .:int:1\n   .:int:2\nreturn:x:-\n}} and Product {{\nmath.multiply\n   .:int:3\n   .:int:4\nreturn:x:-\n}}"
+
+// Result: "Sum 3 and Product 12"

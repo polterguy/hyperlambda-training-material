@@ -1,13 +1,14 @@
-/*
- * Conditionally updates [.status] to "OK" if the node named "health" 
- * after it has a value of "good". This uses `@.health` to access named sibling.
- */
 
-.status
-.health:good
-if
-   eq:x:@.health
-      .:good
-   .lambda
-      set-value:x:@.status
-         .:OK
+// Create a Hyperlambda action to load a specified file and return its content.
+.arguments
+   file
+      type:string
+      mandatory:bool:true
+.icon:insert_drive_file
+
+// Loads the specified file.
+load-file:x:@.arguments/*/file
+
+// Returning result of above invocation to caller.
+yield
+   content:x:@load-file

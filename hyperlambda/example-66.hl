@@ -1,4 +1,11 @@
+// Use an if statement with eq to compare values
 
-// Example: Create a slot
-slots.create:foo
-   return-value:int:57
+.result
+.src:int:1
+if
+   eq
+      get-value:x:@.src
+      .:int:1
+   .lambda
+      set-value:x:../*/.result
+         .:OK

@@ -1,44 +1,30 @@
-/*
- * Compiles a snippet of C# code down to a library,
- * for then to dynamically load it as a plugin.
- *
- * This particular code creates a slot, but you can create any
- * code you wish, and it doesn't have to be Hyperlambda related.
- */
-system.compile
-   references
-      .:netstandard
-      .:System.Runtime
-      .:System.Private.CoreLib
-      .:magic.node
-      .:magic.signals.contracts
-   code:@"
 
-// Example C# code creating a Hyperlambda slot.
-using System;
-using magic.node;
-using magic.signals.contracts;
+// Write a Hyperlambda script to upload a specified backup file.
+.arguments
+   file:*
+.type:internal
+.accept:multipart/form-data
 
-// Our slot class.
-[Slot(Name = ""bar"")]
-public class Bar : ISlot
-{
-   public void Signal(ISignaler signaler, Node input)
-   {
-      input.Value = ""Hello from C#"";
-   }
-}"
-   assembly-name:bar.dll
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Loading assembly now that we've created it.
-system.plugin.execute:x:@system.compile
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/file
+validators.mandatory:x:@.arguments/*/file/*/name
+validators.mandatory:x:@.arguments/*/file/*/stream
+validators.regex:x:@.arguments/*/file/*/name
+   regex:"\\.db$"
 
-   // Invoking dynamically created C# slot.
-   bar
+// Saves the file to the specified folder.
+.full-path
+set-value:x:@.full-path
+   strings.concat
+      .:/data/
+      get-value:x:@.arguments/*/file/*/name
+io.stream.save-file:x:@.full-path
+   get-value:x:@.arguments/*/file/*/stream
 
-/*
- * Now the [bar] slot is no longer available
- * since the assembly has been unloaded due to
- * having gone out of scope.
- */
-system.plugin.list
+// Flushing SQLite, and returning success to caller.
+sqlite.connections.flush
+return
+   result:success

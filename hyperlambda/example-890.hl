@@ -1,8 +1,5 @@
-// Returns ALL items (limit is -1) from table1 where field1 equals 'howdy'
-sql.read
-   table:table1
-   limit:-1
-   where
 
-      and
-         field1.eq:howdy
+// Example: Embed multiple inline expressions in a single string.
+strings.mixin:"Sum {{\nmath.add\n   .:int:1\n   .:int:2\nreturn:x:-\n}} and Product {{\nmath.multiply\n   .:int:3\n   .:int:4\nreturn:x:-}}"
+
+// Result: "Sum 3 and Product 12"

@@ -1,10 +1,44 @@
 
-// Example: Use variables for the string, start index, and length.
-.text:Magic
-.start:int:1
-.len:int:3
-strings.substring:x:@.text
-   get-value:x:@.start
-   get-value:x:@.len
+// Removes the specified [roles] from the specified [username].
+.arguments
+   username
+      type:string
+      mandatory:bool:true
+   roles
+      type:array
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Result: "agi"
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/roles
+
+// Connecting to database.
+data.connect:[generic|magic]
+
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
+      where
+         and
+            username.eq:x:@.arguments/*/username
+
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Removing [roles] from [username]
+   for-each:x:@.arguments/*/roles/*
+      data.delete
+         table:users_roles
+         where
+            and
+               user.eq:x:@.arguments/*/username
+               role.eq:x:@.dp/#

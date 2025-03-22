@@ -1,83 +1,56 @@
 
-// Create a Hyperlambda action to execute a SQL CRUD Create operation with specified 'database-type', 'connection-string', 'database', 'table', and 'values'. Validate mandatory fields and enums.
-.arguments
+// Create a function that returns all cloudlets belonging to the currently authenticated user.
+.type:crud-read
 
-   // This is action syntax, NOT endpoint or Hyperlambda file syntax
-   database-type
-      type:enum
-      mandatory:bool:true
-      values
-         .:sqlite
-         .:mssql
-         .:mysql
-         .:pgsql
-   connection-string
-      type:string
-      mandatory:bool:true
-   database
-      type:string
-      mandatory:bool:true
-   table
-      type:string
-      mandatory:bool:true
-   values
-      type:key-value
-      mandatory:bool:true
-.icon:cloud_download
+// Ensuring user is authorised to invoke endpoint.
+auth.ticket.verify:root, guest, impersonated
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/table
-validators.enum:x:@.arguments/*/database-type
-   .:sqlite
-   .:mssql
-   .:mysql
-   .:pgsql
+/*
+ * Retrieving currently authenticated user to prevent a user
+ * from retrieving cloudlets not belonging to him/her.
+ */
+auth.ticket.get
 
-// Applying defaults.
-validators.default:x:@.arguments
-   connection-string:generic
-   database-type:sqlite
-   database:magic
+// Opening up our database connection.
+data.connect:[generic|hub]
 
-// Ensuring caller provided [values].
-if
-   not
-      exists:x:@.arguments/*/values/*
-   .lambda
-      throw:Provide [values] to sql-insert action.
-         public:bool:true
-         status:500
+   // Reading data from database.
+   data.read
+      table:cloudlets
+         join:plans
+            type:inner
+            on
+               and
+                  cloudlets.plan.eq:plans.name
+         join:clusters
+            type:inner
+            on
+               and
+                  cloudlets.cluster.eq:clusters.id
+      columns
+         cloudlets.id
+         cloudlets.created
+         cloudlets.name
+         cloudlets.plan
+         cloudlets.cluster
+         cloudlets.destruction_date
+         cloudlets.enabled
+         cloudlets.source_cloudlet
+         plans.price
+         plans.storage
+         plans.cpu
+         plans.memory
+         plans.frontend
+         plans.max_upload
+         plans.bandwidth
+         plans.max_timeout
+         clusters.country
+         clusters.name
+            as:node_name
+         plans.description
+      where
+         and
+            user.eq:x:@auth.ticket.get
 
-// Connection string to actually use as we connect.
-.connection-string
-
-// Caller supplied an explicit [connection-string] argument.
-set-value:x:@.connection-string
-   strings.concat
-      .:[
-      get-value:x:@.arguments/*/connection-string
-      .:|
-      get-value:x:@.arguments/*/database
-      .:]
-
-// Connecting to database.
-data.connect:x:@.connection-string
-   database-type:x:@.arguments/*/database-type
-
-   // Adding values.
-   for-each:x:@.arguments/*/values/*
-      set-name:x:./0/-/*/*
-         get-name:x:@.dp/#
-      set-value:x:./0/-/*/*
-         get-value:x:@.dp/#
-      add:x:@data.connect/*/data.create/*/values
-         .
-            name
-
-   // Executing SQL.
-   data.create
-      database-type:x:@.arguments/*/database-type
-      table:x:@.arguments/*/table
-      values
-   yield
-      id:x:@data.create
+   // Returning result of above read invocation to caller.
+   return-nodes:x:@data.read/*

@@ -1,30 +1,57 @@
 
-// Create a Hyperlambda script for a CRUD delete endpoint that deletes one record from the questionnaires table in the magic database with a name matching the argument, ensuring authentication and authorization for root and admin roles.
+// Update endpoint updating one record in your items table in your shopping-cart-demo database.
 .arguments
-   name:string
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+   // item_id column value being primary key of record to update
+   item_id:long
+
+   // product_id column's new value
+   product_id:long
+
+   // session_id column's new value
+   session_id:string
+
+// Type of endpoint
+.type:crud-update
 
 // Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/name
+validators.mandatory:x:@.arguments/*/item_id
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
 
 // Opening up our database connection.
-data.connect:[generic|magic]
+data.connect:[generic|shopping-cart-demo]
    database-type:sqlite
 
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
+   // Parametrising our invocation.
+   add:x:./*/data.update/*/values
+      get-nodes:x:@.arguments/*/[1,1000]
+   add:x:./*/data.update/*/where/*/and
+      get-nodes:x:@.arguments/*/[0,1]
 
-   // Deleting item from database.
-   data.delete
+   // Invoking our update slot.
+   data.update
       database-type:sqlite
-      table:questionnaires
+      table:items
+      values
       where
          and
 
-   // Returning result of above invocation to caller.
+   // Verifying record exists.
+   if
+      eq
+         get-value:x:@data.update
+         .:int:0
+      .lambda
+         response.status.set:404
+         return
+            result:Record not found
+
+   // Returning the correct status code.
+   response.status.set:202
+
+   // Returning success to caller.
    unwrap:x:+/*
    return
-      affected:x:@data.delete
+      affected:x:@data.update

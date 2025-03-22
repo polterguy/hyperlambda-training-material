@@ -1,5 +1,13 @@
-// How to use [data.execute]
+// Define a whitelist to limit allowed vocabulary
 
-// Opening database
-data.connect:sakila
-   data.execute:delete from non_existing_table
+.result
+add:x:-
+   whitelist
+      vocabulary
+
+         // These are the ONLY legal slots within our [.lambda] object
+         return
+         vocabulary
+      .lambda
+         vocabulary
+         return:x:-/*

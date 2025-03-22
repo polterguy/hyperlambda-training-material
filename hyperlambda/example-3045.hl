@@ -1,26 +1,49 @@
 
-// Inserts training data into database.
-.arguments
+// Verifies user is allowed to create a demo account.
+slots.create:hub.user.can-create-demo-account
 
-   // Mandatory prompt used to generate specified Hyperlambda
-   prompt:string
+   // Sanity checking invocation.
+   validators.mandatory:x:@.arguments/*/username
+   validators.mandatory:x:@.arguments/*/plan
 
-   // Mandatory reference to Hyperlambda file.
-   file-no:int
-.type:public
+   // Verifying user belongs to one of the roles that are allowed to create demo clodlets.
+   try
+      auth.ticket.verify:root, admin, partner
+   .catch
 
-// Getting Hyperlambda.
-execute-file:/modules/fine-tune/workflows/create-training-data.hl
-   file-no:x:@.arguments/*/file-no
+      // Letting user know that he is not allowed to create demo cloudlets.
+      sockets.signal:hub.cloudlets.create
+         users:x:@auth.ticket.get
+         args
+            status:Only partners can create demo cloudlets. To test AINIRO send en email to team@ainiro.io
+            finished:bool:false
+            error:bool:true
+      log.error:User tried to create demo cloudlets when not allowed
+         user:x:@.arguments/*/username
+         plan:x:@.arguments/*/plan
+      throw:Only partners can create demo cloudlets
+         public:true
+         status:403
 
-// Inserting item.
-data.connect:fine-tune
-   data.create
-      table:hyperlambda
-      values
-         prompt:x:@.arguments/*/prompt
-         code:x:@execute-file/*/hyperlambda
+   // Checking if user alread have a demo cloudlet.
+   data.scalar:select count(*) from cloudlets where user = @user and plan = @plan
+      user:x:@.arguments/*/username
+      plan:x:@.arguments/*/plan
+   if
+      neq:x:@data.scalar
+         .:long:0
+      .lambda
 
-// Returning success.
-return
-   result:success
+         // Letting user know that he already has a demo account of specified type.
+         sockets.signal:hub.cloudlets.create
+            users:x:@auth.ticket.get
+            args
+               status:You already have one demo account of the specified type
+               finished:bool:false
+               error:bool:true
+         log.error:User tried to create multiple demo cloudlets
+            user:x:@.arguments/*/username
+            plan:x:@.arguments/*/plan
+         throw:We only allow one demo cloudlet of each type for each user
+            public:true
+            status:403

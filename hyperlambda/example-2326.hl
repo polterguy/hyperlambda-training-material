@@ -1,6 +1,5 @@
+// Checking the number of items currently in the cache.
 
-// Example: Use a variable to provide the input string.
-.text:Test
+cache.count
 
-// Returns 4
-strings.length:x:@.text
+// This will return the number of active cache entries.

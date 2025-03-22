@@ -1,30 +1,43 @@
 
-// Create a Hyperlambda script for an endpoint that counts items in the questionnaires table in the magic database, ensuring the user is authorized and handling optional filters.
+// Create endpoint inserting one record into your items table in your shopping-cart-demo database.
 .arguments
-   questionnaires.name.like:string
-   questionnaires.name.eq:string
-   questionnaires.type.like:string
-   questionnaires.type.eq:string
+
+   // product_id column value
+   product_id:long
+
+   // quantity column value
+   quantity:long
+
+   // session_id column value
+   session_id:string
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-create
 
 // Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+auth.ticket.verify:root,admin
 
-// Opening up our database connection.
-data.connect:[generic|magic]
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
    database-type:sqlite
-   add:x:+/*/where/*
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
       get-nodes:x:@.arguments/*
 
-   // Reading data from database.
-   data.read
+   // Creating our record.
+   data.create
       database-type:sqlite
-      table:questionnaires
-      columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
+      table:items
+      return-id:bool:true
+      values
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create

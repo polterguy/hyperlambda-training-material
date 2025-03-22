@@ -1,16 +1,18 @@
 
-// Ensures our configuration folder exists for NetSuite
+// Generate a Hyperlambda snippet that triggers [.lambda] when [.input] does not contain Go Go Go.
+
+// Triggers [.lambda] when [.input] does not contain Go Go Go.
+.input:Go Go Go
 if
-   not
-      io.folder.exists:/etc/netsuite/
+
+   // Validates that [.input] is not "Go Go Go".
+   neq:x:@.input
+      .:Go Go Go
    .lambda
 
-      // Creating folder.
-      io.folder.create:/etc/netsuite/
+      // Executes when [.input] differs.
+      log.info:[.input] is NOT Go Go Go
+else
 
-      // Creating default README file in folder.
-      io.file.save:/etc/netsuite/README.md
-         .:"## NetSuite Configuration files folder\n\nPut your private key in this folder with a filename of 'private-key.txt'\n"
-
-      // Performing basic logging.
-      log.info:NetSuite configuration folder created
+   // Executes when [.input] is exactly "Go Go Go".
+   log.info:[.input] is Go Go Go

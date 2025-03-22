@@ -1,18 +1,13 @@
-// Executing the following Hyperlambda results in the following
+/*
+ * Retrieves the values of the second direct child of [.data] regardless of its name
+ *
+ * After execution the value of the [.first-value] node will be 200.
+ */
 
-// When executing the following Hyperlambda
-data.connect:magic
-   data.read
-      table:log_entries
-      columns
-         count(*)
-            as:count
-      limit:long:1
-
-// We end up with this result
-data.connect
-   data.read
-      .
-         count:long:58354
-
-// Notice how lists are declared with nodes having names of "." or even sometimes ""
+.first-value
+.data
+   alpha:100
+   beta:200
+   gamma:300
+set-value:x:@.first-value
+   .:x:@.data/1

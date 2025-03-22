@@ -1,5 +1,9 @@
-// Inside an API endpoint, ensures only 'admin' can update user data.
-
-auth.ticket.verify:admin
-
-// Continue with update logic...
+// Creates a JWT token
+auth.ticket.create
+   username:foo
+   roles
+      .:howdy
+      .:world
+   claims
+      id:578
+      ssid:xyzqwerty67

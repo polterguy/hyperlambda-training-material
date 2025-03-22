@@ -1,12 +1,2 @@
-
-// Example: Split a string with consecutive delimiters (empty segments).
-strings.split:one,,two
-   .:,
-
-/*
- * Resulting parts:
- * .:one
- * .:two
- * 
- * Notice, empty strings are ignored
- */
+// Seed crypto library
+crypto.seed:Foo Bar Whatever Some Random Seed

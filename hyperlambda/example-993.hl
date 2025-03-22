@@ -1,14 +1,35 @@
-// create a hyperlambda endpoint taking name and age, returning a personalised greeting
+
+// Delete one record from your MediaType table in your chinook database.
 .arguments
-   name:string
-   age:int
-.result
-set-value:x:@.result
-   strings.concat
-      .:"Hello "
-      get-value:x:@.arguments/*/name
-      .:", you are "
-      get-value:x:@.arguments/*/age
-      .:" years old."
-yield
-   result:x:@.result
+
+   // Primary key of record to delete, mandatory argument
+   MediaTypeId:long
+
+// Meta data description for endpoint
+
+// Type of endpoint
+.type:crud-delete
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/MediaTypeId
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:MediaType
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

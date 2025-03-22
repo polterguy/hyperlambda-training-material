@@ -1,14 +1,12 @@
-// Checks if a values are similar and updates rank accordingly
-.team
-   captain:Maria
-   score:int:88
-.rank
-if
-   and
-      eq:x:@.team/*/captain
-         .:Maria
-      mt:x:@.team/*/score
-         .:int:50
-   .lambda
-      set-value:x:@.rank
-         .:A
+// Combines data from two services into a unified result node
+.data
+   result
+.service1
+   itemA:int:100
+   itemB:int:200
+.service2
+   itemC:int:300
+   itemD:int:400
+add:x:@.data/*/result
+   get-nodes:x:@.service1/*
+   get-nodes:x:@.service2/*

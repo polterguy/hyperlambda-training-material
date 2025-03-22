@@ -1,50 +1,29 @@
 
-// Create a Hyperlambda script for an endpoint that counts items from the users_extra table in the magic database according to specified arguments, ensuring authentication and authorization for root roles.
+// Lists all available products.
 .arguments
-   operator:string
-   type.eq:string
-   value.like:string
-   user.eq:string
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Sanity checking invocation.
-validators.enum:x:@.arguments/*/operator
-   .:or
-   .:and
+.type:public
 
 /*
- * Checking if user supplied an [operator] argument, and if so
- * changing the boolean operator for comparison operations.
+ * Invokes the SQL CRUD Read slot with the specified parameters.
+ * 
+ * Provide [connection-string], [database-type], [database], and [table] to inform the action of
+ * what database/table you want to execute your SQL towards, and add [and] or [or] arguments
+ * to filter your returns, in addition to [limit] and [offset] to apply paging. Use [order]
+ * and [direction] to sort either ascending or descending. Notice, you can only use one of [or]
+ * or [and], and not both.
  */
-if
-   exists:x:@.arguments/*/operator
-   .lambda
-
-      // User provided a boolean comparison [operator] argument.
-      set-name:x:../*/data.connect/*/data.read/*/where/0
-         get-value:x:@.arguments/*/operator
-
-// Opening up our database connection.
-data.connect:[generic|magic]
-
-   // Parametrising our read invocation.
-   add:x:./*/data.read
-      get-nodes:x:@.arguments/*/operator
-   remove-nodes:x:@.arguments/*/operator
-   add:x:+/*/where/*
-      get-nodes:x:@.arguments/*
-
-   // Reading data from database.
-   data.read
-      table:users_extra
+execute:magic.workflows.actions.execute
+   name:sql-read
+   filename:/misc/workflows/actions/sql/sql-read.hl
+   arguments
       columns
-         count(*)
-            as:count
-      where
-         and
-      limit:long:1
+         .:name
+         .:description
+         .:sku
+         .:image_url
+         .:price
+      database:shopping-cart-demo
+      table:products
 
-   // Returning result of above read invocation to caller.
-   return-nodes:x:@data.read/*/*
+// Returns the result of your last action.
+return-nodes:x:@execute/*

@@ -1,3 +1,7 @@
-// A root node with a name and value, containing one child node
-root:"value"
-   child
+/*
+ * Changes the name of the specified node(s) to whatever the results of its
+ * parameter is.
+ */
+.destination
+set-name:x:@.destination
+   .:foo

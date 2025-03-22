@@ -1,5 +1,3 @@
-/*
- * Example: Get the length of a string with multi-byte characters.
- */
-// Returns 2
-strings.length:"你好"
+
+// Create HTTP GET invocation
+http.get:"https://docs.ainiro.io"

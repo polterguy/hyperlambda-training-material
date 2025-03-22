@@ -1,22 +1,17 @@
-// The following code will execute a Hyperlambda file called 'greet-user.hl'
-execute-file:/modules/my_module/greet-user.hl
-   name:Alice
-   age:int:30
+// Retrieve orders that are either pending OR processing
+data.connect:shopDB
 
-// Assumes a Hyperlambda file such as the following exists in '/modules/my_module/greet-user.hl'
-.arguments
-   name:string
-   age:int
+   // Using CRUD slot called [data.read]
+   data.read
 
-// Concatenating name and age into a greeting
-strings.concat
-   get-value:x:@.arguments/*/name
-   .:" is "
-   get-value:x:@.arguments/*/age
-   .:" years old."
+      // Table we're selecting items from
+      table:orders
 
-// Returning the greeting to caller.
-yield
-   greeting:x:@strings.concat
+      // Return absolutely all items (be careful with your memory)
+      limit:-1
+      where
 
-// When executed the above Hyperlambda file will return 'Alice is 30 years old.'
+         // Either status equals "pending" OR "processing"
+         or
+            status.eq:"pending"
+            status.eq:"processing"

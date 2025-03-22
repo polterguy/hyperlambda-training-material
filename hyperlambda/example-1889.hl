@@ -1,6 +1,3 @@
-
-// Example: Trim a string consisting only of trim characters (result is empty).
-
-// Result: "" (empty string)
-strings.trim:!!!
-   .:!
+// Increment a value by 1 (default step)
+.value:int:3
+math.increment:x:@.value

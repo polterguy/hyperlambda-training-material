@@ -1,13 +1,27 @@
-// Evaluates specified [.lambda] for as long as condition evaluates to true.
-.no:int:0
-while
-   lt
-      get-value:x:@.no
-      .:int:20
+
+// Write a Hyperlambda snippet that determines if conditions are satisfied and executes [.lambda].
+
+// Determines if conditions are satisfied and executes [.lambda].
+.status
+.metricX:int:5
+.metricY:int:15
+if
+   and
+
+      // Less than condition
+      lt:x:@.metricX
+         .:int:6
+
+      // Greater than condition
+      mt:x:@.metricY
+         .:int:14
    .lambda
 
-      // Your lambda goes here.
-      log.info:Howdy from while
+      // Setting [.status] to true
+      set-value:x:@.status
+         .:bool:true
+else
 
-      // Incrementing counter.
-      math.increment:x:@.no
+   // Setting [.status] to false
+   set-value:x:@.status
+      .:bool:false

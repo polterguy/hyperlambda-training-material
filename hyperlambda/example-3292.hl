@@ -1,23 +1,16 @@
 
-// Create a Hyperlambda script to demonstrate a switch case comparison evaluating lambda objects based on the expression's value.
-.source:foo
-.result
-switch:x:@.source
-   case:foo
+// Generate a Hyperlambda snippet that triggers a conditional lambda execution based on [.switch].
 
-      // Lambda object to evaluate if expression's value equals 'foo'.
-      set-value:x:@.result
-         .:Is foo
-   case:bar
+// Triggers a conditional lambda execution based on [.switch].
+.switch:bool:true
+if
+   eq:x:@.switch
+      .:bool:true
+   .lambda
 
-      // Lambda object to evaluate if expression's value equals 'bar'.
-      set-value:x:@.result
-         .:Is bar
-   default
+      // Executes when [.switch] is true.
+      log.info:[.switch] is enabled
+else
 
-      /*
-       * Lambda object to evaluate if expression is not matched to any
-       * of the above values.
-       */
-      set-value:x:@.result
-         .:None of the above
+   // Executes when [.switch] is false.
+   log.info:[.switch] is disabled

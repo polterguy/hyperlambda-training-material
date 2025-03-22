@@ -1,27 +1,11 @@
 
-// Generate a Hyperlambda snippet that evaluates a user role using a switch case with a default option.
-
-// Switch case comparison for user roles.
-.user_role:admin
-.result
-switch:x:@.user_role
-   case:admin
-
-      // If user role is "admin".
-      set-value:x:@.result
-         .:Has admin privileges
-   case:editor
-
-      // If user role is "editor".
-      set-value:x:@.result
-         .:Has editor privileges
-   case:user
-
-      // If user role is "user".
-      set-value:x:@.result
-         .:Has user privileges
-   default
-
-      // If none of the above roles match.
-      set-value:x:@.result
-         .:Unknown role
+/*
+ * Runs during startup of Magic, and basically just ensures the module's database exists,
+ * and is updated by running migration scripts after attempting to create the database.
+ * 
+ * If the database doesn't exist, this script will create it by executing the "white-label.xxx.sql"
+ * SQL file where xxx is your currently default database type.
+ */
+signal:magic.modules.ensure-database
+   module:white-label
+   database:white-label

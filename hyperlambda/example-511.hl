@@ -1,3 +1,5 @@
+// Compare two values for inequality using inline syntax
 
-// Logs a fatal error
-log.fatal:Fatal error we cannot recover from
+.foo1:OK
+neq:x:../*/.foo1
+   .:OK

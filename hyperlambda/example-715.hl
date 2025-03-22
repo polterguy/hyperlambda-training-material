@@ -1,2 +1,3 @@
-// Check if folder exists
-io.folder.exists:/misc/foo/
+// Generate QR code
+image.generate-qr:"https://docs.ainiro.io"
+   size:8

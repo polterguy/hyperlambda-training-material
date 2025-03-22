@@ -1,50 +1,31 @@
 
-// Create a Hyperlambda endpoint that exports all leads from training requests and returns them as a CSV file, ensuring the user is authorized.
+// Changes the specified [username]'s password to [password].
 .arguments
-   type:string
+   username
+      type:string
+      mandatory:bool:true
+   password
+      type:string
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/password
+validators.string:x:@.arguments/*/password
+   min:12
 
-// Opening up our database connection.
+// Hashing specified [password].
+crypto.password.hash:x:@.arguments/*/password
+
+// Opens up database connection.
 data.connect:[generic|magic]
 
-   // Parametrising our read invocation with filtering arguments.
-   if
-      exists:x:@.arguments/*/type
-      .lambda
-         unwrap:x:+/*/*
-         add:x:@data.connect/*/data.read/*/where/*/and
-            .
-               type.eq:x:@.arguments/*/type
-
-   // Invoking our read slot.
-   data.read
-      table:ml_requests
-      columns
-         prompt
-            as:lead
+   // Updating user's password.
+   data.update
+      table:users
+      values
+         password:x:@crypto.password.hash
       where
          and
-            finish_reason.eq:lead
-      limit:-1
-
-   // Verifying records exists.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-         response.status.set:404
-         return
-            result:No records found
-
-   // Converting result to CSV.
-   lambda2csv:x:@data.read/*
-
-   // Applying correct HTTP header.
-   response.headers.set
-      Content-Type:text/csv
-      Access-Control-Expose-Headers:Content-Disposition
-      Content-Disposition:"attachment; filename=\"leads.csv\""
-
-   // Returning content to caller.
-   return:x:@lambda2csv
+            username.eq:x:@.arguments/*/password

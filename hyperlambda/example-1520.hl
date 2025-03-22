@@ -1,15 +1,8 @@
-/*
- * Determines the oldest user from three profiles using math.max.
- */
-.users
-   alice
-      age:int:30
-   bob
-      age:int:42
-   carol
-      age:int:36
-.oldest
-math.max
-   get-value:x:@.users/*/alice/*/age
-   get-value:x:@.users/*/bob/*/age
-   get-value:x:@.users/*/carol/*/age
+
+// Example: Replace only whole word matches using word boundaries.
+.phrase:apple apples applepie
+strings.regex-replace:x:@.phrase
+   .:"\\bapple\\b"
+   .:fruit
+
+// Result: "fruit apples applepie"

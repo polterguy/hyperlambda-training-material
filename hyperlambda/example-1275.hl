@@ -1,37 +1,25 @@
 
-// Delete endpoint deleting one record from your spice_urls table in your scraper database.
+// Write a Hyperlambda script to save a specified file in a specified folder.
 .arguments
+   file:*
+   folder:string
+.type:internal
+.accept:multipart/form-data
 
-   // Primary key of record to delete
-   spice_url_id:long
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify:root
 
-// Meta data description for endpoint
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/file
+validators.mandatory:x:@.arguments/*/file/*/name
+validators.mandatory:x:@.arguments/*/file/*/stream
+validators.mandatory:x:@.arguments/*/folder
 
-// Type of endpoint
-.type:crud-delete
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/spice_url_id
-
-// Opening up our database connection.
-data.connect:[generic|scraper]
-   database-type:sqlite
-
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
-
-   // Deleting item from database.
-   data.delete
-      database-type:sqlite
-      table:spice_urls
-      where
-         and
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+// Saves the file to the specified folder.
+.full-path
+set-value:x:@.full-path
+   strings.concat
+      get-value:x:@.arguments/*/folder
+      get-value:x:@.arguments/*/file/*/name
+io.stream.save-file:x:@.full-path
+   get-value:x:@.arguments/*/file/*/stream

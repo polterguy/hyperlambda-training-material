@@ -1,31 +1,22 @@
-/*
- * This Hyperlambda snippet accepts a file path and a target word as arguments.
- * It reads the content of the file, splits the content into words,
- * counts how many times the specified word appears, and returns the count.
- */
 
+// Tracks an order in Shopify.
 .arguments
-   file-path:string
-   word:string
+   order:string
+.type:public
 
-// Load the text file's content
-io.file.load:x:@.arguments/*/file-path
+// Retrieving secret and shop.
+.secret
+set-value:x:@.secret
+   config.get:"magic:shopify:secret"
+.shop
+set-value:x:@.shop
+   config.get:"magic:shopify:shop"
 
-// Split the content into words based on spaces
-strings.split:x:@io.file.load
-   .:' '
+// Invoking slot to do the heavy work.
+execute:shopify.orders.track
+   secret:x:@.secret
+   shop:x:@.shop
+   order_no:x:@.arguments/*/order
 
-// Initialize counter
-.counter:int:0
-
-// Iterate through each word and compare to target
-for-each:x:@strings.split/*
-   if
-      eq:x:@.dp/#
-         .:x:@.arguments/*/word
-      .lambda
-         math.increment:x:@.counter
-
-// Return the result
-yield
-   word-count:x:@.counter
+// Returns the result of your last action.
+return-nodes:x:@execute/*

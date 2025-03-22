@@ -1,2 +1,8 @@
-// Validate [email] argument is a valid email address
-validators.email:x:@.arguments/*/email
+// Sends a support ticket to a remote API using HTTP POST
+http.post:"https://api.example.com/support/tickets"
+   convert:true
+   payload
+      subject:Login issue
+      description:"I can't log in to my account."
+      priority:int:1
+      urgent:bool:true

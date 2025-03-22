@@ -1,18 +1,13 @@
+// Define slot 'foo' with an initial return value
+slots.create:foo  
+   return-value:First version
 
-// Provide a Hyperlambda example where [.lambda] runs when [.message] is different from Welcome Home.
+// Invoke 'foo' (will yield "First version")
+signal:foo  
 
-// Runs [.lambda] when [.message] is different from Welcome Home.
-.message:Welcome Home
-if
+// Redefine (override) slot 'foo' with new logic
+slots.create:foo  
+   return-value:Second version
 
-   // Condition ensures inequality.
-   neq:x:@.message
-      .:Welcome Home
-   .lambda
-
-      // Runs when [.message] is different.
-      log.info:[.message] is NOT Welcome Home
-else
-
-   // Runs when [.message] is exactly Welcome Home.
-   log.info:[.message] is Welcome Home
+// Invoke 'foo' again (now yields "Second version")
+signal:foo  

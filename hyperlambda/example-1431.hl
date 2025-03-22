@@ -1,5 +1,10 @@
-// lt returns false if the left value is not less than the right value
-.x:int:7
-lt
-   get-value:x:@.x
-   .:int:5
+// Greets the user dynamically using string interpolation and yields the message
+slots.create:greet.user
+   strings.concat
+      .:"Hello "
+      get-value:x:@.arguments/*/name
+   yield
+      message:x:@strings.concat
+
+execute:greet.user
+   name:Alice

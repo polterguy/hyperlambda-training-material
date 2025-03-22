@@ -1,18 +1,26 @@
 
-// Execute Hyperlambda action
+// Create a Hyperlambda script that changes the password of the currently authenticated user, ensuring the user is authorized.
 .arguments
-   filter:string
+   password:string
+.type:public
 
-// Returns artists and count of records per artist, sorted by artist having the most albums.
-execute:magic.workflows.actions.execute
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/password
+validators.string:x:@.arguments/*/password
+   min:12
 
-   // Name used to reference action further down in your Hyperlambda code
-   name:chinook-albums-count
+// Ensures user is authorized to access endpoint.
+auth.ticket.verify
 
-   // file containing action
-   filename:/etc/workflows/actions/chinook-albums-count.hl
-   arguments
-      filter:x:@.arguments/*/filter
+/*
+ * Invokes the slot that does the heavy lifting, and updates the user's current password.
+ * 
+ * This slot will change the password of the currently logged in user.
+ */
+unwrap:x:+/*
+signal:magic.auth.change-password
+   password:x:@.arguments/*/password
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// Returns success to caller.
+return-nodes
+   result:success

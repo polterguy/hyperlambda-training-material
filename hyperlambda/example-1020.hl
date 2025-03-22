@@ -1,7 +1,46 @@
-/**
- * This example resizes an image by specifying only the width (400 pixels).
- * The height is automatically adjusted to maintain the aspect ratio.
- */
-image.resize
-   file:/input.jpg
-   width:int:400
+
+// Returns context for the specified [query] from the specified [type], and returns to caller.
+.arguments
+   type
+      type:string
+      mandatory:bool:true
+   query
+      type:string
+      mandatory:bool:true
+   threshold
+      type:decimal
+      mandatory:bool:false
+   max_tokens
+      type:int
+      mandatory:bool:false
+.icon:extension
+
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
+validators.mandatory:x:@.arguments/*/query
+
+// Applying default values for optional arguments.
+validators.default:x:@.arguments
+   threshold:decimal:0.3
+   max_tokens:int:4000
+
+// Converting to decimal to be sure.
+set-value:x:@.arguments/*/threshold
+   convert:x:@.arguments/*/threshold
+      type:decimal
+
+// Converting to decimal to be sure.
+set-value:x:@.arguments/*/max_tokens
+   convert:x:@.arguments/*/max_tokens
+      type:int
+
+// Retrieving context.
+execute:magic.ai.get-context
+   type:x:@.arguments/*/type
+   prompt:x:@.arguments/*/query
+   threshold:x:@.arguments/*/threshold
+   max_tokens:x:@.arguments/*/max_tokens
+
+// Returning result of invocation to caller.
+yield
+   context:x:@execute/*/context

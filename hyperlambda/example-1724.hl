@@ -1,16 +1,7 @@
+// How to use string builder in Hyperlambda
+strings.builder
+   strings.builder.append:Hello
+   strings.builder.append:" "
+   strings.builder.append:world
 
-// Write a Hyperlambda snippet that loops while [.progress] is not equal to 100.
-
-// Loops while [.progress] is not equal to 100.
-.progress:int:0
-while
-   neq
-      get-value:x:@.progress
-      .:int:100
-   .lambda
-
-      // Logging progress.
-      log.info:Processing...
-
-      // Increasing progress.
-      math.increment:x:@.progress
+// Results in; Hello world

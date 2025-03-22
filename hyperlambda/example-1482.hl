@@ -1,10 +1,2 @@
-/*
- * Creates a MIME message from a structured lambda object,
- * and parses it back to lambda again.
- */
-mime.create:multipart/mixed
-   entity:text/plain
-      filename:/README.md
-   entity:text/plain
-      content:Bar
-mime.parse:x:-
+// Gets all nodes in .env that have a value equal to "dev"
+.value-equals:x:@.env/*/=dev

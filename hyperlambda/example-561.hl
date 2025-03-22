@@ -1,4 +1,6 @@
-// Set all inactive users to have NULL last_login
-data.connect:authDB
-   data.execute:UPDATE users SET last_login = NULL WHERE active = 0
-   // Executes the UPDATE; number of affected records returned
+// Check if one value is less than another
+
+.foo1:int:3
+lt
+   get-value:x:../*/.foo1
+   .:int:5

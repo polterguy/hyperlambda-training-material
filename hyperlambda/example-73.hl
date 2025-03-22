@@ -1,14 +1,59 @@
 
-// Create a Hyperlambda script to demonstrate a try/catch/finally block with logging.
+// Sends an email to AINIRO
+.arguments
+   content:string
+   email:string
+   name:string
+   recaptcha_response:string
+
+/*
+ * Validates the specified mCAPTCHA token.
+ *
+ * This action will validate the specified recaptcha_response token and throw an exception if validation fails.
+ */
+execute:magic.auth.captcha-verify
+   token:x:@.arguments/*/recaptcha_response
+
+/*
+ * Sends an email to the specified [name]/[email] recipient, with the specified [subject] and [body].
+ *
+ * Optionally supply [from] and [from-email] as name/email sender. If you don't supply from, this action
+ * will use the default sender settings from your configuration.
+ */
+set-value:x:@.arguments/*/content
+   strings.html-encode:x:@.arguments/*/content
+set-value:x:@.arguments/*/name
+   strings.html-encode:x:@.arguments/*/name
+set-value:x:@.arguments/*/email
+   strings.html-encode:x:@.arguments/*/email
+execute:magic.workflows.actions.execute
+   name:email
+   filename:/misc/workflows/actions/misc/email.hl
+   arguments
+      name:Team AINIRO
+      email:team@ainiro.io
+      html:bool:false
+      reply-to:x:@.arguments/*/name
+      reply-to-email:x:@.arguments/*/email
+      subject:Contact request from website
+      body:x:@.arguments/*/content
+
+// Making sure we catch exceptions in case contact already exists in HubSpot.
 try
 
-   // Perform your unsafe operation here.
-   throw:Some error is thrown here
+   // Pushing contact to HubSpot.
+   execute-file:/modules/hubspot/contacts.post.hl
+      email:x:@.arguments/*/email
+      firstname:x:@.arguments/*/name
+
+   // Pushing contact to HubSpot.
+   execute-file:/modules/hubspot/note.post.hl
+      id:x:@execute-file/@execute-file/*/id
+      note:x:@.arguments/*/content
+
 .catch
+   log.error:x:@.arguments/*/message
 
-   // If an exception is triggered, this lambda will be evaluated.
-   log.info:x:@.arguments/*/message
-.finally
-
-   // If an exception is triggered, this lambda will be evaluated.
-   log.info:Try finished evaluating
+// Returning success to caller.
+return
+   result:success

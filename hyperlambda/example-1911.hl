@@ -1,9 +1,24 @@
+// Complex logic using multiple [if] and [else] within [for-each]
+.car-parts
+   engine:available
+   wheel:out-of-stock
+   door:out-of-stock
 
-// Returns items from your DATABASE_NAME and TABLE_NAME.
-data.connect:DATABASE_NAME
-   database-type:sqlite
-
-   // Reading data from database.
-   data.read
-      database-type:sqlite
-      table:TABLE_NAME
+for-each:x:@.car-parts/*
+   if
+      eq:x:@.dp/#
+         .:available
+      .lambda
+         set-value:x:@.dp/#
+            .:checked
+   else
+      get-name:x:@.dp/#
+      if
+         eq:x:@get-name
+            .:wheel
+         .lambda
+            set-value:x:@.dp/#
+               .:urgent restock
+      else
+         set-value:x:@.dp/#
+            .:restock

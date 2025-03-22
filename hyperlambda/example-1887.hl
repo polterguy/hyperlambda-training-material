@@ -1,6 +1,16 @@
+// Using [switch] with numeric values to set a result for car part quantities
+.quantity:int:4
+.result
+switch:x:@.quantity
 
-// Example: Use a variable as the input to uppercase.
-.text:make me upper
+   case:int:1
+      set-value:x:@.result
+         .:One car part
 
-// Result: "MAKE ME UPPER"
-strings.to-upper:x:@.text
+   case:int:4
+      set-value:x:@.result
+         .:Four car parts
+
+   default
+      set-value:x:@.result
+         .:Unknown quantity

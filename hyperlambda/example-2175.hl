@@ -1,5 +1,8 @@
-/*
- * If no nodes match, `get-nodes` should return nothing.
- */
-
-get-nodes:x:@.nonexistent
+// Filters and sets value on nodes named 'first' or 'second'
+.group
+   first:10
+   second:20
+   third:30
+for-each:x:@.group/*/[first|second]
+   set-value:x:@.dp/#
+      .:selected

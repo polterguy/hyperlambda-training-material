@@ -1,60 +1,14 @@
 
-// Create a Hyperlambda script for a CRUD update endpoint that updates all filtered records in the ml_training_snippets table in the magic database, ensuring authentication and authorization for root roles.
+// Hyperlambda endpoint taking arguments. The SQL query retrieves distinct customer details who have purchased tracks from the "Rock" genre.
 .arguments
-   filter
-      ml_training_snippets.prompt.like:string
-      ml_training_snippets.uri.like:string
-      ml_training_snippets.type.eq:string
-   values
-      type:string
-      pushed:long
-.type:crud-update
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+// Connecting to database.
+data.connect:chinook
+   database-type:sqlite
 
-// Opening up our database connection.
-data.connect:[generic|magic]
+   // Executing [data.select] slot with our SQL.
+   data.select:"\n/*\n * Selects details from all customers that are listening to rock.\n * Make sure you select the chinook database before execxuting the script.\n */\nselect distinct c.Email, c.FirstName, c.LastName, g.name\n  from Customer c\n    inner join Invoice i on c.CustomerId = i.CustomerId\n    inner join InvoiceLine ii on i.InvoiceId = ii.InvoiceId\n    inner join Track t ON ii.TrackId = t.TrackId\n    inner join Genre g ON t.GenreId = g.GenreId\n  where g.Name = \"Rock\"\n  order by c.Email\n"
+      database-type:sqlite
 
-   // Parametrising our read invocation with filtering arguments.
-   add:x:./*/data.update/*/where/*/*/or
-      get-nodes:x:@.arguments/*/filter/*/ml_training_snippets.prompt.like
-      get-nodes:x:@.arguments/*/filter/*/ml_training_snippets.uri.like
-   remove-nodes:x:@.arguments/*/filter/*/ml_training_snippets.prompt.like
-   remove-nodes:x:@.arguments/*/filter/*/ml_training_snippets.uri.like
-   add:x:./*/data.update/*/where/*
-      get-nodes:x:@.arguments/*/filter/*
-   add:x:./*/data.update/*/values
-      get-nodes:x:@.arguments/*/values/*
-
-   // Removing [or] parts unless we've got something to actually or.
-   if
-      not-exists:x:@data.connect/*/data.update/*/where/*/and/*/or/*
-      .lambda
-         remove-nodes:x:@data.connect/*/data.update/*/where/*/and/*/or
-
-   // Invoking our update slot.
-   data.update
-      table:ml_training_snippets
-      values
-      where
-         and
-            or
-
-   // Verifying record exists.
-   if
-      eq
-         get-value:x:@data.update
-         .:int:0
-      .lambda
-         response.status.set:404
-         return
-            result:Record not found
-
-   // Returning the correct status code.
-   response.status.set:202
-
-   // Returning success to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.update
+   // Returning a result of above invocation to caller.
+   return-nodes:x:@data.select/*

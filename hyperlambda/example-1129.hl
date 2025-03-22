@@ -1,3 +1,5 @@
-// How do you declare a GUID value in Hyperlambda?
+// Convert an empty value to a node (should return an empty node)
 
-.api-key:guid:9f8c4d89-a9f7-4b63-b3c5-1d2c85b7ab2f
+.src
+convert:x:-
+   type:node

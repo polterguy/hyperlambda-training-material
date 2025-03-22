@@ -1,5 +1,6 @@
-// Convert an empty value to a byte array (should return null)
 
-.src
-convert:x:-
-   type:bytes
+// Example: Trim a string consisting only of trim characters (result is empty).
+
+// Result: "" (empty string)
+strings.trim:!!!
+   .:!

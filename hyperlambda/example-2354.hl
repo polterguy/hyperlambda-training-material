@@ -1,9 +1,12 @@
-// This snippet uses the '=xxx' iterator to filter nodes by their value.
-.list
-   item1:match
-   item2:no
-   item3:match
-for-each:x:@.list/*/=match  
-   set-value:x:@.dp/#
-      :found
-// The expression @.list/*/=match finds all children of .list whose value equals "match" (item1 and item3). The loop sets those nodes' values to "found".
+
+// Write a Hyperlambda snippet that iterates through book titles and logs them.
+
+// Iterates through book titles and logs them.
+.books
+   book1:Hyperlambda Essentials
+   book2:Learning AI
+   book3:Mastering Databases
+for-each:x:@.books/*
+
+   // Logging each book title.
+   log.info:x:@.dp/#

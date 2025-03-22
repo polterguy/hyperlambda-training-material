@@ -1,5 +1,4 @@
-// How to verify a Magic CAPTCHA in Hyperlambda?
-execute:magic.auth.captcha-verify
-   token:x:@.arguments/*/token
-
-// Notice, requires the auth plugin to be installed.
+// Adds birthDate as a typed field in user metadata
+.user
+   name:Jane Doe
+   birthDate:date:"1990-06-15T00:00:00Z"

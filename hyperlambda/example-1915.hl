@@ -1,6 +1,14 @@
+// Using [and] with function calls to evaluate conditions
+.arg1:Hello
+.arg2:World
+.result
 
-// Fetch a few film titles and release years using a raw SQL query
-data.connect:sakila
-   data.select:SELECT title, release_year FROM film LIMIT 3
-
-   // Executes the SQL directly on the database and returns up to 3 rows
+if
+   and
+      strings.contains:x:@.arg1
+         .:Hello
+      strings.starts-with:x:@.arg2
+         .:World
+   .lambda
+      set-value:x:@.result
+         .:Both conditions are true

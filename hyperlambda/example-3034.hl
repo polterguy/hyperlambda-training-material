@@ -1,47 +1,16 @@
+// How to use the [data.read] CRUD slot and have it join with another table
+sql.read
+   table:people
+      join:salary
+      type:inner
+      on
 
-// Create endpoint inserting one record into your products table in your shopping-cart-demo database.
-.arguments
+         // Joins are using similar syntax to [where] parts.
+         and
+            people.id:salary.people_id
 
-   // name column value
-   name:string
-
-   // description column value
-   description:string
-
-   // sku column value
-   sku:string
-
-   // price column value
-   price:decimal
-
-   // image_url column value
-   image_url:string
-
-// Type of endpoint
-.type:crud-create
-
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
-
-// Opening up database connection.
-data.connect:[generic|shopping-cart-demo]
-   database-type:sqlite
-
-   // Parametrising our create invocation.
-   add:x:./*/data.create/*/values
-      get-nodes:x:@.arguments/*
-
-   // Creating our record.
-   data.create
-      database-type:sqlite
-      table:products
-      return-id:bool:true
-      values
-
-   // Returning the correct status code.
-   response.status.set:201
-
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      id:x:@data.create
+   // Adding [columns] makes sure we only select columns declared below.
+   columns
+      salary.monthly
+      people.first_name
+      people.last_name

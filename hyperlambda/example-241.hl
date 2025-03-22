@@ -1,20 +1,11 @@
+
+// Example: Find case-insensitive "foo" occurrences.
+strings.matches:Foo foo FOO
+   .:(?i)foo
+
 /*
- * Sends a plain text email with static 'to', 'subject', and 'body' values.
- *
- * The from email and name will be retrieved from your configuration settings
+ * Resulting matches:
+ * .:Foo
+ * .:foo
+ * .:FOO
  */
-
-mail.smtp.send
-   message
-      to
-         .
-            email:john.doe@example.com
-
-            // Optional
-            name:John Doe
-
-      subject:Hello World
-
-      // The value of this node becomes the email's MIME type
-      entity:text/plain
-         content:This is a plain text email sent using Hyperlambda.

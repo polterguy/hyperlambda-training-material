@@ -1,17 +1,18 @@
+/*
+ * Stores a value in the cache with expiration.
+ */
+.arguments
+   key:string
+   value:string
+   seconds:int
 
-// Generate a Hyperlambda snippet with string variables, demonstrating special character handling, multi-line strings, and alternative quoting.
+validators.mandatory:x:@.arguments/*/key
+validators.mandatory:x:@.arguments/*/value
+validators.mandatory:x:@.arguments/*/seconds
 
-// String without special characters, no need for quotes
-.simpleText:hello
+cache.set:x:@.arguments/*/key
+   get-value:x:@.arguments/*/value
+   expiration:x:@.arguments/*/seconds
 
-// String with a colon, requires quotes
-.colonText:"hello:world"
-
-// Multi-line string using @ notation
-.multiLineText:"line1\nline2"
-
-// Using single quotes as an alternative
-.altQuoteText:example
-
-// Escaping a newline character
-.escapedNewlineText:"hello\nworld"
+return
+   success:true

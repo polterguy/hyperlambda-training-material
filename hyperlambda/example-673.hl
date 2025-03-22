@@ -1,6 +1,2 @@
-/*
- * Retrieves the `email` field from a user object referenced inside each session.
- * `.sessions/*/userRef` holds a pointer (value) to another node containing user data.
- * Using `#`, we follow that pointer and retrieve the user's `email` node.
- */
-.session-email:x:@.sessions/*/userRef/#/*/email
+// Example: Return the length of some string found through an expression
+strings.length:x:@.source

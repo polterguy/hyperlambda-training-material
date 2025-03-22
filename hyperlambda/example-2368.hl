@@ -1,17 +1,16 @@
 
-// Generate a Hyperlambda snippet that formats a full name and age.
+// Provide a Hyperlambda example where a value increases until [.value] is greater than 15.
 
-// Hyperlambda file that takes 3 arguments and formats a greeting message.
-.arguments
-   first_name:string
-   last_name:string
-   age:int
-strings.concat
-   get-value:x:@.arguments/*/first_name
-   .:" "
-   get-value:x:@.arguments/*/last_name
-   .:", you are "
-   get-value:x:@.arguments/*/age
-   .:" years old."
-yield
-   result:x:@strings.concat
+// Increases value until [.value] is greater than 15.
+.value:int:5
+while
+   lt
+      get-value:x:@.value
+      .:int:15
+   .lambda
+
+      // Logging current value.
+      log.info:Increasing value
+
+      // Incrementing value.
+      math.increment:x:@.value

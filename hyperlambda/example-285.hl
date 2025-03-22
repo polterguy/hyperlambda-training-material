@@ -1,10 +1,11 @@
-// Decodes the specified HTML
-.html:@"&lt;html&gt;
-&lt;body&gt;
-  &lt;h1&gt;Quarterly Newsletter - Q1 2025&lt;/h1&gt;
-  &lt;p&gt;Our Q1 results are now available.&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;"
+// Inline lambda execution by providing the lambda body as children
+.res
+eval
+   set-value:x:@.res
+      .:Inline
 
-// HTML decodes the above HTML
-strings.html-decode:x:@.html
+// Result
+.res:Inline
+eval
+   set-value:x:@.res
+      .:Inline

@@ -1,32 +1,26 @@
 
-// Write a Hyperlambda script to vectorize all training snippets in a specified model/type.
+// Inserts training data into database.
 .arguments
-   type:string
-   feedback-channel:string
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+   // Mandatory prompt used to generate specified Hyperlambda
+   prompt:string
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/type
+   // Mandatory reference to Hyperlambda file.
+   file-no:int
+.type:public
 
-// Doing some basic logging.
-log.info:Started vectorising model
-   model:x:@.arguments/*/type
+// Getting Hyperlambda.
+execute-file:/modules/fine-tune/workflows/create-training-data.hl
+   file-no:x:@.arguments/*/file-no
 
-// Creating a thread and invoking file doing the heavy lifting.
-insert-before:x:./*/fork/0
-   get-nodes:x:@.arguments
-fork
-   add:x:./*/signal
-      get-nodes:x:@.arguments/*
-   signal:magic.ai.vectorise
-      .onafter
-         sockets.signal:x:@.arguments/*/feedback-channel
-            args
-               message:Done!
-               type:success
+// Inserting item.
+data.connect:fine-tune
+   data.create
+      table:hyperlambda
+      values
+         prompt:x:@.arguments/*/prompt
+         code:x:@execute-file/*/hyperlambda
 
-// Returning success to caller.
+// Returning success.
 return
    result:success

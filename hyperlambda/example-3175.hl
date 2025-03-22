@@ -1,17 +1,35 @@
 
-// Returns the schema specifications for the specified type
+// Delete one record from your Customer table in your chinook database
 .arguments
 
-   // Mandatory argument declaring the type of object to retrieve the schema specification for.
-   type:string
+   // Primary key of record to delete, mandatory argument
+   CustomerId:long
 
-// Ensuring user is authorized to invoking endpoint.
-auth.ticket.verify:netsuite
+// Meta data description for endpoint
 
-// Forwarding heavy lifting to workflow file.
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/modules/netsuite/workflows/workflows/netsuite-schema-spec.hl
+// Type of endpoint
+.type:crud-delete
 
-// Returning result to caller.
-return-nodes:x:@execute-file/*
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+validators.mandatory:x:@.arguments/*/CustomerId
+
+// Opening up our database connection.
+data.connect:[generic|chinook]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Customer
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

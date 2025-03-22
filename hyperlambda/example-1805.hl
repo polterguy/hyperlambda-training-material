@@ -1,15 +1,11 @@
-// Hyperlambda [set-value]
-.data
-   item1
-   item2
-set-value:x:@.data/*
-   .:Updated Value
+/*
+ * This Hyperlambda snippet checks if a node has a non-null value.
+ *
+ * 1. The `.data` node has a child `foo` with a value `"bar"`.
+ * 2. The `not-null` slot checks if `foo` has a value.
+ * 3. The expected output is `true`.
+ */
 
-// Results in:
 .data
-   item1:Updated Value
-   item2:Updated Value
-set-value:x:@.data/*
-   .:Updated Value
-
-// Notice how [set-value] can change multiple nodes at the same time
+   foo:bar
+not-null:x:@.data/*/foo

@@ -1,16 +1,27 @@
-// Creates a Hyperlambda endpoint to fetch all records from the 'item' table in the erp database.
-.arguments
 
-// Making sure the endpoint is publicly visible
-.type:public
+// Create a function to return all existing payment subscription plans in the system. The function should find and execute all slots that declare subscription plans, each returning a name, description, price, currency, period (month or year), and Stripe price ID. The function should loop through these slots, execute them to retrieve the subscription plans, and return the plans to the caller. This setup allows the system to handle Stripe subscriptions effectively.
+slots.vocabulary:stripe.subscriptions.plans.
 
-data.connect:erp
+// Looping through each slot returned above and executing it.
+for-each:x:@slots.vocabulary/*
 
-   // Selecting data.
-   data.select:select * from item
+   // Changing slot invocation name.
+   set-value:x:./*/execute
+      get-value:x:@.dp/#
 
-   // Returning results to caller.
-   yield
-      rows:x:@data.select/*
+   /*
+    * Executing slot to retrieve supported providers.
+    * 
+    * Notice, name of slot (value of node) is dynamically created above.
+    */
+   execute
 
-// Save this code as for instance '/modules/erp/item.get.hl'
+   // Looping through all providers returned above to return them to client.
+   for-each:x:@execute/*
+
+      // Returning subscription plan to caller.
+      add:x:../*/return
+         get-nodes:x:@.dp/#
+
+// Returning subscription plans to caller.
+return

@@ -1,10 +1,11 @@
-// How the named sibling node works
-.data:value
-get-value:x:@.data
+
+// Example: Use a variable for the regex pattern.
+.pattern:[A-Z]+
+source:abcDEFghi
+strings.matches:x:@.source
+   get-value:x:@.pattern
 
 /*
- * The above named sibling iterator traverses the node hierarchy from the identity node and upwards,
- * until it finds a node with the name specified. In the example above the name is `.data`.
- *
- * After execution, the value of the [get-value] slot will become 'value'
+ * Resulting matches:
+ * .:DEF
  */

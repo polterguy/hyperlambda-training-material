@@ -1,10 +1,15 @@
 
-// Create a Hyperlambda script to override the exception handler and return information to root users.
-log.error:x:@.arguments/*/message
-   url:x:@.arguments/*/path
-   exception:x:@.arguments/*/stack
-add:x:+
-   get-nodes:x:@.arguments/*/status
-   get-nodes:x:@.arguments/*/message
-   get-nodes:x:@.arguments/*/field
-return
+// Provide a Hyperlambda example where orders are counted in the 'ecommerce_db' database from the 'orders' table.
+
+// Counts orders in the "ecommerce_db" database from the "orders" table.
+data.connect:ecommerce_db
+   database-type:mssql
+
+   // Counting total orders.
+   data.read
+      database-type:mssql
+      table:orders
+      columns
+         count(*)
+            as:count
+      limit:long:1

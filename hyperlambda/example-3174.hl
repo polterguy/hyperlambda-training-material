@@ -1,23 +1,16 @@
 
-// Returns objects of the specified type to caller
-.arguments
+// Create a Hyperlambda snippet that adds a new product to the 'inventory_db' database and its 'products' table.
 
-   // Type of objects you want to retrieve. Mandatory.
-   type:string
+// Adds a new product to the "inventory_db" database and its "products" table.
+data.connect:inventory_db
+   database-type:pgsql
 
-   // Optional maximum number of objects to return. Defaults to 10 if not specified.
-   limit:long
-
-   // Optional offset of where to start retrieving objects.
-   from:long
-
-// Ensuring user is authorized to invoking endpoint.
-auth.ticket.verify:netsuite
-
-// Forwarding heavy lifting to workflow file.
-add:x:./*/execute-file
-   get-nodes:x:@.arguments/*
-execute-file:/modules/netsuite/workflows/workflows/netsuite-get-records.hl
-
-// Returning result to caller.
-return-nodes:x:@execute-file/*
+   // Creating a product entry.
+   data.create
+      database-type:pgsql
+      table:products
+      values
+         product_id:int:2005
+         name:Laptop
+         price:decimal:999.99
+         stock:int:50

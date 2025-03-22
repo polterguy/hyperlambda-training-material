@@ -1,37 +1,16 @@
 
-// Returns Stripe charges.
-.arguments
-   limit:int
-   starting_after:string
-   customer_id:string
+// Generate a Hyperlambda snippet that checks every second while [.time_left] is above 0.
 
-/*
- * Ensures user is authorized to access endpoint.
- * 
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
+// Checks every second while [.time_left] is above 0.
+.time_left:int:5
+while
+   gt
+      get-value:x:@.time_left
+      .:int:0
+   .lambda
 
-/*
- * Retrieves charges from Stripe.
- * 
- * Will use your Stripe API token found from your settings as it's interacting
- * with the Stripe API.
- */
-execute:magic.workflows.actions.execute
-   name:stripe-charges-get
-   filename:/modules/stripe/workflows/actions/stripe-charges-get.hl
-   arguments
-      limit:x:@.arguments/*/limit
-      starting_after:x:@.arguments/*/starting_after
-      customer_id:x:@.arguments/*/customer_id
+      // Logging remaining time.
+      log.info:Time remaining
 
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+      // Decrement time.
+      math.decrement:x:@.time_left

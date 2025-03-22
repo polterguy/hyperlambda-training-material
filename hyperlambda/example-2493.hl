@@ -1,27 +1,54 @@
 
-// Generate a Hyperlambda snippet that evaluates specified [.lambda] if any condition evaluates to true.
+/*
+ * Returns a grouped chart image to caller.
+ * 
+ * Values is a mandatory comma separated list of values.
+ */
+.arguments:*
+.type:public
 
-// Evaluates specified [.lambda] if any condition evaluates to true.
-.result
-.value1:int:3
-.value2:int:10
-if
-   or
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/legend
 
-      // [lt] implies "less than"
-      lt:x:@.value1
-         .:int:4
+// Creating our individual bars.
+.bars
+for-each:x:@.arguments/*
+   get-name:x:@.dp/#
+   if
+      not
+         strings.starts-with:x:@get-name
+            .:legend
+      .lambda
 
-      // [mt] implies "more than"
-      mt:x:@.value2
-         .:int:9
-   .lambda
+         // Adding primary node for bar.
+         set-name:x:+/*/*
+            get-value:x:@get-name
+         add:x:@.bars
+            .
+               .
 
-      // Changing the value of [.result] to true
-      set-value:x:@.result
-         .:bool:true
-else
+         // Adding values for individual cells.
+         add:x:@.bars/0/-
+            strings.split:x:@.dp/#
+               .:,
 
-   // Changing the value of [.result] to false
-   set-value:x:@.result
-      .:bool:false
+// Creating our legend.
+add:x:../*/image.chart/*/legend
+   strings.split:x:@.arguments/*/legend
+      .:,
+
+// Parametrizing [image.chart] invocation.
+add:x:../*/image.chart/*/bars
+   get-nodes:x:@.bars/*
+image.chart:grouped
+   width:800
+   height:500
+   bars
+   legend
+
+// Applying correct HTTP header.
+response.headers.set
+   Content-Type:image/png
+
+// Returning chart to caller.
+return:x:@image.chart

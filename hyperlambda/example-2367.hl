@@ -1,21 +1,16 @@
 
-// Create a Hyperlambda script that returns arguments the specified file can handle, ensuring the user is authorized.
-.arguments
-   file:string
+// Create a Hyperlambda snippet that repeats logging while [.attempts] is below 3.
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root
+// Repeats logging while [.attempts] is below 3.
+.attempts:int:0
+while
+   lt
+      get-value:x:@.attempts
+      .:int:3
+   .lambda
 
-/*
- * Loading action file and transforming Hyperlambda to lambda and making sure
- * we return [.arguments] collection as [input].
- * 
- * This becomes our input arguments to our action.
- */
-load-file:x:@.arguments/*/file
-hyper2lambda:x:@load-file
-add:x:./*/return
-   get-nodes:x:@hyper2lambda/*/.arguments/*
+      // Logging attempt.
+      log.info:Attempting task
 
-// Returning arguments to caller.
-return
+      // Increasing attempt count.
+      math.increment:x:@.attempts

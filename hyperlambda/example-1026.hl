@@ -1,4 +1,5 @@
-/**
- * This example loads the content of "/data/report.txt" into a node.
- */
-io.file.load:/data/report.txt
+
+// Example: Capitalize a string starting with whitespace (no effect on the leading space).
+
+// Result: " hello" (leading space preserved)
+strings.capitalize:" hello"

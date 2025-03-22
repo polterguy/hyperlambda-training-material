@@ -1,11 +1,6 @@
-/*
- * This example sets [.result] to the value of the first node named "email"
- * found as a child of [.contact-info].
- */
+// Compare two values using greater than (mt)
 
-.result
-.contact-info
-   name:John Doe
-   email:john@example.com
-set-value:x:@.result
-   .:x:@.contact-info/*/email
+.foo1:int:10
+mt
+   get-value:x:../*/.foo1
+   .:int:5

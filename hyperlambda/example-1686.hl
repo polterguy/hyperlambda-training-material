@@ -1,2 +1,5 @@
-// Retrieves the value of the second child in .list
-.second-child-name:x:@.list/1
+// Subtract 15 minutes from total time
+.total-time:int:120
+math.subtract
+   get-value:x:@.total-time
+   .:int:15

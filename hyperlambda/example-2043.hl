@@ -1,6 +1,5 @@
-// Ensure no nodes are added if source is empty
 
-.src
-.dest
-add:x:../*/.dest
-   get-nodes:x:../*/.src/*
+// Hash password for then to verify it
+crypto.password.hash:SomePasswordHere
+crypto.password.verify:SomePasswordHere
+   hash:x:@crypto.password.hash

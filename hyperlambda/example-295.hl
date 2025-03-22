@@ -1,34 +1,12 @@
-
-// Write a Hyperlambda script to rename a specified file or folder.
-.arguments
-   oldName:string
-   newName:string
-.type:internal
-
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
-
-// Basic logging.
-log.info:Renaming file object
-   old_name:x:@.arguments/*/oldName
-   new_name:x:@.arguments/*/newName
-
-// Checking if specified object is a file or a folder.
+// How can I check if the current user is in the 'admin' role or the 'root' role?
+.result
 if
-   io.folder.exists:x:@.arguments/*/oldName
+   or
+      auth.ticket.in-role:admin
+      auth.ticket.in-role:root
    .lambda
-
-      // File object is a folder, renaming it.
-      io.folder.move:x:@.arguments/*/oldName
-         get-value:x:@.arguments/*/newName
+      set-value:x:@.result
+         .:Welcome, admin!
 else
-
-   // File object is a file, renaming it.
-   io.file.move:x:@.arguments/*/oldName
-      strings.concat
-         io.path.get-folder:x:@.arguments/*/oldName
-         get-value:x:@.arguments/*/newName
-
-// Returning result to caller.
-return-nodes
-   result:success
+   set-value:x:@.result
+      .:Access denied

@@ -1,6 +1,2 @@
-// Not (inverting booleans)
-not
-   .:bool:true
-
-not
-   .:bool:false
+// Create an HTTP GET example
+http.get:"https://google.com"

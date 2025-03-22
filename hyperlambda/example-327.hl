@@ -1,5 +1,22 @@
 /*
- * Example: Capitalize a word that is already capitalized (no change).
+ * FILE: /modules/api/sql/multiple-results.hl
+ *
+ * DESCRIPTION:
+ * Demonstrates how to use [data.select] with multiple SQL statements.
+ * Returns multiple result sets as arrays.
+ *
+ * HOW TO CREATE THIS ENDPOINT:
+ * Save the file as `/modules/api/sql/multiple-results.hl`.
+ * Becomes accessible at:
+ *     GET /api/sql/multiple-results
+ *
+ * NOTES:
+ * - Be cautious when using raw SQL; it must be sanitized or parameterized in production use.
  */
-// Result: "Hello"
-strings.capitalize:Hello
+
+data.connect:sakila
+   data.select:"SELECT * FROM actor LIMIT 2; SELECT * FROM film LIMIT 2;"
+      multiple-result-sets:bool:true
+
+yield
+   results:x:@data.connect/*/data.select/*

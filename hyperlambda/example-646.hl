@@ -1,10 +1,14 @@
-// Tries verifying role, then executes different logic based on access level.
 
+// Switch-case with a default when no case matches
+.val:baz
 .result
-try
-   auth.ticket.verify:superuser
-   set-value:x:@.result
-      .:Superuser access granted
-.catch
-   set-value:x:@.result
-      .:You are not a superuser
+switch:x:@.val
+   case:foo
+      set-value:x:@.result
+         .:First
+   case:bar
+      set-value:x:@.result
+         .:Second
+   default
+      set-value:x:@.result
+         .:None

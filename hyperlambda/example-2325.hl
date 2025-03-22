@@ -1,13 +1,20 @@
 
-// Retrieves all shopping cart items for the current [session].
+// Create a Hyperlambda snippet that updates a user's email in the 'auth_db' database within the 'users' table.
+
+// Updates a user's email in the "auth_db" database within the "users" table.
 .arguments
-   _session:string
-.type:public
+   user_id:int
+data.connect:auth_db
+   database-type:pgsql
 
-// Opening up our database connection.
-data.connect:[generic|shopping-cart-demo]
-
-   // Reading items from our items table.
-   data.select:"\nselect i.item_id, i.quantity, p.name, p.description, p.image_url, p.price\n   from items i inner join products p on i.product_id = p.product_id\n   where i.session_id = @session"
-      @session:x:@.arguments/*/_session
-   return:x:@data.select/*
+   // Updating the user's email and status.
+   data.update
+      database-type:pgsql
+      table:users
+      values
+         email:newuser@example.com
+         status:active
+      where
+         and
+            user_id.eq:x:@.arguments/*/user_id
+   return:x:@data.update

@@ -1,7 +1,12 @@
-// This snippet uses the '+' iterator to get the next sibling of a given node.
-.sequence
-   alpha:X
-   beta:Y
-   gamma:Z
-get-value:x:@.sequence/*/beta/+  
-// The expression finds "beta" under .sequence, then '+' returns its next sibling ("gamma"), so the get-value yields "Z".
+
+// Create a Hyperlambda snippet that iterates through product names and logs each one.
+
+// Iterates through product names and logs each one.
+.products
+   productA:Laptop
+   productB:Smartphone
+   productC:Tablet
+for-each:x:@.products/*
+
+   // Logging each product.
+   log.info:x:@.dp/#

@@ -1,16 +1,12 @@
 
-// Write a Hyperlambda snippet that determines if [.toggle] is true and executes [.lambda].
-
-// Determines if [.toggle] is true and executes [.lambda].
-.toggle:bool:true
+// Else-if using an expression shorthand for its condition
+.flag:bool:true
+.result
 if
-   eq:x:@.toggle
-      .:bool:true
+   .:bool:false
    .lambda
-
-      // Executes when [.toggle] is true.
-      log.info:[.toggle] is on
-else
-
-   // Executes when [.toggle] is false.
-   log.info:[.toggle] is off
+      set-value:x:@.result
+         .:First
+else-if:x:@.flag
+   set-value:x:@.result
+      .:Second

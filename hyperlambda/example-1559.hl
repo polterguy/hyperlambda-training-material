@@ -1,4 +1,4 @@
-// [not-null] returns false if the target node has no value
-.src
-   foo
-not-null:x:@.src/*/foo
+// Getting configuration setting and assigning the value to [.result]
+.result
+set-value:x:@.result
+   config.get:"magic:smtp:host"

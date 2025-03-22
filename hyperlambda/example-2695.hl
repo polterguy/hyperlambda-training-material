@@ -1,23 +1,44 @@
 
-// Create a Hyperlambda script to delete one record from a specified table in a database with optional filtering arguments.
+// Removes the specified [extra] field(s) from the specified [username].
 .arguments
+   username
+      type:string
+      mandatory:bool:true
+   extra
+      type:array
+      mandatory:bool:true
+.icon:supervisor_account
 
-// Opening up our database connection.
-data.connect:{database}
-   database-type:{database-type}
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/username
+validators.mandatory:x:@.arguments/*/extra
 
-   // Parametrising our delete invocation.
-   add:x:./*/data.delete/*/where/*/and
-      get-nodes:x:@.arguments/*
+// Connecting to database.
+data.connect:[generic|magic]
 
-   // Deleting item from database.
-   data.delete
-      database-type:{database-type}
-      table:{table}
+   // Verifying user exists.
+   data.read
+      table:users
+      columns
+         username
       where
          and
+            username.eq:x:@.arguments/*/username
 
-   // Returning result of above invocation to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.delete
+   // Verifying above invocation returned something.
+   if
+      not-exists:x:@data.read/*
+      .lambda
+
+         // Oops ...!!
+         throw:No such user
+            username:x:@.arguments/*/username
+
+   // Removing extra fields from user.
+   for-each:x:@.arguments/*/extra/*
+      data.delete
+         table:users_extra
+         where
+            and
+               user.eq:x:@.arguments/*/username
+               type.eq:x:@.dp/#

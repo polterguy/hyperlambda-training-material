@@ -1,5 +1,18 @@
+// Hyperlambda [if] with greater than or equal
+.age:int:19
+.access-status
+if
+   mte:x:@.age
+      .:int:18
+   .lambda
+      set-value:x:@.access-status
+         .:allowed
 
-// Example: Get the length of a string with multi-byte characters.
+/* JavaScript equivalent of Hyperlambda [if] with greater than or equal
+const age = 18;
+let accessStatus;
 
-// Returns 2
-strings.length:你好
+if (age >= 18) {
+  accessStatus = "allowed";
+}
+*/

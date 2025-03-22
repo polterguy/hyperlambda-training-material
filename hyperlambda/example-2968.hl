@@ -1,49 +1,48 @@
 
-// Deletes the specified cloudlet
+// Create a function that authenticates a user with a username and password, returning a JWT Bearer token and user extra fields.
 .arguments
-   cloudlet_name:string
+   username:string
+   password:string
 
 /*
- * Ensures the specified [arg] was given.
+ * Authenticates the user with the specified [username] and [password].
  * 
- * This action will throw an exception with a descriptive text explaining if the argument is missing.
+ * Returns a JWT Bearer token that can be used for consecutive requests authorizing user according
+ * to his or her roles.
  */
 execute:magic.workflows.actions.execute
-   name:validators-mandatory
-   filename:/misc/workflows/actions/security/validators-mandatory.hl
+   name:authenticate
+   filename:/modules/registration/workflows/actions/authenticate.hl
    arguments
-      arg:x:@.arguments/*/cloudlet_name
+      username:x:@.arguments/*/username
+      password:x:@.arguments/*/password
 
 /*
- * Ensures user is authorized to access endpoint.
+ * Returns all extra fields for the specified [username].
  * 
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
+ * Notice, will return incomplete values if you want to reference return values in consecutive actions.
  */
 execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
+   name:extras-get
+   filename:/modules/registration/workflows/actions/extras-get.hl
    arguments
-      roles
-         .:root
-         .:gpt
+      username:x:@.arguments/*/username
+
+// Returning result to caller.
 
 /*
- * Returns the username of the currently authenticated user,
- * or null if user isn't authenticated.
+ * Transforms the result of multiple actions/arguments into a new object.
+ * 
+ * This is useful if you need a lambda object that's aggregated from the
+ * returned lambda objects from multiple (other) actions.
  */
 execute:magic.workflows.actions.execute
-   name:username-get
-   filename:/misc/workflows/actions/security/username-get.hl
+   name:transform
+   filename:/misc/workflows/actions/misc/transform.hl
    arguments
-
-// Deletes the specified cloudlet
-execute:magic.workflows.actions.execute
-   name:hub-cloudlets-delete
-   filename:/modules/hub/workflows/actions/hub-cloudlets-delete.hl
-   arguments
-      cloudlet_name:x:@.arguments/*/cloudlet_name
-      username:x:--/execute/=username-get/*/username
+      params
+         ticket:x:--/execute/=authenticate/*/ticket
+         extra:x:--/execute/=extras-get/*
 
 // Returns the result of your last action.
 return-nodes:x:@execute/*

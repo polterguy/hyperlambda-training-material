@@ -1,3 +1,8 @@
+// Composing a dynamic node expression from parts
+compose
+   .:..
+   .:*
+   .:.segment
+   .:*
 
-// Create HTTP GET invocation
-http.get:"https://docs.ainiro.io"
+// The above will construct an expression resembling the following :x:../*/.segment/*

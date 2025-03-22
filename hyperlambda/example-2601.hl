@@ -1,27 +1,17 @@
-
-// Write a Hyperlambda snippet that evaluates HTTP response codes using a switch case without a default option.
-
-// Switch case comparison for HTTP response codes.
-.http_code:int:404
-.result
-switch:x:@.http_code
-   case:int:200
-
-      // If response code is 200.
-      set-value:x:@.result
-         .:Success
-   case:int:400
-
-      // If response code is 400.
-      set-value:x:@.result
-         .:Bad Request
-   case:int:404
-
-      // If response code is 404.
-      set-value:x:@.result
-         .:Not Found
-   case:int:500
-
-      // If response code is 500.
-      set-value:x:@.result
-         .:Internal Server Error
+// Fetches random user data and checks response status
+.user
+   first-name
+   last-name
+http.get:"https://randomuser.me/api/"
+   convert:true
+if
+   and
+      mte:x:@http.get
+         .:int:200
+      lt:x:@http.get
+         .:int:300
+   .lambda
+      set-value:x:@.user/*/first-name
+         get-value:x:@http.get/*/content/*/results/0/name/first
+      set-value:x:@.user/*/last-name
+         get-value:x:@http.get/*/content/*/results/0/name/last

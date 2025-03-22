@@ -1,6 +1,2 @@
-// eq should throw an error when given more than two values
-
-eq
-   .:foo1
-   .:foo2
-   .:foo3
+// This snippet defines a node with an int (Int32) value.
+.amount:int:1000

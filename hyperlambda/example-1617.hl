@@ -1,5 +1,18 @@
+// Hyperlambda [if] with less than comparison
+.items-left:int:5
+.restock-alert
+if
+   lt:x:@.items-left
+      .:int:10
+   .lambda
+      set-value:x:@.restock-alert
+         .:Inventory low!
 
-// Example: Spaces and punctuation are counted in the length.
+/* JavaScript equivalent of Hyperlambda [if] with less than comparison
+const itemsLeft = 5;
+let restockAlert;
 
-// Returns 12
-strings.length:Hello world!
+if (itemsLeft < 10) {
+  restockAlert = "Inventory low!";
+}
+*/

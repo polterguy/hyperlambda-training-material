@@ -1,4 +1,11 @@
 
-// Hyperlambda file containing version and module name information for sqlite-chinook.
-version:v1.0.0
-module_name:sqlite-chinook
+// Create a Hyperlambda script to demonstrate a nested expression example.
+.arg1:.data
+.arg2:foo2
+.result
+.data
+   foo1:john
+   foo2:thomas
+   foo3:peter
+set-value:x:@.result
+   get-value:x:../*/{@.arg1}/*/{@.arg2}

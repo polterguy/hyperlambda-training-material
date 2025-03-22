@@ -1,57 +1,33 @@
 
-// Update endpoint updating one record in your crawl_urls table in your scraper database.
+// Write a Hyperlambda script to return the conversation starters for a specified type.
 .arguments
-
-   // crawl_url_id column value being primary key of record to update
-   crawl_url_id:long
-
-   // url column's new value
-   url:string
-
-   // type column's new value
    type:string
 
-// Type of endpoint
-.type:crud-update
+// Sanity checking invocation.
+validators.mandatory:x:@.arguments/*/type
 
-// Sanity checking invocation, making sure primary key(s) are specified.
-validators.mandatory:x:@.arguments/*/crawl_url_id
+// Opening up database connection.
+data.connect:[generic|magic]
 
-// Verifying user is authorized to access endpoint.
-auth.ticket.verify:root,admin
+   // Retrieving all questions from database.
+   data.select:"\nselect conversation_starters\n\tfrom ml_types\n\twhere type = @type"
+      type:x:@.arguments/*/type
 
-// Opening up our database connection.
-data.connect:[generic|scraper]
-   database-type:sqlite
-
-   // Parametrising our invocation.
-   add:x:./*/data.update/*/values
-      get-nodes:x:@.arguments/*/[1,1000]
-   add:x:./*/data.update/*/where/*/and
-      get-nodes:x:@.arguments/*/[0,1]
-
-   // Invoking our update slot.
-   data.update
-      database-type:sqlite
-      table:crawl_urls
-      values
-      where
-         and
-
-   // Verifying record exists.
+   // Transforming to markdown and splitting into individual questions, but only if we have conversation starters.
    if
-      eq
-         get-value:x:@data.update
-         .:int:0
+      and
+         not-null:x:@data.select/*/*/conversation_starters
+         neq:x:@data.select/*/*/conversation_starters
+            .:
       .lambda
-         response.status.set:404
-         return
-            result:Record not found
+         markdown2html:x:@data.select/*/*/conversation_starters
+         html2lambda:x:@markdown2html
+         for-each:x:"@html2lambda/**/li/**/\\#text"
+            unwrap:x:+/*/*
+            add:x:../*/return/*/questions
+               .
+                  .:x:@.dp/#
 
-   // Returning the correct status code.
-   response.status.set:202
-
-   // Returning success to caller.
-   unwrap:x:+/*
-   return
-      affected:x:@data.update
+// Returning result to caller.
+return
+   questions

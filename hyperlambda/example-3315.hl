@@ -1,18 +1,33 @@
 
-// Generate a Hyperlambda snippet that triggers [.lambda] when [.input] does not contain Go Go Go.
+// Delete one record from your Categories table in your northwind database
+.arguments
 
-// Triggers [.lambda] when [.input] does not contain Go Go Go.
-.input:Go Go Go
-if
+   // Primary key of record to delete, mandatory argument
+   CategoryID:long
 
-   // Validates that [.input] is not "Go Go Go".
-   neq:x:@.input
-      .:Go Go Go
-   .lambda
+// Meta data description for endpoint
+.description:Delete one record from your Categories table in your northwind database
 
-      // Executes when [.input] differs.
-      log.info:[.input] is NOT Go Go Go
-else
+// Type of endpoint
+.type:crud-delete
+validators.mandatory:x:@.arguments/*/CategoryID
 
-   // Executes when [.input] is exactly "Go Go Go".
-   log.info:[.input] is Go Go Go
+// Opening up our database connection.
+data.connect:[generic|northwind]
+   database-type:sqlite
+
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      database-type:sqlite
+      table:Categories
+      where
+         and
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

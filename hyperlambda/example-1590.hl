@@ -1,17 +1,13 @@
+// Define a slot that returns multiple values by evaluating expressions before the slot returns
+slots.create:giveData 
 
-// Demonstrate Hyperlambda string assignments, including special character handling, multi-line strings, and escape sequences.
+   .tmp1:Value 1
+   .tmp2:int:2025
 
-// Simple string without special characters
-.keyA:simple
+   // Return two nodes, evaluating any expressions in them
+   yield
+      message:x:@.tmp1
+      year:x:@.tmp2
 
-// Special character (colon) requires quotes
-.keyB:"config:set"
-
-// Multi-line string example
-.keyC:"This is\nmulti-line"
-
-// Alternative single quotes usage
-.keyD:alternate
-
-// Escape newline inside string
-.keyE:"Hello\nHyperlambda"
+signal:giveData  
+// Result: message = "Value 1", year = 2023

@@ -1,21 +1,20 @@
 
-// Lists all SQLite database in your default data folder.
-slots.create:magic.db.sqlite.databases
+// Returns a single object of the specified type to caller
+.arguments
 
-   // Listing files in data folder and returning to caller.
-   io.file.list:/data/
-   for-each:x:-/*
-      if
-         strings.ends-with:x:@.dp/#
-            .:.db
-         .lambda
-            strings.split:x:@.dp/#
-               .:/
-            strings.split:x:-/0/-
-               .:.
-            unwrap:x:+/*/*/*
-            add:x:../*/return-nodes
-               .
-                  .
-                     db:x:@strings.split/0
-   return-nodes
+   // Mandatory argument declaring the type of object you want to retrieve.
+   type:string
+
+   // Mandatory argument being the id of the object you want to retrieve.
+   id:string
+
+// Ensuring user is authorized to invoking endpoint.
+auth.ticket.verify:netsuite
+
+// Forwarding heavy lifting to workflow file.
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/modules/netsuite/workflows/workflows/netsuite-get-record.hl
+
+// Returning result to caller.
+return-nodes:x:@execute-file/*

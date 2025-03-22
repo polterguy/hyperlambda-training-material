@@ -1,50 +1,33 @@
 
-// Associates the specified [username] with the specified [roles] roles.
+// Create a Hyperlambda action to create a log entry with a specified 'type' (info, error, fatal, debug) and 'message'. Include optional 'args' for additional parameters.
 .arguments
-   username
+   type
+      type:enum
+      mandatory:bool:true
+      values
+         .:info
+         .:error
+         .:fatal
+         .:debug
+   message
       type:string
       mandatory:bool:true
-   roles
-      type:array
-      mandatory:bool:true
-.icon:supervisor_account
+   args
+      type:key-value
+      mandatory:bool:false
+.icon:account_balance
 
-// Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/roles
+// Lambda object actually creating our log entry.
+.invoke-log
+   name:x:@.arguments/*/message
 
-// Connecting to database.
-data.connect:[generic|magic]
+// Parametrising invocation.
+set-name:x:@.invoke-log/*/name
+   strings.concat
+      .:log.
+      get-value:x:@.arguments/*/type
+add:x:@.invoke-log/*
+   get-nodes:x:@.arguments/*/args/*
 
-   // Verifying user exists.
-   data.read
-      table:users
-      columns
-         username
-      where
-         and
-            username.eq:x:@.arguments/*/username
-
-   // Verifying above invocation returned something.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-
-         // Oops ...!!
-         throw:No such user
-            username:x:@.arguments/*/username
-
-   // Removing all roles user is already associated with.
-   data.delete
-      table:users_roles
-      where
-         and
-            user.eq:x:@.arguments/*/username
-
-   // Associating user with specified [roles].
-   for-each:x:@.arguments/*/roles/*
-      data.create
-         table:users_roles
-         values
-            user:x:@.arguments/*/username
-            role:x:@.dp/#
+// Invoking lambda object responsible for creating our log entry.
+eval:x:@.invoke-log

@@ -1,6 +1,10 @@
+// Use or to return true if any condition is true
 
-// Example: Pass arguments to the inline Hyperlambda code.
-strings.mixin:"2 + val equals {{\nmath.add\n   .:int:2\n   get-value:x:@.arguments/*/val\nreturn:x:-\n}}"
-   val:int:5
-
-// Result: "2 + val equals 7"
+.result
+if
+   or
+      .:bool:true
+      .:bool:false
+   .lambda
+      set-value:x:../*/.result
+         .:OK

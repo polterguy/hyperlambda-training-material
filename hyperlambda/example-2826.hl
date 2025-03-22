@@ -1,16 +1,15 @@
 
-// Write a Hyperlambda script to list all files in a specified folder recursively, with options to display hidden and system files.
+// Reads contacts from HubSpot
 .arguments
-   folder:string
-   sys:bool
+   after:string
+.type:public
 
-// Ensures user is authorized to access endpoint.
-auth.ticket.verify:root
+// Forwarding request to our HTTP POST Hyperlambda file.
+add:x:./*/execute-file
+   get-nodes:x:@.arguments/*
+execute-file:/modules/hubspot/contacts.get.hl
 
-// Listing all file in specified folder.
-io.file.list-recursively:x:@.arguments/*/folder
-   display-hidden:bool:true
-   display-system:x:@.arguments/*/sys
-
-// Returning results of above invocation to caller.
-return-nodes:x:@io.file.list-recursively/*
+// Returning whatever above invocation returned.
+add:x:./*/return
+   get-nodes:x:@execute-file/*
+return

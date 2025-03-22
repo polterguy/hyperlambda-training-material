@@ -1,6 +1,5 @@
-/**
- * This example converts "input.png" to "output.jpg".
- */
-image.convert
-   file:/input.png
-   output:/output.jpg
+
+// Example: Capitalize a word that is already capitalized (no change).
+
+// Result: "Hello"
+strings.capitalize:Hello

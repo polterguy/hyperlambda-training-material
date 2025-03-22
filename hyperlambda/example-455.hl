@@ -1,41 +1,10 @@
 
-/*
- * Returns Stripe charges.
- * 
- * [limit] and [starting_after] are optional arguments and [limit] is the number of charges to return while [starting_after] is from which record to start returning charges.
- */
-.arguments
-   limit:int
-   starting_after:string
-   customer_id:string
+// This snippet uses the '*' iterator to retrieve all children of a node, in addition to the # reference iterator.
+.data
+   item1:one
+   item2:two
+for-each:x:@.data/*
+   set-value:x:@.dp/#
+      :processed
 
-/*
- * Ensures user is authorized to access endpoint.
- *
- * If you don't supply a list of [roles] this action only verifies the user is authenticated,
- * and does not care about what roles the user belongs to.
- */
-execute:magic.workflows.actions.execute
-   name:authorize
-   filename:/misc/workflows/actions/security/authorize.hl
-   arguments
-      roles
-         .:root
-         .:gpt
-
-/*
- * Retrieves charges from Stripe.
- *
- * Will use your Stripe API token found from your settings as it's interacting
- * with the Stripe API.
- */
-execute:magic.workflows.actions.execute
-   name:stripe-charges-get
-   filename:/modules/stripe/workflows/actions/stripe-charges-get.hl
-   arguments
-      limit:x:@.arguments/*/limit
-      starting_after:x:@.arguments/*/starting_after
-      customer_id:x:@.arguments/*/customer_id
-
-// Returns the result of your last action.
-return-nodes:x:@execute/*
+// The expression @.data/* selects both item1 and item2 nodes, and the for-each loop sets each of their values to "processed" since it's using the [.dp] node by reference which is injected by the [for-each] slot.

@@ -1,44 +1,28 @@
 
-// Removes the specified [extra] field(s) from the specified [username].
+// Deletes one item from your types table in your [generic|onboarding] database matching the specified argument(s).
 .arguments
-   username
-      type:string
-      mandatory:bool:true
-   extra
-      type:array
-      mandatory:bool:true
-.icon:supervisor_account
+   name:string
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root
 
 // Sanity checking invocation.
-validators.mandatory:x:@.arguments/*/username
-validators.mandatory:x:@.arguments/*/extra
+validators.mandatory:x:@.arguments/*/name
 
-// Connecting to database.
-data.connect:[generic|magic]
+// Opening up our database connection.
+data.connect:[generic|hub]
 
-   // Verifying user exists.
-   data.read
-      table:users
-      columns
-         username
+   // Parametrising our delete invocation.
+   add:x:./*/data.delete/*/where/*/and
+      get-nodes:x:@.arguments/*
+
+   // Deleting item from database.
+   data.delete
+      table:plans
       where
          and
-            username.eq:x:@.arguments/*/username
 
-   // Verifying above invocation returned something.
-   if
-      not-exists:x:@data.read/*
-      .lambda
-
-         // Oops ...!!
-         throw:No such user
-            username:x:@.arguments/*/username
-
-   // Removing extra fields from user.
-   for-each:x:@.arguments/*/extra/*
-      data.delete
-         table:users_extra
-         where
-            and
-               user.eq:x:@.arguments/*/username
-               type.eq:x:@.dp/#
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      affected:x:@data.delete

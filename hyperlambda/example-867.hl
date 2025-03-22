@@ -1,2 +1,6 @@
-// Verifies the currently authenticated user belongs to root, admin or user roles
-auth.ticket.verify:root, admin, user
+
+// Set all inactive users to have NULL last_login
+data.connect:authDB
+   data.execute:UPDATE users SET last_login = NULL WHERE active = 0
+
+   // Executes the UPDATE; number of affected records returned

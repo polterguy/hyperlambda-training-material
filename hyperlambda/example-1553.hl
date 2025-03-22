@@ -1,10 +1,9 @@
-
-// Create a Hyperlambda script to override the exception handler and return information to root users.
-log.error:x:@.arguments/*/message
-   url:x:@.arguments/*/path
-   exception:x:@.arguments/*/stack
-add:x:+
-   get-nodes:x:@.arguments/*/status
-   get-nodes:x:@.arguments/*/field
-   get-nodes:x:@.arguments/*/message
-return
+// Append multiple new child nodes to a destination node
+.dest
+add:x:@.dest
+   .
+      foo1:hello
+      foo2:world
+   .
+      bar1:hi
+      bar2:planet
